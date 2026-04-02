@@ -355,6 +355,7 @@
     transition: background 0.15s;
   }
   .ctrl-btn:hover { background: #F0F0F0; }
+  .ctrl-btn.saved { border-color: #27AE60; color: #27AE60; }
 </style>
 </head>
 <body>
@@ -388,6 +389,7 @@
       <button class="ctrl-btn" onclick="cy.fit()" title="Fit all">⊞</button>
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)" title="Zoom in">+</button>
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)" title="Zoom out">−</button>
+      <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()" title="Reset layout">↺</button>
     </div>
   </div>
 
@@ -2642,9 +2644,60 @@ const cy = cytoscape({
 });
 
 // ── Fit on load ──────────────────────────────
-cy.ready(() => {
+// ── Layout persistence (localStorage) ───────
+const STORAGE_KEY = 'mindmap_positions_' + window.location.pathname;
+
+function savePositions() {
+  const positions = {};
+  cy.nodes().forEach(n => {
+    const p = n.position();
+    positions[n.id()] = { x: Math.round(p.x), y: Math.round(p.y) };
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(positions));
+  const btn = document.getElementById('reset-btn');
+  btn.classList.add('saved');
+  btn.title = 'Reset to auto layout';
+}
+
+function loadPositions() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return false;
+  try {
+    const positions = JSON.parse(raw);
+    cy.batch(() => {
+      cy.nodes().forEach(n => {
+        if (positions[n.id()]) n.position(positions[n.id()]);
+      });
+    });
+    document.getElementById('reset-btn').classList.add('saved');
+    return true;
+  } catch(e) { return false; }
+}
+
+function resetLayout() {
+  localStorage.removeItem(STORAGE_KEY);
+  document.getElementById('reset-btn').classList.remove('saved');
+  document.getElementById('reset-btn').title = 'Reset layout';
+  // Restore original positions from elements data
+  cy.batch(() => {
+    elements.forEach(el => {
+      if (el.position) {
+        const node = cy.getElementById(el.data.id);
+        if (node) node.position(el.position);
+      }
+    });
+  });
   cy.fit(undefined, 40);
+}
+
+cy.ready(() => {
+  if (!loadPositions()) {
+    cy.fit(undefined, 40);
+  }
 });
+
+// Auto-save on drag
+cy.on('dragfree', 'node', savePositions);
 
 let currentNode = null;
 

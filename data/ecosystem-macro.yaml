@@ -210,8 +210,8 @@ nodes:
 
   - id: open_weights
     label:
-      en: "Open Source Models"
-      fr: "Modèles Open Source"
+      en: "Open Source / Weights Models"
+      fr: "Open Source / Weights Models"
     layer: 2
     category: model_types
     status: evolving
@@ -245,7 +245,6 @@ nodes:
         Modèles spécialisés qui convertissent du texte en vecteurs (pas des générateurs de texte).
         Brique indispensable pour la recherche sémantique et les pipelines RAG.
         Exemples : text-embedding-3, Voyage-3, nomic-embed.
-
 
   # ── LAYER 3 · ACCESS & DEPLOYMENT ───────────
 

@@ -355,6 +355,7 @@
     transition: background 0.15s;
   }
   .ctrl-btn:hover { background: #F0F0F0; }
+  .ctrl-btn.saved { border-color: #27AE60; color: #27AE60; }
 </style>
 </head>
 <body>
@@ -388,6 +389,7 @@
       <button class="ctrl-btn" onclick="cy.fit()" title="Fit all">⊞</button>
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)" title="Zoom in">+</button>
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)" title="Zoom out">−</button>
+      <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()" title="Reset layout">↺</button>
     </div>
   </div>
 
@@ -599,7 +601,7 @@ const elements = [
   {
     "data": {
       "id": "open_weights",
-      "label": "Open Source Models",
+      "label": "Open Source / Weights Models",
       "category": "model_types",
       "subcategory": "",
       "node_type": "",
@@ -608,10 +610,10 @@ const elements = [
       "since": "2023",
       "color": "#C39BD3",
       "layerLabel": "MODEL TAXONOMY",
-      "label_en": "Open Source Models",
+      "label_en": "Open Source / Weights Models",
       "description_en": "Weights are publicly downloadable \u2014 you can run, fine-tune and deploy the model yourself.\nCommonly called \"open source\", though technically more precise to say \"open weights\":\ntraining data and full code are usually not published.\nExamples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
       "layerLabel_en": "MODEL TAXONOMY",
-      "label_fr": "Mod\u00e8les Open Source",
+      "label_fr": "Open Source / Weights Models",
       "description_fr": "Les poids sont t\u00e9l\u00e9chargeables publiquement \u2014 vous pouvez ex\u00e9cuter, fine-tuner et d\u00e9ployer le mod\u00e8le vous-m\u00eame.\nSouvent appel\u00e9s \"open source\" (terme courant), mais plus pr\u00e9cis\u00e9ment \"open weights\" :\nles donn\u00e9es d'entra\u00eenement et le code complet ne sont g\u00e9n\u00e9ralement pas publi\u00e9s.\nExemples : Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
       "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
     },
@@ -1611,9 +1613,60 @@ const cy = cytoscape({
 });
 
 // ── Fit on load ──────────────────────────────
-cy.ready(() => {
+// ── Layout persistence (localStorage) ───────
+const STORAGE_KEY = 'mindmap_positions_' + window.location.pathname;
+
+function savePositions() {
+  const positions = {};
+  cy.nodes().forEach(n => {
+    const p = n.position();
+    positions[n.id()] = { x: Math.round(p.x), y: Math.round(p.y) };
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(positions));
+  const btn = document.getElementById('reset-btn');
+  btn.classList.add('saved');
+  btn.title = 'Reset to auto layout';
+}
+
+function loadPositions() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return false;
+  try {
+    const positions = JSON.parse(raw);
+    cy.batch(() => {
+      cy.nodes().forEach(n => {
+        if (positions[n.id()]) n.position(positions[n.id()]);
+      });
+    });
+    document.getElementById('reset-btn').classList.add('saved');
+    return true;
+  } catch(e) { return false; }
+}
+
+function resetLayout() {
+  localStorage.removeItem(STORAGE_KEY);
+  document.getElementById('reset-btn').classList.remove('saved');
+  document.getElementById('reset-btn').title = 'Reset layout';
+  // Restore original positions from elements data
+  cy.batch(() => {
+    elements.forEach(el => {
+      if (el.position) {
+        const node = cy.getElementById(el.data.id);
+        if (node) node.position(el.position);
+      }
+    });
+  });
   cy.fit(undefined, 40);
+}
+
+cy.ready(() => {
+  if (!loadPositions()) {
+    cy.fit(undefined, 40);
+  }
 });
+
+// Auto-save on drag
+cy.on('dragfree', 'node', savePositions);
 
 let currentNode = null;
 
