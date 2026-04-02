@@ -169,21 +169,23 @@ nodes:
 
   - id: frontier_models
     label:
-      en: "Frontier Models"
-      fr: "Modèles Frontier"
+      en: "Proprietary Models"
+      fr: "Modèles Propriétaires"
     layer: 2
     category: model_types
     status: evolving
     since: "2022"
     description:
       en: >
-        The most capable models, developed by a handful of well-funded labs.
-        Closed source — weights not public. Accessed only via API.
-        Examples: GPT-4o, Claude, Gemini. Define the state of the art.
+        Models whose weights are private — accessible only via API, never downloadable.
+        Developed by a handful of well-funded labs (OpenAI, Anthropic, Google).
+        Often called "frontier models" in the industry, referring to their position
+        at the cutting edge of AI capabilities.
       fr: >
-        Les modèles les plus puissants, développés par quelques grands laboratoires bien financés.
-        Code source fermé — poids non publics. Accessibles uniquement via API.
-        Exemples : GPT-4o, Claude, Gemini. Définissent l'état de l'art.
+        Modèles dont les poids sont privés — accessibles uniquement via API, jamais téléchargeables.
+        Développés par quelques grands laboratoires bien financés (OpenAI, Anthropic, Google).
+        Souvent appelés "frontier models" dans l'industrie, en référence à leur position
+        à la pointe des capacités IA.
 
   - id: open_weights
     label:
