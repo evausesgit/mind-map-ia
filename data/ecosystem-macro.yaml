@@ -72,7 +72,6 @@ categories:
       fr: "Catégories d'outils utilisés par les développeurs pour construire avec les LLM"
 
 nodes:
-
   # ── LAYER 1 · CORE CONCEPTS ─────────────────
 
   - id: language_model
@@ -177,14 +176,16 @@ nodes:
     since: "2022"
     description:
       en: >
-        Models whose weights are private — accessible only via API, never downloadable.
-        Developed by a handful of well-funded labs (OpenAI, Anthropic, Google).
-        Often called "frontier models" in the industry, referring to their position
+        Models whose weights are PRIVATE — never downloadable.
+        Accessible only via API.
+        Developed by well-funded labs (OpenAI, Anthropic, Google).
+        Often called "Frontier models" in the industry, referring to their position
         at the cutting edge of AI capabilities.
       fr: >
-        Modèles dont les poids sont privés — accessibles uniquement via API, jamais téléchargeables.
-        Développés par quelques grands laboratoires bien financés (OpenAI, Anthropic, Google).
-        Souvent appelés "frontier models" dans l'industrie, en référence à leur position
+        Modèles dont les poids sont PRIVES, jamais téléchargeables.
+        Accessibles uniquement via API.
+        Développés par des laboratoires a gros budget(OpenAI, Anthropic, Google).
+        Souvent appelés "Frontier models" dans l'industrie, en référence à leur position
         à la pointe des capacités IA.
 
   - id: open_weights
@@ -554,7 +555,6 @@ nodes:
         Exemples : HuggingFace, Ollama, Replicate.
 
 edges:
-
   - from: language_model
     to: frontier_models
     label: "manifests as"
