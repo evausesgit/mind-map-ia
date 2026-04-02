@@ -26,6 +26,26 @@ terms:
         Les LLM peuvent comprendre et générer du texte cohérent, répondre à des questions, écrire du code, etc.
         Exemples : GPT-4, Claude, Gemini, Llama.
 
+  - id: weights
+    label:
+      en: "Weights"
+      fr: "Poids"
+    aliases: ["weights", "weight", "model weights", "poids", "poids du modèle", "open weights"]
+    description:
+      en: >
+        The numerical parameters learned by a neural network during training.
+        Weights encode everything the model has "learned" — grammar, facts, reasoning patterns.
+        When a model is said to have billions of parameters, those parameters are its weights.
+        "Open weights" means the trained weight files are publicly released, allowing anyone
+        to run or fine-tune the model locally — even if the training data or code are not shared.
+      fr: >
+        Les paramètres numériques appris par un réseau de neurones pendant l'entraînement.
+        Les poids encodent tout ce que le modèle a « appris » — grammaire, faits, raisonnement.
+        Quand on dit qu'un modèle a des milliards de paramètres, ce sont ses poids.
+        « Open weights » signifie que les fichiers de poids entraînés sont publiés publiquement,
+        permettant à n'importe qui d'exécuter ou de fine-tuner le modèle localement —
+        même si les données d'entraînement ou le code source ne sont pas partagés.
+
   - id: machine_learning
     label:
       en: "Machine Learning"
