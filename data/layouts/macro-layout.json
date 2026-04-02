@@ -1,87 +1,95 @@
 {
   "language_model": {
-    "x": 1101,
-    "y": -106
+    "x": 1016,
+    "y": -171
   },
   "token_context": {
-    "x": 1101,
-    "y": -219
+    "x": 1126,
+    "y": -281
   },
   "embedding_vectors": {
-    "x": 1103,
-    "y": 258
+    "x": 826,
+    "y": 254
   },
   "training_alignment": {
-    "x": 1101,
-    "y": -9
+    "x": 1064,
+    "y": -54
   },
   "inference": {
-    "x": 1101,
-    "y": 176
+    "x": 1302,
+    "y": 190
   },
   "reasoning_models": {
+    "x": 1255,
+    "y": 78
+  },
+  "prompt_system_prompt": {
+    "x": 1003,
+    "y": 106
+  },
+  "multimodality": {
     "x": 1103,
-    "y": 90
+    "y": 235
   },
   "frontier_models": {
-    "x": 400,
-    "y": -85
+    "x": 407,
+    "y": -187
   },
   "open_weights": {
     "x": 400,
     "y": 0
   },
   "embedding_models": {
-    "x": 400,
-    "y": 85
+    "x": 397,
+    "y": 211
   },
   "public_api": {
-    "x": -200,
-    "y": -127
+    "x": -214,
+    "y": -315
   },
   "cloud_managed": {
-    "x": -200,
-    "y": -42
+    "x": -239,
+    "y": -40
   },
   "self_hosted": {
-    "x": -200,
-    "y": 43
+    "x": -202,
+    "y": 209
   },
   "local_edge": {
-    "x": -200,
-    "y": 128
+    "x": -216,
+    "y": 374
   },
   "rag_pattern": {
     "x": -700,
-    "y": -212
+    "y": -87
   },
   "agents_pattern": {
     "x": -700,
-    "y": -127
+    "y": -52
   },
   "tool_use_pattern": {
     "x": -700,
-    "y": -42
+    "y": -17
   },
   "finetuning_pattern": {
     "x": -700,
-    "y": 43
+    "y": 18
   },
   "prompt_eng": {
     "x": -700,
-    "y": 128
+    "y": 53
   },
   "structured_gen": {
     "x": -700,
-    "y": 213
+    "y": 88
   },
   "orch_frameworks": {
     "x": -1200,
-    "y": -170
+    "y": -70
   },
   "ai_coding": {
     "x": -1200,
-    "y": -85
+    "y": -35
   },
   "vector_dbs_tool": {
     "x": -1200,
@@ -89,10 +97,10 @@
   },
   "eval_obs": {
     "x": -1200,
-    "y": 85
+    "y": 35
   },
   "model_hubs": {
     "x": -1200,
-    "y": 170
+    "y": 70
   }
 }

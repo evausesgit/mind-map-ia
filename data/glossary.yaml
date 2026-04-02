@@ -1,0 +1,42 @@
+meta:
+  title:
+    en: "Glossary"
+    fr: "Glossaire"
+  description:
+    en: "Definitions of key terms used across all maps"
+    fr: "Définitions des termes clés utilisés dans toutes les cartes"
+  version: "2026-Q1"
+  date: "2026-04-02"
+
+terms:
+  - id: llm
+    label:
+      en: "Large Language Model"
+      fr: "Grand Modèle de Langage"
+    aliases: ["LLM", "LLMs", "Large Language Model", "Large Language Models", "grand modèle de langage", "grands modèles de langage"]
+    description:
+      en: >
+        A language model trained on massive text datasets with billions of parameters.
+        The "large" refers to both the size of the training data and the number of parameters.
+        LLMs can understand and generate coherent text, answer questions, write code, and more.
+        Examples: GPT-4, Claude, Gemini, Llama.
+      fr: >
+        Un modèle de langage entraîné sur d'immenses corpus textuels avec des milliards de paramètres.
+        Le "grand" fait référence à la taille des données d'entraînement et au nombre de paramètres.
+        Les LLM peuvent comprendre et générer du texte cohérent, répondre à des questions, écrire du code, etc.
+        Exemples : GPT-4, Claude, Gemini, Llama.
+
+  - id: machine_learning
+    label:
+      en: "Machine Learning"
+      fr: "Machine Learning"
+    aliases: ["ML", "machine learning", "apprentissage automatique"]
+    description:
+      en: >
+        A subfield of artificial intelligence where systems learn from data to improve
+        their performance on a task, without being explicitly programmed for each case.
+        Deep Learning and LLMs are branches of Machine Learning.
+      fr: >
+        Un sous-domaine de l'intelligence artificielle où les systèmes apprennent à partir
+        de données pour améliorer leurs performances sur une tâche, sans être explicitement
+        programmés pour chaque cas. Le Deep Learning et les LLM sont des branches du Machine Learning.
