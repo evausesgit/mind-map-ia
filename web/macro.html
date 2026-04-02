@@ -442,7 +442,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": -170.0
+      "y": -212.5
     },
     "classes": "status-stable"
   },
@@ -467,7 +467,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": -85.0
+      "y": -127.5
     },
     "classes": "status-stable"
   },
@@ -492,7 +492,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": 0.0
+      "y": -42.5
     },
     "classes": "status-stable"
   },
@@ -517,7 +517,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": 85.0
+      "y": 42.5
     },
     "classes": "status-stable"
   },
@@ -542,9 +542,34 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": 170.0
+      "y": 127.5
     },
     "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "reasoning_models",
+      "label": "Reasoning",
+      "category": "concepts",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 1,
+      "status": "emerging",
+      "since": "2024",
+      "color": "#F4D03F",
+      "layerLabel": "CORE CONCEPTS",
+      "label_en": "Reasoning",
+      "description_en": "A paradigm shift in how models respond: instead of answering immediately,\nthe model thinks step-by-step before giving its final answer (chain-of-thought).\nSignificantly better at complex logic, math and coding.\nNot a separate model type \u2014 a capability that can apply to proprietary or open source models.\nExamples: o3, DeepSeek-R1, Claude 3.7 extended thinking.",
+      "layerLabel_en": "CORE CONCEPTS",
+      "label_fr": "Raisonnement",
+      "description_fr": "Un changement de paradigme dans la fa\u00e7on dont les mod\u00e8les r\u00e9pondent : au lieu de r\u00e9pondre imm\u00e9diatement,\nle mod\u00e8le r\u00e9fl\u00e9chit \u00e9tape par \u00e9tape avant de donner sa r\u00e9ponse finale (chain-of-thought).\nBien meilleur sur les t\u00e2ches de logique complexe, de maths et de code.\nPas un type de mod\u00e8le \u00e0 part \u2014 une capacit\u00e9 qui s'applique aux mod\u00e8les propri\u00e9taires ou open source.\nExemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.",
+      "layerLabel_fr": "CONCEPTS FONDAMENTAUX"
+    },
+    "position": {
+      "x": 1100,
+      "y": 212.5
+    },
+    "classes": "status-emerging"
   },
   {
     "data": {
@@ -567,14 +592,14 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": -212.5
+      "y": -85.0
     },
     "classes": "status-evolving"
   },
   {
     "data": {
       "id": "open_weights",
-      "label": "Open Weights Models",
+      "label": "Open Source Models",
       "category": "model_types",
       "subcategory": "",
       "node_type": "",
@@ -583,66 +608,16 @@ const elements = [
       "since": "2023",
       "color": "#C39BD3",
       "layerLabel": "MODEL TAXONOMY",
-      "label_en": "Open Weights Models",
-      "description_en": "Models whose weights are publicly downloadable. Can be run locally, fine-tuned, and deployed on your own infrastructure. Examples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
+      "label_en": "Open Source Models",
+      "description_en": "Weights are publicly downloadable \u2014 you can run, fine-tune and deploy the model yourself.\nCommonly called \"open source\", though technically more precise to say \"open weights\":\ntraining data and full code are usually not published.\nExamples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
       "layerLabel_en": "MODEL TAXONOMY",
-      "label_fr": "Mod\u00e8les Open Weights",
-      "description_fr": "Mod\u00e8les dont les poids sont t\u00e9l\u00e9chargeables publiquement. Peuvent \u00eatre ex\u00e9cut\u00e9s localement, fine-tun\u00e9s et d\u00e9ploy\u00e9s sur sa propre infrastructure. Exemples : Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
+      "label_fr": "Mod\u00e8les Open Source",
+      "description_fr": "Les poids sont t\u00e9l\u00e9chargeables publiquement \u2014 vous pouvez ex\u00e9cuter, fine-tuner et d\u00e9ployer le mod\u00e8le vous-m\u00eame.\nSouvent appel\u00e9s \"open source\" (terme courant), mais plus pr\u00e9cis\u00e9ment \"open weights\" :\nles donn\u00e9es d'entra\u00eenement et le code complet ne sont g\u00e9n\u00e9ralement pas publi\u00e9s.\nExemples : Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
       "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
     },
     "position": {
       "x": 400,
-      "y": -127.5
-    },
-    "classes": "status-evolving"
-  },
-  {
-    "data": {
-      "id": "reasoning_models",
-      "label": "Reasoning Models",
-      "category": "model_types",
-      "subcategory": "",
-      "node_type": "",
-      "layer": 2,
-      "status": "emerging",
-      "since": "2024",
-      "color": "#C39BD3",
-      "layerLabel": "MODEL TAXONOMY",
-      "label_en": "Reasoning Models",
-      "description_en": "Models that think step-by-step before giving a final answer. Significantly better at complex logic, math and coding tasks. Examples: o3, DeepSeek-R1, Claude 3.7 extended thinking.",
-      "layerLabel_en": "MODEL TAXONOMY",
-      "label_fr": "Mod\u00e8les de Raisonnement",
-      "description_fr": "Mod\u00e8les qui r\u00e9fl\u00e9chissent \u00e9tape par \u00e9tape avant de donner une r\u00e9ponse finale. Bien meilleurs sur les t\u00e2ches de logique complexe, de maths et de code. Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.",
-      "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
-    },
-    "position": {
-      "x": 400,
-      "y": -42.5
-    },
-    "classes": "status-emerging"
-  },
-  {
-    "data": {
-      "id": "multimodal_models",
-      "label": "Multimodal Models",
-      "category": "model_types",
-      "subcategory": "",
-      "node_type": "",
-      "layer": 2,
-      "status": "evolving",
-      "since": "2023",
-      "color": "#C39BD3",
-      "layerLabel": "MODEL TAXONOMY",
-      "label_en": "Multimodal Models",
-      "description_en": "Models that process multiple types of input: text, images, audio, video. Enables use cases like document analysis, image description, voice interfaces. Examples: GPT-4o, Gemini 2.0.",
-      "layerLabel_en": "MODEL TAXONOMY",
-      "label_fr": "Mod\u00e8les Multimodaux",
-      "description_fr": "Mod\u00e8les capables de traiter plusieurs types d'entr\u00e9es : texte, images, audio, vid\u00e9o. Permet des cas d'usage comme l'analyse de documents, la description d'images, les interfaces vocales. Exemples : GPT-4o, Gemini 2.0.",
-      "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
-    },
-    "position": {
-      "x": 400,
-      "y": 42.5
+      "y": 0.0
     },
     "classes": "status-evolving"
   },
@@ -667,34 +642,9 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": 127.5
+      "y": 85.0
     },
     "classes": "status-stable"
-  },
-  {
-    "data": {
-      "id": "slm",
-      "label": "Small Language Models",
-      "category": "model_types",
-      "subcategory": "",
-      "node_type": "",
-      "layer": 2,
-      "status": "evolving",
-      "since": "2024",
-      "color": "#C39BD3",
-      "layerLabel": "MODEL TAXONOMY",
-      "label_en": "Small Language Models",
-      "description_en": "Compact models (typically under 15B parameters) optimized for speed, low cost and local/edge deployment. Increasingly competitive with larger models. Examples: Phi-4, Gemma 2, Llama 3 8B.",
-      "layerLabel_en": "MODEL TAXONOMY",
-      "label_fr": "Petits Mod\u00e8les de Langage",
-      "description_fr": "Mod\u00e8les compacts (g\u00e9n\u00e9ralement moins de 15B param\u00e8tres) optimis\u00e9s pour la vitesse, le faible co\u00fbt et le d\u00e9ploiement local/edge. De plus en plus comp\u00e9titifs face aux grands mod\u00e8les. Exemples : Phi-4, Gemma 2, Llama 3 8B.",
-      "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
-    },
-    "position": {
-      "x": 400,
-      "y": 212.5
-    },
-    "classes": "status-evolving"
   },
   {
     "data": {
@@ -1091,33 +1041,6 @@ const elements = [
   },
   {
     "data": {
-      "id": "language_model__reasoning_models",
-      "source": "language_model",
-      "target": "reasoning_models",
-      "label": "manifests as",
-      "etype": "part_of"
-    }
-  },
-  {
-    "data": {
-      "id": "language_model__multimodal_models",
-      "source": "language_model",
-      "target": "multimodal_models",
-      "label": "manifests as",
-      "etype": "part_of"
-    }
-  },
-  {
-    "data": {
-      "id": "language_model__slm",
-      "source": "language_model",
-      "target": "slm",
-      "label": "manifests as",
-      "etype": "part_of"
-    }
-  },
-  {
-    "data": {
       "id": "embedding_vectors__embedding_models",
       "source": "embedding_vectors",
       "target": "embedding_models",
@@ -1140,6 +1063,15 @@ const elements = [
       "source": "training_alignment",
       "target": "open_weights",
       "label": "shapes",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "training_alignment__reasoning_models",
+      "source": "training_alignment",
+      "target": "reasoning_models",
+      "label": "enables",
       "etype": "enables"
     }
   },
@@ -1194,15 +1126,6 @@ const elements = [
       "source": "open_weights",
       "target": "local_edge",
       "label": "runs on",
-      "etype": "accesses"
-    }
-  },
-  {
-    "data": {
-      "id": "slm__local_edge",
-      "source": "slm",
-      "target": "local_edge",
-      "label": "optimized for",
       "etype": "accesses"
     }
   },
@@ -1345,15 +1268,6 @@ const elements = [
     "data": {
       "id": "open_weights__model_hubs",
       "source": "open_weights",
-      "target": "model_hubs",
-      "label": "distributed via",
-      "etype": "uses"
-    }
-  },
-  {
-    "data": {
-      "id": "slm__model_hubs",
-      "source": "slm",
       "target": "model_hubs",
       "label": "distributed via",
       "etype": "uses"

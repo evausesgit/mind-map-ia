@@ -164,6 +164,28 @@ nodes:
         Chaque appel API, chaque message de chat est une inférence.
         Opposé de l'entraînement — beaucoup moins coûteux et plus rapide.
 
+  - id: reasoning_models
+    label:
+      en: "Reasoning"
+      fr: "Raisonnement"
+    layer: 1
+    category: concepts
+    status: emerging
+    since: "2024"
+    description:
+      en: |
+        A paradigm shift in how models respond: instead of answering immediately,
+        the model thinks step-by-step before giving its final answer (chain-of-thought).
+        Significantly better at complex logic, math and coding.
+        Not a separate model type — a capability that can apply to proprietary or open source models.
+        Examples: o3, DeepSeek-R1, Claude 3.7 extended thinking.
+      fr: |
+        Un changement de paradigme dans la façon dont les modèles répondent : au lieu de répondre immédiatement,
+        le modèle réfléchit étape par étape avant de donner sa réponse finale (chain-of-thought).
+        Bien meilleur sur les tâches de logique complexe, de maths et de code.
+        Pas un type de modèle à part — une capacité qui s'applique aux modèles propriétaires ou open source.
+        Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.
+
   # ── LAYER 2 · MODEL TAXONOMY ─────────────────
 
   - id: frontier_models
@@ -188,57 +210,23 @@ nodes:
 
   - id: open_weights
     label:
-      en: "Open Weights Models"
-      fr: "Modèles Open Weights"
+      en: "Open Source Models"
+      fr: "Modèles Open Source"
     layer: 2
     category: model_types
     status: evolving
     since: "2023"
     description:
-      en: >
-        Models whose weights are publicly downloadable. Can be run locally,
-        fine-tuned, and deployed on your own infrastructure.
+      en: |
+        Weights are publicly downloadable — you can run, fine-tune and deploy the model yourself.
+        Commonly called "open source", though technically more precise to say "open weights":
+        training data and full code are usually not published.
         Examples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.
-      fr: >
-        Modèles dont les poids sont téléchargeables publiquement. Peuvent être exécutés localement,
-        fine-tunés et déployés sur sa propre infrastructure.
+      fr: |
+        Les poids sont téléchargeables publiquement — vous pouvez exécuter, fine-tuner et déployer le modèle vous-même.
+        Souvent appelés "open source" (terme courant), mais plus précisément "open weights" :
+        les données d'entraînement et le code complet ne sont généralement pas publiés.
         Exemples : Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.
-
-  - id: reasoning_models
-    label:
-      en: "Reasoning Models"
-      fr: "Modèles de Raisonnement"
-    layer: 2
-    category: model_types
-    status: emerging
-    since: "2024"
-    description:
-      en: >
-        Models that think step-by-step before giving a final answer.
-        Significantly better at complex logic, math and coding tasks.
-        Examples: o3, DeepSeek-R1, Claude 3.7 extended thinking.
-      fr: >
-        Modèles qui réfléchissent étape par étape avant de donner une réponse finale.
-        Bien meilleurs sur les tâches de logique complexe, de maths et de code.
-        Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.
-
-  - id: multimodal_models
-    label:
-      en: "Multimodal Models"
-      fr: "Modèles Multimodaux"
-    layer: 2
-    category: model_types
-    status: evolving
-    since: "2023"
-    description:
-      en: >
-        Models that process multiple types of input: text, images, audio, video.
-        Enables use cases like document analysis, image description, voice interfaces.
-        Examples: GPT-4o, Gemini 2.0.
-      fr: >
-        Modèles capables de traiter plusieurs types d'entrées : texte, images, audio, vidéo.
-        Permet des cas d'usage comme l'analyse de documents, la description d'images, les interfaces vocales.
-        Exemples : GPT-4o, Gemini 2.0.
 
   - id: embedding_models
     label:
@@ -258,23 +246,6 @@ nodes:
         Brique indispensable pour la recherche sémantique et les pipelines RAG.
         Exemples : text-embedding-3, Voyage-3, nomic-embed.
 
-  - id: slm
-    label:
-      en: "Small Language Models"
-      fr: "Petits Modèles de Langage"
-    layer: 2
-    category: model_types
-    status: evolving
-    since: "2024"
-    description:
-      en: >
-        Compact models (typically under 15B parameters) optimized for speed,
-        low cost and local/edge deployment. Increasingly competitive with larger models.
-        Examples: Phi-4, Gemma 2, Llama 3 8B.
-      fr: >
-        Modèles compacts (généralement moins de 15B paramètres) optimisés pour la vitesse,
-        le faible coût et le déploiement local/edge. De plus en plus compétitifs face aux grands modèles.
-        Exemples : Phi-4, Gemma 2, Llama 3 8B.
 
   # ── LAYER 3 · ACCESS & DEPLOYMENT ───────────
 
@@ -561,18 +532,6 @@ edges:
     to: open_weights
     label: "manifests as"
     type: part_of
-  - from: language_model
-    to: reasoning_models
-    label: "manifests as"
-    type: part_of
-  - from: language_model
-    to: multimodal_models
-    label: "manifests as"
-    type: part_of
-  - from: language_model
-    to: slm
-    label: "manifests as"
-    type: part_of
   - from: embedding_vectors
     to: embedding_models
     label: "produced by"
@@ -584,6 +543,10 @@ edges:
   - from: training_alignment
     to: open_weights
     label: "shapes"
+    type: enables
+  - from: training_alignment
+    to: reasoning_models
+    label: "enables"
     type: enables
   - from: token_context
     to: language_model
@@ -608,10 +571,6 @@ edges:
   - from: open_weights
     to: local_edge
     label: "runs on"
-    type: accesses
-  - from: slm
-    to: local_edge
-    label: "optimized for"
     type: accesses
   - from: embedding_models
     to: public_api
@@ -674,10 +633,6 @@ edges:
     label: "monitored by"
     type: uses
   - from: open_weights
-    to: model_hubs
-    label: "distributed via"
-    type: uses
-  - from: slm
     to: model_hubs
     label: "distributed via"
     type: uses
