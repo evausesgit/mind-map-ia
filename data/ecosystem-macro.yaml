@@ -186,6 +186,46 @@ nodes:
         Pas un type de modèle à part — une capacité qui s'applique aux modèles propriétaires ou open source.
         Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.
 
+  - id: prompt_system_prompt
+    label:
+      en: "Prompt & System Prompt"
+      fr: "Prompt & System Prompt"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2022"
+    description:
+      en: >
+        A prompt is the input text sent to a model to get a response.
+        The system prompt is a special instruction set that defines the model's role,
+        behavior and constraints for the entire conversation.
+        The primary interface between humans and LLMs.
+      fr: >
+        Un prompt est le texte d'entrée envoyé au modèle pour obtenir une réponse.
+        Le system prompt est un ensemble d'instructions spéciales qui définit le rôle,
+        le comportement et les contraintes du modèle pour toute la conversation.
+        L'interface principale entre les humains et les LLM.
+
+  - id: multimodality
+    label:
+      en: "Multimodality"
+      fr: "Multimodalité"
+    layer: 1
+    category: concepts
+    status: evolving
+    since: "2023"
+    description:
+      en: >
+        The ability of a model to process and generate multiple types of data:
+        text, images, audio, video, code.
+        Modern frontier models are natively multimodal.
+        Expands LLMs far beyond text-only interactions.
+      fr: >
+        La capacité d'un modèle à traiter et générer plusieurs types de données :
+        texte, images, audio, vidéo, code.
+        Les modèles frontier modernes sont nativement multimodaux.
+        Étend les LLM bien au-delà des interactions textuelles.
+
   # ── LAYER 2 · MODEL TAXONOMY ─────────────────
 
   - id: frontier_models

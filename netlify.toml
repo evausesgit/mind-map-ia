@@ -1,0 +1,11 @@
+[build]
+  command = """
+    pip install pyyaml &&
+    python scripts/generate_home.py &&
+    python scripts/generate.py data/ecosystem-macro.yaml web/macro.html &&
+    python scripts/generate.py data/ecosystem.yaml web/ecosystem.html
+  """
+  publish = "web"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
