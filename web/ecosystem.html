@@ -274,6 +274,13 @@
     line-height: 1.6;
     color: #2C3E50;
     margin-bottom: 20px;
+  }
+  .gloss-link {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    color: inherit;
     white-space: pre-line;
   }
   #panel-body .since {
@@ -296,37 +303,43 @@
 
   /* ── Legend ── */
   #legend {
-    padding: 16px 20px;
+    padding: 10px 14px;
     border-top: 1px solid #F0F0F0;
     background: #FAFAFA;
+    display: flex;
+    gap: 12px;
+  }
+  .legend-col {
+    flex: 1;
+    min-width: 0;
   }
   #legend h3 {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: #95A5A6;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
   .legend-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 12px;
+    gap: 6px;
+    font-size: 11px;
     color: #555;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
   }
   .legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
     flex-shrink: 0;
   }
   .status-badge {
     border: 1.5px solid;
     border-radius: 10px;
-    padding: 1px 8px;
-    font-size: 10px;
+    padding: 1px 6px;
+    font-size: 9px;
     font-weight: 600;
   }
 
@@ -413,11 +426,15 @@
       </div>
     </div>
     <div id="legend">
-      <h3 id="legend-cat-title">Categories</h3>
-      <div id="legend-en"><div class="legend-item"><span class="legend-dot" style="background:#F4D03F"></span>Foundations</div><div class="legend-item"><span class="legend-dot" style="background:#F0A500"></span>Providers</div><div class="legend-item"><span class="legend-dot" style="background:#C39BD3"></span>Models</div><div class="legend-item"><span class="legend-dot" style="background:#85929E"></span>Infrastructure & Access</div><div class="legend-item"><span class="legend-dot" style="background:#58D68D"></span>Building Blocks</div><div class="legend-item"><span class="legend-dot" style="background:#5DADE2"></span>Developer Tools</div></div>
-      <div id="legend-fr" style="display:none"><div class="legend-item"><span class="legend-dot" style="background:#F4D03F"></span>Fondamentaux</div><div class="legend-item"><span class="legend-dot" style="background:#F0A500"></span>Fournisseurs</div><div class="legend-item"><span class="legend-dot" style="background:#C39BD3"></span>Modèles</div><div class="legend-item"><span class="legend-dot" style="background:#85929E"></span>Infrastructure & Accès</div><div class="legend-item"><span class="legend-dot" style="background:#58D68D"></span>Briques Applicatives</div><div class="legend-item"><span class="legend-dot" style="background:#5DADE2"></span>Outils Développeurs</div></div>
-      <h3 style="margin-top:12px;" id="legend-status-title">Status</h3>
-      <div id="status-legend-items"></div>
+      <div class="legend-col">
+        <h3 id="legend-cat-title">Categories</h3>
+        <div id="legend-en"><div class="legend-item"><span class="legend-dot" style="background:#F4D03F"></span>Foundations</div><div class="legend-item"><span class="legend-dot" style="background:#F0A500"></span>Providers</div><div class="legend-item"><span class="legend-dot" style="background:#C39BD3"></span>Models</div><div class="legend-item"><span class="legend-dot" style="background:#85929E"></span>Infrastructure & Access</div><div class="legend-item"><span class="legend-dot" style="background:#58D68D"></span>Building Blocks</div><div class="legend-item"><span class="legend-dot" style="background:#5DADE2"></span>Developer Tools</div></div>
+        <div id="legend-fr" style="display:none"><div class="legend-item"><span class="legend-dot" style="background:#F4D03F"></span>Fondamentaux</div><div class="legend-item"><span class="legend-dot" style="background:#F0A500"></span>Fournisseurs</div><div class="legend-item"><span class="legend-dot" style="background:#C39BD3"></span>Modèles</div><div class="legend-item"><span class="legend-dot" style="background:#85929E"></span>Infrastructure & Accès</div><div class="legend-item"><span class="legend-dot" style="background:#58D68D"></span>Briques Applicatives</div><div class="legend-item"><span class="legend-dot" style="background:#5DADE2"></span>Outils Développeurs</div></div>
+      </div>
+      <div class="legend-col">
+        <h3 id="legend-status-title">Status</h3>
+        <div id="status-legend-items"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -445,7 +462,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": -382.5
+      "y": -157.5
     },
     "classes": "status-stable"
   },
@@ -470,7 +487,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": -297.5
+      "y": -122.5
     },
     "classes": "status-stable"
   },
@@ -495,7 +512,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": -212.5
+      "y": -87.5
     },
     "classes": "status-evolving"
   },
@@ -520,7 +537,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": -127.5
+      "y": -52.5
     },
     "classes": "status-stable"
   },
@@ -545,7 +562,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": -42.5
+      "y": -17.5
     },
     "classes": "status-stable"
   },
@@ -570,7 +587,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": 42.5
+      "y": 17.5
     },
     "classes": "status-stable"
   },
@@ -595,7 +612,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": 127.5
+      "y": 52.5
     },
     "classes": "status-stable"
   },
@@ -620,7 +637,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": 212.5
+      "y": 87.5
     },
     "classes": "status-stable"
   },
@@ -645,7 +662,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": 297.5
+      "y": 122.5
     },
     "classes": "status-stable"
   },
@@ -670,7 +687,7 @@ const elements = [
     },
     "position": {
       "x": 1100,
-      "y": 382.5
+      "y": 157.5
     },
     "classes": "status-stable"
   },
@@ -695,7 +712,7 @@ const elements = [
     },
     "position": {
       "x": 750,
-      "y": -340.0
+      "y": -140.0
     },
     "classes": "status-stable"
   },
@@ -720,7 +737,7 @@ const elements = [
     },
     "position": {
       "x": 750,
-      "y": -255.0
+      "y": -105.0
     },
     "classes": "status-stable"
   },
@@ -745,7 +762,7 @@ const elements = [
     },
     "position": {
       "x": 750,
-      "y": -170.0
+      "y": -70.0
     },
     "classes": "status-stable"
   },
@@ -770,7 +787,7 @@ const elements = [
     },
     "position": {
       "x": 750,
-      "y": -85.0
+      "y": -35.0
     },
     "classes": "status-evolving"
   },
@@ -820,7 +837,7 @@ const elements = [
     },
     "position": {
       "x": 750,
-      "y": 85.0
+      "y": 35.0
     },
     "classes": "status-stable"
   },
@@ -845,7 +862,7 @@ const elements = [
     },
     "position": {
       "x": 750,
-      "y": 170.0
+      "y": 70.0
     },
     "classes": "status-evolving"
   },
@@ -870,7 +887,7 @@ const elements = [
     },
     "position": {
       "x": 750,
-      "y": 255.0
+      "y": 105.0
     },
     "classes": "status-stable"
   },
@@ -895,7 +912,7 @@ const elements = [
     },
     "position": {
       "x": 750,
-      "y": 340.0
+      "y": 140.0
     },
     "classes": "status-stable"
   },
@@ -920,7 +937,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": -552.5
+      "y": -227.5
     },
     "classes": "status-stable"
   },
@@ -945,7 +962,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": -467.5
+      "y": -192.5
     },
     "classes": "status-evolving"
   },
@@ -970,7 +987,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": -382.5
+      "y": -157.5
     },
     "classes": "status-evolving"
   },
@@ -995,7 +1012,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": -297.5
+      "y": -122.5
     },
     "classes": "status-evolving"
   },
@@ -1020,7 +1037,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": -212.5
+      "y": -87.5
     },
     "classes": "status-evolving"
   },
@@ -1045,7 +1062,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": -127.5
+      "y": -52.5
     },
     "classes": "status-evolving"
   },
@@ -1070,7 +1087,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": -42.5
+      "y": -17.5
     },
     "classes": "status-stable"
   },
@@ -1095,7 +1112,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": 42.5
+      "y": 17.5
     },
     "classes": "status-evolving"
   },
@@ -1120,7 +1137,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": 127.5
+      "y": 52.5
     },
     "classes": "status-evolving"
   },
@@ -1145,7 +1162,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": 212.5
+      "y": 87.5
     },
     "classes": "status-stable"
   },
@@ -1170,7 +1187,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": 297.5
+      "y": 122.5
     },
     "classes": "status-evolving"
   },
@@ -1195,7 +1212,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": 382.5
+      "y": 157.5
     },
     "classes": "status-stable"
   },
@@ -1220,7 +1237,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": 467.5
+      "y": 192.5
     },
     "classes": "status-stable"
   },
@@ -1245,7 +1262,7 @@ const elements = [
     },
     "position": {
       "x": 400,
-      "y": 552.5
+      "y": 227.5
     },
     "classes": "status-stable"
   },
@@ -1270,7 +1287,7 @@ const elements = [
     },
     "position": {
       "x": -200,
-      "y": -212.5
+      "y": -87.5
     },
     "classes": "status-stable"
   },
@@ -1295,7 +1312,7 @@ const elements = [
     },
     "position": {
       "x": -200,
-      "y": -127.5
+      "y": -52.5
     },
     "classes": "status-stable"
   },
@@ -1320,7 +1337,7 @@ const elements = [
     },
     "position": {
       "x": -200,
-      "y": -42.5
+      "y": -17.5
     },
     "classes": "status-stable"
   },
@@ -1345,7 +1362,7 @@ const elements = [
     },
     "position": {
       "x": -200,
-      "y": 42.5
+      "y": 17.5
     },
     "classes": "status-stable"
   },
@@ -1370,7 +1387,7 @@ const elements = [
     },
     "position": {
       "x": -200,
-      "y": 127.5
+      "y": 52.5
     },
     "classes": "status-stable"
   },
@@ -1395,7 +1412,7 @@ const elements = [
     },
     "position": {
       "x": -200,
-      "y": 212.5
+      "y": 87.5
     },
     "classes": "status-evolving"
   },
@@ -1420,7 +1437,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": -297.5
+      "y": -122.5
     },
     "classes": "status-stable"
   },
@@ -1445,7 +1462,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": -212.5
+      "y": -87.5
     },
     "classes": "status-stable"
   },
@@ -1470,7 +1487,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": -127.5
+      "y": -52.5
     },
     "classes": "status-evolving"
   },
@@ -1495,7 +1512,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": -42.5
+      "y": -17.5
     },
     "classes": "status-stable"
   },
@@ -1520,7 +1537,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": 42.5
+      "y": 17.5
     },
     "classes": "status-stable"
   },
@@ -1545,7 +1562,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": 127.5
+      "y": 52.5
     },
     "classes": "status-stable"
   },
@@ -1570,7 +1587,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": 212.5
+      "y": 87.5
     },
     "classes": "status-evolving"
   },
@@ -1595,7 +1612,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": 297.5
+      "y": 122.5
     },
     "classes": "status-emerging"
   },
@@ -1620,7 +1637,7 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": -212.5
+      "y": -87.5
     },
     "classes": "status-stable"
   },
@@ -1645,7 +1662,7 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": -127.5
+      "y": -52.5
     },
     "classes": "status-evolving"
   },
@@ -1670,7 +1687,7 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": -42.5
+      "y": -17.5
     },
     "classes": "status-stable"
   },
@@ -1695,7 +1712,7 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": 42.5
+      "y": 17.5
     },
     "classes": "status-evolving"
   },
@@ -1720,7 +1737,7 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": 127.5
+      "y": 52.5
     },
     "classes": "status-stable"
   },
@@ -1745,7 +1762,7 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": 212.5
+      "y": 87.5
     },
     "classes": "status-evolving"
   },
@@ -2339,6 +2356,25 @@ const TITLES        = {"en": "The LLM Ecosystem Today", "fr": "L'\u00c9cosyst\u0
 const STATUS_LABELS = {"en": {"stable": "stable", "evolving": "evolving", "emerging": "emerging", "deprecated": "deprecated"}, "fr": {"stable": "stable", "evolving": "en \u00e9volution", "emerging": "\u00e9mergent", "deprecated": "obsol\u00e8te"}};
 const PANEL_LABELS  = {"en": {"click_hint": "Click any node to see its definition and connections", "description": "Description", "since": "Since"}, "fr": {"click_hint": "Cliquez sur un n\u0153ud pour voir sa d\u00e9finition et ses connexions", "description": "Description", "since": "Depuis"}};
 const STATUS_COLORS = {"stable": "#27AE60", "evolving": "#E67E22", "emerging": "#8E44AD", "deprecated": "#95A5A6"};
+const GLOSSARY_TERMS = [{"id": "llm", "aliases": ["LLM", "LLMs", "Large Language Model", "Large Language Models", "grand mod\u00e8le de langage", "grands mod\u00e8les de langage"]}, {"id": "machine_learning", "aliases": ["ML", "machine learning", "apprentissage automatique"]}];
+
+function linkGlossaryTerms(text) {
+  if (!GLOSSARY_TERMS.length) return text;
+  // Escape HTML entities first
+  let safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Sort aliases by length desc to match longest first
+  const entries = [];
+  GLOSSARY_TERMS.forEach(term => {
+    term.aliases.forEach(alias => entries.push({ alias, id: term.id }));
+  });
+  entries.sort((a, b) => b.alias.length - a.alias.length);
+  entries.forEach(({ alias, id }) => {
+    const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\$&');
+    const re = new RegExp(`\\b(${escaped})\\b`, 'gi');
+    safe = safe.replace(re, `<span class="gloss-link" onclick="window.open('glossary.html#${id}','_blank')">$1</span>`);
+  });
+  return safe;
+}
 
 let lang = 'en';
 
@@ -2553,6 +2589,16 @@ const cy = cytoscape({
         "transition-duration": "0.15s",
       }
     },
+    // Model types → tripled size
+    {
+      selector: "node[category = 'model_types']",
+      style: {
+        "width": 420,
+        "height": 132,
+        "text-max-width": "410px",
+        "font-size": "18px",
+      }
+    },
     // Status: evolving → orange border
     {
       selector: ".status-evolving",
@@ -2742,7 +2788,7 @@ function showPanel(node) {
   document.getElementById("panel-content").style.display = "block";
   document.querySelector("#panel-content .section-title").textContent = pl.description;
   document.querySelectorAll("#panel-content .section-title")[1].textContent = pl.since;
-  document.getElementById("pc-desc").textContent = d[`description_${lang}`] || "";
+  document.getElementById("pc-desc").innerHTML = linkGlossaryTerms(d[`description_${lang}`] || "");
   document.getElementById("pc-since").textContent = d.since;
 }
 

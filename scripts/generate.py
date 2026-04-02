@@ -13,6 +13,15 @@ import sys
 ROOT = Path(__file__).parent.parent
 MAPS_FILE = ROOT / "data" / "maps.yaml"
 LAYOUTS_DIR = ROOT / "data" / "layouts"
+GLOSSARY_FILE = ROOT / "data" / "glossary.yaml"
+
+
+def load_glossary():
+    if not GLOSSARY_FILE.exists():
+        return []
+    with open(GLOSSARY_FILE) as f:
+        data = yaml.safe_load(f)
+    return data.get("terms", [])
 
 # CLI: python generate.py [input.yaml [output.html]]
 DATA_FILE = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "ecosystem.yaml"
@@ -223,6 +232,13 @@ def generate_html(data, elements, maps=None, current_output=""):
     meta = data["meta"]
     categories = data["categories"]
     elements_json = json.dumps(elements, indent=2)
+
+    # Glossary terms for inline linking
+    glossary_terms = load_glossary()
+    glossary_js = json.dumps([
+        {"id": term["id"], "aliases": term.get("aliases", [])}
+        for term in glossary_terms
+    ])
 
     title_en = t(meta.get("title", ""), "en")
     title_fr = t(meta.get("title", ""), "fr") or title_en
@@ -547,6 +563,13 @@ def generate_html(data, elements, maps=None, current_output=""):
     line-height: 1.6;
     color: #2C3E50;
     margin-bottom: 20px;
+  }}
+  .gloss-link {{
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    color: inherit;
     white-space: pre-line;
   }}
   #panel-body .since {{
@@ -569,37 +592,43 @@ def generate_html(data, elements, maps=None, current_output=""):
 
   /* ── Legend ── */
   #legend {{
-    padding: 16px 20px;
+    padding: 10px 14px;
     border-top: 1px solid #F0F0F0;
     background: #FAFAFA;
+    display: flex;
+    gap: 12px;
+  }}
+  .legend-col {{
+    flex: 1;
+    min-width: 0;
   }}
   #legend h3 {{
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: #95A5A6;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }}
   .legend-item {{
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 12px;
+    gap: 6px;
+    font-size: 11px;
     color: #555;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
   }}
   .legend-dot {{
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
     flex-shrink: 0;
   }}
   .status-badge {{
     border: 1.5px solid;
     border-radius: 10px;
-    padding: 1px 8px;
-    font-size: 10px;
+    padding: 1px 6px;
+    font-size: 9px;
     font-weight: 600;
   }}
 
@@ -686,11 +715,15 @@ def generate_html(data, elements, maps=None, current_output=""):
       </div>
     </div>
     <div id="legend">
-      <h3 id="legend-cat-title">Categories</h3>
-      <div id="legend-en">{legend_en}</div>
-      <div id="legend-fr" style="display:none">{legend_fr}</div>
-      <h3 style="margin-top:12px;" id="legend-status-title">Status</h3>
-      <div id="status-legend-items"></div>
+      <div class="legend-col">
+        <h3 id="legend-cat-title">Categories</h3>
+        <div id="legend-en">{legend_en}</div>
+        <div id="legend-fr" style="display:none">{legend_fr}</div>
+      </div>
+      <div class="legend-col">
+        <h3 id="legend-status-title">Status</h3>
+        <div id="status-legend-items"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -701,6 +734,25 @@ const TITLES        = {titles_js};
 const STATUS_LABELS = {status_labels_js};
 const PANEL_LABELS  = {panel_labels_js};
 const STATUS_COLORS = {json.dumps(STATUS_LABEL_COLOR)};
+const GLOSSARY_TERMS = {glossary_js};
+
+function linkGlossaryTerms(text) {{
+  if (!GLOSSARY_TERMS.length) return text;
+  // Escape HTML entities first
+  let safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Sort aliases by length desc to match longest first
+  const entries = [];
+  GLOSSARY_TERMS.forEach(term => {{
+    term.aliases.forEach(alias => entries.push({{ alias, id: term.id }}));
+  }});
+  entries.sort((a, b) => b.alias.length - a.alias.length);
+  entries.forEach(({{ alias, id }}) => {{
+    const escaped = alias.replace(/[.*+?^${{}}()|[\\]\\\\]/g, '\\$&');
+    const re = new RegExp(`\\\\b(${{escaped}})\\\\b`, 'gi');
+    safe = safe.replace(re, `<span class="gloss-link" onclick="window.open('glossary.html#${{id}}','_blank')">$1</span>`);
+  }});
+  return safe;
+}}
 
 let lang = 'en';
 
@@ -1114,7 +1166,7 @@ function showPanel(node) {{
   document.getElementById("panel-content").style.display = "block";
   document.querySelector("#panel-content .section-title").textContent = pl.description;
   document.querySelectorAll("#panel-content .section-title")[1].textContent = pl.since;
-  document.getElementById("pc-desc").textContent = d[`description_${{lang}}`] || "";
+  document.getElementById("pc-desc").innerHTML = linkGlossaryTerms(d[`description_${{lang}}`] || "");
   document.getElementById("pc-since").textContent = d.since;
 }}
 
