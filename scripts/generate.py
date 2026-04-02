@@ -78,7 +78,9 @@ def t(field, lang):
 
 
 def clean(text):
-    return " ".join(text.strip().split())
+    # Preserve intentional line breaks, clean whitespace within each line
+    lines = text.strip().split("\n")
+    return "\n".join(" ".join(line.split()) for line in lines).strip()
 
 
 def build_elements(data):
@@ -491,6 +493,7 @@ def generate_html(data, elements, maps=None, current_output=""):
     line-height: 1.6;
     color: #2C3E50;
     margin-bottom: 20px;
+    white-space: pre-line;
   }}
   #panel-body .since {{
     font-size: 12px;

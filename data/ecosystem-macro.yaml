@@ -175,18 +175,16 @@ nodes:
     status: evolving
     since: "2022"
     description:
-      en: >
+      en: |
         Models whose weights are PRIVATE — never downloadable.
         Accessible only via API.
         Developed by well-funded labs (OpenAI, Anthropic, Google).
-        Often called "Frontier models" in the industry, referring to their position
-        at the cutting edge of AI capabilities.
-      fr: >
+        Often called "Frontier models" in the industry, referring to their position at the cutting edge of AI capabilities.
+      fr: |
         Modèles dont les poids sont PRIVES, jamais téléchargeables.
         Accessibles uniquement via API.
-        Développés par des laboratoires a gros budget(OpenAI, Anthropic, Google).
-        Souvent appelés "Frontier models" dans l'industrie, en référence à leur position
-        à la pointe des capacités IA.
+        Développés par des laboratoires a gros budget (OpenAI, Anthropic, Google).
+        Souvent appelés "Frontier models" dans l'industrie, en référence à leur position à la pointe des capacités IA.
 
   - id: open_weights
     label:
