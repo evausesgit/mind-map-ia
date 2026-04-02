@@ -11,7 +11,8 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).parent.parent
-MAPS_FILE = ROOT / "data" / "maps.yaml"
+MAPS_FILE    = ROOT / "data" / "maps.yaml"
+LAYOUTS_DIR  = ROOT / "data" / "layouts"
 
 # CLI: python generate.py [input.yaml [output.html]]
 DATA_FILE   = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "ecosystem.yaml"
@@ -83,8 +84,21 @@ def clean(text):
     return "\n".join(" ".join(line.split()) for line in lines).strip()
 
 
+def load_layout(data_file):
+    """Return {node_id: {x, y}} from a layout JSON file if it exists."""
+    stem = Path(data_file).stem          # e.g. "ecosystem-macro"
+    layout_file = LAYOUTS_DIR / f"{stem}-layout.json"
+    if layout_file.exists():
+        with open(layout_file) as f:
+            positions = json.load(f)
+        print(f"  ↳ Using saved layout: {layout_file.name} ({len(positions)} positions)")
+        return positions
+    return {}
+
+
 def build_elements(data):
     category_colors = {c["id"]: c["color"] for c in data["categories"]}
+    saved_layout = load_layout(DATA_FILE)
     raw_layers = data.get("layers", DEFAULT_LAYER_LABELS)
     layer_labels = {}
     for k, v in raw_layers.items():
@@ -110,7 +124,11 @@ def build_elements(data):
         for x_pos, bucket in buckets:
             n = len(bucket)
             for i, node in enumerate(bucket):
-                y = (i - (n - 1) / 2) * NODE_SPACING_Y
+                default_x = x_pos
+                default_y = (i - (n - 1) / 2) * NODE_SPACING_Y
+                saved = saved_layout.get(node["id"])
+                x_pos_final = saved["x"] if saved else default_x
+                y = saved["y"] if saved else default_y
 
                 # Build multilingual data fields
                 node_data = {
@@ -132,7 +150,7 @@ def build_elements(data):
 
                 elements.append({
                     "data":     node_data,
-                    "position": {"x": x_pos, "y": y},
+                    "position": {"x": x_pos_final, "y": y},
                     "classes":  f"status-{node['status']}"
                 })
 
@@ -609,6 +627,7 @@ def generate_html(data, elements, maps=None, current_output=""):
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)" title="Zoom in">+</button>
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)" title="Zoom out">−</button>
       <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()" title="Reset layout">↺</button>
+      <button class="ctrl-btn" onclick="exportLayout()" title="Export layout as JSON">⬇</button>
     </div>
   </div>
 
@@ -965,6 +984,22 @@ function savePositions() {{
   const btn = document.getElementById('reset-btn');
   btn.classList.add('saved');
   btn.title = 'Reset to auto layout';
+}}
+
+function exportLayout() {{
+  const positions = {{}};
+  cy.nodes().forEach(n => {{
+    const p = n.position();
+    positions[n.id()] = {{ x: Math.round(p.x), y: Math.round(p.y) }};
+  }});
+  const json    = JSON.stringify(positions, null, 2);
+  const name    = window.location.pathname.split('/').pop().replace('.html', '');
+  const fname   = name + '-layout.json';
+  const blob    = new Blob([json], {{ type: 'application/json' }});
+  const url     = URL.createObjectURL(blob);
+  const a       = document.createElement('a');
+  a.href = url; a.download = fname; a.click();
+  URL.revokeObjectURL(url);
 }}
 
 function loadPositions() {{

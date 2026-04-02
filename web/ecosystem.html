@@ -390,6 +390,7 @@
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)" title="Zoom in">+</button>
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)" title="Zoom out">−</button>
       <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()" title="Reset layout">↺</button>
+      <button class="ctrl-btn" onclick="exportLayout()" title="Export layout as JSON">⬇</button>
     </div>
   </div>
 
@@ -2657,6 +2658,22 @@ function savePositions() {
   const btn = document.getElementById('reset-btn');
   btn.classList.add('saved');
   btn.title = 'Reset to auto layout';
+}
+
+function exportLayout() {
+  const positions = {};
+  cy.nodes().forEach(n => {
+    const p = n.position();
+    positions[n.id()] = { x: Math.round(p.x), y: Math.round(p.y) };
+  });
+  const json    = JSON.stringify(positions, null, 2);
+  const name    = window.location.pathname.split('/').pop().replace('.html', '');
+  const fname   = name + '-layout.json';
+  const blob    = new Blob([json], { type: 'application/json' });
+  const url     = URL.createObjectURL(blob);
+  const a       = document.createElement('a');
+  a.href = url; a.download = fname; a.click();
+  URL.revokeObjectURL(url);
 }
 
 function loadPositions() {
