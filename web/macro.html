@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The LLM Ecosystem — Big Picture</title>
+<script src="cytoscape.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    border-bottom: 3px solid #E74C3C;
+  }
+  header h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+  header .meta { font-size: 12px; color: #95A5A6; }
+
+  .main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  #cy {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #FAFAFA;
+  }
+
+  /* ── Side panel ── */
+  #panel {
+    width: 320px;
+    background: white;
+    border-left: 1px solid #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  #panel-header {
+    padding: 20px;
+    background: #1A1A2E;
+    color: white;
+  }
+  #panel-header .node-label {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  #panel-header .node-meta {
+    font-size: 12px;
+    color: #BDC3C7;
+  }
+  #panel-header .node-status {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  #panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  #panel-body .section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #95A5A6;
+    margin-bottom: 6px;
+  }
+  #panel-body .description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #2C3E50;
+    margin-bottom: 20px;
+  }
+  #panel-body .since {
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+
+  .empty-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #BDC3C7;
+    text-align: center;
+    padding: 20px;
+  }
+  .empty-panel .arrow { font-size: 32px; margin-bottom: 12px; }
+  .empty-panel p { font-size: 13px; line-height: 1.5; }
+
+  /* ── Legend ── */
+  #legend {
+    padding: 16px 20px;
+    border-top: 1px solid #F0F0F0;
+    background: #FAFAFA;
+  }
+  #legend h3 {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #95A5A6;
+    margin-bottom: 10px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .status-badge {
+    border: 1.5px solid;
+    border-radius: 10px;
+    padding: 1px 8px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  /* ── Controls ── */
+  #controls {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 10;
+  }
+  .ctrl-btn {
+    width: 36px;
+    height: 36px;
+    background: white;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background 0.15s;
+  }
+  .ctrl-btn:hover { background: #F0F0F0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>The LLM Ecosystem — Big Picture</h1>
+    <div class="meta">v2026-Q1 · 2026-04-02 · EN</div>
+  </div>
+  <div class="meta">Click a node to explore · Scroll to zoom · Drag to pan</div>
+</header>
+
+<div class="main">
+  <div style="position:relative;flex:1;overflow:hidden;">
+    <div id="cy"></div>
+    <div id="controls">
+      <button class="ctrl-btn" onclick="cy.fit()" title="Fit all">⊞</button>
+      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)" title="Zoom in">+</button>
+      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)" title="Zoom out">−</button>
+    </div>
+  </div>
+
+  <div id="panel">
+    <div id="panel-header" style="display:none;">
+      <div class="node-label" id="ph-label"></div>
+      <div class="node-meta" id="ph-meta"></div>
+      <span class="node-status" id="ph-status"></span>
+    </div>
+    <div id="panel-body">
+      <div class="empty-panel" id="empty-msg">
+        <div class="arrow">←</div>
+        <p>Click any node to see its definition and connections</p>
+      </div>
+      <div id="panel-content" style="display:none;">
+        <div class="section-title">Description</div>
+        <div class="description" id="pc-desc"></div>
+        <div class="section-title">Since</div>
+        <div class="since" id="pc-since"></div>
+      </div>
+    </div>
+    <div id="legend">
+      <h3>Categories</h3>
+      <div class="legend-item"><span class="legend-dot" style="background:#F4D03F"></span>Core Concepts</div><div class="legend-item"><span class="legend-dot" style="background:#C39BD3"></span>Model Types</div><div class="legend-item"><span class="legend-dot" style="background:#85929E"></span>Access & Deployment</div><div class="legend-item"><span class="legend-dot" style="background:#58D68D"></span>Application Patterns</div><div class="legend-item"><span class="legend-dot" style="background:#5DADE2"></span>Tooling Ecosystem</div>
+      <h3 style="margin-top:12px;">Status</h3>
+      <div class="legend-item"><span class="status-badge" style="color:#27AE60;border-color:#27AE60">stable</span></div><div class="legend-item"><span class="status-badge" style="color:#E67E22;border-color:#E67E22">evolving</span></div><div class="legend-item"><span class="status-badge" style="color:#8E44AD;border-color:#8E44AD">emerging</span></div><div class="legend-item"><span class="status-badge" style="color:#95A5A6;border-color:#95A5A6">deprecated</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const elements = [
+  {
+    "data": {
+      "id": "language_model",
+      "label": "Language Model",
+      "category": "concepts",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2017",
+      "description": "A model trained on massive text datasets to understand and generate human language. The foundation of the entire ecosystem. All LLMs are language models, but not all language models are LLMs.",
+      "color": "#F4D03F",
+      "layerLabel": "CORE CONCEPTS"
+    },
+    "position": {
+      "x": 1100,
+      "y": -170.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "token_context",
+      "label": "Token & Context",
+      "category": "concepts",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2017",
+      "description": "A token is the smallest unit of text a model processes (~0.75 words). The context window is the maximum number of tokens a model can handle at once. These two notions define the model's \"working memory\".",
+      "color": "#F4D03F",
+      "layerLabel": "CORE CONCEPTS"
+    },
+    "position": {
+      "x": 1100,
+      "y": -85.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "embedding_vectors",
+      "label": "Embedding & Vectors",
+      "category": "concepts",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2013",
+      "description": "An embedding is a list of numbers (a vector) that represents the meaning of a text. Similar texts produce similar vectors. This enables semantic search, clustering, and retrieval \u2014 the backbone of RAG.",
+      "color": "#F4D03F",
+      "layerLabel": "CORE CONCEPTS"
+    },
+    "position": {
+      "x": 1100,
+      "y": 0.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "training_alignment",
+      "label": "Training & Alignment",
+      "category": "concepts",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2018",
+      "description": "Training: teaching a model by exposing it to vast amounts of data. Alignment: shaping the model's behavior to be helpful, honest and safe (via RLHF, Constitutional AI, etc.). Two distinct but essential phases.",
+      "color": "#F4D03F",
+      "layerLabel": "CORE CONCEPTS"
+    },
+    "position": {
+      "x": 1100,
+      "y": 85.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "inference",
+      "label": "Inference",
+      "category": "concepts",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2017",
+      "description": "Running a trained model to generate a response from an input. Every API call, every chat message is an inference. Opposite of training \u2014 much cheaper and faster.",
+      "color": "#F4D03F",
+      "layerLabel": "CORE CONCEPTS"
+    },
+    "position": {
+      "x": 1100,
+      "y": 170.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "frontier_models",
+      "label": "Frontier Models",
+      "category": "model_types",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2022",
+      "description": "The most capable models, developed by a handful of well-funded labs. Closed source \u2014 weights not public. Accessed only via API. Examples: GPT-4o, Claude, Gemini. Define the state of the art.",
+      "color": "#C39BD3",
+      "layerLabel": "MODEL TAXONOMY"
+    },
+    "position": {
+      "x": 400,
+      "y": -212.5
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "open_weights",
+      "label": "Open Weights Models",
+      "category": "model_types",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2023",
+      "description": "Models whose weights are publicly downloadable. Can be run locally, fine-tuned, and deployed on your own infrastructure. Examples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
+      "color": "#C39BD3",
+      "layerLabel": "MODEL TAXONOMY"
+    },
+    "position": {
+      "x": 400,
+      "y": -127.5
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "reasoning_models",
+      "label": "Reasoning Models",
+      "category": "model_types",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "emerging",
+      "since": "2024",
+      "description": "Models that think step-by-step before giving a final answer. Significantly better at complex logic, math and coding tasks. Examples: o3, DeepSeek-R1, Claude 3.7 extended thinking.",
+      "color": "#C39BD3",
+      "layerLabel": "MODEL TAXONOMY"
+    },
+    "position": {
+      "x": 400,
+      "y": -42.5
+    },
+    "classes": "status-emerging"
+  },
+  {
+    "data": {
+      "id": "multimodal_models",
+      "label": "Multimodal Models",
+      "category": "model_types",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2023",
+      "description": "Models that process multiple types of input: text, images, audio, video. Enables use cases like document analysis, image description, voice interfaces. Examples: GPT-4o, Gemini 2.0.",
+      "color": "#C39BD3",
+      "layerLabel": "MODEL TAXONOMY"
+    },
+    "position": {
+      "x": 400,
+      "y": 42.5
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "embedding_models",
+      "label": "Embedding Models",
+      "category": "model_types",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "stable",
+      "since": "2022",
+      "description": "Specialized models that convert text into vectors (not text generators). Essential building block for semantic search and RAG pipelines. Examples: text-embedding-3, Voyage-3, nomic-embed.",
+      "color": "#C39BD3",
+      "layerLabel": "MODEL TAXONOMY"
+    },
+    "position": {
+      "x": 400,
+      "y": 127.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "slm",
+      "label": "Small Language Models",
+      "category": "model_types",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2024",
+      "description": "Compact models (typically under 15B parameters) optimized for speed, low cost and local/edge deployment. Increasingly competitive with larger models. Examples: Phi-4, Gemma 2, Llama 3 8B.",
+      "color": "#C39BD3",
+      "layerLabel": "MODEL TAXONOMY"
+    },
+    "position": {
+      "x": 400,
+      "y": 212.5
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "public_api",
+      "label": "Public API",
+      "category": "access",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 3,
+      "status": "stable",
+      "since": "2020",
+      "description": "Send an HTTP request to a provider's endpoint, get a response. The simplest way to use a model. Pay per token. No infrastructure to manage. Operated by the model creator.",
+      "color": "#85929E",
+      "layerLabel": "ACCESS & DEPLOYMENT"
+    },
+    "position": {
+      "x": -200,
+      "y": -127.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "cloud_managed",
+      "label": "Cloud Managed",
+      "category": "access",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 3,
+      "status": "stable",
+      "since": "2023",
+      "description": "Access models through a major cloud provider (AWS, GCP, Azure). Benefits: enterprise compliance, data privacy, multi-model choice, integration with existing cloud infra. Managed by the cloud, not the AI lab.",
+      "color": "#85929E",
+      "layerLabel": "ACCESS & DEPLOYMENT"
+    },
+    "position": {
+      "x": -200,
+      "y": -42.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "self_hosted",
+      "label": "Self-hosted",
+      "category": "access",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 3,
+      "status": "stable",
+      "since": "2023",
+      "description": "Deploy the model on your own GPU servers (on-premise or cloud VMs). Full control over data and costs at scale. Requires ML infrastructure expertise.",
+      "color": "#85929E",
+      "layerLabel": "ACCESS & DEPLOYMENT"
+    },
+    "position": {
+      "x": -200,
+      "y": 42.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "local_edge",
+      "label": "Local / Edge",
+      "category": "access",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 3,
+      "status": "evolving",
+      "since": "2023",
+      "description": "Run a model on a laptop, phone, or edge device. No internet required. Maximum privacy. Enabled by smaller, efficient models and tools like Ollama. Growing fast as hardware improves.",
+      "color": "#85929E",
+      "layerLabel": "ACCESS & DEPLOYMENT"
+    },
+    "position": {
+      "x": -200,
+      "y": 127.5
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "rag_pattern",
+      "label": "RAG",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2023",
+      "description": "Retrieval-Augmented Generation. At query time, retrieve relevant documents from a knowledge base and inject them into the prompt. Solves knowledge cutoff and hallucination on specific data. Very widely adopted.",
+      "color": "#58D68D",
+      "layerLabel": "APPLICATION PATTERNS"
+    },
+    "position": {
+      "x": -700,
+      "y": -212.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "agents_pattern",
+      "label": "AI Agents",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "evolving",
+      "since": "2023",
+      "description": "Systems where an LLM autonomously plans, calls tools, and iterates until a goal is achieved. Shift from \"Q&A\" to \"autonomous task completion\". The central paradigm of 2024-2025.",
+      "color": "#58D68D",
+      "layerLabel": "APPLICATION PATTERNS"
+    },
+    "position": {
+      "x": -700,
+      "y": -127.5
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "tool_use_pattern",
+      "label": "Tool Use",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2023",
+      "description": "The model can call external functions during generation: search the web, query a database, run code, send an email. Core capability that transforms LLMs from chat to action.",
+      "color": "#58D68D",
+      "layerLabel": "APPLICATION PATTERNS"
+    },
+    "position": {
+      "x": -700,
+      "y": -42.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "finetuning_pattern",
+      "label": "Fine-tuning",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2022",
+      "description": "Adapt a pre-trained model to a specific domain or behavior by training it further on curated data. Only possible with open-weights models. Produces a specialized model.",
+      "color": "#58D68D",
+      "layerLabel": "APPLICATION PATTERNS"
+    },
+    "position": {
+      "x": -700,
+      "y": 42.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "prompt_eng",
+      "label": "Prompt Engineering",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2022",
+      "description": "The practice of crafting inputs (prompts, system prompts, examples) to reliably elicit the desired output quality from a model. No code required. High-leverage, often underestimated.",
+      "color": "#58D68D",
+      "layerLabel": "APPLICATION PATTERNS"
+    },
+    "position": {
+      "x": -700,
+      "y": 127.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "structured_gen",
+      "label": "Structured Generation",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2023",
+      "description": "Force the model to respond in a defined format (e.g. JSON schema). Makes LLM outputs reliable and directly usable by code. Essential for production applications. Also called \"structured outputs\".",
+      "color": "#58D68D",
+      "layerLabel": "APPLICATION PATTERNS"
+    },
+    "position": {
+      "x": -700,
+      "y": 212.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "orch_frameworks",
+      "label": "Orchestration\nFrameworks",
+      "category": "tooling",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 5,
+      "status": "evolving",
+      "since": "2022",
+      "description": "Libraries that help chain LLM calls, manage memory, and build complex pipelines. Handle the plumbing so developers focus on logic. Examples: LangChain, LlamaIndex, LangGraph, CrewAI.",
+      "color": "#5DADE2",
+      "layerLabel": "TOOLING ECOSYSTEM"
+    },
+    "position": {
+      "x": -1200,
+      "y": -170.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "ai_coding",
+      "label": "AI Coding\nAssistants",
+      "category": "tooling",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 5,
+      "status": "evolving",
+      "since": "2021",
+      "description": "Tools that integrate LLMs directly into the development workflow. Generate, explain, refactor code. Dramatically boost developer productivity. Examples: Cursor, GitHub Copilot, Claude Code.",
+      "color": "#5DADE2",
+      "layerLabel": "TOOLING ECOSYSTEM"
+    },
+    "position": {
+      "x": -1200,
+      "y": -85.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "vector_dbs_tool",
+      "label": "Vector Databases",
+      "category": "tooling",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 5,
+      "status": "stable",
+      "since": "2021",
+      "description": "Databases optimized to store and query embeddings by semantic similarity. The storage backbone of RAG pipelines. Examples: Pinecone, Chroma, Weaviate, pgvector.",
+      "color": "#5DADE2",
+      "layerLabel": "TOOLING ECOSYSTEM"
+    },
+    "position": {
+      "x": -1200,
+      "y": 0.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "eval_obs",
+      "label": "Eval &\nObservability",
+      "category": "tooling",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 5,
+      "status": "evolving",
+      "since": "2023",
+      "description": "Tools to monitor, trace, evaluate and debug LLM applications in production. Answer: \"Is my app actually working well?\" Examples: LangSmith, Helicone, Arize, Braintrust.",
+      "color": "#5DADE2",
+      "layerLabel": "TOOLING ECOSYSTEM"
+    },
+    "position": {
+      "x": -1200,
+      "y": 85.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "model_hubs",
+      "label": "Model Hubs",
+      "category": "tooling",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 5,
+      "status": "stable",
+      "since": "2018",
+      "description": "Platforms to discover, download, share and run open models. The \"GitHub of AI models\". Central to the open-weights ecosystem. Examples: HuggingFace, Ollama, Replicate.",
+      "color": "#5DADE2",
+      "layerLabel": "TOOLING ECOSYSTEM"
+    },
+    "position": {
+      "x": -1200,
+      "y": 170.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "language_model__frontier_models",
+      "source": "language_model",
+      "target": "frontier_models",
+      "label": "manifests as",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "language_model__open_weights",
+      "source": "language_model",
+      "target": "open_weights",
+      "label": "manifests as",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "language_model__reasoning_models",
+      "source": "language_model",
+      "target": "reasoning_models",
+      "label": "manifests as",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "language_model__multimodal_models",
+      "source": "language_model",
+      "target": "multimodal_models",
+      "label": "manifests as",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "language_model__slm",
+      "source": "language_model",
+      "target": "slm",
+      "label": "manifests as",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "embedding_vectors__embedding_models",
+      "source": "embedding_vectors",
+      "target": "embedding_models",
+      "label": "produced by",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "training_alignment__frontier_models",
+      "source": "training_alignment",
+      "target": "frontier_models",
+      "label": "shapes",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "training_alignment__open_weights",
+      "source": "training_alignment",
+      "target": "open_weights",
+      "label": "shapes",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "token_context__language_model",
+      "source": "token_context",
+      "target": "language_model",
+      "label": "constrains",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "frontier_models__public_api",
+      "source": "frontier_models",
+      "target": "public_api",
+      "label": "only via",
+      "etype": "accesses"
+    }
+  },
+  {
+    "data": {
+      "id": "frontier_models__cloud_managed",
+      "source": "frontier_models",
+      "target": "cloud_managed",
+      "label": "available on",
+      "etype": "accesses"
+    }
+  },
+  {
+    "data": {
+      "id": "open_weights__cloud_managed",
+      "source": "open_weights",
+      "target": "cloud_managed",
+      "label": "deployable on",
+      "etype": "accesses"
+    }
+  },
+  {
+    "data": {
+      "id": "open_weights__self_hosted",
+      "source": "open_weights",
+      "target": "self_hosted",
+      "label": "deployable on",
+      "etype": "accesses"
+    }
+  },
+  {
+    "data": {
+      "id": "open_weights__local_edge",
+      "source": "open_weights",
+      "target": "local_edge",
+      "label": "runs on",
+      "etype": "accesses"
+    }
+  },
+  {
+    "data": {
+      "id": "slm__local_edge",
+      "source": "slm",
+      "target": "local_edge",
+      "label": "optimized for",
+      "etype": "accesses"
+    }
+  },
+  {
+    "data": {
+      "id": "embedding_models__public_api",
+      "source": "embedding_models",
+      "target": "public_api",
+      "label": "accessed via",
+      "etype": "accesses"
+    }
+  },
+  {
+    "data": {
+      "id": "open_weights__finetuning_pattern",
+      "source": "open_weights",
+      "target": "finetuning_pattern",
+      "label": "required for",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "public_api__rag_pattern",
+      "source": "public_api",
+      "target": "rag_pattern",
+      "label": "enables",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "public_api__agents_pattern",
+      "source": "public_api",
+      "target": "agents_pattern",
+      "label": "enables",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "cloud_managed__rag_pattern",
+      "source": "cloud_managed",
+      "target": "rag_pattern",
+      "label": "enables",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "local_edge__rag_pattern",
+      "source": "local_edge",
+      "target": "rag_pattern",
+      "label": "enables (private)",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "tool_use_pattern__agents_pattern",
+      "source": "tool_use_pattern",
+      "target": "agents_pattern",
+      "label": "core capability of",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "rag_pattern__agents_pattern",
+      "source": "rag_pattern",
+      "target": "agents_pattern",
+      "label": "used inside",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "prompt_eng__rag_pattern",
+      "source": "prompt_eng",
+      "target": "rag_pattern",
+      "label": "improves",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "prompt_eng__agents_pattern",
+      "source": "prompt_eng",
+      "target": "agents_pattern",
+      "label": "improves",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "structured_gen__tool_use_pattern",
+      "source": "structured_gen",
+      "target": "tool_use_pattern",
+      "label": "combined with",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "rag_pattern__orch_frameworks",
+      "source": "rag_pattern",
+      "target": "orch_frameworks",
+      "label": "built with",
+      "etype": "implemented_by"
+    }
+  },
+  {
+    "data": {
+      "id": "agents_pattern__orch_frameworks",
+      "source": "agents_pattern",
+      "target": "orch_frameworks",
+      "label": "built with",
+      "etype": "implemented_by"
+    }
+  },
+  {
+    "data": {
+      "id": "rag_pattern__eval_obs",
+      "source": "rag_pattern",
+      "target": "eval_obs",
+      "label": "monitored by",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "agents_pattern__eval_obs",
+      "source": "agents_pattern",
+      "target": "eval_obs",
+      "label": "monitored by",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "open_weights__model_hubs",
+      "source": "open_weights",
+      "target": "model_hubs",
+      "label": "distributed via",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "slm__model_hubs",
+      "source": "slm",
+      "target": "model_hubs",
+      "label": "distributed via",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "language_model__ai_coding",
+      "source": "language_model",
+      "target": "ai_coding",
+      "label": "powers",
+      "etype": "powers"
+    }
+  },
+  {
+    "data": {
+      "id": "embedding_models__vector_dbs_tool",
+      "source": "embedding_models",
+      "target": "vector_dbs_tool",
+      "label": "populates",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "vector_dbs_tool__rag_pattern",
+      "source": "vector_dbs_tool",
+      "target": "rag_pattern",
+      "label": "powers retrieval in",
+      "etype": "enables"
+    }
+  }
+];
+
+const statusColors = {"stable": "#27AE60", "evolving": "#E67E22", "emerging": "#8E44AD", "deprecated": "#95A5A6"};
+
+const cy = cytoscape({
+  container: document.getElementById("cy"),
+  elements: elements,
+  style: [
+    // Provider nodes — ellipse to distinguish from models
+    {
+      selector: "node[node_type='provider']",
+      style: {
+        "width": 140,
+        "height": 44,
+        "shape": "ellipse",
+        "background-color": "data(color)",
+        "background-opacity": 0.85,
+        "label": "data(label)",
+        "text-valign": "center",
+        "text-halign": "center",
+        "font-size": "12px",
+        "font-weight": "700",
+        "color": "#1A1A2E",
+        "border-width": 2,
+        "border-color": "data(color)",
+        "text-wrap": "wrap",
+        "text-max-width": "120px",
+      }
+    },
+    // Nodes
+    {
+      selector: "node",
+      style: {
+        "width": 140,
+        "height": 44,
+        "shape": "round-rectangle",
+        "background-color": "data(color)",
+        "background-opacity": 0.9,
+        "label": "data(label)",
+        "text-valign": "center",
+        "text-halign": "center",
+        "font-size": "12px",
+        "font-weight": "600",
+        "color": "#1A1A2E",
+        "border-width": 2,
+        "border-color": "data(color)",
+        "border-opacity": 1,
+        "text-wrap": "wrap",
+        "text-max-width": "130px",
+        "overlay-padding": "6px",
+        "transition-property": "border-color, border-width, background-opacity",
+        "transition-duration": "0.15s",
+      }
+    },
+    // Status: evolving → orange border
+    {
+      selector: ".status-evolving",
+      style: {
+        "border-color": "#E67E22",
+        "border-width": 3,
+      }
+    },
+    // Status: emerging → dashed purple border
+    {
+      selector: ".status-emerging",
+      style: {
+        "border-color": "#8E44AD",
+        "border-width": 3,
+        "border-style": "dashed",
+      }
+    },
+    // Status: deprecated → grey, muted
+    {
+      selector: ".status-deprecated",
+      style: {
+        "background-opacity": 0.4,
+        "color": "#999",
+        "border-color": "#BDC3C7",
+      }
+    },
+    // Hover
+    {
+      selector: "node:active, node.highlighted",
+      style: {
+        "border-width": 3,
+        "border-color": "#1A1A2E",
+        "background-opacity": 1,
+        "z-index": 999,
+      }
+    },
+    // Selected
+    {
+      selector: "node:selected",
+      style: {
+        "border-width": 3,
+        "border-color": "#E74C3C",
+        "background-opacity": 1,
+      }
+    },
+    // Edges
+    {
+      selector: "edge",
+      style: {
+        "width": 1.5,
+        "line-color": "#BDC3C7",
+        "target-arrow-color": "#BDC3C7",
+        "target-arrow-shape": "triangle",
+        "curve-style": "bezier",
+        "arrow-scale": 1,
+        "label": "",
+        "font-size": "9px",
+        "color": "#7F8C8D",
+        "text-background-color": "white",
+        "text-background-opacity": 0.8,
+        "text-background-padding": "2px",
+        "opacity": 0.6,
+      }
+    },
+    {
+      selector: "edge.highlighted",
+      style: {
+        "width": 2.5,
+        "line-color": "#E74C3C",
+        "target-arrow-color": "#E74C3C",
+        "label": "data(label)",
+        "opacity": 1,
+        "z-index": 999,
+      }
+    },
+    // Dimmed (when a node is selected)
+    {
+      selector: ".dimmed",
+      style: {
+        "opacity": 0.15,
+      }
+    },
+  ],
+  layout: {
+    name: "preset",
+  },
+  wheelSensitivity: 0.3,
+  minZoom: 0.2,
+  maxZoom: 3,
+});
+
+// ── Fit on load ──────────────────────────────
+cy.ready(() => {
+  cy.fit(undefined, 40);
+});
+
+// ── Node click → panel ───────────────────────
+cy.on("tap", "node", function(evt) {
+  const node = evt.target;
+  const d = node.data();
+
+  // Update panel header
+  document.getElementById("panel-header").style.display = "block";
+  document.getElementById("ph-label").textContent = d.label;
+
+  let meta = `Layer ${d.layer}`;
+  if (d.node_type) meta += ` · ${d.node_type}`;
+  if (d.subcategory) meta += ` · ${d.subcategory}`;
+  document.getElementById("ph-meta").textContent = meta;
+
+  const statusEl = document.getElementById("ph-status");
+  statusEl.textContent = d.status;
+  statusEl.style.background = statusColors[d.status] + "33";
+  statusEl.style.color = statusColors[d.status];
+  statusEl.style.border = `1px solid ${statusColors[d.status]}`;
+
+  // Update panel body
+  document.getElementById("empty-msg").style.display = "none";
+  document.getElementById("panel-content").style.display = "block";
+  document.getElementById("pc-desc").textContent = d.description;
+  document.getElementById("pc-since").textContent = d.since;
+
+  // Highlight node + connected edges/nodes
+  cy.elements().addClass("dimmed");
+  node.removeClass("dimmed");
+  const connected = node.connectedEdges();
+  connected.removeClass("dimmed").addClass("highlighted");
+  connected.connectedNodes().removeClass("dimmed");
+
+  // Remove highlight on other nodes
+  cy.nodes(":not(.layer-group)").not(node).not(connected.connectedNodes()).each(n => {
+    n.removeClass("highlighted");
+  });
+  node.addClass("highlighted");
+});
+
+// ── Click background → reset ─────────────────
+cy.on("tap", function(evt) {
+  if (evt.target === cy) {
+    cy.elements().removeClass("dimmed highlighted");
+    document.getElementById("panel-header").style.display = "none";
+    document.getElementById("empty-msg").style.display = "flex";
+    document.getElementById("panel-content").style.display = "none";
+  }
+});
+
+// ── Edge hover → show label ──────────────────
+cy.on("mouseover", "edge", function(evt) {
+  evt.target.addClass("highlighted");
+});
+cy.on("mouseout", "edge", function(evt) {
+  if (!evt.target.source().hasClass("highlighted")) {
+    evt.target.removeClass("highlighted");
+  }
+});
+</script>
+
+</body>
+</html>

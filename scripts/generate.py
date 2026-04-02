@@ -8,14 +8,20 @@ import yaml
 import json
 from pathlib import Path
 
+import sys
+
 ROOT = Path(__file__).parent.parent
-DATA_FILE = ROOT / "data" / "ecosystem.yaml"
-OUTPUT_FILE = ROOT / "web" / "index.html"
+
+# CLI: python generate.py [input.yaml [output.html]]
+DATA_FILE  = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "ecosystem.yaml"
+OUTPUT_FILE = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "web" / "index.html"
 
 # ── Layout constants ──────────────────────────────────────────
 # Horizontal layout: Layer 1 (Foundations) on the RIGHT, Layer 5 (Dev Tools) on the LEFT
-LAYER_X = {1: 800, 2: 400, 3: 0, 4: -400, 5: -800}
-NODE_SPACING_Y = 90   # vertical spacing between nodes in the same layer
+# Layer 2 has two columns: providers (right) and models (left)
+LAYER_X = {1: 1100, 2: 400, 3: -200, 4: -700, 5: -1200}
+LAYER_X_PROVIDERS = 750   # providers column, between layer 1 and layer 2 models
+NODE_SPACING_Y = 85   # vertical spacing between nodes in the same layer
 NODE_WIDTH = 140
 NODE_HEIGHT = 44
 
@@ -50,8 +56,16 @@ LAYER_BG = {
 }
 
 
+DEFAULT_LAYER_LABELS = {
+    1: "LAYER 1", 2: "LAYER 2", 3: "LAYER 3", 4: "LAYER 4", 5: "LAYER 5",
+}
+
+
 def build_elements(data):
     category_colors = {c["id"]: c["color"] for c in data["categories"]}
+    layer_labels = {
+        int(k): v for k, v in data.get("layers", DEFAULT_LAYER_LABELS).items()
+    }
 
     # Group nodes by layer
     by_layer = {}
@@ -62,29 +76,37 @@ def build_elements(data):
 
     # Add actual nodes with absolute positions (horizontal layout)
     for layer_id, nodes in sorted(by_layer.items()):
-        n = len(nodes)
-        for i, node in enumerate(nodes):
-            x = LAYER_X[layer_id]
-            y = (i - (n - 1) / 2) * NODE_SPACING_Y
-            desc = node.get("description", "").strip().replace("\n", " ")
-            desc = " ".join(desc.split())
-            elements.append({
-                "data": {
-                    "id": node["id"],
-                    "label": node["label"],
-                    "category": node["category"],
-                    "subcategory": node.get("subcategory", ""),
-                    "provider": node.get("provider", ""),
-                    "layer": node["layer"],
-                    "status": node["status"],
-                    "since": str(node["since"]),
-                    "description": desc,
-                    "color": category_colors.get(node["category"], "#BDC3C7"),
-                    "layerLabel": LAYER_LABELS[layer_id],
-                },
-                "position": {"x": x, "y": y},
-                "classes": f"status-{node['status']}"
-            })
+        # Layer 2: split providers (right col) vs models (left col)
+        if layer_id == 2:
+            providers = [n for n in nodes if n.get("node_type") == "provider"]
+            models = [n for n in nodes if n.get("node_type") != "provider"]
+            buckets = [(LAYER_X_PROVIDERS, providers), (LAYER_X[2], models)]
+        else:
+            buckets = [(LAYER_X[layer_id], nodes)]
+
+        for x_pos, bucket in buckets:
+            n = len(bucket)
+            for i, node in enumerate(bucket):
+                y = (i - (n - 1) / 2) * NODE_SPACING_Y
+                desc = node.get("description", "").strip().replace("\n", " ")
+                desc = " ".join(desc.split())
+                elements.append({
+                    "data": {
+                        "id": node["id"],
+                        "label": node["label"],
+                        "category": node["category"],
+                        "subcategory": node.get("subcategory", ""),
+                        "node_type": node.get("node_type", ""),
+                        "layer": node["layer"],
+                        "status": node["status"],
+                        "since": str(node["since"]),
+                        "description": desc,
+                        "color": category_colors.get(node["category"], "#BDC3C7"),
+                        "layerLabel": layer_labels.get(layer_id, f"Layer {layer_id}"),
+                    },
+                    "position": {"x": x_pos, "y": y},
+                    "classes": f"status-{node['status']}"
+                })
 
     # Add edges
     for edge in data["edges"]:
@@ -352,6 +374,27 @@ const cy = cytoscape({{
   container: document.getElementById("cy"),
   elements: elements,
   style: [
+    // Provider nodes — ellipse to distinguish from models
+    {{
+      selector: "node[node_type='provider']",
+      style: {{
+        "width": {NODE_WIDTH},
+        "height": {NODE_HEIGHT},
+        "shape": "ellipse",
+        "background-color": "data(color)",
+        "background-opacity": 0.85,
+        "label": "data(label)",
+        "text-valign": "center",
+        "text-halign": "center",
+        "font-size": "12px",
+        "font-weight": "700",
+        "color": "#1A1A2E",
+        "border-width": 2,
+        "border-color": "data(color)",
+        "text-wrap": "wrap",
+        "text-max-width": "120px",
+      }}
+    }},
     // Nodes
     {{
       selector: "node",
@@ -483,7 +526,7 @@ cy.on("tap", "node", function(evt) {{
   document.getElementById("ph-label").textContent = d.label;
 
   let meta = `Layer ${{d.layer}}`;
-  if (d.provider) meta += ` · ${{d.provider}}`;
+  if (d.node_type) meta += ` · ${{d.node_type}}`;
   if (d.subcategory) meta += ` · ${{d.subcategory}}`;
   document.getElementById("ph-meta").textContent = meta;
 

@@ -26,8 +26,10 @@ jobs:
       - name: Install dependencies
         run: pip install pyyaml
 
-      - name: Generate mind map
-        run: python scripts/generate.py
+      - name: Generate mind maps
+        run: |
+          python scripts/generate.py data/ecosystem.yaml web/index.html
+          python scripts/generate.py data/ecosystem-macro.yaml web/macro.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

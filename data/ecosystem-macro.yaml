@@ -1,0 +1,501 @@
+meta:
+  title: "The LLM Ecosystem — Big Picture"
+  description: "A macro view of the AI/LLM ecosystem: concepts, categories and building blocks"
+  version: "2026-Q1"
+  date: "2026-04-02"
+  language: "en"
+
+layers:
+  1: "CORE CONCEPTS"
+  2: "MODEL TAXONOMY"
+  3: "ACCESS & DEPLOYMENT"
+  4: "APPLICATION PATTERNS"
+  5: "TOOLING ECOSYSTEM"
+
+categories:
+  - id: concepts
+    label: "Core Concepts"
+    color: "#F4D03F"       # yellow
+    description: "Fundamental abstract notions to understand before anything else"
+
+  - id: model_types
+    label: "Model Types"
+    color: "#C39BD3"       # purple
+    description: "The different categories of AI models"
+
+  - id: access
+    label: "Access & Deployment"
+    color: "#85929E"       # grey
+    description: "The different ways to access and run a model"
+
+  - id: patterns
+    label: "Application Patterns"
+    color: "#58D68D"       # green
+    description: "Architectural patterns to build AI-powered applications"
+
+  - id: tooling
+    label: "Tooling Ecosystem"
+    color: "#5DADE2"       # blue
+    description: "Categories of tools developers use to build with LLMs"
+
+# ─────────────────────────────────────────────
+# NODES
+# ─────────────────────────────────────────────
+nodes:
+
+  # ── LAYER 1 · CORE CONCEPTS ─────────────────
+
+  - id: language_model
+    label: "Language Model"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2017"
+    description: >
+      A model trained on massive text datasets to understand and generate human language.
+      The foundation of the entire ecosystem. All LLMs are language models,
+      but not all language models are LLMs.
+
+  - id: token_context
+    label: "Token & Context"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2017"
+    description: >
+      A token is the smallest unit of text a model processes (~0.75 words).
+      The context window is the maximum number of tokens a model can handle at once.
+      These two notions define the model's "working memory".
+
+  - id: embedding_vectors
+    label: "Embedding & Vectors"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2013"
+    description: >
+      An embedding is a list of numbers (a vector) that represents the meaning of a text.
+      Similar texts produce similar vectors. This enables semantic search,
+      clustering, and retrieval — the backbone of RAG.
+
+  - id: training_alignment
+    label: "Training & Alignment"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2018"
+    description: >
+      Training: teaching a model by exposing it to vast amounts of data.
+      Alignment: shaping the model's behavior to be helpful, honest and safe
+      (via RLHF, Constitutional AI, etc.). Two distinct but essential phases.
+
+  - id: inference
+    label: "Inference"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2017"
+    description: >
+      Running a trained model to generate a response from an input.
+      Every API call, every chat message is an inference.
+      Opposite of training — much cheaper and faster.
+
+  # ── LAYER 2 · MODEL TAXONOMY ─────────────────
+
+  - id: frontier_models
+    label: "Frontier Models"
+    layer: 2
+    category: model_types
+    status: evolving
+    since: "2022"
+    description: >
+      The most capable models, developed by a handful of well-funded labs.
+      Closed source — weights not public. Accessed only via API.
+      Examples: GPT-4o, Claude, Gemini. Define the state of the art.
+
+  - id: open_weights
+    label: "Open Weights Models"
+    layer: 2
+    category: model_types
+    status: evolving
+    since: "2023"
+    description: >
+      Models whose weights are publicly downloadable. Can be run locally,
+      fine-tuned, and deployed on your own infrastructure.
+      Examples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.
+
+  - id: reasoning_models
+    label: "Reasoning Models"
+    layer: 2
+    category: model_types
+    status: emerging
+    since: "2024"
+    description: >
+      Models that think step-by-step before giving a final answer.
+      Significantly better at complex logic, math and coding tasks.
+      Examples: o3, DeepSeek-R1, Claude 3.7 extended thinking.
+
+  - id: multimodal_models
+    label: "Multimodal Models"
+    layer: 2
+    category: model_types
+    status: evolving
+    since: "2023"
+    description: >
+      Models that process multiple types of input: text, images, audio, video.
+      Enables use cases like document analysis, image description, voice interfaces.
+      Examples: GPT-4o, Gemini 2.0.
+
+  - id: embedding_models
+    label: "Embedding Models"
+    layer: 2
+    category: model_types
+    status: stable
+    since: "2022"
+    description: >
+      Specialized models that convert text into vectors (not text generators).
+      Essential building block for semantic search and RAG pipelines.
+      Examples: text-embedding-3, Voyage-3, nomic-embed.
+
+  - id: slm
+    label: "Small Language Models"
+    layer: 2
+    category: model_types
+    status: evolving
+    since: "2024"
+    description: >
+      Compact models (typically under 15B parameters) optimized for speed,
+      low cost and local/edge deployment. Increasingly competitive with larger models.
+      Examples: Phi-4, Gemma 2, Llama 3 8B.
+
+  # ── LAYER 3 · ACCESS & DEPLOYMENT ───────────
+
+  - id: public_api
+    label: "Public API"
+    layer: 3
+    category: access
+    status: stable
+    since: "2020"
+    description: >
+      Send an HTTP request to a provider's endpoint, get a response.
+      The simplest way to use a model. Pay per token.
+      No infrastructure to manage. Operated by the model creator.
+
+  - id: cloud_managed
+    label: "Cloud Managed"
+    layer: 3
+    category: access
+    status: stable
+    since: "2023"
+    description: >
+      Access models through a major cloud provider (AWS, GCP, Azure).
+      Benefits: enterprise compliance, data privacy, multi-model choice,
+      integration with existing cloud infra. Managed by the cloud, not the AI lab.
+
+  - id: self_hosted
+    label: "Self-hosted"
+    layer: 3
+    category: access
+    status: stable
+    since: "2023"
+    description: >
+      Deploy the model on your own GPU servers (on-premise or cloud VMs).
+      Full control over data and costs at scale.
+      Requires ML infrastructure expertise.
+
+  - id: local_edge
+    label: "Local / Edge"
+    layer: 3
+    category: access
+    status: evolving
+    since: "2023"
+    description: >
+      Run a model on a laptop, phone, or edge device. No internet required.
+      Maximum privacy. Enabled by smaller, efficient models and tools like Ollama.
+      Growing fast as hardware improves.
+
+  # ── LAYER 4 · APPLICATION PATTERNS ──────────
+
+  - id: rag_pattern
+    label: "RAG"
+    layer: 4
+    category: patterns
+    status: stable
+    since: "2023"
+    description: >
+      Retrieval-Augmented Generation. At query time, retrieve relevant documents
+      from a knowledge base and inject them into the prompt.
+      Solves knowledge cutoff and hallucination on specific data. Very widely adopted.
+
+  - id: agents_pattern
+    label: "AI Agents"
+    layer: 4
+    category: patterns
+    status: evolving
+    since: "2023"
+    description: >
+      Systems where an LLM autonomously plans, calls tools, and iterates
+      until a goal is achieved. Shift from "Q&A" to "autonomous task completion".
+      The central paradigm of 2024-2025.
+
+  - id: tool_use_pattern
+    label: "Tool Use"
+    layer: 4
+    category: patterns
+    status: stable
+    since: "2023"
+    description: >
+      The model can call external functions during generation: search the web,
+      query a database, run code, send an email.
+      Core capability that transforms LLMs from chat to action.
+
+  - id: finetuning_pattern
+    label: "Fine-tuning"
+    layer: 4
+    category: patterns
+    status: stable
+    since: "2022"
+    description: >
+      Adapt a pre-trained model to a specific domain or behavior
+      by training it further on curated data.
+      Only possible with open-weights models. Produces a specialized model.
+
+  - id: prompt_eng
+    label: "Prompt Engineering"
+    layer: 4
+    category: patterns
+    status: stable
+    since: "2022"
+    description: >
+      The practice of crafting inputs (prompts, system prompts, examples)
+      to reliably elicit the desired output quality from a model.
+      No code required. High-leverage, often underestimated.
+
+  - id: structured_gen
+    label: "Structured Generation"
+    layer: 4
+    category: patterns
+    status: stable
+    since: "2023"
+    description: >
+      Force the model to respond in a defined format (e.g. JSON schema).
+      Makes LLM outputs reliable and directly usable by code.
+      Essential for production applications. Also called "structured outputs".
+
+  # ── LAYER 5 · TOOLING ECOSYSTEM ─────────────
+
+  - id: orch_frameworks
+    label: "Orchestration\nFrameworks"
+    layer: 5
+    category: tooling
+    status: evolving
+    since: "2022"
+    description: >
+      Libraries that help chain LLM calls, manage memory, and build complex pipelines.
+      Handle the plumbing so developers focus on logic.
+      Examples: LangChain, LlamaIndex, LangGraph, CrewAI.
+
+  - id: ai_coding
+    label: "AI Coding\nAssistants"
+    layer: 5
+    category: tooling
+    status: evolving
+    since: "2021"
+    description: >
+      Tools that integrate LLMs directly into the development workflow.
+      Generate, explain, refactor code. Dramatically boost developer productivity.
+      Examples: Cursor, GitHub Copilot, Claude Code.
+
+  - id: vector_dbs_tool
+    label: "Vector Databases"
+    layer: 5
+    category: tooling
+    status: stable
+    since: "2021"
+    description: >
+      Databases optimized to store and query embeddings by semantic similarity.
+      The storage backbone of RAG pipelines.
+      Examples: Pinecone, Chroma, Weaviate, pgvector.
+
+  - id: eval_obs
+    label: "Eval &\nObservability"
+    layer: 5
+    category: tooling
+    status: evolving
+    since: "2023"
+    description: >
+      Tools to monitor, trace, evaluate and debug LLM applications in production.
+      Answer: "Is my app actually working well?"
+      Examples: LangSmith, Helicone, Arize, Braintrust.
+
+  - id: model_hubs
+    label: "Model Hubs"
+    layer: 5
+    category: tooling
+    status: stable
+    since: "2018"
+    description: >
+      Platforms to discover, download, share and run open models.
+      The "GitHub of AI models". Central to the open-weights ecosystem.
+      Examples: HuggingFace, Ollama, Replicate.
+
+# ─────────────────────────────────────────────
+# EDGES
+# ─────────────────────────────────────────────
+edges:
+
+  # Core Concepts → Model Taxonomy
+  - from: language_model
+    to: frontier_models
+    label: "manifests as"
+    type: part_of
+  - from: language_model
+    to: open_weights
+    label: "manifests as"
+    type: part_of
+  - from: language_model
+    to: reasoning_models
+    label: "manifests as"
+    type: part_of
+  - from: language_model
+    to: multimodal_models
+    label: "manifests as"
+    type: part_of
+  - from: language_model
+    to: slm
+    label: "manifests as"
+    type: part_of
+  - from: embedding_vectors
+    to: embedding_models
+    label: "produced by"
+    type: enables
+  - from: training_alignment
+    to: frontier_models
+    label: "shapes"
+    type: enables
+  - from: training_alignment
+    to: open_weights
+    label: "shapes"
+    type: enables
+  - from: token_context
+    to: language_model
+    label: "constrains"
+    type: part_of
+
+  # Model Taxonomy → Access & Deployment
+  - from: frontier_models
+    to: public_api
+    label: "only via"
+    type: accesses
+  - from: frontier_models
+    to: cloud_managed
+    label: "available on"
+    type: accesses
+  - from: open_weights
+    to: cloud_managed
+    label: "deployable on"
+    type: accesses
+  - from: open_weights
+    to: self_hosted
+    label: "deployable on"
+    type: accesses
+  - from: open_weights
+    to: local_edge
+    label: "runs on"
+    type: accesses
+  - from: slm
+    to: local_edge
+    label: "optimized for"
+    type: accesses
+  - from: embedding_models
+    to: public_api
+    label: "accessed via"
+    type: accesses
+
+  # Model Taxonomy → Application Patterns
+  - from: open_weights
+    to: finetuning_pattern
+    label: "required for"
+    type: enables
+
+  # Access → Application Patterns
+  - from: public_api
+    to: rag_pattern
+    label: "enables"
+    type: enables
+  - from: public_api
+    to: agents_pattern
+    label: "enables"
+    type: enables
+  - from: cloud_managed
+    to: rag_pattern
+    label: "enables"
+    type: enables
+  - from: local_edge
+    to: rag_pattern
+    label: "enables (private)"
+    type: enables
+
+  # Application Patterns → Application Patterns
+  - from: tool_use_pattern
+    to: agents_pattern
+    label: "core capability of"
+    type: part_of
+  - from: rag_pattern
+    to: agents_pattern
+    label: "used inside"
+    type: part_of
+  - from: prompt_eng
+    to: rag_pattern
+    label: "improves"
+    type: enables
+  - from: prompt_eng
+    to: agents_pattern
+    label: "improves"
+    type: enables
+  - from: structured_gen
+    to: tool_use_pattern
+    label: "combined with"
+    type: uses
+
+  # Application Patterns → Tooling
+  - from: rag_pattern
+    to: orch_frameworks
+    label: "built with"
+    type: implemented_by
+  - from: agents_pattern
+    to: orch_frameworks
+    label: "built with"
+    type: implemented_by
+  - from: rag_pattern
+    to: eval_obs
+    label: "monitored by"
+    type: uses
+  - from: agents_pattern
+    to: eval_obs
+    label: "monitored by"
+    type: uses
+
+  # Model Taxonomy → Tooling
+  - from: open_weights
+    to: model_hubs
+    label: "distributed via"
+    type: uses
+  - from: slm
+    to: model_hubs
+    label: "distributed via"
+    type: uses
+  - from: language_model
+    to: ai_coding
+    label: "powers"
+    type: powers
+
+  # Embedding → Vector DB → RAG
+  - from: embedding_models
+    to: vector_dbs_tool
+    label: "populates"
+    type: enables
+  - from: vector_dbs_tool
+    to: rag_pattern
+    label: "powers retrieval in"
+    type: enables

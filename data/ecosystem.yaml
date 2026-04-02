@@ -14,10 +14,15 @@ categories:
     color: "#F4D03F"       # yellow
     description: "Core concepts everyone must understand first"
 
+  - id: providers
+    label: "Providers"
+    color: "#F0A500"       # amber
+    description: "Companies and organizations that develop AI models"
+
   - id: models
     label: "Models"
     color: "#C39BD3"       # purple
-    description: "LLM families and their providers"
+    description: "LLM families — what the providers release"
 
   - id: infrastructure
     label: "Infrastructure & Access"
@@ -149,15 +154,118 @@ nodes:
       Technique to align LLM outputs with human preferences.
       Used in ChatGPT, Claude, Gemini to make models helpful and safe.
 
+  # ── LAYER 2 · PROVIDERS ─────────────────────
+  # node_type: provider → rendered in the right column of layer 2
+
+  - id: p_openai
+    label: "OpenAI"
+    layer: 2
+    node_type: provider
+    category: providers
+    status: stable
+    since: "2015"
+    description: >
+      American AI company, founded 2015. Originally non-profit, now capped-profit.
+      Creator of GPT and o-series models. Behind ChatGPT. Backed by Microsoft.
+
+  - id: p_anthropic
+    label: "Anthropic"
+    layer: 2
+    node_type: provider
+    category: providers
+    status: stable
+    since: "2021"
+    description: >
+      AI safety company founded by ex-OpenAI researchers (Dario & Daniela Amodei).
+      Creator of Claude. Focus on safe and interpretable AI. Backed by Google & Amazon.
+
+  - id: p_google
+    label: "Google DeepMind"
+    layer: 2
+    node_type: provider
+    category: providers
+    status: stable
+    since: "2023"
+    description: >
+      Merger of Google Brain and DeepMind (2023). Creator of Gemini (proprietary)
+      and Gemma (open weights). Integrated into Google Cloud via Vertex AI.
+
+  - id: p_xai
+    label: "xAI"
+    layer: 2
+    node_type: provider
+    category: providers
+    status: evolving
+    since: "2023"
+    description: >
+      AI company founded by Elon Musk in 2023. Creator of the Grok model family.
+      Integrated with the X (Twitter) platform.
+
+  - id: p_meta
+    label: "Meta"
+    layer: 2
+    node_type: provider
+    category: providers
+    status: stable
+    since: "2023"
+    description: >
+      Meta AI (Facebook parent). Creator of the Llama open-weights model family.
+      Strong open-source commitment: models freely downloadable and fine-tunable.
+
+  - id: p_mistral_ai
+    label: "Mistral AI"
+    layer: 2
+    node_type: provider
+    category: providers
+    status: stable
+    since: "2023"
+    description: >
+      French AI startup founded in 2023 by ex-Google and ex-Meta researchers.
+      Known for efficient open-weights models and a European alternative to US labs.
+
+  - id: p_deepseek
+    label: "DeepSeek AI"
+    layer: 2
+    node_type: provider
+    category: providers
+    status: evolving
+    since: "2023"
+    description: >
+      Chinese AI research lab. Released powerful open-weights models at very low cost.
+      DeepSeek-R1 disrupted the market in Jan 2025 by matching GPT-o1 performance.
+
+  - id: p_alibaba
+    label: "Alibaba"
+    layer: 2
+    node_type: provider
+    category: providers
+    status: stable
+    since: "2023"
+    description: >
+      Chinese tech giant. Creator of the Qwen open-weights model family via DAMO Academy.
+      Models available on HuggingFace and integrated in Alibaba Cloud.
+
+  - id: p_microsoft
+    label: "Microsoft"
+    layer: 2
+    node_type: provider
+    category: providers
+    status: stable
+    since: "2023"
+    description: >
+      Creator of the Phi small model family. Major OpenAI investor and partner.
+      Deploys OpenAI models via Azure OpenAI Service.
+
   # ── LAYER 2 · MODELS ────────────────────────
+  # node_type: model → rendered in the left column of layer 2
 
   # Proprietary
   - id: gpt4o
     label: "GPT-4o"
     layer: 2
+    node_type: model
     category: models
     subcategory: proprietary
-    provider: "OpenAI"
     status: stable
     since: "2024-05"
     description: >
@@ -167,9 +275,9 @@ nodes:
   - id: o3
     label: "o3 / o4-mini"
     layer: 2
+    node_type: model
     category: models
     subcategory: proprietary
-    provider: "OpenAI"
     status: evolving
     since: "2025-04"
     description: >
@@ -180,9 +288,9 @@ nodes:
   - id: claude
     label: "Claude 3.5 / 3.7"
     layer: 2
+    node_type: model
     category: models
     subcategory: proprietary
-    provider: "Anthropic"
     status: evolving
     since: "2024-06"
     description: >
@@ -193,22 +301,34 @@ nodes:
   - id: gemini
     label: "Gemini 2.0"
     layer: 2
+    node_type: model
     category: models
     subcategory: proprietary
-    provider: "Google DeepMind"
     status: evolving
     since: "2024-12"
     description: >
       Google's multimodal model family. Native tool use, code execution.
       Gemini 2.0 Flash: 1M token context window. Strong at long documents.
 
+  - id: grok
+    label: "Grok 3"
+    layer: 2
+    node_type: model
+    category: models
+    subcategory: proprietary
+    status: evolving
+    since: "2025-02"
+    description: >
+      xAI's flagship model. Trained on X (Twitter) data.
+      Grok 3 features a "Think" reasoning mode similar to o3 and DeepSeek-R1.
+
   # Open Weights
   - id: llama
     label: "Llama 3.x"
     layer: 2
+    node_type: model
     category: models
     subcategory: open_weights
-    provider: "Meta"
     status: evolving
     since: "2024-04"
     description: >
@@ -217,41 +337,103 @@ nodes:
       Foundation of many community fine-tunes and products.
 
   - id: mistral
-    label: "Mistral"
+    label: "Mistral / Mixtral"
     layer: 2
+    node_type: model
     category: models
     subcategory: open_weights
-    provider: "Mistral AI"
     status: stable
     since: "2023-09"
     description: >
-      Efficient open-weights models from French startup Mistral AI.
+      Efficient open-weights models from Mistral AI.
       Mixtral uses MoE (Mixture of Experts) architecture for better performance/cost.
 
   - id: deepseek
-    label: "DeepSeek R1 / V3"
+    label: "DeepSeek V3 / R1"
     layer: 2
+    node_type: model
     category: models
     subcategory: open_weights
-    provider: "DeepSeek AI"
     status: evolving
     since: "2024-12"
     description: >
-      Chinese open-weights models that rival proprietary models at much lower cost.
-      DeepSeek-R1 is a reasoning model (like o3) but fully open.
+      Chinese open-weights models rivaling proprietary models at low cost.
+      DeepSeek-R1 is a reasoning model (like o3) but fully open weights.
       Caused significant market disruption in early 2025.
 
   - id: qwen
     label: "Qwen 2.5"
     layer: 2
+    node_type: model
     category: models
     subcategory: open_weights
-    provider: "Alibaba"
     status: evolving
     since: "2024-09"
     description: >
       Alibaba's open-weights model family. Strong multilingual and coding performance.
       Qwen2.5-Coder is specialized for code generation.
+
+  - id: gemma
+    label: "Gemma 2"
+    layer: 2
+    node_type: model
+    category: models
+    subcategory: open_weights
+    status: stable
+    since: "2024-06"
+    description: >
+      Google's open-weights model family. Lightweight (2B, 9B, 27B parameters).
+      Optimized to run locally on laptops and phones. Strong instruction-following.
+
+  - id: phi
+    label: "Phi-4"
+    layer: 2
+    node_type: model
+    category: models
+    subcategory: open_weights
+    status: evolving
+    since: "2024-12"
+    description: >
+      Microsoft's small but powerful open-weights model (14B parameters).
+      Outperforms much larger models on reasoning tasks. Great for local use.
+
+  # Embedding models
+  - id: embed_oai
+    label: "text-embedding-3"
+    layer: 2
+    node_type: model
+    category: models
+    subcategory: embedding
+    status: stable
+    since: "2024-01"
+    description: >
+      OpenAI's embedding model family. Converts text to dense vectors.
+      text-embedding-3-small (fast/cheap) and text-embedding-3-large (high quality).
+      Used in RAG pipelines to index and search documents.
+
+  - id: embed_voyage
+    label: "Voyage-3"
+    layer: 2
+    node_type: model
+    category: models
+    subcategory: embedding
+    status: stable
+    since: "2024-10"
+    description: >
+      Voyage AI's embedding model. Best-in-class retrieval performance.
+      Specialized versions: voyage-code-3 (code), voyage-finance-2 (finance).
+
+  - id: embed_nomic
+    label: "nomic-embed"
+    layer: 2
+    node_type: model
+    category: models
+    subcategory: embedding
+    status: stable
+    since: "2024-02"
+    description: >
+      Open-source embedding model by Nomic AI. Can run locally via Ollama.
+      Good balance of performance and privacy (no data sent to external APIs).
 
   # ── LAYER 3 · INFRASTRUCTURE & ACCESS ───────
 
@@ -495,6 +677,56 @@ nodes:
 # ─────────────────────────────────────────────
 edges:
 
+  # Providers → Models (develops)
+  - from: p_openai
+    to: gpt4o
+    label: "develops"
+    type: develops
+  - from: p_openai
+    to: o3
+    label: "develops"
+    type: develops
+  - from: p_openai
+    to: embed_oai
+    label: "develops"
+    type: develops
+  - from: p_anthropic
+    to: claude
+    label: "develops"
+    type: develops
+  - from: p_google
+    to: gemini
+    label: "develops"
+    type: develops
+  - from: p_google
+    to: gemma
+    label: "develops"
+    type: develops
+  - from: p_xai
+    to: grok
+    label: "develops"
+    type: develops
+  - from: p_meta
+    to: llama
+    label: "develops"
+    type: develops
+  - from: p_mistral_ai
+    to: mistral
+    label: "develops"
+    type: develops
+  - from: p_deepseek
+    to: deepseek
+    label: "develops"
+    type: develops
+  - from: p_alibaba
+    to: qwen
+    label: "develops"
+    type: develops
+  - from: p_microsoft
+    to: phi
+    label: "develops"
+    type: develops
+
   # Foundations → Models
   - from: transformer
     to: gpt4o
@@ -578,6 +810,48 @@ edges:
     to: huggingface
     label: "distributed via"
     type: hosts
+  - from: gemma
+    to: huggingface
+    label: "distributed via"
+    type: hosts
+  - from: gemma
+    to: ollama
+    label: "runs locally via"
+    type: hosts
+  - from: phi
+    to: huggingface
+    label: "distributed via"
+    type: hosts
+  - from: phi
+    to: ollama
+    label: "runs locally via"
+    type: hosts
+  - from: grok
+    to: llm_api
+    label: "accessed via"
+    type: accesses
+  - from: embed_oai
+    to: llm_api
+    label: "accessed via"
+    type: accesses
+  - from: embed_nomic
+    to: ollama
+    label: "runs locally via"
+    type: hosts
+
+  # Embedding models → Vector DB
+  - from: embed_oai
+    to: vector_db
+    label: "produces vectors for"
+    type: enables
+  - from: embed_voyage
+    to: vector_db
+    label: "produces vectors for"
+    type: enables
+  - from: embed_nomic
+    to: vector_db
+    label: "produces vectors for"
+    type: enables
 
   # Foundations → Building Blocks
   - from: embedding
