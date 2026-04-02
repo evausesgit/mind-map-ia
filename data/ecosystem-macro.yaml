@@ -176,7 +176,7 @@ nodes:
     since: "2022"
     description:
       en: |
-        Models whose weights are PRIVATE — never downloadable.
+        Models whose weights are PRIVATE, never downloadable.
         Accessible only via API.
         Developed by well-funded labs (OpenAI, Anthropic, Google).
         Often called "Frontier models" in the industry, referring to their position at the cutting edge of AI capabilities.
