@@ -246,6 +246,93 @@ def generate_html(data, elements, maps=None, current_output=""):
   }}
   header h1 {{ font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }}
   header .meta {{ font-size: 12px; color: #95A5A6; }}
+
+  /* ── Search ── */
+  .search-wrapper {{
+    position: relative;
+    margin-left: 8px;
+  }}
+  .search-input {{
+    background: #0D1117;
+    border: 1.5px solid #333;
+    border-radius: 20px;
+    color: white;
+    font-size: 13px;
+    padding: 5px 14px 5px 32px;
+    width: 180px;
+    outline: none;
+    transition: all 0.2s;
+  }}
+  .search-input::placeholder {{ color: #555; }}
+  .search-input:focus {{
+    border-color: #E74C3C;
+    width: 240px;
+    background: #111;
+  }}
+  .search-icon {{
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 13px;
+    pointer-events: none;
+  }}
+  .search-clear {{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 14px;
+    cursor: pointer;
+    display: none;
+    background: none;
+    border: none;
+    line-height: 1;
+  }}
+  .search-clear:hover {{ color: white; }}
+  .search-dropdown {{
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 300px;
+    background: #16213E;
+    border: 1px solid #2C3E6E;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 1000;
+    overflow: hidden;
+    max-height: 320px;
+    overflow-y: auto;
+  }}
+  .search-item {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #1E2D4E;
+    transition: background 0.1s;
+  }}
+  .search-item:last-child {{ border-bottom: none; }}
+  .search-item:hover {{ background: #1E2D4E; }}
+  .search-item-dot {{
+    width: 10px; height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }}
+  .search-item-label {{ font-size: 13px; font-weight: 600; color: white; }}
+  .search-item-cat   {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
+  .search-item-match {{ font-size: 11px; color: #E74C3C; font-style: italic; margin-top: 2px; }}
+  .search-empty {{
+    padding: 16px;
+    color: #7F8C8D;
+    font-size: 13px;
+    text-align: center;
+  }}
+
   .lang-toggle {{
     display: flex;
     gap: 4px;
@@ -495,6 +582,13 @@ def generate_html(data, elements, maps=None, current_output=""):
       <h1 id="main-title">{title_en}</h1>
       <div class="meta">v{meta["version"]} · {meta["date"]}</div>
     </div>
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="text"
+             placeholder="Search..." autocomplete="off" />
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+      <div class="search-dropdown" id="search-dropdown"></div>
+    </div>
     <div class="lang-toggle">
       <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
       <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
@@ -575,6 +669,9 @@ function setLang(newLang) {{
     lang === 'fr' ? 'Statut' : 'Status';
   renderStatusLegend();
 
+  // Search placeholder
+  document.getElementById('search-input').placeholder = lang === 'fr' ? 'Rechercher...' : 'Search...';
+
   // Nav dropdown titles
   document.querySelectorAll('.nav-title, .nav-desc').forEach(el => {{
     const txt = el.dataset[lang];
@@ -603,6 +700,109 @@ function renderStatusLegend() {{
     ).join('');
 }}
 renderStatusLegend();
+
+// ── Search ────────────────────────────────────
+const searchInput    = document.getElementById('search-input');
+const searchDropdown = document.getElementById('search-dropdown');
+const searchClear    = document.getElementById('search-clear');
+
+function searchNodes(query) {{
+  const q = query.toLowerCase().trim();
+  if (!q) return [];
+  return cy.nodes().filter(n => {{
+    const fields = [
+      n.data('label_en'), n.data('label_fr'),
+      n.data('description_en'), n.data('description_fr'),
+      n.data('category'), n.data('subcategory'),
+    ];
+    return fields.some(f => f && f.toLowerCase().includes(q));
+  }}).toArray();
+}}
+
+function getMatchContext(node, query) {{
+  const q = query.toLowerCase();
+  const desc = node.data(`description_${{lang}}`) || node.data('description_en') || '';
+  const idx = desc.toLowerCase().indexOf(q);
+  if (idx === -1) return null;
+  const start = Math.max(0, idx - 20);
+  const end   = Math.min(desc.length, idx + query.length + 30);
+  return (start > 0 ? '…' : '') + desc.slice(start, end) + (end < desc.length ? '…' : '');
+}}
+
+function renderSearchResults(matches, query) {{
+  const noResultsText = lang === 'fr' ? 'Aucun résultat' : 'No results';
+  if (matches.length === 0) {{
+    searchDropdown.innerHTML = `<div class="search-empty">${{noResultsText}}</div>`;
+    searchDropdown.style.display = 'block';
+    return;
+  }}
+  searchDropdown.innerHTML = matches.slice(0, 8).map(node => {{
+    const label = node.data(`label_${{lang}}`) || node.data('label_en');
+    const color = node.data('color') || '#ccc';
+    const cat   = node.data('category') || '';
+    const ctx   = getMatchContext(node, query);
+    return `
+      <div class="search-item" onclick="selectSearchResult('${{node.id()}}')">
+        <span class="search-item-dot" style="background:${{color}}"></span>
+        <div>
+          <div class="search-item-label">${{label}}</div>
+          <div class="search-item-cat">${{cat}}</div>
+          ${{ctx ? `<div class="search-item-match">${{ctx}}</div>` : ''}}
+        </div>
+      </div>`;
+  }}).join('');
+  searchDropdown.style.display = 'block';
+}}
+
+function selectSearchResult(nodeId) {{
+  const node = cy.getElementById(nodeId);
+  if (!node || node.empty()) return;
+  clearSearchUI();
+  cy.animate({{ center: {{ eles: node }}, zoom: 1.4 }}, {{ duration: 400 }});
+  showPanel(node);
+  cy.elements().addClass('dimmed');
+  node.removeClass('dimmed');
+  const connected = node.connectedEdges();
+  connected.removeClass('dimmed').addClass('highlighted');
+  connected.connectedNodes().removeClass('dimmed');
+  node.addClass('highlighted');
+}}
+
+function clearSearchUI() {{
+  searchInput.value = '';
+  searchDropdown.style.display = 'none';
+  searchClear.style.display = 'none';
+}}
+
+function clearSearch() {{
+  clearSearchUI();
+  cy.elements().removeClass('dimmed highlighted');
+  currentNode = null;
+  document.getElementById('panel-header').style.display = 'none';
+  document.getElementById('empty-msg').style.display = 'flex';
+  document.getElementById('panel-content').style.display = 'none';
+}}
+
+searchInput.addEventListener('input', () => {{
+  const q = searchInput.value;
+  searchClear.style.display = q ? 'block' : 'none';
+  if (!q.trim()) {{ searchDropdown.style.display = 'none'; return; }}
+  renderSearchResults(searchNodes(q), q);
+}});
+
+searchInput.addEventListener('keydown', e => {{
+  if (e.key === 'Escape') clearSearch();
+  if (e.key === 'Enter') {{
+    const matches = searchNodes(searchInput.value);
+    if (matches.length === 1) selectSearchResult(matches[0].id());
+  }}
+}});
+
+document.addEventListener('click', e => {{
+  if (!e.target.closest('.search-wrapper')) {{
+    searchDropdown.style.display = 'none';
+  }}
+}});
 
 
 const cy = cytoscape({{
