@@ -1,0 +1,98 @@
+{
+  "language_model": {
+    "x": 1101,
+    "y": -106
+  },
+  "token_context": {
+    "x": 1101,
+    "y": -219
+  },
+  "embedding_vectors": {
+    "x": 1103,
+    "y": 258
+  },
+  "training_alignment": {
+    "x": 1101,
+    "y": -9
+  },
+  "inference": {
+    "x": 1101,
+    "y": 176
+  },
+  "reasoning_models": {
+    "x": 1103,
+    "y": 90
+  },
+  "frontier_models": {
+    "x": 400,
+    "y": -85
+  },
+  "open_weights": {
+    "x": 400,
+    "y": 0
+  },
+  "embedding_models": {
+    "x": 400,
+    "y": 85
+  },
+  "public_api": {
+    "x": -200,
+    "y": -127
+  },
+  "cloud_managed": {
+    "x": -200,
+    "y": -42
+  },
+  "self_hosted": {
+    "x": -200,
+    "y": 43
+  },
+  "local_edge": {
+    "x": -200,
+    "y": 128
+  },
+  "rag_pattern": {
+    "x": -700,
+    "y": -212
+  },
+  "agents_pattern": {
+    "x": -700,
+    "y": -127
+  },
+  "tool_use_pattern": {
+    "x": -700,
+    "y": -42
+  },
+  "finetuning_pattern": {
+    "x": -700,
+    "y": 43
+  },
+  "prompt_eng": {
+    "x": -700,
+    "y": 128
+  },
+  "structured_gen": {
+    "x": -700,
+    "y": 213
+  },
+  "orch_frameworks": {
+    "x": -1200,
+    "y": -170
+  },
+  "ai_coding": {
+    "x": -1200,
+    "y": -85
+  },
+  "vector_dbs_tool": {
+    "x": -1200,
+    "y": 0
+  },
+  "eval_obs": {
+    "x": -1200,
+    "y": 85
+  },
+  "model_hubs": {
+    "x": -1200,
+    "y": 170
+  }
+}
