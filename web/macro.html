@@ -1408,16 +1408,21 @@ function linkGlossaryTerms(text) {
   if (!GLOSSARY_TERMS.length) return text;
   // Escape HTML entities first
   let safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  // Sort aliases by length desc to match longest first
+  // Build sorted alias→id map (longest first to avoid partial matches)
   const entries = [];
   GLOSSARY_TERMS.forEach(term => {
     term.aliases.forEach(alias => entries.push({ alias, id: term.id }));
   });
   entries.sort((a, b) => b.alias.length - a.alias.length);
+  // Split on existing <span> tags so we never mutate already-linked text or attributes
   entries.forEach(({ alias, id }) => {
     const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\$&');
     const re = new RegExp(`\\b(${escaped})\\b`, 'gi');
-    safe = safe.replace(re, `<span class="gloss-link" onclick="window.open('glossary.html#${id}','_blank')">$1</span>`);
+    // Replace only in text segments (outside any HTML tags)
+    safe = safe.replace(/(<[^>]*>)|([^<]+)/g, (match, tag, txt) => {
+      if (tag) return tag; // leave HTML tags untouched
+      return txt.replace(re, `<span class="gloss-link" onclick="window.open('glossary.html#${id}','_blank')">$1</span>`);
+    });
   });
   return safe;
 }
