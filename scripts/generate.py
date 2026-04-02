@@ -232,6 +232,7 @@ def generate_html(data, elements, maps=None, current_output=""):
     meta = data["meta"]
     categories = data["categories"]
     elements_json = json.dumps(elements, indent=2)
+    layout_stem = Path(DATA_FILE).stem  # e.g. "ecosystem-macro"
 
     # Glossary terms for inline linking
     glossary_terms = load_glossary()
@@ -1096,8 +1097,7 @@ async function exportLayout() {{
     positions[n.id()] = {{ x: Math.round(p.x), y: Math.round(p.y) }};
   }});
   const json  = JSON.stringify(positions, null, 2);
-  const name  = window.location.pathname.split('/').pop().replace('.html', '');
-  const fname = name + '-layout.json';
+  const fname = '{layout_stem}-layout.json';
   const blob  = new Blob([json], {{ type: 'application/json' }});
   if (window.showSaveFilePicker) {{
     try {{

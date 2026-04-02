@@ -2718,8 +2718,7 @@ async function exportLayout() {
     positions[n.id()] = { x: Math.round(p.x), y: Math.round(p.y) };
   });
   const json  = JSON.stringify(positions, null, 2);
-  const name  = window.location.pathname.split('/').pop().replace('.html', '');
-  const fname = name + '-layout.json';
+  const fname = 'ecosystem-layout.json';
   const blob  = new Blob([json], { type: 'application/json' });
   if (window.showSaveFilePicker) {
     try {
