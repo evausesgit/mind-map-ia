@@ -28,8 +28,9 @@ jobs:
 
       - name: Generate mind maps
         run: |
-          python scripts/generate.py data/ecosystem.yaml web/index.html
+          python scripts/generate_home.py
           python scripts/generate.py data/ecosystem-macro.yaml web/macro.html
+          python scripts/generate.py data/ecosystem.yaml web/ecosystem.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

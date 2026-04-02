@@ -1,0 +1,24 @@
+maps:
+  - id: macro
+    icon: "🗺️"
+    title:
+      en: "Big Picture"
+      fr: "Vue d'Ensemble"
+    description:
+      en: "Concepts and categories — the best place to start"
+      fr: "Concepts et catégories — le meilleur point de départ"
+    nodes: 26
+    output: macro.html
+    data: data/ecosystem-macro.yaml
+
+  - id: ecosystem
+    icon: "🔬"
+    title:
+      en: "Full Ecosystem"
+      fr: "Écosystème Complet"
+    description:
+      en: "Providers, models, infrastructure and developer tools"
+      fr: "Fournisseurs, modèles, infrastructure et outils développeurs"
+    nodes: 53
+    output: ecosystem.html
+    data: data/ecosystem.yaml

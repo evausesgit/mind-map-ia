@@ -11,10 +11,17 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).parent.parent
+MAPS_FILE = ROOT / "data" / "maps.yaml"
 
 # CLI: python generate.py [input.yaml [output.html]]
-DATA_FILE  = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "ecosystem.yaml"
-OUTPUT_FILE = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "web" / "index.html"
+DATA_FILE   = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "ecosystem.yaml"
+OUTPUT_FILE = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "web" / "ecosystem.html"
+
+def load_maps():
+    if MAPS_FILE.exists():
+        with open(MAPS_FILE) as f:
+            return yaml.safe_load(f).get("maps", [])
+    return []
 
 # ── Layout constants ──────────────────────────────────────────
 # Horizontal layout: Layer 1 (Foundations) on the RIGHT, Layer 5 (Dev Tools) on the LEFT
@@ -142,7 +149,37 @@ def build_elements(data):
     return elements
 
 
-def generate_html(data, elements):
+def build_nav(maps, current_output, lang="en"):
+    """Build the nav dropdown HTML for all available maps."""
+    current_name = Path(current_output).name
+    items = ""
+    for m in maps:
+        is_active = (m["output"] == current_name)
+        title_en = t(m.get("title", ""), "en")
+        title_fr = t(m.get("title", ""), "fr") or title_en
+        desc_en  = t(m.get("description", ""), "en")
+        desc_fr  = t(m.get("description", ""), "fr") or desc_en
+        items += (
+            f'<a href="{m["output"]}" class="{"active" if is_active else ""}">'
+            f'  <span class="nav-icon">{m.get("icon","📄")}</span>'
+            f'  <span class="nav-info">'
+            f'    <span class="nav-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'    <span class="nav-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f'  </span>'
+            f'</a>'
+        )
+    return (
+        '<div class="nav-menu">'
+        '  <button class="nav-btn" id="nav-toggle">≡ Maps ▾</button>'
+        '  <div class="nav-dropdown">'
+        '    <a href="index.html" class="nav-home">← Home</a>'
+        f'   {items}'
+        '  </div>'
+        '</div>'
+    )
+
+
+def generate_html(data, elements, maps=None, current_output=""):
     meta = data["meta"]
     categories = data["categories"]
     elements_json = json.dumps(elements, indent=2)
@@ -175,6 +212,8 @@ def generate_html(data, elements):
 
     legend_en = legend_items("en")
     legend_fr = legend_items("fr")
+
+    nav_html = build_nav(maps or [], current_output) if maps else ""
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -233,6 +272,71 @@ def generate_html(data, elements):
     border-color: #aaa;
     color: white;
   }}
+  .nav-menu {{
+    position: relative;
+    margin-left: 8px;
+  }}
+  .nav-btn {{
+    padding: 4px 12px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }}
+  .nav-btn:hover {{ border-color: #aaa; color: white; }}
+  .nav-dropdown {{
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: #16213E;
+    border: 1px solid #2C3E6E;
+    border-radius: 10px;
+    min-width: 220px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 1000;
+    overflow: hidden;
+  }}
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown {{
+    display: block;
+  }}
+  .nav-dropdown a {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: #BDC3C7;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.15s;
+    border-bottom: 1px solid #1E2D4E;
+  }}
+  .nav-dropdown a:last-child {{ border-bottom: none; }}
+  .nav-dropdown a:hover {{ background: #1E2D4E; color: white; }}
+  .nav-dropdown a.active {{ color: white; background: #1E2D4E; }}
+  .nav-dropdown a .nav-icon {{ font-size: 18px; }}
+  .nav-dropdown a .nav-info {{ display: flex; flex-direction: column; }}
+  .nav-dropdown a .nav-title {{ font-weight: 600; }}
+  .nav-dropdown a .nav-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
+  .nav-home {{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px 10px;
+    color: #E74C3C;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #2C3E6E;
+  }}
+  .nav-home:hover {{ color: #FF6B6B; }}
 
   .main {{
     display: flex;
@@ -385,7 +489,8 @@ def generate_html(data, elements):
 <body>
 
 <header>
-  <div style="display:flex;align-items:center;gap:16px;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    {nav_html}
     <div>
       <h1 id="main-title">{title_en}</h1>
       <div class="meta">v{meta["version"]} · {meta["date"]}</div>
@@ -469,6 +574,12 @@ function setLang(newLang) {{
   document.getElementById('legend-status-title').textContent =
     lang === 'fr' ? 'Statut' : 'Status';
   renderStatusLegend();
+
+  // Nav dropdown titles
+  document.querySelectorAll('.nav-title, .nav-desc').forEach(el => {{
+    const txt = el.dataset[lang];
+    if (txt) el.textContent = txt;
+  }});
 
   // Node labels in graph
   cy.batch(() => {{
@@ -716,12 +827,13 @@ cy.on("mouseout", "edge", function(evt) {{
 
 
 def main():
+    maps = load_maps()
     print(f"Reading {DATA_FILE}...")
     with open(DATA_FILE) as f:
         data = yaml.safe_load(f)
 
     elements = build_elements(data)
-    html = generate_html(data, elements)
+    html = generate_html(data, elements, maps=maps, current_output=str(OUTPUT_FILE))
 
     OUTPUT_FILE.parent.mkdir(exist_ok=True)
     with open(OUTPUT_FILE, "w") as f:
@@ -731,7 +843,6 @@ def main():
     edge_count = sum(1 for e in elements if "position" not in e and "classes" not in e)
     print(f"✓ Generated {OUTPUT_FILE}")
     print(f"  {node_count} nodes · {edge_count} edges")
-    print(f"  Open in browser: open {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":

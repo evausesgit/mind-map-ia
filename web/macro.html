@@ -55,6 +55,71 @@
     border-color: #aaa;
     color: white;
   }
+  .nav-menu {
+    position: relative;
+    margin-left: 8px;
+  }
+  .nav-btn {
+    padding: 4px 12px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: #16213E;
+    border: 1px solid #2C3E6E;
+    border-radius: 10px;
+    min-width: 220px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 1000;
+    overflow: hidden;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown {
+    display: block;
+  }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: #BDC3C7;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.15s;
+    border-bottom: 1px solid #1E2D4E;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a.active { color: white; background: #1E2D4E; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px 10px;
+    color: #E74C3C;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #2C3E6E;
+  }
+  .nav-home:hover { color: #FF6B6B; }
 
   .main {
     display: flex;
@@ -207,7 +272,8 @@
 <body>
 
 <header>
-  <div style="display:flex;align-items:center;gap:16px;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="nav-menu">  <button class="nav-btn" id="nav-toggle">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="index.html" class="nav-home">← Home</a>   <a href="macro.html" class="active">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="ecosystem.html" class="">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span>  </span></a>  </div></div>
     <div>
       <h1 id="main-title">The LLM Ecosystem — Big Picture</h1>
       <div class="meta">v2026-Q1 · 2026-04-02</div>
@@ -1257,6 +1323,12 @@ function setLang(newLang) {
   document.getElementById('legend-status-title').textContent =
     lang === 'fr' ? 'Statut' : 'Status';
   renderStatusLegend();
+
+  // Nav dropdown titles
+  document.querySelectorAll('.nav-title, .nav-desc').forEach(el => {
+    const txt = el.dataset[lang];
+    if (txt) el.textContent = txt;
+  });
 
   // Node labels in graph
   cy.batch(() => {
