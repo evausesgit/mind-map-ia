@@ -687,3 +687,15 @@ edges:
     to: rag_pattern
     label: "powers retrieval in"
     type: enables
+  - from: prompt_system_prompt
+    to: inference
+    label: "frames"
+    type: part_of
+  - from: prompt_system_prompt
+    to: prompt_eng
+    label: "formalized by"
+    type: enables
+  - from: multimodality
+    to: frontier_models
+    label: "native to"
+    type: part_of

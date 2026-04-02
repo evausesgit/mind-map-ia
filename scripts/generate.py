@@ -11,12 +11,15 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).parent.parent
-MAPS_FILE    = ROOT / "data" / "maps.yaml"
-LAYOUTS_DIR  = ROOT / "data" / "layouts"
+MAPS_FILE = ROOT / "data" / "maps.yaml"
+LAYOUTS_DIR = ROOT / "data" / "layouts"
 
 # CLI: python generate.py [input.yaml [output.html]]
-DATA_FILE   = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "ecosystem.yaml"
-OUTPUT_FILE = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "web" / "ecosystem.html"
+DATA_FILE = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "ecosystem.yaml"
+OUTPUT_FILE = (
+    Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "web" / "ecosystem.html"
+)
+
 
 def load_maps():
     if MAPS_FILE.exists():
@@ -24,27 +27,28 @@ def load_maps():
             return yaml.safe_load(f).get("maps", [])
     return []
 
+
 # ── Layout constants ──────────────────────────────────────────
 # Horizontal layout: Layer 1 (Foundations) on the RIGHT, Layer 5 (Dev Tools) on the LEFT
 # Layer 2 has two columns: providers (right) and models (left)
 LAYER_X = {1: 1100, 2: 400, 3: -200, 4: -700, 5: -1200}
-LAYER_X_PROVIDERS = 750   # providers column, between layer 1 and layer 2 models
-NODE_SPACING_Y = 85   # vertical spacing between nodes in the same layer
+LAYER_X_PROVIDERS = 750  # providers column, between layer 1 and layer 2 models
+NODE_SPACING_Y = 35  # vertical spacing between nodes in the same layer
 NODE_WIDTH = 140
 NODE_HEIGHT = 44
 
 STATUS_BORDER = {
-    "stable":    {"width": 2,  "style": "solid",  "dash": "none"},
-    "evolving":  {"width": 3,  "style": "solid",  "dash": "none"},
-    "emerging":  {"width": 3,  "style": "dashed", "dash": "8 4"},
-    "deprecated":{"width": 1,  "style": "dotted", "dash": "4 4"},
+    "stable": {"width": 2, "style": "solid", "dash": "none"},
+    "evolving": {"width": 3, "style": "solid", "dash": "none"},
+    "emerging": {"width": 3, "style": "dashed", "dash": "8 4"},
+    "deprecated": {"width": 1, "style": "dotted", "dash": "4 4"},
 }
 
 STATUS_LABEL_COLOR = {
-    "stable":    "#27AE60",
-    "evolving":  "#E67E22",
-    "emerging":  "#8E44AD",
-    "deprecated":"#95A5A6",
+    "stable": "#27AE60",
+    "evolving": "#E67E22",
+    "emerging": "#8E44AD",
+    "deprecated": "#95A5A6",
 }
 
 LAYER_LABELS = {
@@ -65,7 +69,11 @@ LAYER_BG = {
 
 
 DEFAULT_LAYER_LABELS = {
-    1: "LAYER 1", 2: "LAYER 2", 3: "LAYER 3", 4: "LAYER 4", 5: "LAYER 5",
+    1: "LAYER 1",
+    2: "LAYER 2",
+    3: "LAYER 3",
+    4: "LAYER 4",
+    5: "LAYER 5",
 }
 
 LANGS = ["en", "fr"]
@@ -86,12 +94,14 @@ def clean(text):
 
 def load_layout(data_file):
     """Return {node_id: {x, y}} from a layout JSON file if it exists."""
-    stem = Path(data_file).stem          # e.g. "ecosystem-macro"
+    stem = Path(data_file).stem  # e.g. "ecosystem-macro"
     layout_file = LAYOUTS_DIR / f"{stem}-layout.json"
     if layout_file.exists():
         with open(layout_file) as f:
             positions = json.load(f)
-        print(f"  ↳ Using saved layout: {layout_file.name} ({len(positions)} positions)")
+        print(
+            f"  ↳ Using saved layout: {layout_file.name} ({len(positions)} positions)"
+        )
         return positions
     return {}
 
@@ -116,7 +126,7 @@ def build_elements(data):
         # Layer 2: split providers (right col) vs models (left col)
         if layer_id == 2:
             providers = [n for n in nodes if n.get("node_type") == "provider"]
-            models    = [n for n in nodes if n.get("node_type") != "provider"]
+            models = [n for n in nodes if n.get("node_type") != "provider"]
             buckets = [(LAYER_X_PROVIDERS, providers), (LAYER_X[2], models)]
         else:
             buckets = [(LAYER_X[layer_id], nodes)]
@@ -132,39 +142,49 @@ def build_elements(data):
 
                 # Build multilingual data fields
                 node_data = {
-                    "id":          node["id"],
-                    "label":       t(node.get("label", ""), "en"),  # default lang
-                    "category":    node["category"],
+                    "id": node["id"],
+                    "label": t(node.get("label", ""), "en"),  # default lang
+                    "category": node["category"],
                     "subcategory": node.get("subcategory", ""),
-                    "node_type":   node.get("node_type", ""),
-                    "layer":       node["layer"],
-                    "status":      node["status"],
-                    "since":       str(node["since"]),
-                    "color":       category_colors.get(node["category"], "#BDC3C7"),
-                    "layerLabel":  t(layer_labels.get(layer_id, f"Layer {layer_id}"), "en"),
+                    "node_type": node.get("node_type", ""),
+                    "layer": node["layer"],
+                    "status": node["status"],
+                    "since": str(node["since"]),
+                    "color": category_colors.get(node["category"], "#BDC3C7"),
+                    "layerLabel": t(
+                        layer_labels.get(layer_id, f"Layer {layer_id}"), "en"
+                    ),
                 }
                 for lang in LANGS:
-                    node_data[f"label_{lang}"]       = t(node.get("label", ""), lang)
-                    node_data[f"description_{lang}"] = clean(t(node.get("description", ""), lang))
-                    node_data[f"layerLabel_{lang}"]  = t(layer_labels.get(layer_id, f"Layer {layer_id}"), lang)
+                    node_data[f"label_{lang}"] = t(node.get("label", ""), lang)
+                    node_data[f"description_{lang}"] = clean(
+                        t(node.get("description", ""), lang)
+                    )
+                    node_data[f"layerLabel_{lang}"] = t(
+                        layer_labels.get(layer_id, f"Layer {layer_id}"), lang
+                    )
 
-                elements.append({
-                    "data":     node_data,
-                    "position": {"x": x_pos_final, "y": y},
-                    "classes":  f"status-{node['status']}"
-                })
+                elements.append(
+                    {
+                        "data": node_data,
+                        "position": {"x": x_pos_final, "y": y},
+                        "classes": f"status-{node['status']}",
+                    }
+                )
 
     # Add edges
     for edge in data["edges"]:
-        elements.append({
-            "data": {
-                "id": f"{edge['from']}__{edge['to']}",
-                "source": edge["from"],
-                "target": edge["to"],
-                "label": edge.get("label", ""),
-                "etype": edge.get("type", ""),
+        elements.append(
+            {
+                "data": {
+                    "id": f"{edge['from']}__{edge['to']}",
+                    "source": edge["from"],
+                    "target": edge["to"],
+                    "label": edge.get("label", ""),
+                    "etype": edge.get("type", ""),
+                }
             }
-        })
+        )
 
     return elements
 
@@ -174,28 +194,28 @@ def build_nav(maps, current_output, lang="en"):
     current_name = Path(current_output).name
     items = ""
     for m in maps:
-        is_active = (m["output"] == current_name)
+        is_active = m["output"] == current_name
         title_en = t(m.get("title", ""), "en")
         title_fr = t(m.get("title", ""), "fr") or title_en
-        desc_en  = t(m.get("description", ""), "en")
-        desc_fr  = t(m.get("description", ""), "fr") or desc_en
+        desc_en = t(m.get("description", ""), "en")
+        desc_fr = t(m.get("description", ""), "fr") or desc_en
         items += (
             f'<a href="{m["output"]}" class="{"active" if is_active else ""}">'
-            f'  <span class="nav-icon">{m.get("icon","📄")}</span>'
+            f'  <span class="nav-icon">{m.get("icon", "📄")}</span>'
             f'  <span class="nav-info">'
             f'    <span class="nav-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
             f'    <span class="nav-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'  </span>'
-            f'</a>'
+            f"  </span>"
+            f"</a>"
         )
     return (
         '<div class="nav-menu">'
         '  <button class="nav-btn" id="nav-toggle">≡ Maps ▾</button>'
         '  <div class="nav-dropdown">'
         '    <a href="index.html" class="nav-home">← Home</a>'
-        f'   {items}'
-        '  </div>'
-        '</div>'
+        f"   {items}"
+        "  </div>"
+        "</div>"
     )
 
 
@@ -212,21 +232,37 @@ def generate_html(data, elements, maps=None, current_output=""):
     def legend_items(lang):
         return "".join(
             f'<div class="legend-item"><span class="legend-dot" style="background:{c["color"]}"></span>'
-            f'{t(c.get("label",""), lang)}</div>'
+            f"{t(c.get('label', ''), lang)}</div>"
             for c in categories
         )
 
     status_labels = {
-        "en": {"stable": "stable", "evolving": "evolving", "emerging": "emerging", "deprecated": "deprecated"},
-        "fr": {"stable": "stable",  "evolving": "en évolution", "emerging": "émergent", "deprecated": "obsolète"},
+        "en": {
+            "stable": "stable",
+            "evolving": "evolving",
+            "emerging": "emerging",
+            "deprecated": "deprecated",
+        },
+        "fr": {
+            "stable": "stable",
+            "evolving": "en évolution",
+            "emerging": "émergent",
+            "deprecated": "obsolète",
+        },
     }
     status_labels_js = json.dumps(status_labels)
 
     panel_labels = {
-        "en": {"click_hint": "Click any node to see its definition and connections",
-               "description": "Description", "since": "Since"},
-        "fr": {"click_hint": "Cliquez sur un nœud pour voir sa définition et ses connexions",
-               "description": "Description", "since": "Depuis"},
+        "en": {
+            "click_hint": "Click any node to see its definition and connections",
+            "description": "Description",
+            "since": "Since",
+        },
+        "fr": {
+            "click_hint": "Cliquez sur un nœud pour voir sa définition et ses connexions",
+            "description": "Description",
+            "since": "Depuis",
+        },
     }
     panel_labels_js = json.dumps(panel_labels)
 
@@ -877,6 +913,16 @@ const cy = cytoscape({{
         "overlay-padding": "6px",
         "transition-property": "border-color, border-width, background-opacity",
         "transition-duration": "0.15s",
+      }}
+    }},
+    // Model types → tripled size
+    {{
+      selector: "node[category = 'model_types']",
+      style: {{
+        "width": {NODE_WIDTH * 3},
+        "height": {NODE_HEIGHT * 3},
+        "text-max-width": "{NODE_WIDTH * 3 - 10}px",
+        "font-size": "18px",
       }}
     }},
     // Status: evolving → orange border
