@@ -1,350 +1,558 @@
 meta:
-  title: "The LLM Ecosystem — Big Picture"
-  description: "A macro view of the AI/LLM ecosystem: concepts, categories and building blocks"
+  title:
+    en: "The LLM Ecosystem — Big Picture"
+    fr: "L'Écosystème LLM — Vue d'Ensemble"
+  description:
+    en: "A macro view of the AI/LLM ecosystem: concepts, categories and building blocks"
+    fr: "Vue macro de l'écosystème IA/LLM : concepts, catégories et briques fondamentales"
   version: "2026-Q1"
   date: "2026-04-02"
-  language: "en"
 
 layers:
-  1: "CORE CONCEPTS"
-  2: "MODEL TAXONOMY"
-  3: "ACCESS & DEPLOYMENT"
-  4: "APPLICATION PATTERNS"
-  5: "TOOLING ECOSYSTEM"
+  1:
+    en: "CORE CONCEPTS"
+    fr: "CONCEPTS FONDAMENTAUX"
+  2:
+    en: "MODEL TAXONOMY"
+    fr: "TAXONOMIE DES MODÈLES"
+  3:
+    en: "ACCESS & DEPLOYMENT"
+    fr: "ACCÈS & DÉPLOIEMENT"
+  4:
+    en: "APPLICATION PATTERNS"
+    fr: "PATTERNS APPLICATIFS"
+  5:
+    en: "TOOLING ECOSYSTEM"
+    fr: "ÉCOSYSTÈME D'OUTILS"
 
 categories:
   - id: concepts
-    label: "Core Concepts"
-    color: "#F4D03F"       # yellow
-    description: "Fundamental abstract notions to understand before anything else"
+    label:
+      en: "Core Concepts"
+      fr: "Concepts Fondamentaux"
+    color: "#F4D03F"
+    description:
+      en: "Fundamental abstract notions to understand before anything else"
+      fr: "Notions abstraites fondamentales à comprendre en premier"
 
   - id: model_types
-    label: "Model Types"
-    color: "#C39BD3"       # purple
-    description: "The different categories of AI models"
+    label:
+      en: "Model Types"
+      fr: "Types de Modèles"
+    color: "#C39BD3"
+    description:
+      en: "The different categories of AI models"
+      fr: "Les différentes catégories de modèles IA"
 
   - id: access
-    label: "Access & Deployment"
-    color: "#85929E"       # grey
-    description: "The different ways to access and run a model"
+    label:
+      en: "Access & Deployment"
+      fr: "Accès & Déploiement"
+    color: "#85929E"
+    description:
+      en: "The different ways to access and run a model"
+      fr: "Les différentes façons d'accéder à un modèle et de le déployer"
 
   - id: patterns
-    label: "Application Patterns"
-    color: "#58D68D"       # green
-    description: "Architectural patterns to build AI-powered applications"
+    label:
+      en: "Application Patterns"
+      fr: "Patterns Applicatifs"
+    color: "#58D68D"
+    description:
+      en: "Architectural patterns to build AI-powered applications"
+      fr: "Patterns architecturaux pour construire des applications IA"
 
   - id: tooling
-    label: "Tooling Ecosystem"
-    color: "#5DADE2"       # blue
-    description: "Categories of tools developers use to build with LLMs"
+    label:
+      en: "Tooling Ecosystem"
+      fr: "Écosystème d'Outils"
+    color: "#5DADE2"
+    description:
+      en: "Categories of tools developers use to build with LLMs"
+      fr: "Catégories d'outils utilisés par les développeurs pour construire avec les LLM"
 
-# ─────────────────────────────────────────────
-# NODES
-# ─────────────────────────────────────────────
 nodes:
 
   # ── LAYER 1 · CORE CONCEPTS ─────────────────
 
   - id: language_model
-    label: "Language Model"
+    label:
+      en: "Language Model"
+      fr: "Modèle de Langage"
     layer: 1
     category: concepts
     status: stable
     since: "2017"
-    description: >
-      A model trained on massive text datasets to understand and generate human language.
-      The foundation of the entire ecosystem. All LLMs are language models,
-      but not all language models are LLMs.
+    description:
+      en: >
+        A model trained on massive text datasets to understand and generate human language.
+        The foundation of the entire ecosystem. All LLMs are language models,
+        but not all language models are LLMs.
+      fr: >
+        Un modèle entraîné sur d'immenses corpus textuels pour comprendre et générer du langage humain.
+        La brique de base de tout l'écosystème. Tous les LLM sont des modèles de langage,
+        mais tous les modèles de langage ne sont pas des LLM.
 
   - id: token_context
-    label: "Token & Context"
+    label:
+      en: "Token & Context"
+      fr: "Token & Contexte"
     layer: 1
     category: concepts
     status: stable
     since: "2017"
-    description: >
-      A token is the smallest unit of text a model processes (~0.75 words).
-      The context window is the maximum number of tokens a model can handle at once.
-      These two notions define the model's "working memory".
+    description:
+      en: >
+        A token is the smallest unit of text a model processes (~0.75 words).
+        The context window is the maximum number of tokens a model can handle at once.
+        These two notions define the model's "working memory".
+      fr: >
+        Un token est la plus petite unité de texte traitée par un modèle (~0,75 mot).
+        La fenêtre de contexte est le nombre maximum de tokens traités en une seule fois.
+        Ces deux notions définissent la "mémoire de travail" du modèle.
 
   - id: embedding_vectors
-    label: "Embedding & Vectors"
+    label:
+      en: "Embedding & Vectors"
+      fr: "Embedding & Vecteurs"
     layer: 1
     category: concepts
     status: stable
     since: "2013"
-    description: >
-      An embedding is a list of numbers (a vector) that represents the meaning of a text.
-      Similar texts produce similar vectors. This enables semantic search,
-      clustering, and retrieval — the backbone of RAG.
+    description:
+      en: >
+        An embedding is a list of numbers (a vector) that represents the meaning of a text.
+        Similar texts produce similar vectors. This enables semantic search,
+        clustering, and retrieval — the backbone of RAG.
+      fr: >
+        Un embedding est une liste de nombres (un vecteur) représentant le sens d'un texte.
+        Des textes similaires produisent des vecteurs proches. Cela permet la recherche sémantique,
+        le clustering et la récupération de documents — colonne vertébrale du RAG.
 
   - id: training_alignment
-    label: "Training & Alignment"
+    label:
+      en: "Training & Alignment"
+      fr: "Entraînement & Alignement"
     layer: 1
     category: concepts
     status: stable
     since: "2018"
-    description: >
-      Training: teaching a model by exposing it to vast amounts of data.
-      Alignment: shaping the model's behavior to be helpful, honest and safe
-      (via RLHF, Constitutional AI, etc.). Two distinct but essential phases.
+    description:
+      en: >
+        Training: teaching a model by exposing it to vast amounts of data.
+        Alignment: shaping the model's behavior to be helpful, honest and safe
+        (via RLHF, Constitutional AI, etc.). Two distinct but essential phases.
+      fr: >
+        Entraînement : apprendre à un modèle en le exposant à d'immenses quantités de données.
+        Alignement : façonner son comportement pour qu'il soit utile, honnête et sûr
+        (via RLHF, Constitutional AI, etc.). Deux phases distinctes mais indispensables.
 
   - id: inference
-    label: "Inference"
+    label:
+      en: "Inference"
+      fr: "Inférence"
     layer: 1
     category: concepts
     status: stable
     since: "2017"
-    description: >
-      Running a trained model to generate a response from an input.
-      Every API call, every chat message is an inference.
-      Opposite of training — much cheaper and faster.
+    description:
+      en: >
+        Running a trained model to generate a response from an input.
+        Every API call, every chat message is an inference.
+        Opposite of training — much cheaper and faster.
+      fr: >
+        Faire tourner un modèle entraîné pour générer une réponse à partir d'une entrée.
+        Chaque appel API, chaque message de chat est une inférence.
+        Opposé de l'entraînement — beaucoup moins coûteux et plus rapide.
 
   # ── LAYER 2 · MODEL TAXONOMY ─────────────────
 
   - id: frontier_models
-    label: "Frontier Models"
+    label:
+      en: "Frontier Models"
+      fr: "Modèles Frontier"
     layer: 2
     category: model_types
     status: evolving
     since: "2022"
-    description: >
-      The most capable models, developed by a handful of well-funded labs.
-      Closed source — weights not public. Accessed only via API.
-      Examples: GPT-4o, Claude, Gemini. Define the state of the art.
+    description:
+      en: >
+        The most capable models, developed by a handful of well-funded labs.
+        Closed source — weights not public. Accessed only via API.
+        Examples: GPT-4o, Claude, Gemini. Define the state of the art.
+      fr: >
+        Les modèles les plus puissants, développés par quelques grands laboratoires bien financés.
+        Code source fermé — poids non publics. Accessibles uniquement via API.
+        Exemples : GPT-4o, Claude, Gemini. Définissent l'état de l'art.
 
   - id: open_weights
-    label: "Open Weights Models"
+    label:
+      en: "Open Weights Models"
+      fr: "Modèles Open Weights"
     layer: 2
     category: model_types
     status: evolving
     since: "2023"
-    description: >
-      Models whose weights are publicly downloadable. Can be run locally,
-      fine-tuned, and deployed on your own infrastructure.
-      Examples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.
+    description:
+      en: >
+        Models whose weights are publicly downloadable. Can be run locally,
+        fine-tuned, and deployed on your own infrastructure.
+        Examples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.
+      fr: >
+        Modèles dont les poids sont téléchargeables publiquement. Peuvent être exécutés localement,
+        fine-tunés et déployés sur sa propre infrastructure.
+        Exemples : Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.
 
   - id: reasoning_models
-    label: "Reasoning Models"
+    label:
+      en: "Reasoning Models"
+      fr: "Modèles de Raisonnement"
     layer: 2
     category: model_types
     status: emerging
     since: "2024"
-    description: >
-      Models that think step-by-step before giving a final answer.
-      Significantly better at complex logic, math and coding tasks.
-      Examples: o3, DeepSeek-R1, Claude 3.7 extended thinking.
+    description:
+      en: >
+        Models that think step-by-step before giving a final answer.
+        Significantly better at complex logic, math and coding tasks.
+        Examples: o3, DeepSeek-R1, Claude 3.7 extended thinking.
+      fr: >
+        Modèles qui réfléchissent étape par étape avant de donner une réponse finale.
+        Bien meilleurs sur les tâches de logique complexe, de maths et de code.
+        Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.
 
   - id: multimodal_models
-    label: "Multimodal Models"
+    label:
+      en: "Multimodal Models"
+      fr: "Modèles Multimodaux"
     layer: 2
     category: model_types
     status: evolving
     since: "2023"
-    description: >
-      Models that process multiple types of input: text, images, audio, video.
-      Enables use cases like document analysis, image description, voice interfaces.
-      Examples: GPT-4o, Gemini 2.0.
+    description:
+      en: >
+        Models that process multiple types of input: text, images, audio, video.
+        Enables use cases like document analysis, image description, voice interfaces.
+        Examples: GPT-4o, Gemini 2.0.
+      fr: >
+        Modèles capables de traiter plusieurs types d'entrées : texte, images, audio, vidéo.
+        Permet des cas d'usage comme l'analyse de documents, la description d'images, les interfaces vocales.
+        Exemples : GPT-4o, Gemini 2.0.
 
   - id: embedding_models
-    label: "Embedding Models"
+    label:
+      en: "Embedding Models"
+      fr: "Modèles d'Embedding"
     layer: 2
     category: model_types
     status: stable
     since: "2022"
-    description: >
-      Specialized models that convert text into vectors (not text generators).
-      Essential building block for semantic search and RAG pipelines.
-      Examples: text-embedding-3, Voyage-3, nomic-embed.
+    description:
+      en: >
+        Specialized models that convert text into vectors (not text generators).
+        Essential building block for semantic search and RAG pipelines.
+        Examples: text-embedding-3, Voyage-3, nomic-embed.
+      fr: >
+        Modèles spécialisés qui convertissent du texte en vecteurs (pas des générateurs de texte).
+        Brique indispensable pour la recherche sémantique et les pipelines RAG.
+        Exemples : text-embedding-3, Voyage-3, nomic-embed.
 
   - id: slm
-    label: "Small Language Models"
+    label:
+      en: "Small Language Models"
+      fr: "Petits Modèles de Langage"
     layer: 2
     category: model_types
     status: evolving
     since: "2024"
-    description: >
-      Compact models (typically under 15B parameters) optimized for speed,
-      low cost and local/edge deployment. Increasingly competitive with larger models.
-      Examples: Phi-4, Gemma 2, Llama 3 8B.
+    description:
+      en: >
+        Compact models (typically under 15B parameters) optimized for speed,
+        low cost and local/edge deployment. Increasingly competitive with larger models.
+        Examples: Phi-4, Gemma 2, Llama 3 8B.
+      fr: >
+        Modèles compacts (généralement moins de 15B paramètres) optimisés pour la vitesse,
+        le faible coût et le déploiement local/edge. De plus en plus compétitifs face aux grands modèles.
+        Exemples : Phi-4, Gemma 2, Llama 3 8B.
 
   # ── LAYER 3 · ACCESS & DEPLOYMENT ───────────
 
   - id: public_api
-    label: "Public API"
+    label:
+      en: "Public API"
+      fr: "API Publique"
     layer: 3
     category: access
     status: stable
     since: "2020"
-    description: >
-      Send an HTTP request to a provider's endpoint, get a response.
-      The simplest way to use a model. Pay per token.
-      No infrastructure to manage. Operated by the model creator.
+    description:
+      en: >
+        Send an HTTP request to a provider's endpoint, get a response.
+        The simplest way to use a model. Pay per token.
+        No infrastructure to manage. Operated by the model creator.
+      fr: >
+        Envoyer une requête HTTP à l'endpoint d'un fournisseur, recevoir une réponse.
+        La façon la plus simple d'utiliser un modèle. Facturation à la consommation (par token).
+        Aucune infrastructure à gérer. Opéré par le créateur du modèle.
 
   - id: cloud_managed
-    label: "Cloud Managed"
+    label:
+      en: "Cloud Managed"
+      fr: "Cloud Managé"
     layer: 3
     category: access
     status: stable
     since: "2023"
-    description: >
-      Access models through a major cloud provider (AWS, GCP, Azure).
-      Benefits: enterprise compliance, data privacy, multi-model choice,
-      integration with existing cloud infra. Managed by the cloud, not the AI lab.
+    description:
+      en: >
+        Access models through a major cloud provider (AWS, GCP, Azure).
+        Benefits: enterprise compliance, data privacy, multi-model choice,
+        integration with existing cloud infra. Managed by the cloud, not the AI lab.
+      fr: >
+        Accès aux modèles via un grand fournisseur cloud (AWS, GCP, Azure).
+        Avantages : conformité entreprise, confidentialité des données, choix multi-modèles,
+        intégration avec l'infra cloud existante. Géré par le cloud, pas par le laboratoire IA.
 
   - id: self_hosted
-    label: "Self-hosted"
+    label:
+      en: "Self-hosted"
+      fr: "Auto-hébergé"
     layer: 3
     category: access
     status: stable
     since: "2023"
-    description: >
-      Deploy the model on your own GPU servers (on-premise or cloud VMs).
-      Full control over data and costs at scale.
-      Requires ML infrastructure expertise.
+    description:
+      en: >
+        Deploy the model on your own GPU servers (on-premise or cloud VMs).
+        Full control over data and costs at scale.
+        Requires ML infrastructure expertise.
+      fr: >
+        Déployer le modèle sur ses propres serveurs GPU (on-premise ou VMs cloud).
+        Contrôle total sur les données et les coûts à grande échelle.
+        Nécessite une expertise en infrastructure ML.
 
   - id: local_edge
-    label: "Local / Edge"
+    label:
+      en: "Local / Edge"
+      fr: "Local / Edge"
     layer: 3
     category: access
     status: evolving
     since: "2023"
-    description: >
-      Run a model on a laptop, phone, or edge device. No internet required.
-      Maximum privacy. Enabled by smaller, efficient models and tools like Ollama.
-      Growing fast as hardware improves.
+    description:
+      en: >
+        Run a model on a laptop, phone, or edge device. No internet required.
+        Maximum privacy. Enabled by smaller, efficient models and tools like Ollama.
+        Growing fast as hardware improves.
+      fr: >
+        Faire tourner un modèle sur un laptop, téléphone ou dispositif edge. Sans internet.
+        Confidentialité maximale. Rendu possible par des modèles plus petits et des outils comme Ollama.
+        En forte croissance au fil des avancées matérielles.
 
   # ── LAYER 4 · APPLICATION PATTERNS ──────────
 
   - id: rag_pattern
-    label: "RAG"
+    label:
+      en: "RAG"
+      fr: "RAG"
     layer: 4
     category: patterns
     status: stable
     since: "2023"
-    description: >
-      Retrieval-Augmented Generation. At query time, retrieve relevant documents
-      from a knowledge base and inject them into the prompt.
-      Solves knowledge cutoff and hallucination on specific data. Very widely adopted.
+    description:
+      en: >
+        Retrieval-Augmented Generation. At query time, retrieve relevant documents
+        from a knowledge base and inject them into the prompt.
+        Solves knowledge cutoff and hallucination on specific data. Very widely adopted.
+      fr: >
+        Retrieval-Augmented Generation. Au moment de la requête, récupérer les documents pertinents
+        depuis une base de connaissances et les injecter dans le prompt.
+        Résout les problèmes de date limite de connaissance et d'hallucination. Très largement adopté.
 
   - id: agents_pattern
-    label: "AI Agents"
+    label:
+      en: "AI Agents"
+      fr: "Agents IA"
     layer: 4
     category: patterns
     status: evolving
     since: "2023"
-    description: >
-      Systems where an LLM autonomously plans, calls tools, and iterates
-      until a goal is achieved. Shift from "Q&A" to "autonomous task completion".
-      The central paradigm of 2024-2025.
+    description:
+      en: >
+        Systems where an LLM autonomously plans, calls tools, and iterates
+        until a goal is achieved. Shift from "Q&A" to "autonomous task completion".
+        The central paradigm of 2024-2025.
+      fr: >
+        Systèmes où un LLM planifie de façon autonome, appelle des outils et itère
+        jusqu'à atteindre un objectif. Passage du "question-réponse" à l'"exécution autonome de tâches".
+        Le paradigme central de 2024-2025.
 
   - id: tool_use_pattern
-    label: "Tool Use"
+    label:
+      en: "Tool Use"
+      fr: "Utilisation d'Outils"
     layer: 4
     category: patterns
     status: stable
     since: "2023"
-    description: >
-      The model can call external functions during generation: search the web,
-      query a database, run code, send an email.
-      Core capability that transforms LLMs from chat to action.
+    description:
+      en: >
+        The model can call external functions during generation: search the web,
+        query a database, run code, send an email.
+        Core capability that transforms LLMs from chat to action.
+      fr: >
+        Le modèle peut appeler des fonctions externes pendant la génération : chercher sur le web,
+        interroger une base de données, exécuter du code, envoyer un email.
+        Capacité fondamentale qui transforme les LLM de chatbots en acteurs.
 
   - id: finetuning_pattern
-    label: "Fine-tuning"
+    label:
+      en: "Fine-tuning"
+      fr: "Fine-tuning"
     layer: 4
     category: patterns
     status: stable
     since: "2022"
-    description: >
-      Adapt a pre-trained model to a specific domain or behavior
-      by training it further on curated data.
-      Only possible with open-weights models. Produces a specialized model.
+    description:
+      en: >
+        Adapt a pre-trained model to a specific domain or behavior
+        by training it further on curated data.
+        Only possible with open-weights models. Produces a specialized model.
+      fr: >
+        Adapter un modèle pré-entraîné à un domaine ou comportement spécifique
+        en le ré-entraînant sur des données ciblées.
+        Uniquement possible avec les modèles open weights. Produit un modèle spécialisé.
 
   - id: prompt_eng
-    label: "Prompt Engineering"
+    label:
+      en: "Prompt Engineering"
+      fr: "Prompt Engineering"
     layer: 4
     category: patterns
     status: stable
     since: "2022"
-    description: >
-      The practice of crafting inputs (prompts, system prompts, examples)
-      to reliably elicit the desired output quality from a model.
-      No code required. High-leverage, often underestimated.
+    description:
+      en: >
+        The practice of crafting inputs (prompts, system prompts, examples)
+        to reliably elicit the desired output quality from a model.
+        No code required. High-leverage, often underestimated.
+      fr: >
+        L'art de formuler les entrées (prompts, system prompts, exemples)
+        pour obtenir de façon fiable la qualité de sortie souhaitée d'un modèle.
+        Sans code. Très impactant, souvent sous-estimé.
 
   - id: structured_gen
-    label: "Structured Generation"
+    label:
+      en: "Structured Generation"
+      fr: "Génération Structurée"
     layer: 4
     category: patterns
     status: stable
     since: "2023"
-    description: >
-      Force the model to respond in a defined format (e.g. JSON schema).
-      Makes LLM outputs reliable and directly usable by code.
-      Essential for production applications. Also called "structured outputs".
+    description:
+      en: >
+        Force the model to respond in a defined format (e.g. JSON schema).
+        Makes LLM outputs reliable and directly usable by code.
+        Essential for production applications. Also called "structured outputs".
+      fr: >
+        Forcer le modèle à répondre dans un format défini (ex : schéma JSON).
+        Rend les sorties LLM fiables et directement exploitables par du code.
+        Indispensable en production. Aussi appelé "structured outputs".
 
   # ── LAYER 5 · TOOLING ECOSYSTEM ─────────────
 
   - id: orch_frameworks
-    label: "Orchestration\nFrameworks"
+    label:
+      en: "Orchestration\nFrameworks"
+      fr: "Frameworks\nd'Orchestration"
     layer: 5
     category: tooling
     status: evolving
     since: "2022"
-    description: >
-      Libraries that help chain LLM calls, manage memory, and build complex pipelines.
-      Handle the plumbing so developers focus on logic.
-      Examples: LangChain, LlamaIndex, LangGraph, CrewAI.
+    description:
+      en: >
+        Libraries that help chain LLM calls, manage memory, and build complex pipelines.
+        Handle the plumbing so developers focus on logic.
+        Examples: LangChain, LlamaIndex, LangGraph, CrewAI.
+      fr: >
+        Bibliothèques qui permettent d'enchaîner les appels LLM, gérer la mémoire et construire des pipelines complexes.
+        Gèrent la plomberie pour que les développeurs se concentrent sur la logique métier.
+        Exemples : LangChain, LlamaIndex, LangGraph, CrewAI.
 
   - id: ai_coding
-    label: "AI Coding\nAssistants"
+    label:
+      en: "AI Coding\nAssistants"
+      fr: "Assistants de Code IA"
     layer: 5
     category: tooling
     status: evolving
     since: "2021"
-    description: >
-      Tools that integrate LLMs directly into the development workflow.
-      Generate, explain, refactor code. Dramatically boost developer productivity.
-      Examples: Cursor, GitHub Copilot, Claude Code.
+    description:
+      en: >
+        Tools that integrate LLMs directly into the development workflow.
+        Generate, explain, refactor code. Dramatically boost developer productivity.
+        Examples: Cursor, GitHub Copilot, Claude Code.
+      fr: >
+        Outils qui intègrent les LLM directement dans le workflow de développement.
+        Génèrent, expliquent, refactorisent du code. Boostent considérablement la productivité.
+        Exemples : Cursor, GitHub Copilot, Claude Code.
 
   - id: vector_dbs_tool
-    label: "Vector Databases"
+    label:
+      en: "Vector Databases"
+      fr: "Bases Vectorielles"
     layer: 5
     category: tooling
     status: stable
     since: "2021"
-    description: >
-      Databases optimized to store and query embeddings by semantic similarity.
-      The storage backbone of RAG pipelines.
-      Examples: Pinecone, Chroma, Weaviate, pgvector.
+    description:
+      en: >
+        Databases optimized to store and query embeddings by semantic similarity.
+        The storage backbone of RAG pipelines.
+        Examples: Pinecone, Chroma, Weaviate, pgvector.
+      fr: >
+        Bases de données optimisées pour stocker et interroger des embeddings par similarité sémantique.
+        L'épine dorsale du stockage dans les pipelines RAG.
+        Exemples : Pinecone, Chroma, Weaviate, pgvector.
 
   - id: eval_obs
-    label: "Eval &\nObservability"
+    label:
+      en: "Eval &\nObservability"
+      fr: "Éval &\nObservabilité"
     layer: 5
     category: tooling
     status: evolving
     since: "2023"
-    description: >
-      Tools to monitor, trace, evaluate and debug LLM applications in production.
-      Answer: "Is my app actually working well?"
-      Examples: LangSmith, Helicone, Arize, Braintrust.
+    description:
+      en: >
+        Tools to monitor, trace, evaluate and debug LLM applications in production.
+        Answer: "Is my app actually working well?"
+        Examples: LangSmith, Helicone, Arize, Braintrust.
+      fr: >
+        Outils pour monitorer, tracer, évaluer et déboguer les applications LLM en production.
+        Répondent à la question : "Mon application fonctionne-t-elle vraiment bien ?"
+        Exemples : LangSmith, Helicone, Arize, Braintrust.
 
   - id: model_hubs
-    label: "Model Hubs"
+    label:
+      en: "Model Hubs"
+      fr: "Hubs de Modèles"
     layer: 5
     category: tooling
     status: stable
     since: "2018"
-    description: >
-      Platforms to discover, download, share and run open models.
-      The "GitHub of AI models". Central to the open-weights ecosystem.
-      Examples: HuggingFace, Ollama, Replicate.
+    description:
+      en: >
+        Platforms to discover, download, share and run open models.
+        The "GitHub of AI models". Central to the open-weights ecosystem.
+        Examples: HuggingFace, Ollama, Replicate.
+      fr: >
+        Plateformes pour découvrir, télécharger, partager et faire tourner des modèles ouverts.
+        Le "GitHub des modèles IA". Central dans l'écosystème open weights.
+        Exemples : HuggingFace, Ollama, Replicate.
 
-# ─────────────────────────────────────────────
-# EDGES
-# ─────────────────────────────────────────────
 edges:
 
-  # Core Concepts → Model Taxonomy
   - from: language_model
     to: frontier_models
     label: "manifests as"
@@ -381,8 +589,6 @@ edges:
     to: language_model
     label: "constrains"
     type: part_of
-
-  # Model Taxonomy → Access & Deployment
   - from: frontier_models
     to: public_api
     label: "only via"
@@ -411,14 +617,10 @@ edges:
     to: public_api
     label: "accessed via"
     type: accesses
-
-  # Model Taxonomy → Application Patterns
   - from: open_weights
     to: finetuning_pattern
     label: "required for"
     type: enables
-
-  # Access → Application Patterns
   - from: public_api
     to: rag_pattern
     label: "enables"
@@ -435,8 +637,6 @@ edges:
     to: rag_pattern
     label: "enables (private)"
     type: enables
-
-  # Application Patterns → Application Patterns
   - from: tool_use_pattern
     to: agents_pattern
     label: "core capability of"
@@ -457,8 +657,6 @@ edges:
     to: tool_use_pattern
     label: "combined with"
     type: uses
-
-  # Application Patterns → Tooling
   - from: rag_pattern
     to: orch_frameworks
     label: "built with"
@@ -475,8 +673,6 @@ edges:
     to: eval_obs
     label: "monitored by"
     type: uses
-
-  # Model Taxonomy → Tooling
   - from: open_weights
     to: model_hubs
     label: "distributed via"
@@ -489,8 +685,6 @@ edges:
     to: ai_coding
     label: "powers"
     type: powers
-
-  # Embedding → Vector DB → RAG
   - from: embedding_models
     to: vector_dbs_tool
     label: "populates"

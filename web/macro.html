@@ -29,6 +29,32 @@
   }
   header h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
   header .meta { font-size: 12px; color: #95A5A6; }
+  .lang-toggle {
+    display: flex;
+    gap: 4px;
+    margin-left: 16px;
+  }
+  .lang-btn {
+    padding: 4px 10px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #95A5A6;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.15s;
+  }
+  .lang-btn.active {
+    background: #E74C3C;
+    border-color: #E74C3C;
+    color: white;
+  }
+  .lang-btn:hover:not(.active) {
+    border-color: #aaa;
+    color: white;
+  }
 
   .main {
     display: flex;
@@ -181,11 +207,17 @@
 <body>
 
 <header>
-  <div>
-    <h1>The LLM Ecosystem — Big Picture</h1>
-    <div class="meta">v2026-Q1 · 2026-04-02 · EN</div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div>
+      <h1 id="main-title">The LLM Ecosystem — Big Picture</h1>
+      <div class="meta">v2026-Q1 · 2026-04-02</div>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+    </div>
   </div>
-  <div class="meta">Click a node to explore · Scroll to zoom · Drag to pan</div>
+  <div class="meta" id="hint-text">Click a node to explore · Scroll to zoom · Drag to pan</div>
 </header>
 
 <div class="main">
@@ -217,10 +249,11 @@
       </div>
     </div>
     <div id="legend">
-      <h3>Categories</h3>
-      <div class="legend-item"><span class="legend-dot" style="background:#F4D03F"></span>Core Concepts</div><div class="legend-item"><span class="legend-dot" style="background:#C39BD3"></span>Model Types</div><div class="legend-item"><span class="legend-dot" style="background:#85929E"></span>Access & Deployment</div><div class="legend-item"><span class="legend-dot" style="background:#58D68D"></span>Application Patterns</div><div class="legend-item"><span class="legend-dot" style="background:#5DADE2"></span>Tooling Ecosystem</div>
-      <h3 style="margin-top:12px;">Status</h3>
-      <div class="legend-item"><span class="status-badge" style="color:#27AE60;border-color:#27AE60">stable</span></div><div class="legend-item"><span class="status-badge" style="color:#E67E22;border-color:#E67E22">evolving</span></div><div class="legend-item"><span class="status-badge" style="color:#8E44AD;border-color:#8E44AD">emerging</span></div><div class="legend-item"><span class="status-badge" style="color:#95A5A6;border-color:#95A5A6">deprecated</span></div>
+      <h3 id="legend-cat-title">Categories</h3>
+      <div id="legend-en"><div class="legend-item"><span class="legend-dot" style="background:#F4D03F"></span>Core Concepts</div><div class="legend-item"><span class="legend-dot" style="background:#C39BD3"></span>Model Types</div><div class="legend-item"><span class="legend-dot" style="background:#85929E"></span>Access & Deployment</div><div class="legend-item"><span class="legend-dot" style="background:#58D68D"></span>Application Patterns</div><div class="legend-item"><span class="legend-dot" style="background:#5DADE2"></span>Tooling Ecosystem</div></div>
+      <div id="legend-fr" style="display:none"><div class="legend-item"><span class="legend-dot" style="background:#F4D03F"></span>Concepts Fondamentaux</div><div class="legend-item"><span class="legend-dot" style="background:#C39BD3"></span>Types de Modèles</div><div class="legend-item"><span class="legend-dot" style="background:#85929E"></span>Accès & Déploiement</div><div class="legend-item"><span class="legend-dot" style="background:#58D68D"></span>Patterns Applicatifs</div><div class="legend-item"><span class="legend-dot" style="background:#5DADE2"></span>Écosystème d'Outils</div></div>
+      <h3 style="margin-top:12px;" id="legend-status-title">Status</h3>
+      <div id="status-legend-items"></div>
     </div>
   </div>
 </div>
@@ -237,9 +270,14 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
-      "description": "A model trained on massive text datasets to understand and generate human language. The foundation of the entire ecosystem. All LLMs are language models, but not all language models are LLMs.",
       "color": "#F4D03F",
-      "layerLabel": "CORE CONCEPTS"
+      "layerLabel": "CORE CONCEPTS",
+      "label_en": "Language Model",
+      "description_en": "A model trained on massive text datasets to understand and generate human language. The foundation of the entire ecosystem. All LLMs are language models, but not all language models are LLMs.",
+      "layerLabel_en": "CORE CONCEPTS",
+      "label_fr": "Mod\u00e8le de Langage",
+      "description_fr": "Un mod\u00e8le entra\u00een\u00e9 sur d'immenses corpus textuels pour comprendre et g\u00e9n\u00e9rer du langage humain. La brique de base de tout l'\u00e9cosyst\u00e8me. Tous les LLM sont des mod\u00e8les de langage, mais tous les mod\u00e8les de langage ne sont pas des LLM.",
+      "layerLabel_fr": "CONCEPTS FONDAMENTAUX"
     },
     "position": {
       "x": 1100,
@@ -257,9 +295,14 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
-      "description": "A token is the smallest unit of text a model processes (~0.75 words). The context window is the maximum number of tokens a model can handle at once. These two notions define the model's \"working memory\".",
       "color": "#F4D03F",
-      "layerLabel": "CORE CONCEPTS"
+      "layerLabel": "CORE CONCEPTS",
+      "label_en": "Token & Context",
+      "description_en": "A token is the smallest unit of text a model processes (~0.75 words). The context window is the maximum number of tokens a model can handle at once. These two notions define the model's \"working memory\".",
+      "layerLabel_en": "CORE CONCEPTS",
+      "label_fr": "Token & Contexte",
+      "description_fr": "Un token est la plus petite unit\u00e9 de texte trait\u00e9e par un mod\u00e8le (~0,75 mot). La fen\u00eatre de contexte est le nombre maximum de tokens trait\u00e9s en une seule fois. Ces deux notions d\u00e9finissent la \"m\u00e9moire de travail\" du mod\u00e8le.",
+      "layerLabel_fr": "CONCEPTS FONDAMENTAUX"
     },
     "position": {
       "x": 1100,
@@ -277,9 +320,14 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2013",
-      "description": "An embedding is a list of numbers (a vector) that represents the meaning of a text. Similar texts produce similar vectors. This enables semantic search, clustering, and retrieval \u2014 the backbone of RAG.",
       "color": "#F4D03F",
-      "layerLabel": "CORE CONCEPTS"
+      "layerLabel": "CORE CONCEPTS",
+      "label_en": "Embedding & Vectors",
+      "description_en": "An embedding is a list of numbers (a vector) that represents the meaning of a text. Similar texts produce similar vectors. This enables semantic search, clustering, and retrieval \u2014 the backbone of RAG.",
+      "layerLabel_en": "CORE CONCEPTS",
+      "label_fr": "Embedding & Vecteurs",
+      "description_fr": "Un embedding est une liste de nombres (un vecteur) repr\u00e9sentant le sens d'un texte. Des textes similaires produisent des vecteurs proches. Cela permet la recherche s\u00e9mantique, le clustering et la r\u00e9cup\u00e9ration de documents \u2014 colonne vert\u00e9brale du RAG.",
+      "layerLabel_fr": "CONCEPTS FONDAMENTAUX"
     },
     "position": {
       "x": 1100,
@@ -297,9 +345,14 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2018",
-      "description": "Training: teaching a model by exposing it to vast amounts of data. Alignment: shaping the model's behavior to be helpful, honest and safe (via RLHF, Constitutional AI, etc.). Two distinct but essential phases.",
       "color": "#F4D03F",
-      "layerLabel": "CORE CONCEPTS"
+      "layerLabel": "CORE CONCEPTS",
+      "label_en": "Training & Alignment",
+      "description_en": "Training: teaching a model by exposing it to vast amounts of data. Alignment: shaping the model's behavior to be helpful, honest and safe (via RLHF, Constitutional AI, etc.). Two distinct but essential phases.",
+      "layerLabel_en": "CORE CONCEPTS",
+      "label_fr": "Entra\u00eenement & Alignement",
+      "description_fr": "Entra\u00eenement : apprendre \u00e0 un mod\u00e8le en le exposant \u00e0 d'immenses quantit\u00e9s de donn\u00e9es. Alignement : fa\u00e7onner son comportement pour qu'il soit utile, honn\u00eate et s\u00fbr (via RLHF, Constitutional AI, etc.). Deux phases distinctes mais indispensables.",
+      "layerLabel_fr": "CONCEPTS FONDAMENTAUX"
     },
     "position": {
       "x": 1100,
@@ -317,9 +370,14 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
-      "description": "Running a trained model to generate a response from an input. Every API call, every chat message is an inference. Opposite of training \u2014 much cheaper and faster.",
       "color": "#F4D03F",
-      "layerLabel": "CORE CONCEPTS"
+      "layerLabel": "CORE CONCEPTS",
+      "label_en": "Inference",
+      "description_en": "Running a trained model to generate a response from an input. Every API call, every chat message is an inference. Opposite of training \u2014 much cheaper and faster.",
+      "layerLabel_en": "CORE CONCEPTS",
+      "label_fr": "Inf\u00e9rence",
+      "description_fr": "Faire tourner un mod\u00e8le entra\u00een\u00e9 pour g\u00e9n\u00e9rer une r\u00e9ponse \u00e0 partir d'une entr\u00e9e. Chaque appel API, chaque message de chat est une inf\u00e9rence. Oppos\u00e9 de l'entra\u00eenement \u2014 beaucoup moins co\u00fbteux et plus rapide.",
+      "layerLabel_fr": "CONCEPTS FONDAMENTAUX"
     },
     "position": {
       "x": 1100,
@@ -337,9 +395,14 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2022",
-      "description": "The most capable models, developed by a handful of well-funded labs. Closed source \u2014 weights not public. Accessed only via API. Examples: GPT-4o, Claude, Gemini. Define the state of the art.",
       "color": "#C39BD3",
-      "layerLabel": "MODEL TAXONOMY"
+      "layerLabel": "MODEL TAXONOMY",
+      "label_en": "Frontier Models",
+      "description_en": "The most capable models, developed by a handful of well-funded labs. Closed source \u2014 weights not public. Accessed only via API. Examples: GPT-4o, Claude, Gemini. Define the state of the art.",
+      "layerLabel_en": "MODEL TAXONOMY",
+      "label_fr": "Mod\u00e8les Frontier",
+      "description_fr": "Les mod\u00e8les les plus puissants, d\u00e9velopp\u00e9s par quelques grands laboratoires bien financ\u00e9s. Code source ferm\u00e9 \u2014 poids non publics. Accessibles uniquement via API. Exemples : GPT-4o, Claude, Gemini. D\u00e9finissent l'\u00e9tat de l'art.",
+      "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
     },
     "position": {
       "x": 400,
@@ -357,9 +420,14 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2023",
-      "description": "Models whose weights are publicly downloadable. Can be run locally, fine-tuned, and deployed on your own infrastructure. Examples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
       "color": "#C39BD3",
-      "layerLabel": "MODEL TAXONOMY"
+      "layerLabel": "MODEL TAXONOMY",
+      "label_en": "Open Weights Models",
+      "description_en": "Models whose weights are publicly downloadable. Can be run locally, fine-tuned, and deployed on your own infrastructure. Examples: Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
+      "layerLabel_en": "MODEL TAXONOMY",
+      "label_fr": "Mod\u00e8les Open Weights",
+      "description_fr": "Mod\u00e8les dont les poids sont t\u00e9l\u00e9chargeables publiquement. Peuvent \u00eatre ex\u00e9cut\u00e9s localement, fine-tun\u00e9s et d\u00e9ploy\u00e9s sur sa propre infrastructure. Exemples : Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.",
+      "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
     },
     "position": {
       "x": 400,
@@ -377,9 +445,14 @@ const elements = [
       "layer": 2,
       "status": "emerging",
       "since": "2024",
-      "description": "Models that think step-by-step before giving a final answer. Significantly better at complex logic, math and coding tasks. Examples: o3, DeepSeek-R1, Claude 3.7 extended thinking.",
       "color": "#C39BD3",
-      "layerLabel": "MODEL TAXONOMY"
+      "layerLabel": "MODEL TAXONOMY",
+      "label_en": "Reasoning Models",
+      "description_en": "Models that think step-by-step before giving a final answer. Significantly better at complex logic, math and coding tasks. Examples: o3, DeepSeek-R1, Claude 3.7 extended thinking.",
+      "layerLabel_en": "MODEL TAXONOMY",
+      "label_fr": "Mod\u00e8les de Raisonnement",
+      "description_fr": "Mod\u00e8les qui r\u00e9fl\u00e9chissent \u00e9tape par \u00e9tape avant de donner une r\u00e9ponse finale. Bien meilleurs sur les t\u00e2ches de logique complexe, de maths et de code. Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.",
+      "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
     },
     "position": {
       "x": 400,
@@ -397,9 +470,14 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2023",
-      "description": "Models that process multiple types of input: text, images, audio, video. Enables use cases like document analysis, image description, voice interfaces. Examples: GPT-4o, Gemini 2.0.",
       "color": "#C39BD3",
-      "layerLabel": "MODEL TAXONOMY"
+      "layerLabel": "MODEL TAXONOMY",
+      "label_en": "Multimodal Models",
+      "description_en": "Models that process multiple types of input: text, images, audio, video. Enables use cases like document analysis, image description, voice interfaces. Examples: GPT-4o, Gemini 2.0.",
+      "layerLabel_en": "MODEL TAXONOMY",
+      "label_fr": "Mod\u00e8les Multimodaux",
+      "description_fr": "Mod\u00e8les capables de traiter plusieurs types d'entr\u00e9es : texte, images, audio, vid\u00e9o. Permet des cas d'usage comme l'analyse de documents, la description d'images, les interfaces vocales. Exemples : GPT-4o, Gemini 2.0.",
+      "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
     },
     "position": {
       "x": 400,
@@ -417,9 +495,14 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2022",
-      "description": "Specialized models that convert text into vectors (not text generators). Essential building block for semantic search and RAG pipelines. Examples: text-embedding-3, Voyage-3, nomic-embed.",
       "color": "#C39BD3",
-      "layerLabel": "MODEL TAXONOMY"
+      "layerLabel": "MODEL TAXONOMY",
+      "label_en": "Embedding Models",
+      "description_en": "Specialized models that convert text into vectors (not text generators). Essential building block for semantic search and RAG pipelines. Examples: text-embedding-3, Voyage-3, nomic-embed.",
+      "layerLabel_en": "MODEL TAXONOMY",
+      "label_fr": "Mod\u00e8les d'Embedding",
+      "description_fr": "Mod\u00e8les sp\u00e9cialis\u00e9s qui convertissent du texte en vecteurs (pas des g\u00e9n\u00e9rateurs de texte). Brique indispensable pour la recherche s\u00e9mantique et les pipelines RAG. Exemples : text-embedding-3, Voyage-3, nomic-embed.",
+      "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
     },
     "position": {
       "x": 400,
@@ -437,9 +520,14 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2024",
-      "description": "Compact models (typically under 15B parameters) optimized for speed, low cost and local/edge deployment. Increasingly competitive with larger models. Examples: Phi-4, Gemma 2, Llama 3 8B.",
       "color": "#C39BD3",
-      "layerLabel": "MODEL TAXONOMY"
+      "layerLabel": "MODEL TAXONOMY",
+      "label_en": "Small Language Models",
+      "description_en": "Compact models (typically under 15B parameters) optimized for speed, low cost and local/edge deployment. Increasingly competitive with larger models. Examples: Phi-4, Gemma 2, Llama 3 8B.",
+      "layerLabel_en": "MODEL TAXONOMY",
+      "label_fr": "Petits Mod\u00e8les de Langage",
+      "description_fr": "Mod\u00e8les compacts (g\u00e9n\u00e9ralement moins de 15B param\u00e8tres) optimis\u00e9s pour la vitesse, le faible co\u00fbt et le d\u00e9ploiement local/edge. De plus en plus comp\u00e9titifs face aux grands mod\u00e8les. Exemples : Phi-4, Gemma 2, Llama 3 8B.",
+      "layerLabel_fr": "TAXONOMIE DES MOD\u00c8LES"
     },
     "position": {
       "x": 400,
@@ -457,9 +545,14 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2020",
-      "description": "Send an HTTP request to a provider's endpoint, get a response. The simplest way to use a model. Pay per token. No infrastructure to manage. Operated by the model creator.",
       "color": "#85929E",
-      "layerLabel": "ACCESS & DEPLOYMENT"
+      "layerLabel": "ACCESS & DEPLOYMENT",
+      "label_en": "Public API",
+      "description_en": "Send an HTTP request to a provider's endpoint, get a response. The simplest way to use a model. Pay per token. No infrastructure to manage. Operated by the model creator.",
+      "layerLabel_en": "ACCESS & DEPLOYMENT",
+      "label_fr": "API Publique",
+      "description_fr": "Envoyer une requ\u00eate HTTP \u00e0 l'endpoint d'un fournisseur, recevoir une r\u00e9ponse. La fa\u00e7on la plus simple d'utiliser un mod\u00e8le. Facturation \u00e0 la consommation (par token). Aucune infrastructure \u00e0 g\u00e9rer. Op\u00e9r\u00e9 par le cr\u00e9ateur du mod\u00e8le.",
+      "layerLabel_fr": "ACC\u00c8S & D\u00c9PLOIEMENT"
     },
     "position": {
       "x": -200,
@@ -477,9 +570,14 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2023",
-      "description": "Access models through a major cloud provider (AWS, GCP, Azure). Benefits: enterprise compliance, data privacy, multi-model choice, integration with existing cloud infra. Managed by the cloud, not the AI lab.",
       "color": "#85929E",
-      "layerLabel": "ACCESS & DEPLOYMENT"
+      "layerLabel": "ACCESS & DEPLOYMENT",
+      "label_en": "Cloud Managed",
+      "description_en": "Access models through a major cloud provider (AWS, GCP, Azure). Benefits: enterprise compliance, data privacy, multi-model choice, integration with existing cloud infra. Managed by the cloud, not the AI lab.",
+      "layerLabel_en": "ACCESS & DEPLOYMENT",
+      "label_fr": "Cloud Manag\u00e9",
+      "description_fr": "Acc\u00e8s aux mod\u00e8les via un grand fournisseur cloud (AWS, GCP, Azure). Avantages : conformit\u00e9 entreprise, confidentialit\u00e9 des donn\u00e9es, choix multi-mod\u00e8les, int\u00e9gration avec l'infra cloud existante. G\u00e9r\u00e9 par le cloud, pas par le laboratoire IA.",
+      "layerLabel_fr": "ACC\u00c8S & D\u00c9PLOIEMENT"
     },
     "position": {
       "x": -200,
@@ -497,9 +595,14 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2023",
-      "description": "Deploy the model on your own GPU servers (on-premise or cloud VMs). Full control over data and costs at scale. Requires ML infrastructure expertise.",
       "color": "#85929E",
-      "layerLabel": "ACCESS & DEPLOYMENT"
+      "layerLabel": "ACCESS & DEPLOYMENT",
+      "label_en": "Self-hosted",
+      "description_en": "Deploy the model on your own GPU servers (on-premise or cloud VMs). Full control over data and costs at scale. Requires ML infrastructure expertise.",
+      "layerLabel_en": "ACCESS & DEPLOYMENT",
+      "label_fr": "Auto-h\u00e9berg\u00e9",
+      "description_fr": "D\u00e9ployer le mod\u00e8le sur ses propres serveurs GPU (on-premise ou VMs cloud). Contr\u00f4le total sur les donn\u00e9es et les co\u00fbts \u00e0 grande \u00e9chelle. N\u00e9cessite une expertise en infrastructure ML.",
+      "layerLabel_fr": "ACC\u00c8S & D\u00c9PLOIEMENT"
     },
     "position": {
       "x": -200,
@@ -517,9 +620,14 @@ const elements = [
       "layer": 3,
       "status": "evolving",
       "since": "2023",
-      "description": "Run a model on a laptop, phone, or edge device. No internet required. Maximum privacy. Enabled by smaller, efficient models and tools like Ollama. Growing fast as hardware improves.",
       "color": "#85929E",
-      "layerLabel": "ACCESS & DEPLOYMENT"
+      "layerLabel": "ACCESS & DEPLOYMENT",
+      "label_en": "Local / Edge",
+      "description_en": "Run a model on a laptop, phone, or edge device. No internet required. Maximum privacy. Enabled by smaller, efficient models and tools like Ollama. Growing fast as hardware improves.",
+      "layerLabel_en": "ACCESS & DEPLOYMENT",
+      "label_fr": "Local / Edge",
+      "description_fr": "Faire tourner un mod\u00e8le sur un laptop, t\u00e9l\u00e9phone ou dispositif edge. Sans internet. Confidentialit\u00e9 maximale. Rendu possible par des mod\u00e8les plus petits et des outils comme Ollama. En forte croissance au fil des avanc\u00e9es mat\u00e9rielles.",
+      "layerLabel_fr": "ACC\u00c8S & D\u00c9PLOIEMENT"
     },
     "position": {
       "x": -200,
@@ -537,9 +645,14 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2023",
-      "description": "Retrieval-Augmented Generation. At query time, retrieve relevant documents from a knowledge base and inject them into the prompt. Solves knowledge cutoff and hallucination on specific data. Very widely adopted.",
       "color": "#58D68D",
-      "layerLabel": "APPLICATION PATTERNS"
+      "layerLabel": "APPLICATION PATTERNS",
+      "label_en": "RAG",
+      "description_en": "Retrieval-Augmented Generation. At query time, retrieve relevant documents from a knowledge base and inject them into the prompt. Solves knowledge cutoff and hallucination on specific data. Very widely adopted.",
+      "layerLabel_en": "APPLICATION PATTERNS",
+      "label_fr": "RAG",
+      "description_fr": "Retrieval-Augmented Generation. Au moment de la requ\u00eate, r\u00e9cup\u00e9rer les documents pertinents depuis une base de connaissances et les injecter dans le prompt. R\u00e9sout les probl\u00e8mes de date limite de connaissance et d'hallucination. Tr\u00e8s largement adopt\u00e9.",
+      "layerLabel_fr": "PATTERNS APPLICATIFS"
     },
     "position": {
       "x": -700,
@@ -557,9 +670,14 @@ const elements = [
       "layer": 4,
       "status": "evolving",
       "since": "2023",
-      "description": "Systems where an LLM autonomously plans, calls tools, and iterates until a goal is achieved. Shift from \"Q&A\" to \"autonomous task completion\". The central paradigm of 2024-2025.",
       "color": "#58D68D",
-      "layerLabel": "APPLICATION PATTERNS"
+      "layerLabel": "APPLICATION PATTERNS",
+      "label_en": "AI Agents",
+      "description_en": "Systems where an LLM autonomously plans, calls tools, and iterates until a goal is achieved. Shift from \"Q&A\" to \"autonomous task completion\". The central paradigm of 2024-2025.",
+      "layerLabel_en": "APPLICATION PATTERNS",
+      "label_fr": "Agents IA",
+      "description_fr": "Syst\u00e8mes o\u00f9 un LLM planifie de fa\u00e7on autonome, appelle des outils et it\u00e8re jusqu'\u00e0 atteindre un objectif. Passage du \"question-r\u00e9ponse\" \u00e0 l'\"ex\u00e9cution autonome de t\u00e2ches\". Le paradigme central de 2024-2025.",
+      "layerLabel_fr": "PATTERNS APPLICATIFS"
     },
     "position": {
       "x": -700,
@@ -577,9 +695,14 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2023",
-      "description": "The model can call external functions during generation: search the web, query a database, run code, send an email. Core capability that transforms LLMs from chat to action.",
       "color": "#58D68D",
-      "layerLabel": "APPLICATION PATTERNS"
+      "layerLabel": "APPLICATION PATTERNS",
+      "label_en": "Tool Use",
+      "description_en": "The model can call external functions during generation: search the web, query a database, run code, send an email. Core capability that transforms LLMs from chat to action.",
+      "layerLabel_en": "APPLICATION PATTERNS",
+      "label_fr": "Utilisation d'Outils",
+      "description_fr": "Le mod\u00e8le peut appeler des fonctions externes pendant la g\u00e9n\u00e9ration : chercher sur le web, interroger une base de donn\u00e9es, ex\u00e9cuter du code, envoyer un email. Capacit\u00e9 fondamentale qui transforme les LLM de chatbots en acteurs.",
+      "layerLabel_fr": "PATTERNS APPLICATIFS"
     },
     "position": {
       "x": -700,
@@ -597,9 +720,14 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2022",
-      "description": "Adapt a pre-trained model to a specific domain or behavior by training it further on curated data. Only possible with open-weights models. Produces a specialized model.",
       "color": "#58D68D",
-      "layerLabel": "APPLICATION PATTERNS"
+      "layerLabel": "APPLICATION PATTERNS",
+      "label_en": "Fine-tuning",
+      "description_en": "Adapt a pre-trained model to a specific domain or behavior by training it further on curated data. Only possible with open-weights models. Produces a specialized model.",
+      "layerLabel_en": "APPLICATION PATTERNS",
+      "label_fr": "Fine-tuning",
+      "description_fr": "Adapter un mod\u00e8le pr\u00e9-entra\u00een\u00e9 \u00e0 un domaine ou comportement sp\u00e9cifique en le r\u00e9-entra\u00eenant sur des donn\u00e9es cibl\u00e9es. Uniquement possible avec les mod\u00e8les open weights. Produit un mod\u00e8le sp\u00e9cialis\u00e9.",
+      "layerLabel_fr": "PATTERNS APPLICATIFS"
     },
     "position": {
       "x": -700,
@@ -617,9 +745,14 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2022",
-      "description": "The practice of crafting inputs (prompts, system prompts, examples) to reliably elicit the desired output quality from a model. No code required. High-leverage, often underestimated.",
       "color": "#58D68D",
-      "layerLabel": "APPLICATION PATTERNS"
+      "layerLabel": "APPLICATION PATTERNS",
+      "label_en": "Prompt Engineering",
+      "description_en": "The practice of crafting inputs (prompts, system prompts, examples) to reliably elicit the desired output quality from a model. No code required. High-leverage, often underestimated.",
+      "layerLabel_en": "APPLICATION PATTERNS",
+      "label_fr": "Prompt Engineering",
+      "description_fr": "L'art de formuler les entr\u00e9es (prompts, system prompts, exemples) pour obtenir de fa\u00e7on fiable la qualit\u00e9 de sortie souhait\u00e9e d'un mod\u00e8le. Sans code. Tr\u00e8s impactant, souvent sous-estim\u00e9.",
+      "layerLabel_fr": "PATTERNS APPLICATIFS"
     },
     "position": {
       "x": -700,
@@ -637,9 +770,14 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2023",
-      "description": "Force the model to respond in a defined format (e.g. JSON schema). Makes LLM outputs reliable and directly usable by code. Essential for production applications. Also called \"structured outputs\".",
       "color": "#58D68D",
-      "layerLabel": "APPLICATION PATTERNS"
+      "layerLabel": "APPLICATION PATTERNS",
+      "label_en": "Structured Generation",
+      "description_en": "Force the model to respond in a defined format (e.g. JSON schema). Makes LLM outputs reliable and directly usable by code. Essential for production applications. Also called \"structured outputs\".",
+      "layerLabel_en": "APPLICATION PATTERNS",
+      "label_fr": "G\u00e9n\u00e9ration Structur\u00e9e",
+      "description_fr": "Forcer le mod\u00e8le \u00e0 r\u00e9pondre dans un format d\u00e9fini (ex : sch\u00e9ma JSON). Rend les sorties LLM fiables et directement exploitables par du code. Indispensable en production. Aussi appel\u00e9 \"structured outputs\".",
+      "layerLabel_fr": "PATTERNS APPLICATIFS"
     },
     "position": {
       "x": -700,
@@ -657,9 +795,14 @@ const elements = [
       "layer": 5,
       "status": "evolving",
       "since": "2022",
-      "description": "Libraries that help chain LLM calls, manage memory, and build complex pipelines. Handle the plumbing so developers focus on logic. Examples: LangChain, LlamaIndex, LangGraph, CrewAI.",
       "color": "#5DADE2",
-      "layerLabel": "TOOLING ECOSYSTEM"
+      "layerLabel": "TOOLING ECOSYSTEM",
+      "label_en": "Orchestration\nFrameworks",
+      "description_en": "Libraries that help chain LLM calls, manage memory, and build complex pipelines. Handle the plumbing so developers focus on logic. Examples: LangChain, LlamaIndex, LangGraph, CrewAI.",
+      "layerLabel_en": "TOOLING ECOSYSTEM",
+      "label_fr": "Frameworks\nd'Orchestration",
+      "description_fr": "Biblioth\u00e8ques qui permettent d'encha\u00eener les appels LLM, g\u00e9rer la m\u00e9moire et construire des pipelines complexes. G\u00e8rent la plomberie pour que les d\u00e9veloppeurs se concentrent sur la logique m\u00e9tier. Exemples : LangChain, LlamaIndex, LangGraph, CrewAI.",
+      "layerLabel_fr": "\u00c9COSYST\u00c8ME D'OUTILS"
     },
     "position": {
       "x": -1200,
@@ -677,9 +820,14 @@ const elements = [
       "layer": 5,
       "status": "evolving",
       "since": "2021",
-      "description": "Tools that integrate LLMs directly into the development workflow. Generate, explain, refactor code. Dramatically boost developer productivity. Examples: Cursor, GitHub Copilot, Claude Code.",
       "color": "#5DADE2",
-      "layerLabel": "TOOLING ECOSYSTEM"
+      "layerLabel": "TOOLING ECOSYSTEM",
+      "label_en": "AI Coding\nAssistants",
+      "description_en": "Tools that integrate LLMs directly into the development workflow. Generate, explain, refactor code. Dramatically boost developer productivity. Examples: Cursor, GitHub Copilot, Claude Code.",
+      "layerLabel_en": "TOOLING ECOSYSTEM",
+      "label_fr": "Assistants de Code IA",
+      "description_fr": "Outils qui int\u00e8grent les LLM directement dans le workflow de d\u00e9veloppement. G\u00e9n\u00e8rent, expliquent, refactorisent du code. Boostent consid\u00e9rablement la productivit\u00e9. Exemples : Cursor, GitHub Copilot, Claude Code.",
+      "layerLabel_fr": "\u00c9COSYST\u00c8ME D'OUTILS"
     },
     "position": {
       "x": -1200,
@@ -697,9 +845,14 @@ const elements = [
       "layer": 5,
       "status": "stable",
       "since": "2021",
-      "description": "Databases optimized to store and query embeddings by semantic similarity. The storage backbone of RAG pipelines. Examples: Pinecone, Chroma, Weaviate, pgvector.",
       "color": "#5DADE2",
-      "layerLabel": "TOOLING ECOSYSTEM"
+      "layerLabel": "TOOLING ECOSYSTEM",
+      "label_en": "Vector Databases",
+      "description_en": "Databases optimized to store and query embeddings by semantic similarity. The storage backbone of RAG pipelines. Examples: Pinecone, Chroma, Weaviate, pgvector.",
+      "layerLabel_en": "TOOLING ECOSYSTEM",
+      "label_fr": "Bases Vectorielles",
+      "description_fr": "Bases de donn\u00e9es optimis\u00e9es pour stocker et interroger des embeddings par similarit\u00e9 s\u00e9mantique. L'\u00e9pine dorsale du stockage dans les pipelines RAG. Exemples : Pinecone, Chroma, Weaviate, pgvector.",
+      "layerLabel_fr": "\u00c9COSYST\u00c8ME D'OUTILS"
     },
     "position": {
       "x": -1200,
@@ -717,9 +870,14 @@ const elements = [
       "layer": 5,
       "status": "evolving",
       "since": "2023",
-      "description": "Tools to monitor, trace, evaluate and debug LLM applications in production. Answer: \"Is my app actually working well?\" Examples: LangSmith, Helicone, Arize, Braintrust.",
       "color": "#5DADE2",
-      "layerLabel": "TOOLING ECOSYSTEM"
+      "layerLabel": "TOOLING ECOSYSTEM",
+      "label_en": "Eval &\nObservability",
+      "description_en": "Tools to monitor, trace, evaluate and debug LLM applications in production. Answer: \"Is my app actually working well?\" Examples: LangSmith, Helicone, Arize, Braintrust.",
+      "layerLabel_en": "TOOLING ECOSYSTEM",
+      "label_fr": "\u00c9val &\nObservabilit\u00e9",
+      "description_fr": "Outils pour monitorer, tracer, \u00e9valuer et d\u00e9boguer les applications LLM en production. R\u00e9pondent \u00e0 la question : \"Mon application fonctionne-t-elle vraiment bien ?\" Exemples : LangSmith, Helicone, Arize, Braintrust.",
+      "layerLabel_fr": "\u00c9COSYST\u00c8ME D'OUTILS"
     },
     "position": {
       "x": -1200,
@@ -737,9 +895,14 @@ const elements = [
       "layer": 5,
       "status": "stable",
       "since": "2018",
-      "description": "Platforms to discover, download, share and run open models. The \"GitHub of AI models\". Central to the open-weights ecosystem. Examples: HuggingFace, Ollama, Replicate.",
       "color": "#5DADE2",
-      "layerLabel": "TOOLING ECOSYSTEM"
+      "layerLabel": "TOOLING ECOSYSTEM",
+      "label_en": "Model Hubs",
+      "description_en": "Platforms to discover, download, share and run open models. The \"GitHub of AI models\". Central to the open-weights ecosystem. Examples: HuggingFace, Ollama, Replicate.",
+      "layerLabel_en": "TOOLING ECOSYSTEM",
+      "label_fr": "Hubs de Mod\u00e8les",
+      "description_fr": "Plateformes pour d\u00e9couvrir, t\u00e9l\u00e9charger, partager et faire tourner des mod\u00e8les ouverts. Le \"GitHub des mod\u00e8les IA\". Central dans l'\u00e9cosyst\u00e8me open weights. Exemples : HuggingFace, Ollama, Replicate.",
+      "layerLabel_fr": "\u00c9COSYST\u00c8ME D'OUTILS"
     },
     "position": {
       "x": -1200,
@@ -1063,8 +1226,61 @@ const elements = [
     }
   }
 ];
+const TITLES        = {"en": "The LLM Ecosystem \u2014 Big Picture", "fr": "L'\u00c9cosyst\u00e8me LLM \u2014 Vue d'Ensemble"};
+const STATUS_LABELS = {"en": {"stable": "stable", "evolving": "evolving", "emerging": "emerging", "deprecated": "deprecated"}, "fr": {"stable": "stable", "evolving": "en \u00e9volution", "emerging": "\u00e9mergent", "deprecated": "obsol\u00e8te"}};
+const PANEL_LABELS  = {"en": {"click_hint": "Click any node to see its definition and connections", "description": "Description", "since": "Since"}, "fr": {"click_hint": "Cliquez sur un n\u0153ud pour voir sa d\u00e9finition et ses connexions", "description": "Description", "since": "Depuis"}};
+const STATUS_COLORS = {"stable": "#27AE60", "evolving": "#E67E22", "emerging": "#8E44AD", "deprecated": "#95A5A6"};
 
-const statusColors = {"stable": "#27AE60", "evolving": "#E67E22", "emerging": "#8E44AD", "deprecated": "#95A5A6"};
+let lang = 'en';
+
+function setLang(newLang) {
+  lang = newLang;
+
+  // Toggle buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+
+  // Header title
+  document.getElementById('main-title').textContent = TITLES[lang];
+
+  // Hint text
+  document.getElementById('hint-text').textContent =
+    lang === 'fr' ? 'Cliquez sur un nœud · Molette pour zoomer · Glisser pour naviguer'
+                  : 'Click a node to explore · Scroll to zoom · Drag to pan';
+
+  // Legend
+  document.getElementById('legend-en').style.display = lang === 'en' ? '' : 'none';
+  document.getElementById('legend-fr').style.display = lang === 'fr' ? '' : 'none';
+  document.getElementById('legend-cat-title').textContent =
+    lang === 'fr' ? 'Catégories' : 'Categories';
+  document.getElementById('legend-status-title').textContent =
+    lang === 'fr' ? 'Statut' : 'Status';
+  renderStatusLegend();
+
+  // Node labels in graph
+  cy.batch(() => {
+    cy.nodes().forEach(n => {
+      const lbl = n.data(`label_${lang}`);
+      if (lbl) n.data('label', lbl);
+      const ll = n.data(`layerLabel_${lang}`);
+      if (ll) n.data('layerLabel', ll);
+    });
+  });
+
+  // Refresh open panel
+  if (currentNode) showPanel(currentNode);
+}
+
+function renderStatusLegend() {
+  const sl = STATUS_LABELS[lang];
+  document.getElementById('status-legend-items').innerHTML =
+    Object.entries(sl).map(([k, v]) =>
+      `<div class="legend-item"><span class="status-badge" style="color:${STATUS_COLORS[k]};border-color:${STATUS_COLORS[k]}">${v}</span></div>`
+    ).join('');
+}
+renderStatusLegend();
+
 
 const cy = cytoscape({
   container: document.getElementById("cy"),
@@ -1212,14 +1428,16 @@ cy.ready(() => {
   cy.fit(undefined, 40);
 });
 
-// ── Node click → panel ───────────────────────
-cy.on("tap", "node", function(evt) {
-  const node = evt.target;
-  const d = node.data();
+let currentNode = null;
 
-  // Update panel header
+function showPanel(node) {
+  currentNode = node;
+  const d = node.data();
+  const pl = PANEL_LABELS[lang];
+  const sl = STATUS_LABELS[lang];
+
   document.getElementById("panel-header").style.display = "block";
-  document.getElementById("ph-label").textContent = d.label;
+  document.getElementById("ph-label").textContent = d[`label_${lang}`] || d.label;
 
   let meta = `Layer ${d.layer}`;
   if (d.node_type) meta += ` · ${d.node_type}`;
@@ -1227,16 +1445,24 @@ cy.on("tap", "node", function(evt) {
   document.getElementById("ph-meta").textContent = meta;
 
   const statusEl = document.getElementById("ph-status");
-  statusEl.textContent = d.status;
-  statusEl.style.background = statusColors[d.status] + "33";
-  statusEl.style.color = statusColors[d.status];
-  statusEl.style.border = `1px solid ${statusColors[d.status]}`;
+  statusEl.textContent = sl[d.status] || d.status;
+  statusEl.style.background = STATUS_COLORS[d.status] + "33";
+  statusEl.style.color = STATUS_COLORS[d.status];
+  statusEl.style.border = `1px solid ${STATUS_COLORS[d.status]}`;
 
-  // Update panel body
   document.getElementById("empty-msg").style.display = "none";
   document.getElementById("panel-content").style.display = "block";
-  document.getElementById("pc-desc").textContent = d.description;
+  document.querySelector("#panel-content .section-title").textContent = pl.description;
+  document.querySelectorAll("#panel-content .section-title")[1].textContent = pl.since;
+  document.getElementById("pc-desc").textContent = d[`description_${lang}`] || "";
   document.getElementById("pc-since").textContent = d.since;
+}
+
+// ── Node click → panel ───────────────────────
+cy.on("tap", "node", function(evt) {
+  const node = evt.target;
+
+  showPanel(node);
 
   // Highlight node + connected edges/nodes
   cy.elements().addClass("dimmed");
@@ -1244,9 +1470,7 @@ cy.on("tap", "node", function(evt) {
   const connected = node.connectedEdges();
   connected.removeClass("dimmed").addClass("highlighted");
   connected.connectedNodes().removeClass("dimmed");
-
-  // Remove highlight on other nodes
-  cy.nodes(":not(.layer-group)").not(node).not(connected.connectedNodes()).each(n => {
+  cy.nodes().not(node).not(connected.connectedNodes()).each(n => {
     n.removeClass("highlighted");
   });
   node.addClass("highlighted");
@@ -1255,6 +1479,7 @@ cy.on("tap", "node", function(evt) {
 // ── Click background → reset ─────────────────
 cy.on("tap", function(evt) {
   if (evt.target === cy) {
+    currentNode = null;
     cy.elements().removeClass("dimmed highlighted");
     document.getElementById("panel-header").style.display = "none";
     document.getElementById("empty-msg").style.display = "flex";

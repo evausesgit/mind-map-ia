@@ -60,12 +60,26 @@ DEFAULT_LAYER_LABELS = {
     1: "LAYER 1", 2: "LAYER 2", 3: "LAYER 3", 4: "LAYER 4", 5: "LAYER 5",
 }
 
+LANGS = ["en", "fr"]
+
+
+def t(field, lang):
+    """Extract text from a field that is either a plain string or {en:..., fr:...}."""
+    if isinstance(field, dict):
+        return str(field.get(lang) or field.get("en") or "")
+    return str(field) if field else ""
+
+
+def clean(text):
+    return " ".join(text.strip().split())
+
 
 def build_elements(data):
     category_colors = {c["id"]: c["color"] for c in data["categories"]}
-    layer_labels = {
-        int(k): v for k, v in data.get("layers", DEFAULT_LAYER_LABELS).items()
-    }
+    raw_layers = data.get("layers", DEFAULT_LAYER_LABELS)
+    layer_labels = {}
+    for k, v in raw_layers.items():
+        layer_labels[int(k)] = v  # v may be a string or {en:..., fr:...}
 
     # Group nodes by layer
     by_layer = {}
@@ -79,7 +93,7 @@ def build_elements(data):
         # Layer 2: split providers (right col) vs models (left col)
         if layer_id == 2:
             providers = [n for n in nodes if n.get("node_type") == "provider"]
-            models = [n for n in nodes if n.get("node_type") != "provider"]
+            models    = [n for n in nodes if n.get("node_type") != "provider"]
             buckets = [(LAYER_X_PROVIDERS, providers), (LAYER_X[2], models)]
         else:
             buckets = [(LAYER_X[layer_id], nodes)]
@@ -88,24 +102,29 @@ def build_elements(data):
             n = len(bucket)
             for i, node in enumerate(bucket):
                 y = (i - (n - 1) / 2) * NODE_SPACING_Y
-                desc = node.get("description", "").strip().replace("\n", " ")
-                desc = " ".join(desc.split())
+
+                # Build multilingual data fields
+                node_data = {
+                    "id":          node["id"],
+                    "label":       t(node.get("label", ""), "en"),  # default lang
+                    "category":    node["category"],
+                    "subcategory": node.get("subcategory", ""),
+                    "node_type":   node.get("node_type", ""),
+                    "layer":       node["layer"],
+                    "status":      node["status"],
+                    "since":       str(node["since"]),
+                    "color":       category_colors.get(node["category"], "#BDC3C7"),
+                    "layerLabel":  t(layer_labels.get(layer_id, f"Layer {layer_id}"), "en"),
+                }
+                for lang in LANGS:
+                    node_data[f"label_{lang}"]       = t(node.get("label", ""), lang)
+                    node_data[f"description_{lang}"] = clean(t(node.get("description", ""), lang))
+                    node_data[f"layerLabel_{lang}"]  = t(layer_labels.get(layer_id, f"Layer {layer_id}"), lang)
+
                 elements.append({
-                    "data": {
-                        "id": node["id"],
-                        "label": node["label"],
-                        "category": node["category"],
-                        "subcategory": node.get("subcategory", ""),
-                        "node_type": node.get("node_type", ""),
-                        "layer": node["layer"],
-                        "status": node["status"],
-                        "since": str(node["since"]),
-                        "description": desc,
-                        "color": category_colors.get(node["category"], "#BDC3C7"),
-                        "layerLabel": layer_labels.get(layer_id, f"Layer {layer_id}"),
-                    },
+                    "data":     node_data,
                     "position": {"x": x_pos, "y": y},
-                    "classes": f"status-{node['status']}"
+                    "classes":  f"status-{node['status']}"
                 })
 
     # Add edges
@@ -128,22 +147,41 @@ def generate_html(data, elements):
     categories = data["categories"]
     elements_json = json.dumps(elements, indent=2)
 
-    legend_items = "".join(
-        f'<div class="legend-item"><span class="legend-dot" style="background:{c["color"]}"></span>{c["label"]}</div>'
-        for c in categories
-    )
+    title_en = t(meta.get("title", ""), "en")
+    title_fr = t(meta.get("title", ""), "fr") or title_en
+    titles_js = json.dumps({"en": title_en, "fr": title_fr})
 
-    status_items = "".join(
-        f'<div class="legend-item"><span class="status-badge" style="color:{STATUS_LABEL_COLOR[s]};border-color:{STATUS_LABEL_COLOR[s]}">{s}</span></div>'
-        for s in ["stable", "evolving", "emerging", "deprecated"]
-    )
+    # Build legend per lang
+    def legend_items(lang):
+        return "".join(
+            f'<div class="legend-item"><span class="legend-dot" style="background:{c["color"]}"></span>'
+            f'{t(c.get("label",""), lang)}</div>'
+            for c in categories
+        )
+
+    status_labels = {
+        "en": {"stable": "stable", "evolving": "evolving", "emerging": "emerging", "deprecated": "deprecated"},
+        "fr": {"stable": "stable",  "evolving": "en évolution", "emerging": "émergent", "deprecated": "obsolète"},
+    }
+    status_labels_js = json.dumps(status_labels)
+
+    panel_labels = {
+        "en": {"click_hint": "Click any node to see its definition and connections",
+               "description": "Description", "since": "Since"},
+        "fr": {"click_hint": "Cliquez sur un nœud pour voir sa définition et ses connexions",
+               "description": "Description", "since": "Depuis"},
+    }
+    panel_labels_js = json.dumps(panel_labels)
+
+    legend_en = legend_items("en")
+    legend_fr = legend_items("fr")
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{meta["title"]}</title>
+<title>{title_en}</title>
 <script src="cytoscape.min.js"></script>
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -169,6 +207,32 @@ def generate_html(data, elements):
   }}
   header h1 {{ font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }}
   header .meta {{ font-size: 12px; color: #95A5A6; }}
+  .lang-toggle {{
+    display: flex;
+    gap: 4px;
+    margin-left: 16px;
+  }}
+  .lang-btn {{
+    padding: 4px 10px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #95A5A6;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.15s;
+  }}
+  .lang-btn.active {{
+    background: #E74C3C;
+    border-color: #E74C3C;
+    color: white;
+  }}
+  .lang-btn:hover:not(.active) {{
+    border-color: #aaa;
+    color: white;
+  }}
 
   .main {{
     display: flex;
@@ -321,11 +385,17 @@ def generate_html(data, elements):
 <body>
 
 <header>
-  <div>
-    <h1>{meta["title"]}</h1>
-    <div class="meta">v{meta["version"]} · {meta["date"]} · {meta["language"].upper()}</div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div>
+      <h1 id="main-title">{title_en}</h1>
+      <div class="meta">v{meta["version"]} · {meta["date"]}</div>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+    </div>
   </div>
-  <div class="meta">Click a node to explore · Scroll to zoom · Drag to pan</div>
+  <div class="meta" id="hint-text">Click a node to explore · Scroll to zoom · Drag to pan</div>
 </header>
 
 <div class="main">
@@ -357,18 +427,72 @@ def generate_html(data, elements):
       </div>
     </div>
     <div id="legend">
-      <h3>Categories</h3>
-      {legend_items}
-      <h3 style="margin-top:12px;">Status</h3>
-      {status_items}
+      <h3 id="legend-cat-title">Categories</h3>
+      <div id="legend-en">{legend_en}</div>
+      <div id="legend-fr" style="display:none">{legend_fr}</div>
+      <h3 style="margin-top:12px;" id="legend-status-title">Status</h3>
+      <div id="status-legend-items"></div>
     </div>
   </div>
 </div>
 
 <script>
 const elements = {elements_json};
+const TITLES        = {titles_js};
+const STATUS_LABELS = {status_labels_js};
+const PANEL_LABELS  = {panel_labels_js};
+const STATUS_COLORS = {json.dumps(STATUS_LABEL_COLOR)};
 
-const statusColors = {json.dumps(STATUS_LABEL_COLOR)};
+let lang = 'en';
+
+function setLang(newLang) {{
+  lang = newLang;
+
+  // Toggle buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {{
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  }});
+
+  // Header title
+  document.getElementById('main-title').textContent = TITLES[lang];
+
+  // Hint text
+  document.getElementById('hint-text').textContent =
+    lang === 'fr' ? 'Cliquez sur un nœud · Molette pour zoomer · Glisser pour naviguer'
+                  : 'Click a node to explore · Scroll to zoom · Drag to pan';
+
+  // Legend
+  document.getElementById('legend-en').style.display = lang === 'en' ? '' : 'none';
+  document.getElementById('legend-fr').style.display = lang === 'fr' ? '' : 'none';
+  document.getElementById('legend-cat-title').textContent =
+    lang === 'fr' ? 'Catégories' : 'Categories';
+  document.getElementById('legend-status-title').textContent =
+    lang === 'fr' ? 'Statut' : 'Status';
+  renderStatusLegend();
+
+  // Node labels in graph
+  cy.batch(() => {{
+    cy.nodes().forEach(n => {{
+      const lbl = n.data(`label_${{lang}}`);
+      if (lbl) n.data('label', lbl);
+      const ll = n.data(`layerLabel_${{lang}}`);
+      if (ll) n.data('layerLabel', ll);
+    }});
+  }});
+
+  // Refresh open panel
+  if (currentNode) showPanel(currentNode);
+}}
+
+function renderStatusLegend() {{
+  const sl = STATUS_LABELS[lang];
+  document.getElementById('status-legend-items').innerHTML =
+    Object.entries(sl).map(([k, v]) =>
+      `<div class="legend-item"><span class="status-badge" style="color:${{STATUS_COLORS[k]}};border-color:${{STATUS_COLORS[k]}}">${{v}}</span></div>`
+    ).join('');
+}}
+renderStatusLegend();
+
 
 const cy = cytoscape({{
   container: document.getElementById("cy"),
@@ -516,14 +640,16 @@ cy.ready(() => {{
   cy.fit(undefined, 40);
 }});
 
-// ── Node click → panel ───────────────────────
-cy.on("tap", "node", function(evt) {{
-  const node = evt.target;
-  const d = node.data();
+let currentNode = null;
 
-  // Update panel header
+function showPanel(node) {{
+  currentNode = node;
+  const d = node.data();
+  const pl = PANEL_LABELS[lang];
+  const sl = STATUS_LABELS[lang];
+
   document.getElementById("panel-header").style.display = "block";
-  document.getElementById("ph-label").textContent = d.label;
+  document.getElementById("ph-label").textContent = d[`label_${{lang}}`] || d.label;
 
   let meta = `Layer ${{d.layer}}`;
   if (d.node_type) meta += ` · ${{d.node_type}}`;
@@ -531,16 +657,24 @@ cy.on("tap", "node", function(evt) {{
   document.getElementById("ph-meta").textContent = meta;
 
   const statusEl = document.getElementById("ph-status");
-  statusEl.textContent = d.status;
-  statusEl.style.background = statusColors[d.status] + "33";
-  statusEl.style.color = statusColors[d.status];
-  statusEl.style.border = `1px solid ${{statusColors[d.status]}}`;
+  statusEl.textContent = sl[d.status] || d.status;
+  statusEl.style.background = STATUS_COLORS[d.status] + "33";
+  statusEl.style.color = STATUS_COLORS[d.status];
+  statusEl.style.border = `1px solid ${{STATUS_COLORS[d.status]}}`;
 
-  // Update panel body
   document.getElementById("empty-msg").style.display = "none";
   document.getElementById("panel-content").style.display = "block";
-  document.getElementById("pc-desc").textContent = d.description;
+  document.querySelector("#panel-content .section-title").textContent = pl.description;
+  document.querySelectorAll("#panel-content .section-title")[1].textContent = pl.since;
+  document.getElementById("pc-desc").textContent = d[`description_${{lang}}`] || "";
   document.getElementById("pc-since").textContent = d.since;
+}}
+
+// ── Node click → panel ───────────────────────
+cy.on("tap", "node", function(evt) {{
+  const node = evt.target;
+
+  showPanel(node);
 
   // Highlight node + connected edges/nodes
   cy.elements().addClass("dimmed");
@@ -548,9 +682,7 @@ cy.on("tap", "node", function(evt) {{
   const connected = node.connectedEdges();
   connected.removeClass("dimmed").addClass("highlighted");
   connected.connectedNodes().removeClass("dimmed");
-
-  // Remove highlight on other nodes
-  cy.nodes(":not(.layer-group)").not(node).not(connected.connectedNodes()).each(n => {{
+  cy.nodes().not(node).not(connected.connectedNodes()).each(n => {{
     n.removeClass("highlighted");
   }});
   node.addClass("highlighted");
@@ -559,6 +691,7 @@ cy.on("tap", "node", function(evt) {{
 // ── Click background → reset ─────────────────
 cy.on("tap", function(evt) {{
   if (evt.target === cy) {{
+    currentNode = null;
     cy.elements().removeClass("dimmed highlighted");
     document.getElementById("panel-header").style.display = "none";
     document.getElementById("empty-msg").style.display = "flex";

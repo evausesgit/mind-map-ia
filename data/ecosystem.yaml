@@ -1,43 +1,87 @@
 meta:
-  title: "The LLM Ecosystem Today"
-  description: "A comprehensive pedagogical map of the LLM and AI ecosystem"
+  title:
+    en: "The LLM Ecosystem Today"
+    fr: "L'Écosystème LLM Aujourd'hui"
+  description:
+    en: "A comprehensive pedagogical map of the LLM and AI ecosystem"
+    fr: "Une carte pédagogique complète de l'écosystème LLM et IA"
   version: "2026-Q1"
   date: "2026-04-02"
-  language: "en"
+
+layers:
+  1:
+    en: "LAYER 1 · FOUNDATIONS"
+    fr: "LAYER 1 · FONDAMENTAUX"
+  2:
+    en: "LAYER 2 · PROVIDERS & MODELS"
+    fr: "LAYER 2 · FOURNISSEURS & MODÈLES"
+  3:
+    en: "LAYER 3 · INFRASTRUCTURE & ACCESS"
+    fr: "LAYER 3 · INFRASTRUCTURE & ACCÈS"
+  4:
+    en: "LAYER 4 · BUILDING BLOCKS"
+    fr: "LAYER 4 · BRIQUES APPLICATIVES"
+  5:
+    en: "LAYER 5 · DEVELOPER TOOLS"
+    fr: "LAYER 5 · OUTILS DÉVELOPPEURS"
 
 # ─────────────────────────────────────────────
 # CATEGORIES (visual grouping + color coding)
 # ─────────────────────────────────────────────
 categories:
   - id: foundations
-    label: "Foundations"
-    color: "#F4D03F"       # yellow
-    description: "Core concepts everyone must understand first"
+    label:
+      en: "Foundations"
+      fr: "Fondamentaux"
+    color: "#F4D03F"
+    description:
+      en: "Core concepts everyone must understand first"
+      fr: "Concepts fondamentaux que tout le monde doit comprendre en premier"
 
   - id: providers
-    label: "Providers"
-    color: "#F0A500"       # amber
-    description: "Companies and organizations that develop AI models"
+    label:
+      en: "Providers"
+      fr: "Fournisseurs"
+    color: "#F0A500"
+    description:
+      en: "Companies and organizations that develop AI models"
+      fr: "Entreprises et organisations qui développent des modèles IA"
 
   - id: models
-    label: "Models"
-    color: "#C39BD3"       # purple
-    description: "LLM families — what the providers release"
+    label:
+      en: "Models"
+      fr: "Modèles"
+    color: "#C39BD3"
+    description:
+      en: "LLM families — what the providers release"
+      fr: "Familles de LLM — ce que les fournisseurs publient"
 
   - id: infrastructure
-    label: "Infrastructure & Access"
-    color: "#85929E"       # grey
-    description: "How models are hosted and accessed"
+    label:
+      en: "Infrastructure & Access"
+      fr: "Infrastructure & Accès"
+    color: "#85929E"
+    description:
+      en: "How models are hosted and accessed"
+      fr: "Comment les modèles sont hébergés et accessibles"
 
   - id: building_blocks
-    label: "Building Blocks"
-    color: "#58D68D"       # green
-    description: "Patterns and techniques to build AI applications"
+    label:
+      en: "Building Blocks"
+      fr: "Briques Applicatives"
+    color: "#58D68D"
+    description:
+      en: "Patterns and techniques to build AI applications"
+      fr: "Patterns et techniques pour construire des applications IA"
 
   - id: dev_tools
-    label: "Developer Tools"
-    color: "#5DADE2"       # blue
-    description: "Frameworks, libraries and coding tools"
+    label:
+      en: "Developer Tools"
+      fr: "Outils Développeurs"
+    color: "#5DADE2"
+    description:
+      en: "Frameworks, libraries and coding tools"
+      fr: "Frameworks, bibliothèques et outils de code"
 
 # ─────────────────────────────────────────────
 # NODES
