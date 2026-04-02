@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The LLM Ecosystem Today</title>
+<script src="cytoscape.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    border-bottom: 3px solid #E74C3C;
+  }
+  header h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+  header .meta { font-size: 12px; color: #95A5A6; }
+
+  .main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  #cy {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #FAFAFA;
+  }
+
+  /* ── Side panel ── */
+  #panel {
+    width: 320px;
+    background: white;
+    border-left: 1px solid #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  #panel-header {
+    padding: 20px;
+    background: #1A1A2E;
+    color: white;
+  }
+  #panel-header .node-label {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  #panel-header .node-meta {
+    font-size: 12px;
+    color: #BDC3C7;
+  }
+  #panel-header .node-status {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  #panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  #panel-body .section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #95A5A6;
+    margin-bottom: 6px;
+  }
+  #panel-body .description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #2C3E50;
+    margin-bottom: 20px;
+  }
+  #panel-body .since {
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+
+  .empty-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #BDC3C7;
+    text-align: center;
+    padding: 20px;
+  }
+  .empty-panel .arrow { font-size: 32px; margin-bottom: 12px; }
+  .empty-panel p { font-size: 13px; line-height: 1.5; }
+
+  /* ── Legend ── */
+  #legend {
+    padding: 16px 20px;
+    border-top: 1px solid #F0F0F0;
+    background: #FAFAFA;
+  }
+  #legend h3 {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #95A5A6;
+    margin-bottom: 10px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .status-badge {
+    border: 1.5px solid;
+    border-radius: 10px;
+    padding: 1px 8px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  /* ── Controls ── */
+  #controls {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 10;
+  }
+  .ctrl-btn {
+    width: 36px;
+    height: 36px;
+    background: white;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background 0.15s;
+  }
+  .ctrl-btn:hover { background: #F0F0F0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>The LLM Ecosystem Today</h1>
+    <div class="meta">v2026-Q1 · 2026-04-02 · EN</div>
+  </div>
+  <div class="meta">Click a node to explore · Scroll to zoom · Drag to pan</div>
+</header>
+
+<div class="main">
+  <div style="position:relative;flex:1;overflow:hidden;">
+    <div id="cy"></div>
+    <div id="controls">
+      <button class="ctrl-btn" onclick="cy.fit()" title="Fit all">⊞</button>
+      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)" title="Zoom in">+</button>
+      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)" title="Zoom out">−</button>
+    </div>
+  </div>
+
+  <div id="panel">
+    <div id="panel-header" style="display:none;">
+      <div class="node-label" id="ph-label"></div>
+      <div class="node-meta" id="ph-meta"></div>
+      <span class="node-status" id="ph-status"></span>
+    </div>
+    <div id="panel-body">
+      <div class="empty-panel" id="empty-msg">
+        <div class="arrow">←</div>
+        <p>Click any node to see its definition and connections</p>
+      </div>
+      <div id="panel-content" style="display:none;">
+        <div class="section-title">Description</div>
+        <div class="description" id="pc-desc"></div>
+        <div class="section-title">Since</div>
+        <div class="since" id="pc-since"></div>
+      </div>
+    </div>
+    <div id="legend">
+      <h3>Categories</h3>
+      <div class="legend-item"><span class="legend-dot" style="background:#F4D03F"></span>Foundations</div><div class="legend-item"><span class="legend-dot" style="background:#C39BD3"></span>Models</div><div class="legend-item"><span class="legend-dot" style="background:#85929E"></span>Infrastructure & Access</div><div class="legend-item"><span class="legend-dot" style="background:#58D68D"></span>Building Blocks</div><div class="legend-item"><span class="legend-dot" style="background:#5DADE2"></span>Developer Tools</div>
+      <h3 style="margin-top:12px;">Status</h3>
+      <div class="legend-item"><span class="status-badge" style="color:#27AE60;border-color:#27AE60">stable</span></div><div class="legend-item"><span class="status-badge" style="color:#E67E22;border-color:#E67E22">evolving</span></div><div class="legend-item"><span class="status-badge" style="color:#8E44AD;border-color:#8E44AD">emerging</span></div><div class="legend-item"><span class="status-badge" style="color:#95A5A6;border-color:#95A5A6">deprecated</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const elements = [
+  {
+    "data": {
+      "id": "transformer",
+      "label": "Transformer",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2017",
+      "description": "Neural network architecture behind all modern LLMs. Introduced in \"Attention Is All You Need\" (Google, 2017). Uses self-attention to process sequences in parallel.",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": -405.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "token",
+      "label": "Token",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2017",
+      "description": "The basic unit of text processed by an LLM. 1 token \u2248 0.75 words in English. Models are billed and limited by token count.",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": -315.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "context_window",
+      "label": "Context Window",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "evolving",
+      "since": "2017",
+      "description": "Maximum number of tokens a model can process at once (input + output). GPT-4: 128K. Claude 3.7: 200K. Gemini 2.0: 1M. Larger = more expensive but can handle bigger documents.",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": -225.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "embedding",
+      "label": "Embedding",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2013",
+      "description": "Numerical vector (list of floats) representing text in semantic space. Similar meaning \u2192 similar vectors. Used for search, RAG, clustering.",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": -135.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "prompt",
+      "label": "Prompt",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2020",
+      "description": "The input text sent to a model to elicit a response. Quality of the prompt directly determines quality of the output.",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": -45.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "inference",
+      "label": "Inference",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2017",
+      "description": "The process of running a trained model to generate output from an input. Opposite of training. Happens every time you query a model.",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": 45.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "temperature",
+      "label": "Temperature",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2017",
+      "description": "Parameter controlling output randomness. 0 = deterministic (same input \u2192 same output). 1+ = creative and varied. Tune based on use case.",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": 135.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "training",
+      "label": "Pre-training",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2018",
+      "description": "Initial phase where a model learns from massive text datasets (terabytes). Builds general language understanding. Very expensive (millions of $).",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": 225.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "fine_tuning",
+      "label": "Fine-tuning",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2018",
+      "description": "Additional training on a specific dataset to specialize model behavior. Cheaper than pre-training. Used to adapt a base model to a domain or task.",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": 315.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "rlhf",
+      "label": "RLHF",
+      "category": "foundations",
+      "subcategory": "",
+      "provider": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2022",
+      "description": "Reinforcement Learning from Human Feedback. Technique to align LLM outputs with human preferences. Used in ChatGPT, Claude, Gemini to make models helpful and safe.",
+      "color": "#F4D03F",
+      "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS"
+    },
+    "position": {
+      "x": 800,
+      "y": 405.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "gpt4o",
+      "label": "GPT-4o",
+      "category": "models",
+      "subcategory": "proprietary",
+      "provider": "OpenAI",
+      "layer": 2,
+      "status": "stable",
+      "since": "2024-05",
+      "description": "OpenAI's flagship multimodal model. Processes text, images and audio natively. \"o\" = omni. Powers ChatGPT. Available via API.",
+      "color": "#C39BD3",
+      "layerLabel": "LAYER 2 \u00b7 MODELS"
+    },
+    "position": {
+      "x": 400,
+      "y": -315.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "o3",
+      "label": "o3 / o4-mini",
+      "category": "models",
+      "subcategory": "proprietary",
+      "provider": "OpenAI",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2025-04",
+      "description": "OpenAI's reasoning-focused model family. Thinks step-by-step internally before answering (chain-of-thought). Best for complex math, coding, logic tasks.",
+      "color": "#C39BD3",
+      "layerLabel": "LAYER 2 \u00b7 MODELS"
+    },
+    "position": {
+      "x": 400,
+      "y": -225.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "claude",
+      "label": "Claude 3.5 / 3.7",
+      "category": "models",
+      "subcategory": "proprietary",
+      "provider": "Anthropic",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2024-06",
+      "description": "Anthropic's model family. Known for instruction-following and safety. Claude 3.7 Sonnet introduces extended thinking (visible reasoning). Sonnet = balanced. Haiku = fast/cheap. Opus = most powerful.",
+      "color": "#C39BD3",
+      "layerLabel": "LAYER 2 \u00b7 MODELS"
+    },
+    "position": {
+      "x": 400,
+      "y": -135.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "gemini",
+      "label": "Gemini 2.0",
+      "category": "models",
+      "subcategory": "proprietary",
+      "provider": "Google DeepMind",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2024-12",
+      "description": "Google's multimodal model family. Native tool use, code execution. Gemini 2.0 Flash: 1M token context window. Strong at long documents.",
+      "color": "#C39BD3",
+      "layerLabel": "LAYER 2 \u00b7 MODELS"
+    },
+    "position": {
+      "x": 400,
+      "y": -45.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "llama",
+      "label": "Llama 3.x",
+      "category": "models",
+      "subcategory": "open_weights",
+      "provider": "Meta",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2024-04",
+      "description": "Meta's open-weights model family. Free to download, run and fine-tune. Available in multiple sizes (8B, 70B, 405B parameters). Foundation of many community fine-tunes and products.",
+      "color": "#C39BD3",
+      "layerLabel": "LAYER 2 \u00b7 MODELS"
+    },
+    "position": {
+      "x": 400,
+      "y": 45.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "mistral",
+      "label": "Mistral",
+      "category": "models",
+      "subcategory": "open_weights",
+      "provider": "Mistral AI",
+      "layer": 2,
+      "status": "stable",
+      "since": "2023-09",
+      "description": "Efficient open-weights models from French startup Mistral AI. Mixtral uses MoE (Mixture of Experts) architecture for better performance/cost.",
+      "color": "#C39BD3",
+      "layerLabel": "LAYER 2 \u00b7 MODELS"
+    },
+    "position": {
+      "x": 400,
+      "y": 135.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "deepseek",
+      "label": "DeepSeek R1 / V3",
+      "category": "models",
+      "subcategory": "open_weights",
+      "provider": "DeepSeek AI",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2024-12",
+      "description": "Chinese open-weights models that rival proprietary models at much lower cost. DeepSeek-R1 is a reasoning model (like o3) but fully open. Caused significant market disruption in early 2025.",
+      "color": "#C39BD3",
+      "layerLabel": "LAYER 2 \u00b7 MODELS"
+    },
+    "position": {
+      "x": 400,
+      "y": 225.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "qwen",
+      "label": "Qwen 2.5",
+      "category": "models",
+      "subcategory": "open_weights",
+      "provider": "Alibaba",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2024-09",
+      "description": "Alibaba's open-weights model family. Strong multilingual and coding performance. Qwen2.5-Coder is specialized for code generation.",
+      "color": "#C39BD3",
+      "layerLabel": "LAYER 2 \u00b7 MODELS"
+    },
+    "position": {
+      "x": 400,
+      "y": 315.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "llm_api",
+      "label": "LLM API",
+      "category": "infrastructure",
+      "subcategory": "",
+      "provider": "",
+      "layer": 3,
+      "status": "stable",
+      "since": "2020",
+      "description": "Standard HTTP/REST interface to interact with a model. Send a prompt in the request, get a completion in the response. Common pattern across all providers (OpenAI, Anthropic, Google...).",
+      "color": "#85929E",
+      "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS"
+    },
+    "position": {
+      "x": 0,
+      "y": -225.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "aws_bedrock",
+      "label": "AWS Bedrock",
+      "category": "infrastructure",
+      "subcategory": "cloud",
+      "provider": "",
+      "layer": 3,
+      "status": "stable",
+      "since": "2023-04",
+      "description": "AWS managed service to access multiple LLMs (Claude, Llama, Mistral...) via a unified API. No GPU management. Pay per token. Enterprise-grade security and compliance.",
+      "color": "#85929E",
+      "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS"
+    },
+    "position": {
+      "x": 0,
+      "y": -135.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "vertex_ai",
+      "label": "Google Vertex AI",
+      "category": "infrastructure",
+      "subcategory": "cloud",
+      "provider": "",
+      "layer": 3,
+      "status": "stable",
+      "since": "2023-03",
+      "description": "Google Cloud managed platform for AI model deployment and serving. Hosts Gemini natively. Also supports fine-tuning and MLOps pipelines.",
+      "color": "#85929E",
+      "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS"
+    },
+    "position": {
+      "x": 0,
+      "y": -45.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "azure_openai",
+      "label": "Azure OpenAI",
+      "category": "infrastructure",
+      "subcategory": "cloud",
+      "provider": "",
+      "layer": 3,
+      "status": "stable",
+      "since": "2023-01",
+      "description": "Microsoft Azure's managed deployment of OpenAI models. Preferred for enterprise: data privacy, compliance (SOC2, HIPAA), SLAs.",
+      "color": "#85929E",
+      "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS"
+    },
+    "position": {
+      "x": 0,
+      "y": 45.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "huggingface",
+      "label": "HuggingFace",
+      "category": "infrastructure",
+      "subcategory": "hub",
+      "provider": "",
+      "layer": 3,
+      "status": "stable",
+      "since": "2018",
+      "description": "The central hub for open-source models, datasets and ML tooling. Hosts 500K+ models. Provides Inference API and Spaces for demos. The \"GitHub of AI models\".",
+      "color": "#85929E",
+      "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS"
+    },
+    "position": {
+      "x": 0,
+      "y": 135.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "ollama",
+      "label": "Ollama",
+      "category": "infrastructure",
+      "subcategory": "local",
+      "provider": "",
+      "layer": 3,
+      "status": "evolving",
+      "since": "2023-07",
+      "description": "Run LLMs locally on your own machine. Simple CLI and REST API. Supports Llama, Mistral, DeepSeek, Qwen and many more. No internet required. Free. Privacy-preserving.",
+      "color": "#85929E",
+      "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS"
+    },
+    "position": {
+      "x": 0,
+      "y": 225.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "rag",
+      "label": "RAG",
+      "category": "building_blocks",
+      "subcategory": "",
+      "provider": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2020-05",
+      "description": "Retrieval-Augmented Generation. Augments LLM responses with relevant external documents fetched at runtime. Solves the knowledge cutoff problem. Avoids hallucinations on specific data.",
+      "color": "#58D68D",
+      "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS"
+    },
+    "position": {
+      "x": -400,
+      "y": -315.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "vector_db",
+      "label": "Vector Database",
+      "category": "building_blocks",
+      "subcategory": "",
+      "provider": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2021",
+      "description": "Database optimized for storing and querying embeddings by semantic similarity. Examples: Pinecone, Weaviate, Chroma, pgvector. Core component of RAG pipelines.",
+      "color": "#58D68D",
+      "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS"
+    },
+    "position": {
+      "x": -400,
+      "y": -225.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "agent",
+      "label": "Agent",
+      "category": "building_blocks",
+      "subcategory": "",
+      "provider": "",
+      "layer": 4,
+      "status": "evolving",
+      "since": "2023-03",
+      "description": "An LLM that can take actions autonomously: call tools, browse the web, write and run code, make decisions in a loop. Key shift: from Q&A to autonomous task completion.",
+      "color": "#58D68D",
+      "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS"
+    },
+    "position": {
+      "x": -400,
+      "y": -135.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "tool_use",
+      "label": "Tool Use / Function Calling",
+      "category": "building_blocks",
+      "subcategory": "",
+      "provider": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2023-06",
+      "description": "Allows an LLM to call external functions or APIs during generation. Example: search the web, query a DB, send an email. The model decides when and how to call the tool.",
+      "color": "#58D68D",
+      "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS"
+    },
+    "position": {
+      "x": -400,
+      "y": -45.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "structured_output",
+      "label": "Structured Output",
+      "category": "building_blocks",
+      "subcategory": "",
+      "provider": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2023-11",
+      "description": "Forces the model to respond in a defined format (JSON schema). Essential for reliable integration in applications. Eliminates parsing errors from free-form text responses.",
+      "color": "#58D68D",
+      "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS"
+    },
+    "position": {
+      "x": -400,
+      "y": 45.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "system_prompt",
+      "label": "System Prompt",
+      "category": "building_blocks",
+      "subcategory": "",
+      "provider": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2022",
+      "description": "Instructions given to the model before the conversation starts. Defines persona, rules, tone, constraints and context. Hidden from end users. Controls model behavior globally.",
+      "color": "#58D68D",
+      "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS"
+    },
+    "position": {
+      "x": -400,
+      "y": 135.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "memory",
+      "label": "Memory",
+      "category": "building_blocks",
+      "subcategory": "",
+      "provider": "",
+      "layer": 4,
+      "status": "evolving",
+      "since": "2023-06",
+      "description": "Mechanisms to persist information across conversations or steps. Short-term: conversation history in context window. Long-term: summaries or facts stored in a vector DB or key-value store.",
+      "color": "#58D68D",
+      "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS"
+    },
+    "position": {
+      "x": -400,
+      "y": 225.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "mcp",
+      "label": "MCP",
+      "category": "building_blocks",
+      "subcategory": "",
+      "provider": "",
+      "layer": 4,
+      "status": "emerging",
+      "since": "2024-11",
+      "description": "Model Context Protocol. Open standard by Anthropic (Nov 2024). Standardizes how LLMs connect to external tools and data sources. Like USB-C for AI: one protocol, many integrations.",
+      "color": "#58D68D",
+      "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS"
+    },
+    "position": {
+      "x": -400,
+      "y": 315.0
+    },
+    "classes": "status-emerging"
+  },
+  {
+    "data": {
+      "id": "langchain",
+      "label": "LangChain",
+      "category": "dev_tools",
+      "subcategory": "framework",
+      "provider": "",
+      "layer": 5,
+      "status": "stable",
+      "since": "2022-10",
+      "description": "Most popular framework for building LLM applications. Provides chains, retrievers, memory and agent primitives. Large ecosystem but sometimes criticized for over-abstraction.",
+      "color": "#5DADE2",
+      "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS"
+    },
+    "position": {
+      "x": -800,
+      "y": -225.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "langgraph",
+      "label": "LangGraph",
+      "category": "dev_tools",
+      "subcategory": "framework",
+      "provider": "",
+      "layer": 5,
+      "status": "evolving",
+      "since": "2024-01",
+      "description": "Graph-based orchestration for multi-agent and stateful LLM workflows. Built on LangChain. Nodes = steps, Edges = transitions. Better control flow than simple chains.",
+      "color": "#5DADE2",
+      "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS"
+    },
+    "position": {
+      "x": -800,
+      "y": -135.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "llamaindex",
+      "label": "LlamaIndex",
+      "category": "dev_tools",
+      "subcategory": "framework",
+      "provider": "",
+      "layer": 5,
+      "status": "stable",
+      "since": "2022-11",
+      "description": "Framework focused on data ingestion and RAG pipelines. Great for document Q&A applications. Simpler than LangChain for pure retrieval use cases.",
+      "color": "#5DADE2",
+      "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS"
+    },
+    "position": {
+      "x": -800,
+      "y": -45.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "cursor",
+      "label": "Cursor",
+      "category": "dev_tools",
+      "subcategory": "ide",
+      "provider": "",
+      "layer": 5,
+      "status": "evolving",
+      "since": "2023-03",
+      "description": "AI-first code editor (fork of VS Code). Deep LLM integration: code generation, explanation, refactoring, codebase Q&A. Uses GPT-4o and Claude under the hood.",
+      "color": "#5DADE2",
+      "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS"
+    },
+    "position": {
+      "x": -800,
+      "y": 45.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "github_copilot",
+      "label": "GitHub Copilot",
+      "category": "dev_tools",
+      "subcategory": "ide",
+      "provider": "",
+      "layer": 5,
+      "status": "stable",
+      "since": "2021-06",
+      "description": "AI pair programmer by GitHub/Microsoft. Integrates in VS Code, JetBrains, Neovim and more. Suggests code completions and has a chat mode.",
+      "color": "#5DADE2",
+      "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS"
+    },
+    "position": {
+      "x": -800,
+      "y": 135.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "claude_code",
+      "label": "Claude Code",
+      "category": "dev_tools",
+      "subcategory": "cli",
+      "provider": "",
+      "layer": 5,
+      "status": "evolving",
+      "since": "2025-02",
+      "description": "Anthropic's agentic CLI tool. Runs in the terminal. Can read, write, and execute code across an entire codebase autonomously. Uses MCP for tool integrations.",
+      "color": "#5DADE2",
+      "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS"
+    },
+    "position": {
+      "x": -800,
+      "y": 225.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "transformer__gpt4o",
+      "source": "transformer",
+      "target": "gpt4o",
+      "label": "architecture of",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "transformer__claude",
+      "source": "transformer",
+      "target": "claude",
+      "label": "architecture of",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "transformer__gemini",
+      "source": "transformer",
+      "target": "gemini",
+      "label": "architecture of",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "transformer__llama",
+      "source": "transformer",
+      "target": "llama",
+      "label": "architecture of",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "transformer__mistral",
+      "source": "transformer",
+      "target": "mistral",
+      "label": "architecture of",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "transformer__deepseek",
+      "source": "transformer",
+      "target": "deepseek",
+      "label": "architecture of",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "rlhf__gpt4o",
+      "source": "rlhf",
+      "target": "gpt4o",
+      "label": "aligns",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "rlhf__claude",
+      "source": "rlhf",
+      "target": "claude",
+      "label": "aligns",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "fine_tuning__llama",
+      "source": "fine_tuning",
+      "target": "llama",
+      "label": "enables specialization",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "fine_tuning__mistral",
+      "source": "fine_tuning",
+      "target": "mistral",
+      "label": "enables specialization",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "gpt4o__azure_openai",
+      "source": "gpt4o",
+      "target": "azure_openai",
+      "label": "deployed on",
+      "etype": "hosts"
+    }
+  },
+  {
+    "data": {
+      "id": "gpt4o__llm_api",
+      "source": "gpt4o",
+      "target": "llm_api",
+      "label": "accessed via",
+      "etype": "accesses"
+    }
+  },
+  {
+    "data": {
+      "id": "claude__aws_bedrock",
+      "source": "claude",
+      "target": "aws_bedrock",
+      "label": "available on",
+      "etype": "hosts"
+    }
+  },
+  {
+    "data": {
+      "id": "claude__llm_api",
+      "source": "claude",
+      "target": "llm_api",
+      "label": "accessed via",
+      "etype": "accesses"
+    }
+  },
+  {
+    "data": {
+      "id": "gemini__vertex_ai",
+      "source": "gemini",
+      "target": "vertex_ai",
+      "label": "deployed on",
+      "etype": "hosts"
+    }
+  },
+  {
+    "data": {
+      "id": "llama__huggingface",
+      "source": "llama",
+      "target": "huggingface",
+      "label": "distributed via",
+      "etype": "hosts"
+    }
+  },
+  {
+    "data": {
+      "id": "llama__ollama",
+      "source": "llama",
+      "target": "ollama",
+      "label": "runs locally via",
+      "etype": "hosts"
+    }
+  },
+  {
+    "data": {
+      "id": "mistral__ollama",
+      "source": "mistral",
+      "target": "ollama",
+      "label": "runs locally via",
+      "etype": "hosts"
+    }
+  },
+  {
+    "data": {
+      "id": "deepseek__ollama",
+      "source": "deepseek",
+      "target": "ollama",
+      "label": "runs locally via",
+      "etype": "hosts"
+    }
+  },
+  {
+    "data": {
+      "id": "deepseek__huggingface",
+      "source": "deepseek",
+      "target": "huggingface",
+      "label": "distributed via",
+      "etype": "hosts"
+    }
+  },
+  {
+    "data": {
+      "id": "embedding__vector_db",
+      "source": "embedding",
+      "target": "vector_db",
+      "label": "stored in",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "token__context_window",
+      "source": "token",
+      "target": "context_window",
+      "label": "fills",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "prompt__system_prompt",
+      "source": "prompt",
+      "target": "system_prompt",
+      "label": "specialized as",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "llm_api__tool_use",
+      "source": "llm_api",
+      "target": "tool_use",
+      "label": "enables",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "llm_api__structured_output",
+      "source": "llm_api",
+      "target": "structured_output",
+      "label": "enables",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "vector_db__rag",
+      "source": "vector_db",
+      "target": "rag",
+      "label": "powers retrieval in",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "ollama__rag",
+      "source": "ollama",
+      "target": "rag",
+      "label": "provides local LLM for",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "rag__agent",
+      "source": "rag",
+      "target": "agent",
+      "label": "used by",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "tool_use__agent",
+      "source": "tool_use",
+      "target": "agent",
+      "label": "core capability of",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "memory__agent",
+      "source": "memory",
+      "target": "agent",
+      "label": "enables persistence for",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "system_prompt__agent",
+      "source": "system_prompt",
+      "target": "agent",
+      "label": "configures",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "mcp__tool_use",
+      "source": "mcp",
+      "target": "tool_use",
+      "label": "standardizes",
+      "etype": "standardizes"
+    }
+  },
+  {
+    "data": {
+      "id": "structured_output__tool_use",
+      "source": "structured_output",
+      "target": "tool_use",
+      "label": "used with",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "rag__llamaindex",
+      "source": "rag",
+      "target": "llamaindex",
+      "label": "core feature of",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "rag__langchain",
+      "source": "rag",
+      "target": "langchain",
+      "label": "implemented in",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "agent__langgraph",
+      "source": "agent",
+      "target": "langgraph",
+      "label": "orchestrated by",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "agent__langchain",
+      "source": "agent",
+      "target": "langchain",
+      "label": "implemented in",
+      "etype": "implements"
+    }
+  },
+  {
+    "data": {
+      "id": "mcp__claude_code",
+      "source": "mcp",
+      "target": "claude_code",
+      "label": "used by",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "tool_use__claude_code",
+      "source": "tool_use",
+      "target": "claude_code",
+      "label": "leverages",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "gpt4o__github_copilot",
+      "source": "gpt4o",
+      "target": "github_copilot",
+      "label": "powers",
+      "etype": "powers"
+    }
+  },
+  {
+    "data": {
+      "id": "gpt4o__cursor",
+      "source": "gpt4o",
+      "target": "cursor",
+      "label": "powers (optional)",
+      "etype": "powers"
+    }
+  },
+  {
+    "data": {
+      "id": "claude__cursor",
+      "source": "claude",
+      "target": "cursor",
+      "label": "powers",
+      "etype": "powers"
+    }
+  },
+  {
+    "data": {
+      "id": "claude__claude_code",
+      "source": "claude",
+      "target": "claude_code",
+      "label": "powers",
+      "etype": "powers"
+    }
+  }
+];
+
+const statusColors = {"stable": "#27AE60", "evolving": "#E67E22", "emerging": "#8E44AD", "deprecated": "#95A5A6"};
+
+const cy = cytoscape({
+  container: document.getElementById("cy"),
+  elements: elements,
+  style: [
+    // Nodes
+    {
+      selector: "node",
+      style: {
+        "width": 140,
+        "height": 44,
+        "shape": "round-rectangle",
+        "background-color": "data(color)",
+        "background-opacity": 0.9,
+        "label": "data(label)",
+        "text-valign": "center",
+        "text-halign": "center",
+        "font-size": "12px",
+        "font-weight": "600",
+        "color": "#1A1A2E",
+        "border-width": 2,
+        "border-color": "data(color)",
+        "border-opacity": 1,
+        "text-wrap": "wrap",
+        "text-max-width": "130px",
+        "overlay-padding": "6px",
+        "transition-property": "border-color, border-width, background-opacity",
+        "transition-duration": "0.15s",
+      }
+    },
+    // Status: evolving → orange border
+    {
+      selector: ".status-evolving",
+      style: {
+        "border-color": "#E67E22",
+        "border-width": 3,
+      }
+    },
+    // Status: emerging → dashed purple border
+    {
+      selector: ".status-emerging",
+      style: {
+        "border-color": "#8E44AD",
+        "border-width": 3,
+        "border-style": "dashed",
+      }
+    },
+    // Status: deprecated → grey, muted
+    {
+      selector: ".status-deprecated",
+      style: {
+        "background-opacity": 0.4,
+        "color": "#999",
+        "border-color": "#BDC3C7",
+      }
+    },
+    // Hover
+    {
+      selector: "node:active, node.highlighted",
+      style: {
+        "border-width": 3,
+        "border-color": "#1A1A2E",
+        "background-opacity": 1,
+        "z-index": 999,
+      }
+    },
+    // Selected
+    {
+      selector: "node:selected",
+      style: {
+        "border-width": 3,
+        "border-color": "#E74C3C",
+        "background-opacity": 1,
+      }
+    },
+    // Edges
+    {
+      selector: "edge",
+      style: {
+        "width": 1.5,
+        "line-color": "#BDC3C7",
+        "target-arrow-color": "#BDC3C7",
+        "target-arrow-shape": "triangle",
+        "curve-style": "bezier",
+        "arrow-scale": 1,
+        "label": "",
+        "font-size": "9px",
+        "color": "#7F8C8D",
+        "text-background-color": "white",
+        "text-background-opacity": 0.8,
+        "text-background-padding": "2px",
+        "opacity": 0.6,
+      }
+    },
+    {
+      selector: "edge.highlighted",
+      style: {
+        "width": 2.5,
+        "line-color": "#E74C3C",
+        "target-arrow-color": "#E74C3C",
+        "label": "data(label)",
+        "opacity": 1,
+        "z-index": 999,
+      }
+    },
+    // Dimmed (when a node is selected)
+    {
+      selector: ".dimmed",
+      style: {
+        "opacity": 0.15,
+      }
+    },
+  ],
+  layout: {
+    name: "preset",
+  },
+  wheelSensitivity: 0.3,
+  minZoom: 0.2,
+  maxZoom: 3,
+});
+
+// ── Fit on load ──────────────────────────────
+cy.ready(() => {
+  cy.fit(undefined, 40);
+});
+
+// ── Node click → panel ───────────────────────
+cy.on("tap", "node", function(evt) {
+  const node = evt.target;
+  const d = node.data();
+
+  // Update panel header
+  document.getElementById("panel-header").style.display = "block";
+  document.getElementById("ph-label").textContent = d.label;
+
+  let meta = `Layer ${d.layer}`;
+  if (d.provider) meta += ` · ${d.provider}`;
+  if (d.subcategory) meta += ` · ${d.subcategory}`;
+  document.getElementById("ph-meta").textContent = meta;
+
+  const statusEl = document.getElementById("ph-status");
+  statusEl.textContent = d.status;
+  statusEl.style.background = statusColors[d.status] + "33";
+  statusEl.style.color = statusColors[d.status];
+  statusEl.style.border = `1px solid ${statusColors[d.status]}`;
+
+  // Update panel body
+  document.getElementById("empty-msg").style.display = "none";
+  document.getElementById("panel-content").style.display = "block";
+  document.getElementById("pc-desc").textContent = d.description;
+  document.getElementById("pc-since").textContent = d.since;
+
+  // Highlight node + connected edges/nodes
+  cy.elements().addClass("dimmed");
+  node.removeClass("dimmed");
+  const connected = node.connectedEdges();
+  connected.removeClass("dimmed").addClass("highlighted");
+  connected.connectedNodes().removeClass("dimmed");
+
+  // Remove highlight on other nodes
+  cy.nodes(":not(.layer-group)").not(node).not(connected.connectedNodes()).each(n => {
+    n.removeClass("highlighted");
+  });
+  node.addClass("highlighted");
+});
+
+// ── Click background → reset ─────────────────
+cy.on("tap", function(evt) {
+  if (evt.target === cy) {
+    cy.elements().removeClass("dimmed highlighted");
+    document.getElementById("panel-header").style.display = "none";
+    document.getElementById("empty-msg").style.display = "flex";
+    document.getElementById("panel-content").style.display = "none";
+  }
+});
+
+// ── Edge hover → show label ──────────────────
+cy.on("mouseover", "edge", function(evt) {
+  evt.target.addClass("highlighted");
+});
+cy.on("mouseout", "edge", function(evt) {
+  if (!evt.target.source().hasClass("highlighted")) {
+    evt.target.removeClass("highlighted");
+  }
+});
+</script>
+
+</body>
+</html>

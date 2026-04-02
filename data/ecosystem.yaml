@@ -1,0 +1,682 @@
+meta:
+  title: "The LLM Ecosystem Today"
+  description: "A comprehensive pedagogical map of the LLM and AI ecosystem"
+  version: "2026-Q1"
+  date: "2026-04-02"
+  language: "en"
+
+# ─────────────────────────────────────────────
+# CATEGORIES (visual grouping + color coding)
+# ─────────────────────────────────────────────
+categories:
+  - id: foundations
+    label: "Foundations"
+    color: "#F4D03F"       # yellow
+    description: "Core concepts everyone must understand first"
+
+  - id: models
+    label: "Models"
+    color: "#C39BD3"       # purple
+    description: "LLM families and their providers"
+
+  - id: infrastructure
+    label: "Infrastructure & Access"
+    color: "#85929E"       # grey
+    description: "How models are hosted and accessed"
+
+  - id: building_blocks
+    label: "Building Blocks"
+    color: "#58D68D"       # green
+    description: "Patterns and techniques to build AI applications"
+
+  - id: dev_tools
+    label: "Developer Tools"
+    color: "#5DADE2"       # blue
+    description: "Frameworks, libraries and coding tools"
+
+# ─────────────────────────────────────────────
+# NODES
+# status: stable | evolving | emerging | deprecated
+# layer: 1=Foundations, 2=Models, 3=Infrastructure,
+#        4=Building Blocks, 5=Dev Tools
+# ─────────────────────────────────────────────
+nodes:
+
+  # ── LAYER 1 · FOUNDATIONS ───────────────────
+
+  - id: transformer
+    label: "Transformer"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2017"
+    description: >
+      Neural network architecture behind all modern LLMs.
+      Introduced in "Attention Is All You Need" (Google, 2017).
+      Uses self-attention to process sequences in parallel.
+
+  - id: token
+    label: "Token"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2017"
+    description: >
+      The basic unit of text processed by an LLM.
+      1 token ≈ 0.75 words in English.
+      Models are billed and limited by token count.
+
+  - id: context_window
+    label: "Context Window"
+    layer: 1
+    category: foundations
+    status: evolving
+    since: "2017"
+    description: >
+      Maximum number of tokens a model can process at once (input + output).
+      GPT-4: 128K. Claude 3.7: 200K. Gemini 2.0: 1M.
+      Larger = more expensive but can handle bigger documents.
+
+  - id: embedding
+    label: "Embedding"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2013"
+    description: >
+      Numerical vector (list of floats) representing text in semantic space.
+      Similar meaning → similar vectors. Used for search, RAG, clustering.
+
+  - id: prompt
+    label: "Prompt"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2020"
+    description: >
+      The input text sent to a model to elicit a response.
+      Quality of the prompt directly determines quality of the output.
+
+  - id: inference
+    label: "Inference"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2017"
+    description: >
+      The process of running a trained model to generate output from an input.
+      Opposite of training. Happens every time you query a model.
+
+  - id: temperature
+    label: "Temperature"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2017"
+    description: >
+      Parameter controlling output randomness.
+      0 = deterministic (same input → same output).
+      1+ = creative and varied. Tune based on use case.
+
+  - id: training
+    label: "Pre-training"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2018"
+    description: >
+      Initial phase where a model learns from massive text datasets (terabytes).
+      Builds general language understanding. Very expensive (millions of $).
+
+  - id: fine_tuning
+    label: "Fine-tuning"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2018"
+    description: >
+      Additional training on a specific dataset to specialize model behavior.
+      Cheaper than pre-training. Used to adapt a base model to a domain or task.
+
+  - id: rlhf
+    label: "RLHF"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2022"
+    description: >
+      Reinforcement Learning from Human Feedback.
+      Technique to align LLM outputs with human preferences.
+      Used in ChatGPT, Claude, Gemini to make models helpful and safe.
+
+  # ── LAYER 2 · MODELS ────────────────────────
+
+  # Proprietary
+  - id: gpt4o
+    label: "GPT-4o"
+    layer: 2
+    category: models
+    subcategory: proprietary
+    provider: "OpenAI"
+    status: stable
+    since: "2024-05"
+    description: >
+      OpenAI's flagship multimodal model. Processes text, images and audio natively.
+      "o" = omni. Powers ChatGPT. Available via API.
+
+  - id: o3
+    label: "o3 / o4-mini"
+    layer: 2
+    category: models
+    subcategory: proprietary
+    provider: "OpenAI"
+    status: evolving
+    since: "2025-04"
+    description: >
+      OpenAI's reasoning-focused model family.
+      Thinks step-by-step internally before answering (chain-of-thought).
+      Best for complex math, coding, logic tasks.
+
+  - id: claude
+    label: "Claude 3.5 / 3.7"
+    layer: 2
+    category: models
+    subcategory: proprietary
+    provider: "Anthropic"
+    status: evolving
+    since: "2024-06"
+    description: >
+      Anthropic's model family. Known for instruction-following and safety.
+      Claude 3.7 Sonnet introduces extended thinking (visible reasoning).
+      Sonnet = balanced. Haiku = fast/cheap. Opus = most powerful.
+
+  - id: gemini
+    label: "Gemini 2.0"
+    layer: 2
+    category: models
+    subcategory: proprietary
+    provider: "Google DeepMind"
+    status: evolving
+    since: "2024-12"
+    description: >
+      Google's multimodal model family. Native tool use, code execution.
+      Gemini 2.0 Flash: 1M token context window. Strong at long documents.
+
+  # Open Weights
+  - id: llama
+    label: "Llama 3.x"
+    layer: 2
+    category: models
+    subcategory: open_weights
+    provider: "Meta"
+    status: evolving
+    since: "2024-04"
+    description: >
+      Meta's open-weights model family. Free to download, run and fine-tune.
+      Available in multiple sizes (8B, 70B, 405B parameters).
+      Foundation of many community fine-tunes and products.
+
+  - id: mistral
+    label: "Mistral"
+    layer: 2
+    category: models
+    subcategory: open_weights
+    provider: "Mistral AI"
+    status: stable
+    since: "2023-09"
+    description: >
+      Efficient open-weights models from French startup Mistral AI.
+      Mixtral uses MoE (Mixture of Experts) architecture for better performance/cost.
+
+  - id: deepseek
+    label: "DeepSeek R1 / V3"
+    layer: 2
+    category: models
+    subcategory: open_weights
+    provider: "DeepSeek AI"
+    status: evolving
+    since: "2024-12"
+    description: >
+      Chinese open-weights models that rival proprietary models at much lower cost.
+      DeepSeek-R1 is a reasoning model (like o3) but fully open.
+      Caused significant market disruption in early 2025.
+
+  - id: qwen
+    label: "Qwen 2.5"
+    layer: 2
+    category: models
+    subcategory: open_weights
+    provider: "Alibaba"
+    status: evolving
+    since: "2024-09"
+    description: >
+      Alibaba's open-weights model family. Strong multilingual and coding performance.
+      Qwen2.5-Coder is specialized for code generation.
+
+  # ── LAYER 3 · INFRASTRUCTURE & ACCESS ───────
+
+  - id: llm_api
+    label: "LLM API"
+    layer: 3
+    category: infrastructure
+    status: stable
+    since: "2020"
+    description: >
+      Standard HTTP/REST interface to interact with a model.
+      Send a prompt in the request, get a completion in the response.
+      Common pattern across all providers (OpenAI, Anthropic, Google...).
+
+  - id: aws_bedrock
+    label: "AWS Bedrock"
+    layer: 3
+    category: infrastructure
+    subcategory: cloud
+    status: stable
+    since: "2023-04"
+    description: >
+      AWS managed service to access multiple LLMs (Claude, Llama, Mistral...) via a unified API.
+      No GPU management. Pay per token. Enterprise-grade security and compliance.
+
+  - id: vertex_ai
+    label: "Google Vertex AI"
+    layer: 3
+    category: infrastructure
+    subcategory: cloud
+    status: stable
+    since: "2023-03"
+    description: >
+      Google Cloud managed platform for AI model deployment and serving.
+      Hosts Gemini natively. Also supports fine-tuning and MLOps pipelines.
+
+  - id: azure_openai
+    label: "Azure OpenAI"
+    layer: 3
+    category: infrastructure
+    subcategory: cloud
+    status: stable
+    since: "2023-01"
+    description: >
+      Microsoft Azure's managed deployment of OpenAI models.
+      Preferred for enterprise: data privacy, compliance (SOC2, HIPAA), SLAs.
+
+  - id: huggingface
+    label: "HuggingFace"
+    layer: 3
+    category: infrastructure
+    subcategory: hub
+    status: stable
+    since: "2018"
+    description: >
+      The central hub for open-source models, datasets and ML tooling.
+      Hosts 500K+ models. Provides Inference API and Spaces for demos.
+      The "GitHub of AI models".
+
+  - id: ollama
+    label: "Ollama"
+    layer: 3
+    category: infrastructure
+    subcategory: local
+    status: evolving
+    since: "2023-07"
+    description: >
+      Run LLMs locally on your own machine. Simple CLI and REST API.
+      Supports Llama, Mistral, DeepSeek, Qwen and many more.
+      No internet required. Free. Privacy-preserving.
+
+  # ── LAYER 4 · BUILDING BLOCKS ───────────────
+
+  - id: rag
+    label: "RAG"
+    layer: 4
+    category: building_blocks
+    status: stable
+    since: "2020-05"
+    description: >
+      Retrieval-Augmented Generation.
+      Augments LLM responses with relevant external documents fetched at runtime.
+      Solves the knowledge cutoff problem. Avoids hallucinations on specific data.
+
+  - id: vector_db
+    label: "Vector Database"
+    layer: 4
+    category: building_blocks
+    status: stable
+    since: "2021"
+    description: >
+      Database optimized for storing and querying embeddings by semantic similarity.
+      Examples: Pinecone, Weaviate, Chroma, pgvector.
+      Core component of RAG pipelines.
+
+  - id: agent
+    label: "Agent"
+    layer: 4
+    category: building_blocks
+    status: evolving
+    since: "2023-03"
+    description: >
+      An LLM that can take actions autonomously: call tools, browse the web,
+      write and run code, make decisions in a loop.
+      Key shift: from Q&A to autonomous task completion.
+
+  - id: tool_use
+    label: "Tool Use / Function Calling"
+    layer: 4
+    category: building_blocks
+    status: stable
+    since: "2023-06"
+    description: >
+      Allows an LLM to call external functions or APIs during generation.
+      Example: search the web, query a DB, send an email.
+      The model decides when and how to call the tool.
+
+  - id: structured_output
+    label: "Structured Output"
+    layer: 4
+    category: building_blocks
+    status: stable
+    since: "2023-11"
+    description: >
+      Forces the model to respond in a defined format (JSON schema).
+      Essential for reliable integration in applications.
+      Eliminates parsing errors from free-form text responses.
+
+  - id: system_prompt
+    label: "System Prompt"
+    layer: 4
+    category: building_blocks
+    status: stable
+    since: "2022"
+    description: >
+      Instructions given to the model before the conversation starts.
+      Defines persona, rules, tone, constraints and context.
+      Hidden from end users. Controls model behavior globally.
+
+  - id: memory
+    label: "Memory"
+    layer: 4
+    category: building_blocks
+    status: evolving
+    since: "2023-06"
+    description: >
+      Mechanisms to persist information across conversations or steps.
+      Short-term: conversation history in context window.
+      Long-term: summaries or facts stored in a vector DB or key-value store.
+
+  - id: mcp
+    label: "MCP"
+    layer: 4
+    category: building_blocks
+    status: emerging
+    since: "2024-11"
+    description: >
+      Model Context Protocol. Open standard by Anthropic (Nov 2024).
+      Standardizes how LLMs connect to external tools and data sources.
+      Like USB-C for AI: one protocol, many integrations.
+
+  # ── LAYER 5 · DEVELOPER TOOLS ───────────────
+
+  - id: langchain
+    label: "LangChain"
+    layer: 5
+    category: dev_tools
+    subcategory: framework
+    status: stable
+    since: "2022-10"
+    description: >
+      Most popular framework for building LLM applications.
+      Provides chains, retrievers, memory and agent primitives.
+      Large ecosystem but sometimes criticized for over-abstraction.
+
+  - id: langgraph
+    label: "LangGraph"
+    layer: 5
+    category: dev_tools
+    subcategory: framework
+    status: evolving
+    since: "2024-01"
+    description: >
+      Graph-based orchestration for multi-agent and stateful LLM workflows.
+      Built on LangChain. Nodes = steps, Edges = transitions.
+      Better control flow than simple chains.
+
+  - id: llamaindex
+    label: "LlamaIndex"
+    layer: 5
+    category: dev_tools
+    subcategory: framework
+    status: stable
+    since: "2022-11"
+    description: >
+      Framework focused on data ingestion and RAG pipelines.
+      Great for document Q&A applications.
+      Simpler than LangChain for pure retrieval use cases.
+
+  - id: cursor
+    label: "Cursor"
+    layer: 5
+    category: dev_tools
+    subcategory: ide
+    status: evolving
+    since: "2023-03"
+    description: >
+      AI-first code editor (fork of VS Code).
+      Deep LLM integration: code generation, explanation, refactoring, codebase Q&A.
+      Uses GPT-4o and Claude under the hood.
+
+  - id: github_copilot
+    label: "GitHub Copilot"
+    layer: 5
+    category: dev_tools
+    subcategory: ide
+    status: stable
+    since: "2021-06"
+    description: >
+      AI pair programmer by GitHub/Microsoft.
+      Integrates in VS Code, JetBrains, Neovim and more.
+      Suggests code completions and has a chat mode.
+
+  - id: claude_code
+    label: "Claude Code"
+    layer: 5
+    category: dev_tools
+    subcategory: cli
+    status: evolving
+    since: "2025-02"
+    description: >
+      Anthropic's agentic CLI tool. Runs in the terminal.
+      Can read, write, and execute code across an entire codebase autonomously.
+      Uses MCP for tool integrations.
+
+# ─────────────────────────────────────────────
+# EDGES (relationships between nodes)
+# type: implements | uses | hosts | enables |
+#       powers | part_of | standardizes |
+#       accesses | orchestrates
+# ─────────────────────────────────────────────
+edges:
+
+  # Foundations → Models
+  - from: transformer
+    to: gpt4o
+    label: "architecture of"
+    type: implements
+  - from: transformer
+    to: claude
+    label: "architecture of"
+    type: implements
+  - from: transformer
+    to: gemini
+    label: "architecture of"
+    type: implements
+  - from: transformer
+    to: llama
+    label: "architecture of"
+    type: implements
+  - from: transformer
+    to: mistral
+    label: "architecture of"
+    type: implements
+  - from: transformer
+    to: deepseek
+    label: "architecture of"
+    type: implements
+  - from: rlhf
+    to: gpt4o
+    label: "aligns"
+    type: uses
+  - from: rlhf
+    to: claude
+    label: "aligns"
+    type: uses
+  - from: fine_tuning
+    to: llama
+    label: "enables specialization"
+    type: enables
+  - from: fine_tuning
+    to: mistral
+    label: "enables specialization"
+    type: enables
+
+  # Models → Infrastructure
+  - from: gpt4o
+    to: azure_openai
+    label: "deployed on"
+    type: hosts
+  - from: gpt4o
+    to: llm_api
+    label: "accessed via"
+    type: accesses
+  - from: claude
+    to: aws_bedrock
+    label: "available on"
+    type: hosts
+  - from: claude
+    to: llm_api
+    label: "accessed via"
+    type: accesses
+  - from: gemini
+    to: vertex_ai
+    label: "deployed on"
+    type: hosts
+  - from: llama
+    to: huggingface
+    label: "distributed via"
+    type: hosts
+  - from: llama
+    to: ollama
+    label: "runs locally via"
+    type: hosts
+  - from: mistral
+    to: ollama
+    label: "runs locally via"
+    type: hosts
+  - from: deepseek
+    to: ollama
+    label: "runs locally via"
+    type: hosts
+  - from: deepseek
+    to: huggingface
+    label: "distributed via"
+    type: hosts
+
+  # Foundations → Building Blocks
+  - from: embedding
+    to: vector_db
+    label: "stored in"
+    type: part_of
+  - from: token
+    to: context_window
+    label: "fills"
+    type: part_of
+  - from: prompt
+    to: system_prompt
+    label: "specialized as"
+    type: part_of
+
+  # Infrastructure → Building Blocks
+  - from: llm_api
+    to: tool_use
+    label: "enables"
+    type: enables
+  - from: llm_api
+    to: structured_output
+    label: "enables"
+    type: enables
+  - from: vector_db
+    to: rag
+    label: "powers retrieval in"
+    type: enables
+  - from: ollama
+    to: rag
+    label: "provides local LLM for"
+    type: enables
+
+  # Building Blocks → Building Blocks
+  - from: rag
+    to: agent
+    label: "used by"
+    type: part_of
+  - from: tool_use
+    to: agent
+    label: "core capability of"
+    type: part_of
+  - from: memory
+    to: agent
+    label: "enables persistence for"
+    type: enables
+  - from: system_prompt
+    to: agent
+    label: "configures"
+    type: enables
+  - from: mcp
+    to: tool_use
+    label: "standardizes"
+    type: standardizes
+  - from: structured_output
+    to: tool_use
+    label: "used with"
+    type: uses
+
+  # Building Blocks → Dev Tools
+  - from: rag
+    to: llamaindex
+    label: "core feature of"
+    type: implements
+  - from: rag
+    to: langchain
+    label: "implemented in"
+    type: implements
+  - from: agent
+    to: langgraph
+    label: "orchestrated by"
+    type: implements
+  - from: agent
+    to: langchain
+    label: "implemented in"
+    type: implements
+  - from: mcp
+    to: claude_code
+    label: "used by"
+    type: uses
+  - from: tool_use
+    to: claude_code
+    label: "leverages"
+    type: uses
+
+  # Models → Dev Tools
+  - from: gpt4o
+    to: github_copilot
+    label: "powers"
+    type: powers
+  - from: gpt4o
+    to: cursor
+    label: "powers (optional)"
+    type: powers
+  - from: claude
+    to: cursor
+    label: "powers"
+    type: powers
+  - from: claude
+    to: claude_code
+    label: "powers"
+    type: powers
