@@ -674,7 +674,7 @@ edges:
     label: "powers retrieval in"
     type: enables
   - from: prompt_eng
-    to: access
+    to: public_api
     label: "reaches model through"
     type: enables
   - from: multimodality
