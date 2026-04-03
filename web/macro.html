@@ -283,6 +283,20 @@
     color: inherit;
     white-space: pre-line;
   }
+  .panel-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #3498DB;
+    text-decoration: none;
+    padding: 4px 8px;
+    border: 1px solid #3498DB33;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .panel-link:hover { background: #3498DB11; }
+  .panel-link .link-icon { font-size: 14px; }
   #panel-body .since {
     font-size: 12px;
     color: #7F8C8D;
@@ -467,6 +481,7 @@
         <div class="description" id="pc-desc"></div>
         <div class="section-title">Since</div>
         <div class="since" id="pc-since"></div>
+        <div id="pc-links" style="display:none; margin-top:14px; display:flex; flex-direction:column; gap:6px;"></div>
       </div>
     </div>
     <div id="legend">
@@ -495,6 +510,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
+      "link": "https://en.wikipedia.org/wiki/Large_language_model",
+      "ref": "https://arxiv.org/abs/1706.03762",
       "color": "#F4D03F",
       "layerLabel": "CORE CONCEPTS",
       "label_en": "Language Model",
@@ -520,6 +537,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
+      "link": "https://platform.openai.com/tokenizer",
+      "ref": "https://tiktokenizer.vercel.app/",
       "color": "#F4D03F",
       "layerLabel": "CORE CONCEPTS",
       "label_en": "Token & Context",
@@ -545,6 +564,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2013",
+      "link": "https://platform.openai.com/docs/guides/embeddings",
+      "ref": "https://arxiv.org/abs/1301.3666",
       "color": "#F4D03F",
       "layerLabel": "CORE CONCEPTS",
       "label_en": "Embedding & Vectors",
@@ -570,6 +591,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2018",
+      "link": "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback",
+      "ref": "https://arxiv.org/abs/1706.03741",
       "color": "#F4D03F",
       "layerLabel": "CORE CONCEPTS",
       "label_en": "Training & Alignment",
@@ -595,6 +618,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
+      "link": "https://huggingface.co/docs/transformers/main/en/pipeline_tutorial",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "CORE CONCEPTS",
       "label_en": "Inference",
@@ -620,6 +645,8 @@ const elements = [
       "layer": 1,
       "status": "emerging",
       "since": "2024",
+      "link": "https://openai.com/o3",
+      "ref": "https://arxiv.org/abs/2201.11903",
       "color": "#F4D03F",
       "layerLabel": "CORE CONCEPTS",
       "label_en": "Reasoning",
@@ -645,6 +672,8 @@ const elements = [
       "layer": 1,
       "status": "evolving",
       "since": "2023",
+      "link": "https://openai.com/index/gpt-4v-system-card",
+      "ref": "https://arxiv.org/abs/2309.17421",
       "color": "#F4D03F",
       "layerLabel": "CORE CONCEPTS",
       "label_en": "Multimodality",
@@ -670,6 +699,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2022",
+      "link": "https://platform.openai.com/docs/models",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "MODEL TAXONOMY",
       "label_en": "Proprietary Models",
@@ -695,6 +726,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2023",
+      "link": "https://huggingface.co/models",
+      "ref": "https://arxiv.org/abs/2407.21783",
       "color": "#C39BD3",
       "layerLabel": "MODEL TAXONOMY",
       "label_en": "Open Source / Weights Models",
@@ -720,6 +753,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2022",
+      "link": "https://platform.openai.com/docs/guides/embeddings",
+      "ref": "https://huggingface.co/spaces/mteb/leaderboard",
       "color": "#C39BD3",
       "layerLabel": "MODEL TAXONOMY",
       "label_en": "Embedding Models",
@@ -745,6 +780,8 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2020",
+      "link": "https://platform.openai.com/docs/api-reference",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "ACCESS & DEPLOYMENT",
       "label_en": "Public API",
@@ -770,6 +807,8 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2023",
+      "link": "https://aws.amazon.com/bedrock/",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "ACCESS & DEPLOYMENT",
       "label_en": "Cloud Managed",
@@ -795,6 +834,8 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2023",
+      "link": "https://docs.vllm.ai/en/latest/",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "ACCESS & DEPLOYMENT",
       "label_en": "Self-hosted",
@@ -820,6 +861,8 @@ const elements = [
       "layer": 3,
       "status": "evolving",
       "since": "2023",
+      "link": "https://ollama.com",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "ACCESS & DEPLOYMENT",
       "label_en": "Local / Edge",
@@ -845,6 +888,8 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2023",
+      "link": "https://aws.amazon.com/what-is/retrieval-augmented-generation/",
+      "ref": "https://arxiv.org/abs/2005.11401",
       "color": "#58D68D",
       "layerLabel": "APPLICATION PATTERNS",
       "label_en": "RAG",
@@ -870,6 +915,8 @@ const elements = [
       "layer": 4,
       "status": "evolving",
       "since": "2023",
+      "link": "https://www.anthropic.com/research/building-effective-agents",
+      "ref": "https://arxiv.org/abs/2309.07864",
       "color": "#58D68D",
       "layerLabel": "APPLICATION PATTERNS",
       "label_en": "AI Agents",
@@ -895,13 +942,15 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2023",
+      "link": "https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview",
+      "ref": "https://modelcontextprotocol.io/introduction",
       "color": "#58D68D",
       "layerLabel": "APPLICATION PATTERNS",
       "label_en": "Tool Use",
-      "description_en": "The model can call external functions during generation: search the web, query a database, run code, send an email. Core capability that transforms LLMs from chat to action.",
+      "description_en": "The model can call external functions during generation: search the web,\nquery a database, run code, send an email.\nCore capability that transforms LLMs from chat to action.",
       "layerLabel_en": "APPLICATION PATTERNS",
       "label_fr": "Utilisation d'Outils",
-      "description_fr": "Le mod\u00e8le peut appeler des fonctions externes pendant la g\u00e9n\u00e9ration : chercher sur le web, interroger une base de donn\u00e9es, ex\u00e9cuter du code, envoyer un email. Capacit\u00e9 fondamentale qui transforme les LLM de chatbots en acteurs.",
+      "description_fr": "Le mod\u00e8le peut appeler des fonctions externes pendant la g\u00e9n\u00e9ration : chercher sur le web,\ninterroger une base de donn\u00e9es, ex\u00e9cuter du code, envoyer un email.\nCapacit\u00e9 fondamentale qui transforme les LLM de chatbots en acteurs.",
       "layerLabel_fr": "PATTERNS APPLICATIFS"
     },
     "position": {
@@ -920,6 +969,8 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2022",
+      "link": "https://platform.openai.com/docs/guides/fine-tuning",
+      "ref": "https://arxiv.org/abs/2106.09685",
       "color": "#58D68D",
       "layerLabel": "APPLICATION PATTERNS",
       "label_en": "Fine-tuning",
@@ -945,6 +996,8 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2022",
+      "link": "https://platform.openai.com/docs/guides/prompt-engineering",
+      "ref": "https://www.promptingguide.ai/",
       "color": "#58D68D",
       "layerLabel": "APPLICATION PATTERNS",
       "label_en": "Prompt Engineering",
@@ -970,6 +1023,8 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2023",
+      "link": "https://platform.openai.com/docs/guides/structured-outputs",
+      "ref": "https://arxiv.org/abs/2307.09702",
       "color": "#58D68D",
       "layerLabel": "APPLICATION PATTERNS",
       "label_en": "Structured Generation",
@@ -995,6 +1050,8 @@ const elements = [
       "layer": 5,
       "status": "evolving",
       "since": "2022",
+      "link": "https://www.langchain.com",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "TOOLING ECOSYSTEM",
       "label_en": "Orchestration\nFrameworks",
@@ -1020,6 +1077,8 @@ const elements = [
       "layer": 5,
       "status": "evolving",
       "since": "2021",
+      "link": "https://www.cursor.com",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "TOOLING ECOSYSTEM",
       "label_en": "AI Coding\nAssistants",
@@ -1045,6 +1104,8 @@ const elements = [
       "layer": 5,
       "status": "stable",
       "since": "2021",
+      "link": "https://www.pinecone.io/learn/vector-database/",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "TOOLING ECOSYSTEM",
       "label_en": "Vector Databases",
@@ -1070,6 +1131,8 @@ const elements = [
       "layer": 5,
       "status": "evolving",
       "since": "2023",
+      "link": "https://www.langchain.com/langsmith",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "TOOLING ECOSYSTEM",
       "label_en": "Eval &\nObservability",
@@ -1095,6 +1158,8 @@ const elements = [
       "layer": 5,
       "status": "stable",
       "since": "2018",
+      "link": "https://huggingface.co/models",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "TOOLING ECOSYSTEM",
       "label_en": "Model Hubs",
@@ -2063,6 +2128,24 @@ function showPanel(node) {
   document.querySelectorAll("#panel-content .section-title")[1].textContent = pl.since;
   document.getElementById("pc-desc").innerHTML = linkGlossaryTerms(d[`description_${lang}`] || "");
   document.getElementById("pc-since").textContent = d.since;
+
+  const linksEl = document.getElementById("pc-links");
+  linksEl.innerHTML = "";
+  if (d.link) {
+    const a = document.createElement("a");
+    a.href = d.link; a.target = "_blank"; a.rel = "noopener";
+    a.className = "panel-link";
+    a.innerHTML = '<span class="link-icon">🌐</span>' + (lang === "fr" ? "Site officiel" : "Official site");
+    linksEl.appendChild(a);
+  }
+  if (d.ref) {
+    const a = document.createElement("a");
+    a.href = d.ref; a.target = "_blank"; a.rel = "noopener";
+    a.className = "panel-link";
+    a.innerHTML = '<span class="link-icon">📄</span>' + (lang === "fr" ? "Référence" : "Reference");
+    linksEl.appendChild(a);
+  }
+  linksEl.style.display = (d.link || d.ref) ? "flex" : "none";
 }
 
 // ── Node click → panel ───────────────────────

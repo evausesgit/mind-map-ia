@@ -161,6 +161,8 @@ def build_elements(data):
                     "layer": node["layer"],
                     "status": node["status"],
                     "since": str(node["since"]),
+                    "link": node.get("link", ""),
+                    "ref": node.get("ref", ""),
                     "color": category_colors.get(node["category"], "#BDC3C7"),
                     "layerLabel": t(
                         layer_labels.get(layer_id, f"Layer {layer_id}"), "en"
@@ -586,6 +588,20 @@ def generate_html(data, elements, maps=None, current_output=""):
     color: inherit;
     white-space: pre-line;
   }}
+  .panel-link {{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #3498DB;
+    text-decoration: none;
+    padding: 4px 8px;
+    border: 1px solid #3498DB33;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }}
+  .panel-link:hover {{ background: #3498DB11; }}
+  .panel-link .link-icon {{ font-size: 14px; }}
   #panel-body .since {{
     font-size: 12px;
     color: #7F8C8D;
@@ -770,6 +786,7 @@ def generate_html(data, elements, maps=None, current_output=""):
         <div class="description" id="pc-desc"></div>
         <div class="section-title">Since</div>
         <div class="since" id="pc-since"></div>
+        <div id="pc-links" style="display:none; margin-top:14px; display:flex; flex-direction:column; gap:6px;"></div>
       </div>
     </div>
     <div id="legend">
@@ -1416,6 +1433,24 @@ function showPanel(node) {{
   document.querySelectorAll("#panel-content .section-title")[1].textContent = pl.since;
   document.getElementById("pc-desc").innerHTML = linkGlossaryTerms(d[`description_${{lang}}`] || "");
   document.getElementById("pc-since").textContent = d.since;
+
+  const linksEl = document.getElementById("pc-links");
+  linksEl.innerHTML = "";
+  if (d.link) {{
+    const a = document.createElement("a");
+    a.href = d.link; a.target = "_blank"; a.rel = "noopener";
+    a.className = "panel-link";
+    a.innerHTML = '<span class="link-icon">🌐</span>' + (lang === "fr" ? "Site officiel" : "Official site");
+    linksEl.appendChild(a);
+  }}
+  if (d.ref) {{
+    const a = document.createElement("a");
+    a.href = d.ref; a.target = "_blank"; a.rel = "noopener";
+    a.className = "panel-link";
+    a.innerHTML = '<span class="link-icon">📄</span>' + (lang === "fr" ? "Référence" : "Reference");
+    linksEl.appendChild(a);
+  }}
+  linksEl.style.display = (d.link || d.ref) ? "flex" : "none";
 }}
 
 // ── Node click → panel ───────────────────────

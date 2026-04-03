@@ -83,6 +83,8 @@ nodes:
     category: concepts
     status: stable
     since: "2017"
+    link: "https://en.wikipedia.org/wiki/Large_language_model"
+    ref: "https://arxiv.org/abs/1706.03762"
     description:
       en: >
         A model trained on massive text datasets to understand and generate human language.
@@ -101,6 +103,8 @@ nodes:
     category: concepts
     status: stable
     since: "2017"
+    link: "https://platform.openai.com/tokenizer"
+    ref: "https://tiktokenizer.vercel.app/"
     description:
       en: >
         A token is the smallest unit of text a model processes (~0.75 words).
@@ -119,6 +123,8 @@ nodes:
     category: concepts
     status: stable
     since: "2013"
+    link: "https://platform.openai.com/docs/guides/embeddings"
+    ref: "https://arxiv.org/abs/1301.3666"
     description:
       en: >
         An embedding is a list of numbers (a vector) that represents the meaning of a text.
@@ -137,6 +143,8 @@ nodes:
     category: concepts
     status: stable
     since: "2018"
+    link: "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback"
+    ref: "https://arxiv.org/abs/1706.03741"
     description:
       en: >
         Training: teaching a model by exposing it to vast amounts of data.
@@ -155,6 +163,7 @@ nodes:
     category: concepts
     status: stable
     since: "2017"
+    link: "https://huggingface.co/docs/transformers/main/en/pipeline_tutorial"
     description:
       en: >
         Running a trained model to generate a response from an input.
@@ -173,6 +182,8 @@ nodes:
     category: concepts
     status: emerging
     since: "2024"
+    link: "https://openai.com/o3"
+    ref: "https://arxiv.org/abs/2201.11903"
     description:
       en: |
         A paradigm shift in how models respond: instead of answering immediately,
@@ -187,7 +198,6 @@ nodes:
         Pas un type de modèle à part — une capacité qui s'applique aux modèles propriétaires ou open source.
         Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.
 
-
   - id: multimodality
     label:
       en: "Multimodality"
@@ -196,15 +206,25 @@ nodes:
     category: concepts
     status: evolving
     since: "2023"
+    link: "https://openai.com/index/gpt-4v-system-card"
+    ref: "https://arxiv.org/abs/2309.17421"
     description:
-      en: >
+      en: |
         The ability of a model to process and generate multiple types of data:
-        text, images, audio, video, code.
+        text,
+        images,
+        audio,
+        video,
+        code.
         Modern frontier models are natively multimodal.
         Expands LLMs far beyond text-only interactions.
-      fr: >
+      fr: |
         La capacité d'un modèle à traiter et générer plusieurs types de données :
-        texte, images, audio, vidéo, code.
+        texte,
+        images,
+        audio,
+        vidéo,
+        code.
         Les modèles frontier modernes sont nativement multimodaux.
         Étend les LLM bien au-delà des interactions textuelles.
 
@@ -218,6 +238,7 @@ nodes:
     category: model_types
     status: evolving
     since: "2022"
+    link: "https://platform.openai.com/docs/models"
     description:
       en: |
         Models whose weights are PRIVATE, never downloadable.
@@ -238,6 +259,8 @@ nodes:
     category: model_types
     status: evolving
     since: "2023"
+    link: "https://huggingface.co/models"
+    ref: "https://arxiv.org/abs/2407.21783"
     description:
       en: |
         Weights are publicly downloadable — you can run, fine-tune and deploy the model yourself.
@@ -258,6 +281,8 @@ nodes:
     category: model_types
     status: stable
     since: "2022"
+    link: "https://platform.openai.com/docs/guides/embeddings"
+    ref: "https://huggingface.co/spaces/mteb/leaderboard"
     description:
       en: >
         Specialized models that convert text into vectors (not text generators).
@@ -278,6 +303,7 @@ nodes:
     category: access
     status: stable
     since: "2020"
+    link: "https://platform.openai.com/docs/api-reference"
     description:
       en: >
         Send an HTTP request to a provider's endpoint, get a response.
@@ -296,6 +322,7 @@ nodes:
     category: access
     status: stable
     since: "2023"
+    link: "https://aws.amazon.com/bedrock/"
     description:
       en: >
         Access models through a major cloud provider (AWS, GCP, Azure).
@@ -314,6 +341,7 @@ nodes:
     category: access
     status: stable
     since: "2023"
+    link: "https://docs.vllm.ai/en/latest/"
     description:
       en: >
         Deploy the model on your own GPU servers (on-premise or cloud VMs).
@@ -332,6 +360,7 @@ nodes:
     category: access
     status: evolving
     since: "2023"
+    link: "https://ollama.com"
     description:
       en: >
         Run a model on a laptop, phone, or edge device. No internet required.
@@ -352,6 +381,8 @@ nodes:
     category: patterns
     status: stable
     since: "2023"
+    link: "https://aws.amazon.com/what-is/retrieval-augmented-generation/"
+    ref: "https://arxiv.org/abs/2005.11401"
     description:
       en: >
         Retrieval-Augmented Generation. At query time, retrieve relevant documents
@@ -370,6 +401,8 @@ nodes:
     category: patterns
     status: evolving
     since: "2023"
+    link: "https://www.anthropic.com/research/building-effective-agents"
+    ref: "https://arxiv.org/abs/2309.07864"
     description:
       en: >
         Systems where an LLM autonomously plans, calls tools, and iterates
@@ -388,12 +421,14 @@ nodes:
     category: patterns
     status: stable
     since: "2023"
+    link: "https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview"
+    ref: "https://modelcontextprotocol.io/introduction"
     description:
-      en: >
+      en: |
         The model can call external functions during generation: search the web,
         query a database, run code, send an email.
         Core capability that transforms LLMs from chat to action.
-      fr: >
+      fr: |
         Le modèle peut appeler des fonctions externes pendant la génération : chercher sur le web,
         interroger une base de données, exécuter du code, envoyer un email.
         Capacité fondamentale qui transforme les LLM de chatbots en acteurs.
@@ -406,6 +441,8 @@ nodes:
     category: patterns
     status: stable
     since: "2022"
+    link: "https://platform.openai.com/docs/guides/fine-tuning"
+    ref: "https://arxiv.org/abs/2106.09685"
     description:
       en: >
         Adapt a pre-trained model to a specific domain or behavior
@@ -424,6 +461,8 @@ nodes:
     category: patterns
     status: stable
     since: "2022"
+    link: "https://platform.openai.com/docs/guides/prompt-engineering"
+    ref: "https://www.promptingguide.ai/"
     description:
       en: |
         The practice of crafting inputs to reliably get the desired output from a model.
@@ -446,6 +485,8 @@ nodes:
     category: patterns
     status: stable
     since: "2023"
+    link: "https://platform.openai.com/docs/guides/structured-outputs"
+    ref: "https://arxiv.org/abs/2307.09702"
     description:
       en: >
         Force the model to respond in a defined format (e.g. JSON schema).
@@ -466,6 +507,7 @@ nodes:
     category: tooling
     status: evolving
     since: "2022"
+    link: "https://www.langchain.com"
     description:
       en: >
         Libraries that help chain LLM calls, manage memory, and build complex pipelines.
@@ -484,6 +526,7 @@ nodes:
     category: tooling
     status: evolving
     since: "2021"
+    link: "https://www.cursor.com"
     description:
       en: >
         Tools that integrate LLMs directly into the development workflow.
@@ -502,6 +545,7 @@ nodes:
     category: tooling
     status: stable
     since: "2021"
+    link: "https://www.pinecone.io/learn/vector-database/"
     description:
       en: >
         Databases optimized to store and query embeddings by semantic similarity.
@@ -520,6 +564,7 @@ nodes:
     category: tooling
     status: evolving
     since: "2023"
+    link: "https://www.langchain.com/langsmith"
     description:
       en: >
         Tools to monitor, trace, evaluate and debug LLM applications in production.
@@ -538,6 +583,7 @@ nodes:
     category: tooling
     status: stable
     since: "2018"
+    link: "https://huggingface.co/models"
     description:
       en: >
         Platforms to discover, download, share and run open models.
