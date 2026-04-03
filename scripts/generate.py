@@ -540,6 +540,7 @@ def generate_html(data, elements, maps=None, current_output=""):
     padding: 20px;
     background: #1A1A2E;
     color: white;
+    position: relative;
   }}
   #panel-header .node-label {{
     font-size: 20px;
@@ -560,6 +561,21 @@ def generate_html(data, elements, maps=None, current_output=""):
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }}
+  #share-btn {{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: 1px solid #ffffff33;
+    border-radius: 6px;
+    color: #BDC3C7;
+    font-size: 13px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }}
+  #share-btn:hover {{ border-color: #fff; color: #fff; }}
+  #share-btn.copied {{ border-color: #2ECC71; color: #2ECC71; }}
 
   #panel-body {{
     flex: 1;
@@ -772,6 +788,7 @@ def generate_html(data, elements, maps=None, current_output=""):
 
   <div id="panel">
     <div id="panel-header" style="display:none;">
+      <button id="share-btn" onclick="shareNode()" title="Copy link">🔗</button>
       <div class="node-label" id="ph-label"></div>
       <div class="node-meta" id="ph-meta"></div>
       <span class="node-status" id="ph-status"></span>
@@ -1398,6 +1415,21 @@ cy.ready(() => {{
     btn.dataset.tip = btn.dataset.tipEn;
   }});
   drawCategoryBoxes();
+
+  // Open node from URL hash (shareable links)
+  const hash = window.location.hash.slice(1);
+  if (hash) {{
+    const node = cy.getElementById(hash);
+    if (!node.empty()) {{
+      cy.animate({{ center: {{ eles: node }}, zoom: 1.4 }}, {{ duration: 400 }});
+      showPanel(node);
+      cy.elements().addClass('dimmed');
+      node.removeClass('dimmed');
+      node.connectedEdges().removeClass('dimmed').addClass('highlighted');
+      node.connectedEdges().connectedNodes().removeClass('dimmed');
+      node.addClass('highlighted');
+    }}
+  }}
 }});
 
 cy.on('viewport position dragfree', drawCategoryBoxes);
@@ -1407,9 +1439,20 @@ cy.on('dragfree', 'node', savePositions);
 
 let currentNode = null;
 
+function shareNode() {{
+  const url = window.location.href.split('#')[0] + '#' + currentNode.id();
+  navigator.clipboard.writeText(url).then(() => {{
+    const btn = document.getElementById('share-btn');
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => {{ btn.textContent = '🔗'; btn.classList.remove('copied'); }}, 1800);
+  }});
+}}
+
 function showPanel(node) {{
   currentNode = node;
   const d = node.data();
+  history.replaceState(null, '', '#' + d.id);
   const pl = PANEL_LABELS[lang];
   const sl = STATUS_LABELS[lang];
 
@@ -1475,6 +1518,7 @@ cy.on("tap", "node", function(evt) {{
 cy.on("tap", function(evt) {{
   if (evt.target === cy) {{
     currentNode = null;
+    history.replaceState(null, '', window.location.pathname + window.location.search);
     cy.elements().removeClass("dimmed highlighted");
     document.getElementById("panel-header").style.display = "none";
     document.getElementById("empty-msg").style.display = "flex";

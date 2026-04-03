@@ -235,6 +235,7 @@
     padding: 20px;
     background: #1A1A2E;
     color: white;
+    position: relative;
   }
   #panel-header .node-label {
     font-size: 20px;
@@ -255,6 +256,21 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
+  #share-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: 1px solid #ffffff33;
+    border-radius: 6px;
+    color: #BDC3C7;
+    font-size: 13px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  #share-btn:hover { border-color: #fff; color: #fff; }
+  #share-btn.copied { border-color: #2ECC71; color: #2ECC71; }
 
   #panel-body {
     flex: 1;
@@ -283,6 +299,20 @@
     color: inherit;
     white-space: pre-line;
   }
+  .panel-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #3498DB;
+    text-decoration: none;
+    padding: 4px 8px;
+    border: 1px solid #3498DB33;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .panel-link:hover { background: #3498DB11; }
+  .panel-link .link-icon { font-size: 14px; }
   #panel-body .since {
     font-size: 12px;
     color: #7F8C8D;
@@ -453,6 +483,7 @@
 
   <div id="panel">
     <div id="panel-header" style="display:none;">
+      <button id="share-btn" onclick="shareNode()" title="Copy link">🔗</button>
       <div class="node-label" id="ph-label"></div>
       <div class="node-meta" id="ph-meta"></div>
       <span class="node-status" id="ph-status"></span>
@@ -467,6 +498,7 @@
         <div class="description" id="pc-desc"></div>
         <div class="section-title">Since</div>
         <div class="since" id="pc-since"></div>
+        <div id="pc-links" style="display:none; margin-top:14px; display:flex; flex-direction:column; gap:6px;"></div>
       </div>
     </div>
     <div id="legend">
@@ -495,6 +527,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Transformer",
@@ -520,6 +554,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Token",
@@ -545,6 +581,8 @@ const elements = [
       "layer": 1,
       "status": "evolving",
       "since": "2017",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Context Window",
@@ -570,6 +608,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2013",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Embedding",
@@ -595,6 +635,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2020",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Prompt",
@@ -620,6 +662,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Inference",
@@ -645,6 +689,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2017",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Temperature",
@@ -670,6 +716,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2018",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Pre-training",
@@ -695,6 +743,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2018",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Fine-tuning",
@@ -720,6 +770,8 @@ const elements = [
       "layer": 1,
       "status": "stable",
       "since": "2022",
+      "link": "",
+      "ref": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "RLHF",
@@ -745,6 +797,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2015",
+      "link": "",
+      "ref": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "OpenAI",
@@ -770,6 +824,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2021",
+      "link": "",
+      "ref": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Anthropic",
@@ -795,6 +851,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2023",
+      "link": "",
+      "ref": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Google DeepMind",
@@ -820,6 +878,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2023",
+      "link": "",
+      "ref": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "xAI",
@@ -845,6 +905,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2023",
+      "link": "",
+      "ref": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Meta",
@@ -870,6 +932,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2023",
+      "link": "",
+      "ref": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Mistral AI",
@@ -895,6 +959,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2023",
+      "link": "",
+      "ref": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "DeepSeek AI",
@@ -920,6 +986,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2023",
+      "link": "",
+      "ref": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Alibaba",
@@ -945,6 +1013,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2023",
+      "link": "",
+      "ref": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Microsoft",
@@ -970,6 +1040,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2024-05",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "GPT-4o",
@@ -995,6 +1067,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2025-04",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "o3 / o4-mini",
@@ -1020,6 +1094,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2024-06",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Claude 3.5 / 3.7",
@@ -1045,6 +1121,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2024-12",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Gemini 2.0",
@@ -1070,6 +1148,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2025-02",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Grok 3",
@@ -1095,6 +1175,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2024-04",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Llama 3.x",
@@ -1120,6 +1202,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2023-09",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Mistral / Mixtral",
@@ -1145,6 +1229,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2024-12",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "DeepSeek V3 / R1",
@@ -1170,6 +1256,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2024-09",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Qwen 2.5",
@@ -1195,6 +1283,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2024-06",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Gemma 2",
@@ -1220,6 +1310,8 @@ const elements = [
       "layer": 2,
       "status": "evolving",
       "since": "2024-12",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Phi-4",
@@ -1245,6 +1337,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2024-01",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "text-embedding-3",
@@ -1270,6 +1364,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2024-10",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Voyage-3",
@@ -1295,6 +1391,8 @@ const elements = [
       "layer": 2,
       "status": "stable",
       "since": "2024-02",
+      "link": "",
+      "ref": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "nomic-embed",
@@ -1320,6 +1418,8 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2020",
+      "link": "",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "LLM API",
@@ -1345,6 +1445,8 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2023-04",
+      "link": "",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "AWS Bedrock",
@@ -1370,6 +1472,8 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2023-03",
+      "link": "",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "Google Vertex AI",
@@ -1395,6 +1499,8 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2023-01",
+      "link": "",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "Azure OpenAI",
@@ -1420,6 +1526,8 @@ const elements = [
       "layer": 3,
       "status": "stable",
       "since": "2018",
+      "link": "",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "HuggingFace",
@@ -1445,6 +1553,8 @@ const elements = [
       "layer": 3,
       "status": "evolving",
       "since": "2023-07",
+      "link": "",
+      "ref": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "Ollama",
@@ -1470,6 +1580,8 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2020-05",
+      "link": "",
+      "ref": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "RAG",
@@ -1495,6 +1607,8 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2021",
+      "link": "",
+      "ref": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Vector Database",
@@ -1520,6 +1634,8 @@ const elements = [
       "layer": 4,
       "status": "evolving",
       "since": "2023-03",
+      "link": "",
+      "ref": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Agent",
@@ -1545,6 +1661,8 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2023-06",
+      "link": "",
+      "ref": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Tool Use / Function Calling",
@@ -1570,6 +1688,8 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2023-11",
+      "link": "",
+      "ref": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Structured Output",
@@ -1595,6 +1715,8 @@ const elements = [
       "layer": 4,
       "status": "stable",
       "since": "2022",
+      "link": "",
+      "ref": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "System Prompt",
@@ -1620,6 +1742,8 @@ const elements = [
       "layer": 4,
       "status": "evolving",
       "since": "2023-06",
+      "link": "",
+      "ref": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Memory",
@@ -1645,6 +1769,8 @@ const elements = [
       "layer": 4,
       "status": "emerging",
       "since": "2024-11",
+      "link": "",
+      "ref": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "MCP",
@@ -1670,6 +1796,8 @@ const elements = [
       "layer": 5,
       "status": "stable",
       "since": "2022-10",
+      "link": "",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "LangChain",
@@ -1695,6 +1823,8 @@ const elements = [
       "layer": 5,
       "status": "evolving",
       "since": "2024-01",
+      "link": "",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "LangGraph",
@@ -1720,6 +1850,8 @@ const elements = [
       "layer": 5,
       "status": "stable",
       "since": "2022-11",
+      "link": "",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "LlamaIndex",
@@ -1745,6 +1877,8 @@ const elements = [
       "layer": 5,
       "status": "evolving",
       "since": "2023-03",
+      "link": "",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "Cursor",
@@ -1770,6 +1904,8 @@ const elements = [
       "layer": 5,
       "status": "stable",
       "since": "2021-06",
+      "link": "",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "GitHub Copilot",
@@ -1795,6 +1931,8 @@ const elements = [
       "layer": 5,
       "status": "evolving",
       "since": "2025-02",
+      "link": "",
+      "ref": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "Claude Code",
@@ -2989,6 +3127,21 @@ cy.ready(() => {
     btn.dataset.tip = btn.dataset.tipEn;
   });
   drawCategoryBoxes();
+
+  // Open node from URL hash (shareable links)
+  const hash = window.location.hash.slice(1);
+  if (hash) {
+    const node = cy.getElementById(hash);
+    if (!node.empty()) {
+      cy.animate({ center: { eles: node }, zoom: 1.4 }, { duration: 400 });
+      showPanel(node);
+      cy.elements().addClass('dimmed');
+      node.removeClass('dimmed');
+      node.connectedEdges().removeClass('dimmed').addClass('highlighted');
+      node.connectedEdges().connectedNodes().removeClass('dimmed');
+      node.addClass('highlighted');
+    }
+  }
 });
 
 cy.on('viewport position dragfree', drawCategoryBoxes);
@@ -2998,9 +3151,20 @@ cy.on('dragfree', 'node', savePositions);
 
 let currentNode = null;
 
+function shareNode() {
+  const url = window.location.href.split('#')[0] + '#' + currentNode.id();
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('share-btn');
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '🔗'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
 function showPanel(node) {
   currentNode = node;
   const d = node.data();
+  history.replaceState(null, '', '#' + d.id);
   const pl = PANEL_LABELS[lang];
   const sl = STATUS_LABELS[lang];
 
@@ -3024,6 +3188,24 @@ function showPanel(node) {
   document.querySelectorAll("#panel-content .section-title")[1].textContent = pl.since;
   document.getElementById("pc-desc").innerHTML = linkGlossaryTerms(d[`description_${lang}`] || "");
   document.getElementById("pc-since").textContent = d.since;
+
+  const linksEl = document.getElementById("pc-links");
+  linksEl.innerHTML = "";
+  if (d.link) {
+    const a = document.createElement("a");
+    a.href = d.link; a.target = "_blank"; a.rel = "noopener";
+    a.className = "panel-link";
+    a.innerHTML = '<span class="link-icon">🌐</span>' + (lang === "fr" ? "Site officiel" : "Official site");
+    linksEl.appendChild(a);
+  }
+  if (d.ref) {
+    const a = document.createElement("a");
+    a.href = d.ref; a.target = "_blank"; a.rel = "noopener";
+    a.className = "panel-link";
+    a.innerHTML = '<span class="link-icon">📄</span>' + (lang === "fr" ? "Référence" : "Reference");
+    linksEl.appendChild(a);
+  }
+  linksEl.style.display = (d.link || d.ref) ? "flex" : "none";
 }
 
 // ── Node click → panel ───────────────────────
@@ -3048,6 +3230,7 @@ cy.on("tap", "node", function(evt) {
 cy.on("tap", function(evt) {
   if (evt.target === cy) {
     currentNode = null;
+    history.replaceState(null, '', window.location.pathname + window.location.search);
     cy.elements().removeClass("dimmed highlighted");
     document.getElementById("panel-header").style.display = "none";
     document.getElementById("empty-msg").style.display = "flex";
