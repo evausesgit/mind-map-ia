@@ -446,7 +446,7 @@
         data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
       <button class="ctrl-btn" onclick="exportLayout()"
         data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
-      <button class="ctrl-btn" onclick="openPresentation()"
+      <button class="ctrl-btn" onclick="window.open('ecosystem-slides.html','_blank')"
         data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
     </div>
   </div>
@@ -2792,7 +2792,7 @@ async function exportLayout() {
   URL.revokeObjectURL(url);
 }
 
-function openPresentation() {
+function _unused_openPresentation() {
   const l = lang;
   const title = TITLES[l];
 

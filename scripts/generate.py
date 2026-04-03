@@ -749,7 +749,7 @@ def generate_html(data, elements, maps=None, current_output=""):
         data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
       <button class="ctrl-btn" onclick="exportLayout()"
         data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
-      <button class="ctrl-btn" onclick="openPresentation()"
+      <button class="ctrl-btn" onclick="window.open('{OUTPUT_FILE.stem}-slides.html','_blank')"
         data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
     </div>
   </div>
@@ -1184,7 +1184,7 @@ async function exportLayout() {{
   URL.revokeObjectURL(url);
 }}
 
-function openPresentation() {{
+function _unused_openPresentation() {{
   const l = lang;
   const title = TITLES[l];
 
@@ -1463,6 +1463,149 @@ cy.on("mouseout", "edge", function(evt) {{
     return html
 
 
+def generate_slides_html(data):
+    """Generate a standalone slides HTML file from map data."""
+    meta = data["meta"]
+    title_en = t(meta.get("title", ""), "en")
+    title_fr = t(meta.get("title", ""), "fr") or title_en
+
+    STATUS_EMOJI = {"stable": "🟢", "evolving": "🟡", "emerging": "🔵", "deprecated": "🔴"}
+
+    # Group nodes by layer
+    by_layer = {}
+    for node in data["nodes"]:
+        by_layer.setdefault(node["layer"], []).append(node)
+
+    def make_slides(lang):
+        slides = []
+        subtitle = "AI / LLM Ecosystem" if lang == "en" else "Écosystème IA / LLM"
+        title = title_en if lang == "en" else title_fr
+        slides.append(
+            f'<div class="slide-type-title"><div class="slide-title-content">'
+            f'<h1>{title}</h1><p class="subtitle">{subtitle}</p></div></div>'
+        )
+        layer_order = sorted(by_layer.keys(), reverse=True)
+        for layer_id in layer_order:
+            nodes = by_layer[layer_id]
+            layer_label = t(data.get("layers", {}).get(layer_id, f"Layer {layer_id}"), lang)
+            items = ""
+            for n in nodes:
+                lbl = t(n.get("label", ""), lang)
+                desc = clean(t(n.get("description", ""), lang))
+                short = (desc.split(". ")[0] + ".") if desc else ""
+                emoji = STATUS_EMOJI.get(n.get("status", ""), "")
+                items += f"<li>{emoji} <strong>{lbl}</strong>{' — ' + short if short else ''}</li>"
+            slides.append(
+                f'<div class="slide-layer-num">Layer {layer_id}</div>'
+                f'<h2>{layer_label}</h2><ul>{items}</ul>'
+            )
+        for layer_id in layer_order:
+            nodes = by_layer[layer_id]
+            layer_label = t(data.get("layers", {}).get(layer_id, f"Layer {layer_id}"), lang)
+            for n in nodes:
+                lbl = t(n.get("label", ""), lang)
+                desc = clean(t(n.get("description", ""), lang)).replace("\n", "<br>")
+                emoji = STATUS_EMOJI.get(n.get("status", ""), "")
+                status = n.get("status", "")
+                slides.append(
+                    f'<div class="slide-node-layer">{layer_label}</div>'
+                    f'<h2>{emoji} {lbl}</h2>'
+                    + (f'<p class="node-desc">{desc}</p>' if desc else "")
+                    + f'<span class="slide-status status-{status}">{status}</span>'
+                )
+        total = sum(len(v) for v in by_layer.values())
+        summary = "Summary" if lang == "en" else "Récapitulatif"
+        layers_label = "layers" if lang == "en" else "couches"
+        slides.append(
+            f'<div class="slide-type-title"><div class="slide-title-content">'
+            f'<h2>{summary}</h2>'
+            f'<p class="stat">{total} concepts</p>'
+            f'<p class="stat">{len(layer_order)} {layers_label}</p>'
+            f'<p class="generated-from">{title}</p>'
+            f'</div></div>'
+        )
+        return slides
+
+    slides_en = json.dumps(make_slides("en"))
+    slides_fr = json.dumps(make_slides("fr"))
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title_en} — Slides</title>
+<style>
+  * {{ box-sizing:border-box; margin:0; padding:0 }}
+  body {{ background:#0d1117; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; font-family:"Segoe UI",sans-serif; overflow:hidden }}
+  #slide {{ background:#fff; width:min(92vw,960px); aspect-ratio:16/9; border-radius:12px; padding:48px 64px; display:flex; flex-direction:column; justify-content:center; box-shadow:0 20px 60px rgba(0,0,0,.5); position:relative; overflow:hidden }}
+  #slide h1 {{ font-size:2.4em; color:#1a237e; margin-bottom:16px }}
+  #slide h2 {{ font-size:1.6em; color:#283593; border-bottom:2px solid #3949ab; padding-bottom:10px; margin-bottom:20px }}
+  .subtitle {{ font-size:1.2em; color:#555 }}
+  .slide-type-title {{ display:flex; align-items:center; justify-content:center; text-align:center; height:100% }}
+  .slide-title-content {{ display:flex; flex-direction:column; gap:12px }}
+  .slide-layer-num,.slide-node-layer {{ position:absolute; top:20px; right:28px; font-size:.75em; color:#9fa8da; font-weight:600; letter-spacing:1px; text-transform:uppercase }}
+  ul {{ list-style:none; display:flex; flex-direction:column; gap:8px }}
+  li {{ font-size:.9em; color:#333; line-height:1.4 }}
+  li strong {{ color:#1a237e }}
+  .node-desc {{ font-size:.92em; color:#444; line-height:1.7; margin-top:8px }}
+  .slide-status {{ position:absolute; bottom:20px; right:28px; font-size:.72em; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:3px 10px; border-radius:10px; border:1.5px solid }}
+  .status-stable {{ color:#2e7d32; border-color:#2e7d32 }}
+  .status-evolving {{ color:#e65100; border-color:#e65100 }}
+  .status-emerging {{ color:#1565c0; border-color:#1565c0 }}
+  .status-deprecated {{ color:#b71c1c; border-color:#b71c1c }}
+  .stat {{ font-size:1.4em; font-weight:700; color:#3949ab }}
+  .generated-from {{ font-size:.85em; color:#999; margin-top:12px }}
+  #nav {{ display:flex; align-items:center; gap:20px; margin-top:20px }}
+  .nav-btn {{ background:#3949ab; color:#fff; border:none; border-radius:8px; padding:10px 24px; font-size:1em; cursor:pointer; transition:background .15s }}
+  .nav-btn:hover {{ background:#283593 }}
+  .nav-btn:disabled {{ background:#555; cursor:default }}
+  #counter {{ color:#aaa; font-size:.9em; min-width:80px; text-align:center }}
+  #progress {{ position:absolute; bottom:0; left:0; height:3px; background:#3949ab; transition:width .3s; border-radius:0 0 0 12px }}
+  #lang-toggle {{ position:fixed; top:16px; right:16px; display:flex; gap:6px }}
+  .lang-btn {{ background:none; border:1px solid #555; border-radius:4px; color:#aaa; padding:4px 10px; font-size:12px; cursor:pointer }}
+  .lang-btn.active {{ background:white; color:#1a237e; border-color:white }}
+</style>
+</head>
+<body>
+<div id="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('fr')">FR</button>
+</div>
+<div id="slide"><div id="progress"></div><div id="slide-content"></div></div>
+<div id="nav">
+  <button class="nav-btn" id="prev">&#8592;</button>
+  <span id="counter"></span>
+  <button class="nav-btn" id="next">&#8594;</button>
+</div>
+<script>
+const ALL_SLIDES = {{ en: {slides_en}, fr: {slides_fr} }};
+let lang = 'en', cur = 0;
+function slides() {{ return ALL_SLIDES[lang]; }}
+function render() {{
+  document.getElementById('slide-content').innerHTML = slides()[cur];
+  document.getElementById('counter').textContent = (cur+1) + ' / ' + slides().length;
+  document.getElementById('prev').disabled = cur === 0;
+  document.getElementById('next').disabled = cur === slides().length - 1;
+  document.getElementById('progress').style.width = ((cur+1)/slides().length*100) + '%';
+}}
+function go(d) {{ cur = Math.max(0, Math.min(slides().length-1, cur+d)); render(); }}
+function setLang(l) {{
+  lang = l; cur = 0;
+  document.querySelectorAll('#lang-toggle .lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
+  render();
+}}
+document.getElementById('prev').onclick = () => go(-1);
+document.getElementById('next').onclick = () => go(1);
+document.addEventListener('keydown', e => {{
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') go(1);
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') go(-1);
+}});
+render();
+</script>
+</body></html>"""
+
+
 def main():
     maps = load_maps()
     print(f"Reading {DATA_FILE}...")
@@ -1476,10 +1619,16 @@ def main():
     with open(OUTPUT_FILE, "w") as f:
         f.write(html)
 
+    # Generate companion slides file
+    slides_file = OUTPUT_FILE.with_name(OUTPUT_FILE.stem + "-slides.html")
+    with open(slides_file, "w") as f:
+        f.write(generate_slides_html(data))
+
     node_count = sum(1 for e in elements if "position" in e)
     edge_count = sum(1 for e in elements if "position" not in e and "classes" not in e)
     print(f"✓ Generated {OUTPUT_FILE}")
     print(f"  {node_count} nodes · {edge_count} edges")
+    print(f"  ↳ Slides: {slides_file.name}")
 
 
 if __name__ == "__main__":
