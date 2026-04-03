@@ -86,6 +86,114 @@ terms:
         qu'une fraction par inférence — offrant une grande capacité à moindre coût de calcul.
         Exemples : GPT-4 (supposé MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.
 
+  - id: token
+    label:
+      en: "Token"
+      fr: "Token"
+    aliases: ["token", "tokens", "tokenization", "tokenisation"]
+    description:
+      en: >
+        The smallest unit of text a language model processes.
+        A token is roughly 0.75 words in English — "tokenization" is typically split into
+        ["token", "ization"]. Models don't see raw text: they convert everything into a sequence
+        of token IDs before processing. The number of tokens in a request determines its cost and speed.
+      fr: >
+        La plus petite unité de texte traitée par un modèle de langage.
+        Un token correspond environ à 0,75 mot en anglais — « tokenization » est typiquement
+        découpé en [« token », « ization »]. Les modèles ne voient pas le texte brut :
+        ils convertissent tout en une séquence d'identifiants de tokens. Le nombre de tokens
+        d'une requête détermine son coût et sa vitesse.
+
+  - id: context_window
+    label:
+      en: "Context Window"
+      fr: "Fenêtre de Contexte"
+    aliases: ["context window", "context length", "fenêtre de contexte", "longueur de contexte", "context"]
+    description:
+      en: >
+        The maximum number of tokens a model can process in a single interaction —
+        both the input (prompt + history) and the output combined.
+        It defines the model's "working memory": anything outside the window is invisible to it.
+        Modern models range from 8k tokens (Llama 3 8B) to 1M+ tokens (Gemini 1.5 Pro).
+        A larger context window means the model can read longer documents, hold longer conversations,
+        and maintain more context — but also costs more to run.
+      fr: >
+        Le nombre maximum de tokens qu'un modèle peut traiter en une seule interaction —
+        entrée (prompt + historique) et sortie confondus.
+        Il définit la « mémoire de travail » du modèle : tout ce qui dépasse cette limite lui est invisible.
+        Les modèles modernes vont de 8k tokens (Llama 3 8B) à plus d'1M de tokens (Gemini 1.5 Pro).
+        Une fenêtre plus grande permet de lire des documents plus longs et de maintenir plus de contexte,
+        mais coûte aussi plus cher à l'exécution.
+
+  - id: rlhf
+    label:
+      en: "RLHF"
+      fr: "RLHF"
+    aliases: ["RLHF", "Reinforcement Learning from Human Feedback", "reinforcement learning from human feedback"]
+    description:
+      en: >
+        Reinforcement Learning from Human Feedback. A training technique used to align LLMs
+        with human preferences after the initial pre-training phase.
+        Human raters compare model outputs and rank them; these preferences train a reward model
+        which then guides the LLM via reinforcement learning to produce more helpful, harmless,
+        and honest responses. Used by OpenAI (InstructGPT, ChatGPT) and Anthropic (Claude).
+      fr: >
+        Apprentissage par renforcement à partir des retours humains.
+        Une technique d'entraînement utilisée pour aligner les LLM sur les préférences humaines
+        après la phase de pré-entraînement.
+        Des évaluateurs humains comparent et classent les sorties du modèle ; ces préférences
+        entraînent un modèle de récompense qui guide ensuite le LLM par renforcement
+        pour produire des réponses plus utiles, inoffensives et honnêtes.
+        Utilisé par OpenAI (InstructGPT, ChatGPT) et Anthropic (Claude).
+
+  - id: hallucination
+    label:
+      en: "Hallucination"
+      fr: "Hallucination"
+    aliases: ["hallucination", "hallucinations", "hallucinate", "halluciner"]
+    description:
+      en: >
+        When a model generates text that is factually incorrect, fabricated, or inconsistent
+        with reality — stated with apparent confidence.
+        Hallucinations arise because LLMs predict plausible continuations of text, not verified facts.
+        Common examples: invented citations, wrong dates, non-existent people or products.
+        Mitigated (but not eliminated) by RAG, grounding, and better alignment.
+      fr: >
+        Quand un modèle génère du texte factuellement incorrect, inventé, ou incohérent
+        avec la réalité — affirmé avec une apparente confiance.
+        Les hallucinations surviennent parce que les LLM prédisent des continuations plausibles,
+        pas des faits vérifiés.
+        Exemples courants : citations inventées, dates erronées, personnes ou produits inexistants.
+        Atténuées (mais non éliminées) par le RAG, le grounding et un meilleur alignement.
+
+  - id: rag
+    label:
+      en: "RAG"
+      fr: "RAG"
+    aliases: ["RAG", "Retrieval-Augmented Generation", "retrieval augmented generation", "retrieval-augmented generation"]
+    see_also:
+      url: "ecosystem.html#rag_pattern"
+      label:
+        en: "RAG on the ecosystem map"
+        fr: "RAG sur la carte écosystème"
+    description:
+      en: >
+        Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and hallucination
+        problems by injecting real-time or domain-specific information into the prompt at query time.
+        How it works: (1) the user query is converted to a vector, (2) semantically similar documents
+        are retrieved from a knowledge base, (3) those documents are added to the prompt,
+        (4) the model answers based on the provided context.
+        Widely adopted in production — the most reliable way to give an LLM access to specific data.
+      fr: >
+        Retrieval-Augmented Generation (génération augmentée par récupération).
+        Un pattern qui résout les problèmes de date limite de connaissance et d'hallucination
+        en injectant des informations actuelles ou spécifiques dans le prompt au moment de la requête.
+        Fonctionnement : (1) la requête est convertie en vecteur, (2) les documents sémantiquement
+        proches sont récupérés depuis une base de connaissances, (3) ces documents sont ajoutés
+        au prompt, (4) le modèle répond en s'appuyant sur le contexte fourni.
+        Très largement adopté en production — la méthode la plus fiable pour donner à un LLM
+        accès à des données spécifiques.
+
   - id: machine_learning
     label:
       en: "Machine Learning"

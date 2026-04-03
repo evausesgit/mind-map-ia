@@ -167,11 +167,19 @@
 </header>
 
 <div class="alphabet-index">
-  <a href="#dense_model" class="idx-letter">D</a><a href="#llm" class="idx-letter">L</a><a href="#machine_learning" class="idx-letter">M</a><a href="#weights" class="idx-letter">W</a>
+  <a href="#context_window" class="idx-letter">C</a><a href="#dense_model" class="idx-letter">D</a><a href="#hallucination" class="idx-letter">H</a><a href="#llm" class="idx-letter">L</a><a href="#machine_learning" class="idx-letter">M</a><a href="#rag" class="idx-letter">R</a><a href="#token" class="idx-letter">T</a><a href="#weights" class="idx-letter">W</a>
 </div>
 
 <div class="content">
 
+  <div class="term-card" id="context_window">
+    <div class="term-header">
+      <span class="term-label" data-en="Context Window" data-fr="Fenêtre de Contexte">Context Window</span>
+      <div class="aliases" data-en="context length, fenêtre de contexte, longueur de contexte, context" data-fr="context length, fenêtre de contexte, longueur de contexte, context">context length, fenêtre de contexte, longueur de contexte, context</div>
+    </div>
+    <div class="term-desc" data-en="The maximum number of tokens a model can process in a single interaction — both the input (prompt + history) and the output combined. It defines the model's "working memory": anything outside the window is invisible to it. Modern models range from 8k tokens (Llama 3 8B) to 1M+ tokens (Gemini 1.5 Pro). A larger context window means the model can read longer documents, hold longer conversations, and maintain more context — but also costs more to run." data-fr="Le nombre maximum de tokens qu'un modèle peut traiter en une seule interaction — entrée (prompt + historique) et sortie confondus. Il définit la « mémoire de travail » du modèle : tout ce qui dépasse cette limite lui est invisible. Les modèles modernes vont de 8k tokens (Llama 3 8B) à plus d'1M de tokens (Gemini 1.5 Pro). Une fenêtre plus grande permet de lire des documents plus longs et de maintenir plus de contexte, mais coûte aussi plus cher à l'exécution.">The maximum number of tokens a model can process in a single interaction — both the input (prompt + history) and the output combined. It defines the model's "working memory": anything outside the window is invisible to it. Modern models range from 8k tokens (Llama 3 8B) to 1M+ tokens (Gemini 1.5 Pro). A larger context window means the model can read longer documents, hold longer conversations, and maintain more context — but also costs more to run.</div>
+    
+  </div>
   <div class="term-card" id="dense_model">
     <div class="term-header">
       <span class="term-label" data-en="Dense Model" data-fr="Modèle Dense">Dense Model</span>
@@ -179,6 +187,14 @@
     </div>
     <div class="term-desc" data-en="A neural network architecture where every parameter is activated for every input. All weights participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B." data-fr="Une architecture de réseau de neurones où chaque paramètre est activé pour chaque entrée. Tous les poids participent à chaque passe avant. Les modèles denses sont plus simples à entraîner, mais deviennent coûteux à très grande échelle : doubler les paramètres double le calcul nécessaire pour chaque inférence. Exemples : GPT-4 (supposé dense), Llama 3, Mistral 7B.">A neural network architecture where every parameter is activated for every input. All weights participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B.</div>
     <div class="see-also">→ <a href="dense-vs-moe.html" class="see-also-link" data-en="Dense vs MoE diagram" data-fr="Diagramme Dense vs MoE">Dense vs MoE diagram</a></div>
+  </div>
+  <div class="term-card" id="hallucination">
+    <div class="term-header">
+      <span class="term-label" data-en="Hallucination" data-fr="Hallucination">Hallucination</span>
+      <div class="aliases" data-en="hallucinations, hallucinate, halluciner" data-fr="hallucinations, hallucinate, halluciner">hallucinations, hallucinate, halluciner</div>
+    </div>
+    <div class="term-desc" data-en="When a model generates text that is factually incorrect, fabricated, or inconsistent with reality — stated with apparent confidence. Hallucinations arise because LLMs predict plausible continuations of text, not verified facts. Common examples: invented citations, wrong dates, non-existent people or products. Mitigated (but not eliminated) by RAG, grounding, and better alignment." data-fr="Quand un modèle génère du texte factuellement incorrect, inventé, ou incohérent avec la réalité — affirmé avec une apparente confiance. Les hallucinations surviennent parce que les LLM prédisent des continuations plausibles, pas des faits vérifiés. Exemples courants : citations inventées, dates erronées, personnes ou produits inexistants. Atténuées (mais non éliminées) par le RAG, le grounding et un meilleur alignement.">When a model generates text that is factually incorrect, fabricated, or inconsistent with reality — stated with apparent confidence. Hallucinations arise because LLMs predict plausible continuations of text, not verified facts. Common examples: invented citations, wrong dates, non-existent people or products. Mitigated (but not eliminated) by RAG, grounding, and better alignment.</div>
+    
   </div>
   <div class="term-card" id="llm">
     <div class="term-header">
@@ -203,6 +219,30 @@
     </div>
     <div class="term-desc" data-en="An architecture where the model is divided into many specialized sub-networks ("experts"). For each token, a routing mechanism activates only a small subset of experts (typically 2–8). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference — achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3." data-fr="Une architecture où le modèle est divisé en nombreux sous-réseaux spécialisés (« experts »). Pour chaque token, un mécanisme de routage n'active qu'un petit sous-ensemble d'experts (typiquement 2 à 8). Résultat : un modèle peut avoir des centaines de milliards de paramètres au total mais n'en utiliser qu'une fraction par inférence — offrant une grande capacité à moindre coût de calcul. Exemples : GPT-4 (supposé MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.">An architecture where the model is divided into many specialized sub-networks ("experts"). For each token, a routing mechanism activates only a small subset of experts (typically 2–8). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference — achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.</div>
     <div class="see-also">→ <a href="dense-vs-moe.html" class="see-also-link" data-en="Dense vs MoE diagram" data-fr="Diagramme Dense vs MoE">Dense vs MoE diagram</a></div>
+  </div>
+  <div class="term-card" id="rag">
+    <div class="term-header">
+      <span class="term-label" data-en="RAG" data-fr="RAG">RAG</span>
+      <div class="aliases" data-en="Retrieval-Augmented Generation, retrieval augmented generation, retrieval-augmented generation" data-fr="Retrieval-Augmented Generation, retrieval augmented generation, retrieval-augmented generation">Retrieval-Augmented Generation, retrieval augmented generation, retrieval-augmented generation</div>
+    </div>
+    <div class="term-desc" data-en="Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and hallucination problems by injecting real-time or domain-specific information into the prompt at query time. How it works: (1) the user query is converted to a vector, (2) semantically similar documents are retrieved from a knowledge base, (3) those documents are added to the prompt, (4) the model answers based on the provided context. Widely adopted in production — the most reliable way to give an LLM access to specific data." data-fr="Retrieval-Augmented Generation (génération augmentée par récupération). Un pattern qui résout les problèmes de date limite de connaissance et d'hallucination en injectant des informations actuelles ou spécifiques dans le prompt au moment de la requête. Fonctionnement : (1) la requête est convertie en vecteur, (2) les documents sémantiquement proches sont récupérés depuis une base de connaissances, (3) ces documents sont ajoutés au prompt, (4) le modèle répond en s'appuyant sur le contexte fourni. Très largement adopté en production — la méthode la plus fiable pour donner à un LLM accès à des données spécifiques.">Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and hallucination problems by injecting real-time or domain-specific information into the prompt at query time. How it works: (1) the user query is converted to a vector, (2) semantically similar documents are retrieved from a knowledge base, (3) those documents are added to the prompt, (4) the model answers based on the provided context. Widely adopted in production — the most reliable way to give an LLM access to specific data.</div>
+    <div class="see-also">→ <a href="ecosystem.html#rag_pattern" class="see-also-link" data-en="RAG on the ecosystem map" data-fr="RAG sur la carte écosystème">RAG on the ecosystem map</a></div>
+  </div>
+  <div class="term-card" id="rlhf">
+    <div class="term-header">
+      <span class="term-label" data-en="RLHF" data-fr="RLHF">RLHF</span>
+      <div class="aliases" data-en="Reinforcement Learning from Human Feedback, reinforcement learning from human feedback" data-fr="Reinforcement Learning from Human Feedback, reinforcement learning from human feedback">Reinforcement Learning from Human Feedback, reinforcement learning from human feedback</div>
+    </div>
+    <div class="term-desc" data-en="Reinforcement Learning from Human Feedback. A training technique used to align LLMs with human preferences after the initial pre-training phase. Human raters compare model outputs and rank them; these preferences train a reward model which then guides the LLM via reinforcement learning to produce more helpful, harmless, and honest responses. Used by OpenAI (InstructGPT, ChatGPT) and Anthropic (Claude)." data-fr="Apprentissage par renforcement à partir des retours humains. Une technique d'entraînement utilisée pour aligner les LLM sur les préférences humaines après la phase de pré-entraînement. Des évaluateurs humains comparent et classent les sorties du modèle ; ces préférences entraînent un modèle de récompense qui guide ensuite le LLM par renforcement pour produire des réponses plus utiles, inoffensives et honnêtes. Utilisé par OpenAI (InstructGPT, ChatGPT) et Anthropic (Claude).">Reinforcement Learning from Human Feedback. A training technique used to align LLMs with human preferences after the initial pre-training phase. Human raters compare model outputs and rank them; these preferences train a reward model which then guides the LLM via reinforcement learning to produce more helpful, harmless, and honest responses. Used by OpenAI (InstructGPT, ChatGPT) and Anthropic (Claude).</div>
+    
+  </div>
+  <div class="term-card" id="token">
+    <div class="term-header">
+      <span class="term-label" data-en="Token" data-fr="Token">Token</span>
+      <div class="aliases" data-en="tokens, tokenization, tokenisation" data-fr="tokens, tokenization, tokenisation">tokens, tokenization, tokenisation</div>
+    </div>
+    <div class="term-desc" data-en="The smallest unit of text a language model processes. A token is roughly 0.75 words in English — "tokenization" is typically split into ["token", "ization"]. Models don't see raw text: they convert everything into a sequence of token IDs before processing. The number of tokens in a request determines its cost and speed." data-fr="La plus petite unité de texte traitée par un modèle de langage. Un token correspond environ à 0,75 mot en anglais — « tokenization » est typiquement découpé en [« token », « ization »]. Les modèles ne voient pas le texte brut : ils convertissent tout en une séquence d'identifiants de tokens. Le nombre de tokens d'une requête détermine son coût et sa vitesse.">The smallest unit of text a language model processes. A token is roughly 0.75 words in English — "tokenization" is typically split into ["token", "ization"]. Models don't see raw text: they convert everything into a sequence of token IDs before processing. The number of tokens in a request determines its cost and speed.</div>
+    
   </div>
   <div class="term-card" id="weights">
     <div class="term-header">
