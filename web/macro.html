@@ -301,13 +301,29 @@
     color: #2C3E50;
     margin-bottom: 20px;
   }
+  #panel-body .description p {
+    margin-bottom: 10px;
+  }
+  #panel-body .description p:last-child {
+    margin-bottom: 0;
+  }
+  #panel-body .description ol,
+  #panel-body .description ul {
+    margin: 8px 0 10px 18px;
+  }
+  #panel-body .description li {
+    margin-bottom: 4px;
+  }
+  #panel-body .description strong {
+    font-weight: 600;
+    color: #1A1A2E;
+  }
   .gloss-link {
     text-decoration: underline;
     text-decoration-style: dotted;
     text-underline-offset: 3px;
     cursor: pointer;
     color: inherit;
-    white-space: pre-line;
   }
   .panel-link {
     display: inline-flex;
@@ -1557,6 +1573,48 @@ function linkGlossaryTerms(text) {
   return safe;
 }
 
+function formatDesc(rawText) {
+  if (!rawText) return '';
+  const lines = rawText.split('\n');
+  let html = '';
+  let inOl = false, inUl = false;
+
+  const flush = () => {
+    if (inOl) { html += '</ol>'; inOl = false; }
+    if (inUl) { html += '</ul>'; inUl = false; }
+  };
+
+  const inline = (s) => {
+    // Bold: **text**
+    const linked = linkGlossaryTerms(s);
+    return linked.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  };
+
+  lines.forEach(line => {
+    const trimmed = line.trim();
+    if (!trimmed) { flush(); return; }
+
+    const olMatch = trimmed.match(/^(\d+)\. (.+)/);
+    const ulMatch = trimmed.match(/^[-*] (.+)/);
+
+    if (olMatch) {
+      if (inUl) { html += '</ul>'; inUl = false; }
+      if (!inOl) { html += '<ol>'; inOl = true; }
+      html += `<li>${inline(olMatch[2])}</li>`;
+    } else if (ulMatch) {
+      if (inOl) { html += '</ol>'; inOl = false; }
+      if (!inUl) { html += '<ul>'; inUl = true; }
+      html += `<li>${inline(ulMatch[1])}</li>`;
+    } else {
+      flush();
+      html += `<p>${inline(trimmed)}</p>`;
+    }
+  });
+
+  flush();
+  return html;
+}
+
 let lang = 'en';
 
 function setLang(newLang) {
@@ -2222,7 +2280,7 @@ function showPanel(node) {
   document.getElementById("panel-content").style.display = "block";
   document.querySelector("#panel-content .section-title").textContent = pl.description;
   document.querySelectorAll("#panel-content .section-title")[1].textContent = pl.since;
-  document.getElementById("pc-desc").innerHTML = linkGlossaryTerms(d[`description_${lang}`] || "");
+  document.getElementById("pc-desc").innerHTML = formatDesc(d[`description_${lang}`] || "");
   document.getElementById("pc-since").textContent = d.since;
 
   const linksEl = document.getElementById("pc-links");

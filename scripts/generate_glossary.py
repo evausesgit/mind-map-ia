@@ -53,6 +53,56 @@ def link_terms(text, entries):
     return safe
 
 
+def format_desc(text, entries):
+    """Parse markdown-ish text into HTML paragraphs/lists with glossary links."""
+    lines = text.split('\n')
+    html = ''
+    in_ol = False
+    in_ul = False
+
+    def flush():
+        nonlocal html, in_ol, in_ul
+        if in_ol:
+            html += '</ol>'
+            in_ol = False
+        if in_ul:
+            html += '</ul>'
+            in_ul = False
+
+    def inline(s):
+        linked = link_terms(s, entries)
+        return re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', linked)
+
+    for line in lines:
+        trimmed = line.strip()
+        if not trimmed:
+            flush()
+            continue
+        ol_match = re.match(r'^(\d+)\. (.+)', trimmed)
+        ul_match = re.match(r'^[-*] (.+)', trimmed)
+        if ol_match:
+            if in_ul:
+                html += '</ul>'
+                in_ul = False
+            if not in_ol:
+                html += '<ol>'
+                in_ol = True
+            html += f'<li>{inline(ol_match.group(2))}</li>'
+        elif ul_match:
+            if in_ol:
+                html += '</ol>'
+                in_ol = False
+            if not in_ul:
+                html += '<ul>'
+                in_ul = True
+            html += f'<li>{inline(ul_match.group(1))}</li>'
+        else:
+            flush()
+            html += f'<p>{inline(trimmed)}</p>'
+    flush()
+    return html
+
+
 def build_nav(maps):
     items = ""
     for m in maps:
@@ -100,8 +150,8 @@ def generate_html(data, maps):
         raw_en = t(term["description"], "en").strip()
         raw_fr = t(term["description"], "fr").strip() or raw_en
         term_descs[tid] = {
-            "en": link_terms(raw_en, entries),
-            "fr": link_terms(raw_fr, entries),
+            "en": format_desc(raw_en, entries),
+            "fr": format_desc(raw_fr, entries),
         }
     term_descs_js = json.dumps(term_descs, ensure_ascii=False)
 
@@ -299,6 +349,11 @@ def generate_html(data, maps):
     line-height: 1.7;
     color: #444;
   }}
+  .term-desc p {{ margin-bottom: 8px; }}
+  .term-desc p:last-child {{ margin-bottom: 0; }}
+  .term-desc ol, .term-desc ul {{ margin: 6px 0 8px 18px; }}
+  .term-desc li {{ margin-bottom: 3px; }}
+  .term-desc strong {{ font-weight: 600; color: #1A1A2E; }}
   .gloss-link {{
     color: #1A1A2E;
     text-decoration: underline;
