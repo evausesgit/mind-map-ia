@@ -22,12 +22,58 @@
     gap: 16px;
   }
   header h1 { font-size: 20px; font-weight: 700; }
-  .back-link {
+  .nav-menu { position: relative; }
+  .nav-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    background: transparent;
     color: #BDC3C7;
-    text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
   }
-  .back-link:hover { color: white; }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 260px;
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1E2D4E;
+    text-decoration: none;
+    color: #BDC3C7;
+    font-size: 13px;
+    transition: background 0.1s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a.active { color: white; background: #1E2D4E; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home {
+    color: #BDC3C7 !important;
+    font-size: 13px !important;
+    border-bottom: 1px solid #1E2D4E;
+  }
+  .nav-home:hover { color: #FF6B6B !important; }
   .lang-toggle { display: flex; gap: 6px; }
   .lang-btn {
     background: none;
@@ -102,13 +148,16 @@
     line-height: 1.7;
     color: #444;
   }
+  .see-also { margin-top: 10px; font-size: 13px; color: #555; }
+  .see-also-link { color: #1A1A2E; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+  .see-also-link:hover { color: #3498DB; }
 </style>
 </head>
 <body>
 
 <header>
   <div style="display:flex;align-items:center;gap:16px;">
-    <a href="index.html" class="back-link">← Home</a>
+    <div class="nav-menu">  <button class="nav-btn">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="index.html" class="nav-home">← Home</a>   <a href="macro.html" class="">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="ecosystem.html" class="">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span>  </span></a><a href="dense-vs-moe.html" class="">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="glossary.html" class="active">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
     <h1 id="main-title">Glossary</h1>
   </div>
   <div class="lang-toggle">
@@ -129,6 +178,7 @@
       <div class="aliases" data-en="dense models, modèle dense, modèles denses" data-fr="dense models, modèle dense, modèles denses">dense models, modèle dense, modèles denses</div>
     </div>
     <div class="term-desc" data-en="A neural network architecture where every parameter is activated for every input. All weights participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B." data-fr="Une architecture de réseau de neurones où chaque paramètre est activé pour chaque entrée. Tous les poids participent à chaque passe avant. Les modèles denses sont plus simples à entraîner, mais deviennent coûteux à très grande échelle : doubler les paramètres double le calcul nécessaire pour chaque inférence. Exemples : GPT-4 (supposé dense), Llama 3, Mistral 7B.">A neural network architecture where every parameter is activated for every input. All weights participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B.</div>
+    <div class="see-also">→ <a href="dense-vs-moe.html" class="see-also-link" data-en="Dense vs MoE diagram" data-fr="Diagramme Dense vs MoE">Dense vs MoE diagram</a></div>
   </div>
   <div class="term-card" id="llm">
     <div class="term-header">
@@ -136,6 +186,7 @@
       <div class="aliases" data-en="LLM, LLMs, Large Language Models, grand modèle de langage, grands modèles de langage" data-fr="LLM, LLMs, Large Language Models, grand modèle de langage, grands modèles de langage">LLM, LLMs, Large Language Models, grand modèle de langage, grands modèles de langage</div>
     </div>
     <div class="term-desc" data-en="A language model trained on massive text datasets with billions of parameters. The "large" refers to both the size of the training data and the number of parameters. LLMs can understand and generate coherent text, answer questions, write code, and more. Examples: GPT-4, Claude, Gemini, Llama." data-fr="Un modèle de langage entraîné sur d'immenses corpus textuels avec des milliards de paramètres. Le "grand" fait référence à la taille des données d'entraînement et au nombre de paramètres. Les LLM peuvent comprendre et générer du texte cohérent, répondre à des questions, écrire du code, etc. Exemples : GPT-4, Claude, Gemini, Llama.">A language model trained on massive text datasets with billions of parameters. The "large" refers to both the size of the training data and the number of parameters. LLMs can understand and generate coherent text, answer questions, write code, and more. Examples: GPT-4, Claude, Gemini, Llama.</div>
+    
   </div>
   <div class="term-card" id="machine_learning">
     <div class="term-header">
@@ -143,6 +194,7 @@
       <div class="aliases" data-en="ML, apprentissage automatique" data-fr="ML, apprentissage automatique">ML, apprentissage automatique</div>
     </div>
     <div class="term-desc" data-en="A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without being explicitly programmed for each case. Deep Learning and LLMs are branches of Machine Learning." data-fr="Un sous-domaine de l'intelligence artificielle où les systèmes apprennent à partir de données pour améliorer leurs performances sur une tâche, sans être explicitement programmés pour chaque cas. Le Deep Learning et les LLM sont des branches du Machine Learning.">A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without being explicitly programmed for each case. Deep Learning and LLMs are branches of Machine Learning.</div>
+    
   </div>
   <div class="term-card" id="moe_model">
     <div class="term-header">
@@ -150,6 +202,7 @@
       <div class="aliases" data-en="MoE, mélange d'experts, Mélange d'Experts" data-fr="MoE, mélange d'experts, Mélange d'Experts">MoE, mélange d'experts, Mélange d'Experts</div>
     </div>
     <div class="term-desc" data-en="An architecture where the model is divided into many specialized sub-networks ("experts"). For each token, a routing mechanism activates only a small subset of experts (typically 2–8). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference — achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3." data-fr="Une architecture où le modèle est divisé en nombreux sous-réseaux spécialisés (« experts »). Pour chaque token, un mécanisme de routage n'active qu'un petit sous-ensemble d'experts (typiquement 2 à 8). Résultat : un modèle peut avoir des centaines de milliards de paramètres au total mais n'en utiliser qu'une fraction par inférence — offrant une grande capacité à moindre coût de calcul. Exemples : GPT-4 (supposé MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.">An architecture where the model is divided into many specialized sub-networks ("experts"). For each token, a routing mechanism activates only a small subset of experts (typically 2–8). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference — achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.</div>
+    <div class="see-also">→ <a href="dense-vs-moe.html" class="see-also-link" data-en="Dense vs MoE diagram" data-fr="Diagramme Dense vs MoE">Dense vs MoE diagram</a></div>
   </div>
   <div class="term-card" id="weights">
     <div class="term-header">
@@ -157,6 +210,7 @@
       <div class="aliases" data-en="weight, model weights, poids, poids du modèle, open weights" data-fr="weight, model weights, poids, poids du modèle, open weights">weight, model weights, poids, poids du modèle, open weights</div>
     </div>
     <div class="term-desc" data-en="The numerical parameters learned by a neural network during training. Weights encode everything the model has "learned" — grammar, facts, reasoning patterns. When a model is said to have billions of parameters, those parameters are its weights. "Open weights" means the trained weight files are publicly released, allowing anyone to run or fine-tune the model locally — even if the training data or code are not shared." data-fr="Les paramètres numériques appris par un réseau de neurones pendant l'entraînement. Les poids encodent tout ce que le modèle a « appris » — grammaire, faits, raisonnement. Quand on dit qu'un modèle a des milliards de paramètres, ce sont ses poids. « Open weights » signifie que les fichiers de poids entraînés sont publiés publiquement, permettant à n'importe qui d'exécuter ou de fine-tuner le modèle localement — même si les données d'entraînement ou le code source ne sont pas partagés.">The numerical parameters learned by a neural network during training. Weights encode everything the model has "learned" — grammar, facts, reasoning patterns. When a model is said to have billions of parameters, those parameters are its weights. "Open weights" means the trained weight files are publicly released, allowing anyone to run or fine-tune the model locally — even if the training data or code are not shared.</div>
+    
   </div>
 </div>
 

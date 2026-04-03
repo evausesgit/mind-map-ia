@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 GLOSSARY_FILE = ROOT / "data" / "glossary.yaml"
+MAPS_FILE = ROOT / "data" / "maps.yaml"
 OUTPUT = ROOT / "web" / "glossary.html"
 
 
@@ -16,10 +17,42 @@ def t(field, lang):
     return str(field) if field else ""
 
 
-def generate_html(data):
+def build_nav(maps):
+    items = ""
+    for m in maps:
+        if m.get("id") == "glossary":
+            active = "active"
+        else:
+            active = ""
+        title_en = t(m.get("title", ""), "en")
+        title_fr = t(m.get("title", ""), "fr") or title_en
+        desc_en = t(m.get("description", ""), "en")
+        desc_fr = t(m.get("description", ""), "fr") or desc_en
+        items += (
+            f'<a href="{m["output"]}" class="{active}">'
+            f'  <span class="nav-icon">{m.get("icon", "📄")}</span>'
+            f'  <span class="nav-info">'
+            f'    <span class="nav-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'    <span class="nav-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f"  </span>"
+            f"</a>"
+        )
+    return (
+        '<div class="nav-menu">'
+        '  <button class="nav-btn">≡ Maps ▾</button>'
+        '  <div class="nav-dropdown">'
+        '    <a href="index.html" class="nav-home">← Home</a>'
+        f"   {items}"
+        "  </div>"
+        "</div>"
+    )
+
+
+def generate_html(data, maps):
     terms = data["terms"]
     title_en = t(data["meta"]["title"], "en")
     title_fr = t(data["meta"]["title"], "fr")
+    nav_html = build_nav(maps)
 
     terms_sorted = sorted(terms, key=lambda x: t(x["label"], "en").lower())
 
@@ -35,6 +68,18 @@ def generate_html(data):
         aliases_str = ", ".join(a for a in aliases if a.lower() != label_en.lower())
         aliases_html = f'<div class="aliases" data-en="{aliases_str}" data-fr="{aliases_str}">{aliases_str}</div>' if aliases_str else ""
 
+        see_also = term.get("see_also")
+        see_also_html = ""
+        if see_also:
+            sa_url = see_also.get("url", "")
+            sa_label_en = t(see_also.get("label", ""), "en")
+            sa_label_fr = t(see_also.get("label", ""), "fr") or sa_label_en
+            see_also_html = (
+                f'<div class="see-also">'
+                f'→ <a href="{sa_url}" class="see-also-link" data-en="{sa_label_en}" data-fr="{sa_label_fr}">{sa_label_en}</a>'
+                f'</div>'
+            )
+
         cards_html += f"""
   <div class="term-card" id="{tid}">
     <div class="term-header">
@@ -42,6 +87,7 @@ def generate_html(data):
       {aliases_html}
     </div>
     <div class="term-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</div>
+    {see_also_html}
   </div>"""
 
     # Build alphabet index
@@ -75,12 +121,58 @@ def generate_html(data):
     gap: 16px;
   }}
   header h1 {{ font-size: 20px; font-weight: 700; }}
-  .back-link {{
+  .nav-menu {{ position: relative; }}
+  .nav-btn {{
+    padding: 6px 14px;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    background: transparent;
     color: #BDC3C7;
-    text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
   }}
-  .back-link:hover {{ color: white; }}
+  .nav-btn:hover {{ border-color: #aaa; color: white; }}
+  .nav-dropdown {{
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 260px;
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }}
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown {{ display: block; }}
+  .nav-dropdown a {{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1E2D4E;
+    text-decoration: none;
+    color: #BDC3C7;
+    font-size: 13px;
+    transition: background 0.1s;
+  }}
+  .nav-dropdown a:last-child {{ border-bottom: none; }}
+  .nav-dropdown a:hover {{ background: #1E2D4E; color: white; }}
+  .nav-dropdown a.active {{ color: white; background: #1E2D4E; }}
+  .nav-dropdown a .nav-icon {{ font-size: 18px; }}
+  .nav-dropdown a .nav-info {{ display: flex; flex-direction: column; }}
+  .nav-dropdown a .nav-title {{ font-weight: 600; }}
+  .nav-dropdown a .nav-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
+  .nav-home {{
+    color: #BDC3C7 !important;
+    font-size: 13px !important;
+    border-bottom: 1px solid #1E2D4E;
+  }}
+  .nav-home:hover {{ color: #FF6B6B !important; }}
   .lang-toggle {{ display: flex; gap: 6px; }}
   .lang-btn {{
     background: none;
@@ -155,13 +247,16 @@ def generate_html(data):
     line-height: 1.7;
     color: #444;
   }}
+  .see-also {{ margin-top: 10px; font-size: 13px; color: #555; }}
+  .see-also-link {{ color: #1A1A2E; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }}
+  .see-also-link:hover {{ color: #3498DB; }}
 </style>
 </head>
 <body>
 
 <header>
   <div style="display:flex;align-items:center;gap:16px;">
-    <a href="index.html" class="back-link">← Home</a>
+    {nav_html}
     <h1 id="main-title">{title_en}</h1>
   </div>
   <div class="lang-toggle">
@@ -201,7 +296,10 @@ function setLang(newLang) {{
 def main():
     with open(GLOSSARY_FILE) as f:
         data = yaml.safe_load(f)
-    html = generate_html(data)
+    with open(MAPS_FILE) as f:
+        maps_config = yaml.safe_load(f)
+    maps = maps_config.get("maps", [])
+    html = generate_html(data, maps)
     OUTPUT.parent.mkdir(exist_ok=True)
     with open(OUTPUT, "w") as f:
         f.write(html)

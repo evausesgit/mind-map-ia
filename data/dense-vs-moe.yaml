@@ -1,0 +1,50 @@
+meta:
+  title:
+    en: "Dense vs MoE Models"
+    fr: "Modèles Dense vs MoE"
+  description:
+    en: "How Dense and Mixture-of-Experts architectures differ in processing a token"
+    fr: "Comment les architectures Dense et Mixture-of-Experts diffèrent dans le traitement d'un token"
+  version: "2026-Q1"
+  date: "2026-04-03"
+
+diagram:
+  en: |
+    flowchart TD
+        A[Input Token] --> B{Model Architecture}
+
+        B --> C[Dense Model]
+        B --> D[MoE Model]
+
+        C --> C1[All parameters are activated]
+        C1 --> C2[Token flows through entire network]
+        C2 --> C3[High compute per token]
+        C3 --> C4[Slower inference]
+        C4 --> C5[Simpler memory footprint]
+
+        D --> D1[Router]
+        D1 --> D2["Selects top-k experts (e.g. 2)"]
+        D2 --> D3[Only a subset of parameters activated]
+        D3 --> D4[Lower compute per token]
+        D4 --> D5[Faster inference]
+        D5 --> D6[All experts must be loaded in memory]
+
+  fr: |
+    flowchart TD
+        A[Token d'entrée] --> B{Architecture du modèle}
+
+        B --> C[Modèle Dense]
+        B --> D[Modèle MoE]
+
+        C --> C1[Tous les paramètres sont activés]
+        C1 --> C2[Le token traverse tout le réseau]
+        C2 --> C3[Calcul élevé par token]
+        C3 --> C4[Inférence plus lente]
+        C4 --> C5[Empreinte mémoire simple]
+
+        D --> D1[Routeur]
+        D1 --> D2["Sélectionne les top-k experts (ex. 2)"]
+        D2 --> D3[Seul un sous-ensemble de paramètres activé]
+        D3 --> D4[Calcul réduit par token]
+        D4 --> D5[Inférence plus rapide]
+        D5 --> D6[Tous les experts doivent être chargés en mémoire]

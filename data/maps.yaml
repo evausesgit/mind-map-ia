@@ -22,3 +22,25 @@ maps:
     nodes: 53
     output: ecosystem.html
     data: data/ecosystem.yaml
+
+  - id: dense-vs-moe
+    icon: "⚡"
+    title:
+      en: "Dense vs MoE"
+      fr: "Dense vs MoE"
+    description:
+      en: "How Dense and Mixture-of-Experts architectures process a token"
+      fr: "Comment les architectures Dense et MoE traitent un token"
+    output: dense-vs-moe.html
+    data: data/dense-vs-moe.yaml
+
+  - id: glossary
+    icon: "📖"
+    title:
+      en: "Glossary"
+      fr: "Glossaire"
+    description:
+      en: "Key terms and concepts of the LLM & AI ecosystem"
+      fr: "Termes et concepts clés de l'écosystème LLM & IA"
+    terms: 5
+    output: glossary.html

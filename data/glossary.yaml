@@ -51,6 +51,7 @@ terms:
       en: "Dense Model"
       fr: "Modèle Dense"
     aliases: ["dense model", "dense models", "modèle dense", "modèles denses"]
+    see_also: {url: "dense-vs-moe.html", label: {en: "Dense vs MoE diagram", fr: "Diagramme Dense vs MoE"}}
     description:
       en: >
         A neural network architecture where every parameter is activated for every input.
@@ -70,6 +71,7 @@ terms:
       en: "Mixture of Experts"
       fr: "Mélange d'Experts"
     aliases: ["MoE", "Mixture of Experts", "mixture of experts", "mélange d'experts", "Mélange d'Experts"]
+    see_also: {url: "dense-vs-moe.html", label: {en: "Dense vs MoE diagram", fr: "Diagramme Dense vs MoE"}}
     description:
       en: >
         An architecture where the model is divided into many specialized sub-networks ("experts").
