@@ -7,6 +7,7 @@ meta:
     fr: "Vue macro de l'écosystème IA/LLM : concepts, catégories et briques fondamentales"
   version: "2026-Q1"
   date: "2026-04-02"
+  node_scale: 2
 
 layers:
   1:

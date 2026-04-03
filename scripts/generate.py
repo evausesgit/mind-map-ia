@@ -118,6 +118,8 @@ def load_layout(data_file):
 def build_elements(data):
     category_colors = {c["id"]: c["color"] for c in data["categories"]}
     saved_layout = load_layout(DATA_FILE)
+    scale = float(data.get("meta", {}).get("node_scale", 1))
+    spacing_y = int(NODE_SPACING_Y * scale)
     raw_layers = data.get("layers", DEFAULT_LAYER_LABELS)
     layer_labels = {}
     for k, v in raw_layers.items():
@@ -144,7 +146,7 @@ def build_elements(data):
             n = len(bucket)
             for i, node in enumerate(bucket):
                 default_x = x_pos
-                default_y = (i - (n - 1) / 2) * NODE_SPACING_Y
+                default_y = (i - (n - 1) / 2) * spacing_y
                 saved = saved_layout.get(node["id"])
                 x_pos_final = saved["x"] if saved else default_x
                 y = saved["y"] if saved else default_y
@@ -233,6 +235,12 @@ def generate_html(data, elements, maps=None, current_output=""):
     categories = data["categories"]
     elements_json = json.dumps(elements, indent=2)
     layout_stem = Path(DATA_FILE).stem  # e.g. "ecosystem-macro"
+    scale = float(meta.get("node_scale", 1))
+    node_w    = int(NODE_WIDTH  * scale)
+    node_h    = int(NODE_HEIGHT * scale)
+    node_font = int(12 * scale)
+    node_text_max     = int(130 * scale)
+    node_text_max_prov= int(120 * scale)
 
     # Glossary terms for inline linking
     glossary_terms = load_glossary()
@@ -957,43 +965,43 @@ const cy = cytoscape({{
     {{
       selector: "node[node_type='provider']",
       style: {{
-        "width": {NODE_WIDTH},
-        "height": {NODE_HEIGHT},
+        "width": {node_w},
+        "height": {node_h},
         "shape": "ellipse",
         "background-color": "data(color)",
         "background-opacity": 0.85,
         "label": "data(label)",
         "text-valign": "center",
         "text-halign": "center",
-        "font-size": "12px",
+        "font-size": "{node_font}px",
         "font-weight": "700",
         "color": "#1A1A2E",
         "border-width": 2,
         "border-color": "data(color)",
         "text-wrap": "wrap",
-        "text-max-width": "120px",
+        "text-max-width": "{node_text_max_prov}px",
       }}
     }},
     // Nodes
     {{
       selector: "node",
       style: {{
-        "width": {NODE_WIDTH},
-        "height": {NODE_HEIGHT},
+        "width": {node_w},
+        "height": {node_h},
         "shape": "round-rectangle",
         "background-color": "data(color)",
         "background-opacity": 0.9,
         "label": "data(label)",
         "text-valign": "center",
         "text-halign": "center",
-        "font-size": "12px",
+        "font-size": "{node_font}px",
         "font-weight": "600",
         "color": "#1A1A2E",
         "border-width": 2,
         "border-color": "data(color)",
         "border-opacity": 1,
         "text-wrap": "wrap",
-        "text-max-width": "130px",
+        "text-max-width": "{node_text_max}px",
         "overlay-padding": "6px",
         "transition-property": "border-color, border-width, background-opacity",
         "transition-duration": "0.15s",
