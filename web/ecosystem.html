@@ -369,6 +369,20 @@
   }
   .ctrl-btn:hover { background: #F0F0F0; }
   .ctrl-btn.saved { border-color: #27AE60; color: #27AE60; }
+  .ctrl-btn[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 48px;
+    background: rgba(30,30,30,0.92);
+    color: #fff;
+    font-size: 11px;
+    white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: 5px;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .ctrl-btn { position: relative; }
 </style>
 </head>
 <body>
@@ -399,12 +413,18 @@
   <div style="position:relative;flex:1;overflow:hidden;">
     <div id="cy"></div>
     <div id="controls">
-      <button class="ctrl-btn" onclick="cy.fit()" title="Fit all">⊞</button>
-      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)" title="Zoom in">+</button>
-      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)" title="Zoom out">−</button>
-      <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()" title="Reset layout">↺</button>
-      <button class="ctrl-btn" onclick="exportLayout()" title="Export layout as JSON">⬇</button>
-      <button class="ctrl-btn" onclick="openPresentation()" title="View as presentation">▤</button>
+      <button class="ctrl-btn" onclick="cy.fit()"
+        data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
+      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)"
+        data-tip-en="Zoom in" data-tip-fr="Zoom avant">+</button>
+      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)"
+        data-tip-en="Zoom out" data-tip-fr="Zoom arrière">−</button>
+      <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()"
+        data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
+      <button class="ctrl-btn" onclick="exportLayout()"
+        data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
+      <button class="ctrl-btn" onclick="openPresentation()"
+        data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
     </div>
   </div>
 
@@ -2392,6 +2412,11 @@ function setLang(newLang) {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
 
+  // Update control button tooltips
+  document.querySelectorAll('.ctrl-btn[data-tip-en]').forEach(btn => {
+    btn.dataset.tip = btn.dataset['tip' + newLang.charAt(0).toUpperCase() + newLang.slice(1)];
+  });
+
   // Header title
   document.getElementById('main-title').textContent = TITLES[lang];
 
@@ -2896,6 +2921,10 @@ cy.ready(() => {
   if (!loadPositions()) {
     cy.fit(undefined, 40);
   }
+  // Init tooltips in default language
+  document.querySelectorAll('.ctrl-btn[data-tip-en]').forEach(btn => {
+    btn.dataset.tip = btn.dataset.tipEn;
+  });
 });
 
 // Auto-save on drag
