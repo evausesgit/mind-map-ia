@@ -253,6 +253,11 @@ def generate_html(data, elements, maps=None, current_output=""):
     title_fr = t(meta.get("title", ""), "fr") or title_en
     titles_js = json.dumps({"en": title_en, "fr": title_fr})
 
+    categories_js = json.dumps([
+        {"id": c["id"], "label_en": t(c.get("label", ""), "en"), "label_fr": t(c.get("label", ""), "fr"), "color": c.get("color", "#aaa")}
+        for c in categories
+    ])
+
     # Build legend per lang
     def legend_items(lang):
         return "".join(
@@ -641,6 +646,28 @@ def generate_html(data, elements, maps=None, current_output=""):
     font-weight: 600;
   }}
 
+  /* ── Category boxes ── */
+  .cat-box {{
+    position: absolute;
+    border: 2px solid;
+    border-radius: 12px;
+    pointer-events: none;
+    box-sizing: border-box;
+  }}
+  .cat-box-label {{
+    position: absolute;
+    top: -11px;
+    left: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: #F8F9FA;
+    padding: 1px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }}
+
   /* ── Controls ── */
   #controls {{
     position: absolute;
@@ -710,6 +737,7 @@ def generate_html(data, elements, maps=None, current_output=""):
 <div class="main">
   <div style="position:relative;flex:1;overflow:hidden;">
     <div id="cy"></div>
+    <div id="cat-boxes" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;"></div>
     <div id="controls">
       <button class="ctrl-btn" onclick="cy.fit()"
         data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
@@ -763,6 +791,7 @@ const elements = {elements_json};
 const TITLES        = {titles_js};
 const STATUS_LABELS = {status_labels_js};
 const PANEL_LABELS  = {panel_labels_js};
+const CATEGORIES    = {categories_js};
 const STATUS_COLORS = {json.dumps(STATUS_LABEL_COLOR)};
 const GLOSSARY_TERMS = {glossary_js};
 
@@ -803,6 +832,7 @@ function setLang(newLang) {{
   document.querySelectorAll('.ctrl-btn[data-tip-en]').forEach(btn => {{
     btn.dataset.tip = btn.dataset['tip' + newLang.charAt(0).toUpperCase() + newLang.slice(1)];
   }});
+  drawCategoryBoxes();
 
   // Header title
   document.getElementById('main-title').textContent = TITLES[lang];
@@ -1302,6 +1332,44 @@ function resetLayout() {{
     }});
   }});
   cy.fit(undefined, 40);
+  drawCategoryBoxes();
+}}
+
+// ── Category bounding boxes ──────────────────
+function drawCategoryBoxes() {{
+  const container = document.getElementById('cat-boxes');
+  if (!container) return;
+  container.innerHTML = '';
+  const zoom = cy.zoom();
+  const pan  = cy.pan();
+  const cyRect = document.getElementById('cy').getBoundingClientRect();
+
+  CATEGORIES.forEach(cat => {{
+    const nodes = cy.nodes('[category = "' + cat.id + '"]');
+    if (nodes.length === 0) return;
+    const bb = nodes.boundingBox();
+    const pad = 24;
+    const x = (bb.x1 - pad) * zoom + pan.x;
+    const y = (bb.y1 - pad) * zoom + pan.y;
+    const w = (bb.x2 - bb.x1 + pad * 2) * zoom;
+    const h = (bb.y2 - bb.y1 + pad * 2) * zoom;
+
+    const box = document.createElement('div');
+    box.className = 'cat-box';
+    box.style.left   = x + 'px';
+    box.style.top    = y + 'px';
+    box.style.width  = w + 'px';
+    box.style.height = h + 'px';
+    box.style.borderColor = cat.color;
+    box.style.opacity = '0.5';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'cat-box-label';
+    lbl.style.color = cat.color;
+    lbl.textContent = cat['label_' + lang] || cat.label_en;
+    box.appendChild(lbl);
+    container.appendChild(box);
+  }});
 }}
 
 cy.ready(() => {{
@@ -1312,7 +1380,10 @@ cy.ready(() => {{
   document.querySelectorAll('.ctrl-btn[data-tip-en]').forEach(btn => {{
     btn.dataset.tip = btn.dataset.tipEn;
   }});
+  drawCategoryBoxes();
 }});
+
+cy.on('viewport position dragfree', drawCategoryBoxes);
 
 // Auto-save on drag
 cy.on('dragfree', 'node', savePositions);
