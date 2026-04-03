@@ -425,13 +425,23 @@ nodes:
     ref: "https://modelcontextprotocol.io/introduction"
     description:
       en: |
-        The model can call external functions during generation: search the web,
-        query a database, run code, send an email.
-        Core capability that transforms LLMs from chat to action.
+        The ability for a model to call external functions during generation.
+        How it works: (1) the model decides it needs a tool, (2) it emits a structured request
+        (e.g. {"tool": "web_search", "query": "..."}), (3) your application executes the function
+        and returns the result, (4) the model continues with that information.
+        Examples: web search, database query, run code, send email, call any API.
+        MCP (Model Context Protocol) is the emerging standard that formalizes how tools
+        are declared and called across models and applications.
+        The bridge between "the model thinks" and "the model acts" — core capability of AI Agents.
       fr: |
-        Le modèle peut appeler des fonctions externes pendant la génération : chercher sur le web,
-        interroger une base de données, exécuter du code, envoyer un email.
-        Capacité fondamentale qui transforme les LLM de chatbots en acteurs.
+        La capacité d'un modèle à appeler des fonctions externes pendant la génération.
+        Fonctionnement : (1) le modèle décide qu'il a besoin d'un outil, (2) il émet une requête
+        structurée (ex : {"tool": "web_search", "query": "..."}), (3) l'application exécute la
+        fonction et renvoie le résultat, (4) le modèle continue avec cette information.
+        Exemples : recherche web, requête base de données, exécution de code, envoi d'email, appel d'API.
+        MCP (Model Context Protocol) est le standard émergent qui formalise comment les outils
+        sont déclarés et appelés entre modèles et applications.
+        Le pont entre "le modèle réfléchit" et "le modèle agit" — capacité centrale des Agents IA.
 
   - id: finetuning_pattern
     label:
