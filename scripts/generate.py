@@ -694,7 +694,7 @@ def generate_html(data, elements, maps=None, current_output=""):
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)" title="Zoom out">−</button>
       <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()" title="Reset layout">↺</button>
       <button class="ctrl-btn" onclick="exportLayout()" title="Export layout as JSON">⬇</button>
-      <button class="ctrl-btn" onclick="exportMarp()" title="Export as Marp presentation">▤</button>
+      <button class="ctrl-btn" onclick="openPresentation()" title="View as presentation">▤</button>
     </div>
   </div>
 
@@ -1121,11 +1121,11 @@ async function exportLayout() {{
   URL.revokeObjectURL(url);
 }}
 
-function exportMarp() {{
+function openPresentation() {{
   const l = lang;
   const title = TITLES[l];
 
-  // Group nodes by layer, sorted by layer number (ascending)
+  // Group nodes by layer
   const byLayer = {{}};
   elements.forEach(el => {{
     if (!el.data || !el.data.layer) return;
@@ -1135,73 +1135,109 @@ function exportMarp() {{
   }});
 
   const statusEmoji = {{ stable: '🟢', evolving: '🟡', emerging: '🔵', deprecated: '🔴' }};
+  const layerOrder = Object.keys(byLayer).map(Number).sort((a, b) => b - a);
+  const slides = [];
 
-  let md = `---
-marp: true
-theme: default
-paginate: true
-style: |
-  section {{ font-family: 'Segoe UI', sans-serif; }}
-  h1 {{ color: #1a237e; }}
-  h2 {{ color: #283593; border-bottom: 2px solid #3949ab; padding-bottom: 8px; }}
-  .node-title {{ font-weight: bold; color: #1a237e; }}
-  ul {{ margin-top: 8px; }}
-  li {{ margin-bottom: 6px; font-size: 0.9em; }}
----
+  // Title slide
+  const subtitle = l === 'en' ? 'AI / LLM Ecosystem' : 'Écosystème IA / LLM';
+  slides.push('<div class="slide-type-title"><div class="slide-title-content"><h1>' + title + '</h1><p class="subtitle">' + subtitle + '</p></div></div>');
 
-# ${{title}}
-
-> ${{l === 'en' ? 'An interactive map of the AI/LLM ecosystem' : "Une carte interactive de l'écosystème IA/LLM"}}
-
----
-
-`;
-
-  const layerOrder = Object.keys(byLayer).map(Number).sort((a, b) => b - a); // Layer 5→1 (Dev Tools → Foundations)
+  // Overview slide per layer
   layerOrder.forEach(layerId => {{
     const nodes = byLayer[layerId];
-    const layerLabel = nodes[0][`layerLabel_${{l}}`] || `Layer ${{layerId}}`;
-
-    md += `## ${{layerLabel}}\n\n`;
-    nodes.forEach(n => {{
-      const nodeLabel = n[`label_${{l}}`] || n.label;
-      const desc = n[`description_${{l}}`] || '';
+    const layerLabel = nodes[0]['layerLabel_' + l] || ('Layer ' + layerId);
+    const items = nodes.map(n => {{
+      const nodeLabel = n['label_' + l] || n.label;
+      const desc = n['description_' + l] || '';
+      const shortDesc = desc ? desc.split(/[.!?][ \\n]/)[0].replace(/\\n/g, ' ').trim() + '.' : '';
       const emoji = statusEmoji[n.status] || '';
-      // First sentence of description only (keep slides concise)
-      const shortDesc = desc ? desc.split(/[.!?]\\s/)[0].replace(/\\n/g, ' ').trim() + '.' : '';
-      md += `- ${{emoji}} **${{nodeLabel}}** — ${{shortDesc}}\n`;
-    }});
-    md += `\n---\n\n`;
+      return '<li>' + emoji + ' <strong>' + nodeLabel + '</strong>' + (shortDesc ? ' — ' + shortDesc : '') + '</li>';
+    }}).join('');
+    slides.push('<div class="slide-layer-num">Layer ' + layerId + '</div><h2>' + layerLabel + '</h2><ul>' + items + '</ul>');
   }});
 
-  // Detail slides: one per node
+  // Detail slide per node
   layerOrder.forEach(layerId => {{
     const nodes = byLayer[layerId];
-    const layerLabel = nodes[0][`layerLabel_${{l}}`] || `Layer ${{layerId}}`;
+    const layerLabel = nodes[0]['layerLabel_' + l] || ('Layer ' + layerId);
     nodes.forEach(n => {{
-      const nodeLabel = n[`label_${{l}}`] || n.label;
-      const desc = (n[`description_${{l}}`] || '').replace(/\\n/g, '\\n> ');
+      const nodeLabel = n['label_' + l] || n.label;
+      const desc = (n['description_' + l] || '').replace(/\\n/g, '<br>');
       const emoji = statusEmoji[n.status] || '';
-      md += `## ${{emoji}} ${{nodeLabel}}\n`;
-      md += `*${{layerLabel}}*\n\n`;
-      if (desc) md += `> ${{desc}}\n\n`;
-      md += `---\n\n`;
+      const statusLabel = n.status || '';
+      slides.push(
+        '<div class="slide-node-layer">' + layerLabel + '</div>' +
+        '<h2>' + emoji + ' ' + nodeLabel + '</h2>' +
+        (desc ? '<p class="node-desc">' + desc + '</p>' : '') +
+        '<span class="slide-status status-' + statusLabel + '">' + statusLabel + '</span>'
+      );
     }});
   }});
 
   // Summary slide
   const totalNodes = elements.filter(el => el.data && el.data.layer).length;
-  md += `## ${{l === 'en' ? 'Summary' : 'Récapitulatif'}}\n\n`;
-  md += `- **${{totalNodes}}** ${{l === 'en' ? 'concepts mapped' : 'concepts cartographiés'}}\n`;
-  md += `- **${{layerOrder.length}}** ${{l === 'en' ? 'layers' : 'couches'}}\n\n`;
-  md += `*${{l === 'en' ? 'Generated from' : 'Généré depuis'}} ${{title}}*\n`;
+  const summaryTitle = l === 'en' ? 'Summary' : 'Récapitulatif';
+  slides.push(
+    '<div class="slide-type-title"><div class="slide-title-content">' +
+    '<h2>' + summaryTitle + '</h2>' +
+    '<p class="stat">' + totalNodes + ' concepts</p>' +
+    '<p class="stat">' + layerOrder.length + (l === 'en' ? ' layers' : ' couches') + '</p>' +
+    '<p class="generated-from">' + title + '</p>' +
+    '</div></div>'
+  );
 
-  const fname = (TITLES['en'] || 'presentation').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.md';
-  const blob = new Blob([md], {{ type: 'text/markdown' }});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = fname; a.click();
-  URL.revokeObjectURL(url);
+  // Build popup via DOM (avoids script-close tag inside a JS string breaking the outer page)
+  const w = window.open('', '_blank');
+  if (!w) return;
+  const d = w.document;
+  d.open();
+  d.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + '</title></head><body></body></html>');
+  d.close();
+
+  const style = d.createElement('style');
+  style.textContent = [
+    '* {{ box-sizing:border-box; margin:0; padding:0 }}',
+    'body {{ background:#0d1117; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; font-family:"Segoe UI",sans-serif; overflow:hidden }}',
+    '#slide {{ background:#fff; width:min(92vw,960px); aspect-ratio:16/9; border-radius:12px; padding:48px 64px; display:flex; flex-direction:column; justify-content:center; box-shadow:0 20px 60px rgba(0,0,0,.5); position:relative; overflow:hidden }}',
+    '#slide h1 {{ font-size:2.4em; color:#1a237e; margin-bottom:16px }}',
+    '#slide h2 {{ font-size:1.6em; color:#283593; border-bottom:2px solid #3949ab; padding-bottom:10px; margin-bottom:20px }}',
+    '.subtitle {{ font-size:1.2em; color:#555 }}',
+    '.slide-type-title {{ display:flex; align-items:center; justify-content:center; text-align:center; height:100% }}',
+    '.slide-title-content {{ display:flex; flex-direction:column; gap:12px }}',
+    '.slide-layer-num,.slide-node-layer {{ position:absolute; top:20px; right:28px; font-size:.75em; color:#9fa8da; font-weight:600; letter-spacing:1px; text-transform:uppercase }}',
+    'ul {{ list-style:none; display:flex; flex-direction:column; gap:8px }}',
+    'li {{ font-size:.9em; color:#333; line-height:1.4 }}',
+    'li strong {{ color:#1a237e }}',
+    '.node-desc {{ font-size:.92em; color:#444; line-height:1.7; margin-top:8px }}',
+    '.slide-status {{ position:absolute; bottom:20px; right:28px; font-size:.72em; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:3px 10px; border-radius:10px; border:1.5px solid }}',
+    '.status-stable {{ color:#2e7d32; border-color:#2e7d32 }}',
+    '.status-evolving {{ color:#e65100; border-color:#e65100 }}',
+    '.status-emerging {{ color:#1565c0; border-color:#1565c0 }}',
+    '.status-deprecated {{ color:#b71c1c; border-color:#b71c1c }}',
+    '.stat {{ font-size:1.4em; font-weight:700; color:#3949ab }}',
+    '.generated-from {{ font-size:.85em; color:#999; margin-top:12px }}',
+    '#nav {{ display:flex; align-items:center; gap:20px; margin-top:20px }}',
+    '.nav-btn {{ background:#3949ab; color:#fff; border:none; border-radius:8px; padding:10px 24px; font-size:1em; cursor:pointer; transition:background .15s }}',
+    '.nav-btn:hover {{ background:#283593 }}',
+    '.nav-btn:disabled {{ background:#555; cursor:default }}',
+    '#counter {{ color:#aaa; font-size:.9em; min-width:80px; text-align:center }}',
+    '#progress {{ position:absolute; bottom:0; left:0; height:3px; background:#3949ab; transition:width .3s; border-radius:0 0 0 12px }}'
+  ].join(' ');
+  d.head.appendChild(style);
+
+  d.body.innerHTML =
+    '<div id="slide"><div id="progress"></div><div id="slide-content"></div></div>' +
+    '<div id="nav">' +
+    '<button class="nav-btn" id="prev">&#8592;</button>' +
+    '<span id="counter"></span>' +
+    '<button class="nav-btn" id="next">&#8594;</button>' +
+    '</div>';
+
+  // Pass slides via window property to avoid serialization issues
+  w.PRESENTATION_SLIDES = slides;
+  const init = d.createElement('script');
+  init.textContent = '(function(){{ var s = window.PRESENTATION_SLIDES; var cur = 0; function render(){{ document.getElementById("slide-content").innerHTML = s[cur]; document.getElementById("counter").textContent = (cur+1)+" / "+s.length; document.getElementById("prev").disabled = cur===0; document.getElementById("next").disabled = cur===s.length-1; document.getElementById("progress").style.width = ((cur+1)/s.length*100)+"%"; }} function go(d){{ cur=Math.max(0,Math.min(s.length-1,cur+d)); render(); }} document.getElementById("prev").onclick=function(){{go(-1);}}; document.getElementById("next").onclick=function(){{go(1);}}; document.addEventListener("keydown",function(e){{ if(e.key==="ArrowRight"||e.key==="ArrowDown")go(1); if(e.key==="ArrowLeft"||e.key==="ArrowUp")go(-1); }}); render(); }})();';
+  d.body.appendChild(init);
 }}
 
 function loadPositions() {{
