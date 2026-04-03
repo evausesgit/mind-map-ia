@@ -46,6 +46,44 @@ terms:
         permettant à n'importe qui d'exécuter ou de fine-tuner le modèle localement —
         même si les données d'entraînement ou le code source ne sont pas partagés.
 
+  - id: dense_model
+    label:
+      en: "Dense Model"
+      fr: "Modèle Dense"
+    aliases: ["dense model", "dense models", "modèle dense", "modèles denses"]
+    description:
+      en: >
+        A neural network architecture where every parameter is activated for every input.
+        All weights participate in every forward pass.
+        Dense models are simpler to train and reason about, but become expensive at very large scales
+        since doubling the parameters doubles the compute required for each inference.
+        Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B.
+      fr: >
+        Une architecture de réseau de neurones où chaque paramètre est activé pour chaque entrée.
+        Tous les poids participent à chaque passe avant.
+        Les modèles denses sont plus simples à entraîner, mais deviennent coûteux à très grande échelle :
+        doubler les paramètres double le calcul nécessaire pour chaque inférence.
+        Exemples : GPT-4 (supposé dense), Llama 3, Mistral 7B.
+
+  - id: moe_model
+    label:
+      en: "Mixture of Experts"
+      fr: "Mélange d'Experts"
+    aliases: ["MoE", "Mixture of Experts", "mixture of experts", "mélange d'experts", "Mélange d'Experts"]
+    description:
+      en: >
+        An architecture where the model is divided into many specialized sub-networks ("experts").
+        For each token, a routing mechanism activates only a small subset of experts (typically 2–8).
+        Result: a model can have hundreds of billions of total parameters but use only a fraction
+        per inference — achieving high capacity at lower compute cost.
+        Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.
+      fr: >
+        Une architecture où le modèle est divisé en nombreux sous-réseaux spécialisés (« experts »).
+        Pour chaque token, un mécanisme de routage n'active qu'un petit sous-ensemble d'experts (typiquement 2 à 8).
+        Résultat : un modèle peut avoir des centaines de milliards de paramètres au total mais n'en utiliser
+        qu'une fraction par inférence — offrant une grande capacité à moindre coût de calcul.
+        Exemples : GPT-4 (supposé MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.
+
   - id: machine_learning
     label:
       en: "Machine Learning"

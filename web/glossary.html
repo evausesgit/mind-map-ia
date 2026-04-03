@@ -118,11 +118,18 @@
 </header>
 
 <div class="alphabet-index">
-  <a href="#llm" class="idx-letter">L</a><a href="#machine_learning" class="idx-letter">M</a><a href="#weights" class="idx-letter">W</a>
+  <a href="#dense_model" class="idx-letter">D</a><a href="#llm" class="idx-letter">L</a><a href="#machine_learning" class="idx-letter">M</a><a href="#weights" class="idx-letter">W</a>
 </div>
 
 <div class="content">
 
+  <div class="term-card" id="dense_model">
+    <div class="term-header">
+      <span class="term-label" data-en="Dense Model" data-fr="Modèle Dense">Dense Model</span>
+      <div class="aliases" data-en="dense models, modèle dense, modèles denses" data-fr="dense models, modèle dense, modèles denses">dense models, modèle dense, modèles denses</div>
+    </div>
+    <div class="term-desc" data-en="A neural network architecture where every parameter is activated for every input. All weights participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B." data-fr="Une architecture de réseau de neurones où chaque paramètre est activé pour chaque entrée. Tous les poids participent à chaque passe avant. Les modèles denses sont plus simples à entraîner, mais deviennent coûteux à très grande échelle : doubler les paramètres double le calcul nécessaire pour chaque inférence. Exemples : GPT-4 (supposé dense), Llama 3, Mistral 7B.">A neural network architecture where every parameter is activated for every input. All weights participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B.</div>
+  </div>
   <div class="term-card" id="llm">
     <div class="term-header">
       <span class="term-label" data-en="Large Language Model" data-fr="Grand Modèle de Langage">Large Language Model</span>
@@ -136,6 +143,13 @@
       <div class="aliases" data-en="ML, apprentissage automatique" data-fr="ML, apprentissage automatique">ML, apprentissage automatique</div>
     </div>
     <div class="term-desc" data-en="A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without being explicitly programmed for each case. Deep Learning and LLMs are branches of Machine Learning." data-fr="Un sous-domaine de l'intelligence artificielle où les systèmes apprennent à partir de données pour améliorer leurs performances sur une tâche, sans être explicitement programmés pour chaque cas. Le Deep Learning et les LLM sont des branches du Machine Learning.">A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without being explicitly programmed for each case. Deep Learning and LLMs are branches of Machine Learning.</div>
+  </div>
+  <div class="term-card" id="moe_model">
+    <div class="term-header">
+      <span class="term-label" data-en="Mixture of Experts" data-fr="Mélange d'Experts">Mixture of Experts</span>
+      <div class="aliases" data-en="MoE, mélange d'experts, Mélange d'Experts" data-fr="MoE, mélange d'experts, Mélange d'Experts">MoE, mélange d'experts, Mélange d'Experts</div>
+    </div>
+    <div class="term-desc" data-en="An architecture where the model is divided into many specialized sub-networks ("experts"). For each token, a routing mechanism activates only a small subset of experts (typically 2–8). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference — achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3." data-fr="Une architecture où le modèle est divisé en nombreux sous-réseaux spécialisés (« experts »). Pour chaque token, un mécanisme de routage n'active qu'un petit sous-ensemble d'experts (typiquement 2 à 8). Résultat : un modèle peut avoir des centaines de milliards de paramètres au total mais n'en utiliser qu'une fraction par inférence — offrant une grande capacité à moindre coût de calcul. Exemples : GPT-4 (supposé MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.">An architecture where the model is divided into many specialized sub-networks ("experts"). For each token, a routing mechanism activates only a small subset of experts (typically 2–8). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference — achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.</div>
   </div>
   <div class="term-card" id="weights">
     <div class="term-header">
