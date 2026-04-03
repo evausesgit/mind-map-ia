@@ -614,31 +614,6 @@ const elements = [
   },
   {
     "data": {
-      "id": "prompt_system_prompt",
-      "label": "Prompt & System Prompt",
-      "category": "concepts",
-      "subcategory": "",
-      "node_type": "",
-      "layer": 1,
-      "status": "stable",
-      "since": "2022",
-      "color": "#F4D03F",
-      "layerLabel": "CORE CONCEPTS",
-      "label_en": "Prompt & System Prompt",
-      "description_en": "A prompt is the input text sent to a model to get a response. The system prompt is a special instruction set that defines the model's role, behavior and constraints for the entire conversation. The primary interface between humans and LLMs.",
-      "layerLabel_en": "CORE CONCEPTS",
-      "label_fr": "Prompt & System Prompt",
-      "description_fr": "Un prompt est le texte d'entr\u00e9e envoy\u00e9 au mod\u00e8le pour obtenir une r\u00e9ponse. Le system prompt est un ensemble d'instructions sp\u00e9ciales qui d\u00e9finit le r\u00f4le, le comportement et les contraintes du mod\u00e8le pour toute la conversation. L'interface principale entre les humains et les LLM.",
-      "layerLabel_fr": "CONCEPTS FONDAMENTAUX"
-    },
-    "position": {
-      "x": 1003,
-      "y": 106
-    },
-    "classes": "status-stable"
-  },
-  {
-    "data": {
       "id": "multimodality",
       "label": "Multimodality",
       "category": "concepts",
@@ -950,10 +925,10 @@ const elements = [
       "color": "#58D68D",
       "layerLabel": "APPLICATION PATTERNS",
       "label_en": "Prompt Engineering",
-      "description_en": "The practice of crafting inputs (prompts, system prompts, examples) to reliably elicit the desired output quality from a model. No code required. High-leverage, often underestimated.",
+      "description_en": "The practice of crafting inputs to reliably get the desired output from a model.\nA prompt is the input text sent to the model.\nThe system prompt is a special instruction set that defines the model's role, behavior and constraints \u2014 it shapes every response before the user even speaks.\nTechniques: few-shot examples, chain-of-thought, role assignment.\nNo code required. High-leverage, often underestimated.",
       "layerLabel_en": "APPLICATION PATTERNS",
       "label_fr": "Prompt Engineering",
-      "description_fr": "L'art de formuler les entr\u00e9es (prompts, system prompts, exemples) pour obtenir de fa\u00e7on fiable la qualit\u00e9 de sortie souhait\u00e9e d'un mod\u00e8le. Sans code. Tr\u00e8s impactant, souvent sous-estim\u00e9.",
+      "description_fr": "L'art de formuler les entr\u00e9es pour obtenir de fa\u00e7on fiable la sortie souhait\u00e9e d'un mod\u00e8le.\nLe prompt est le texte d'entr\u00e9e envoy\u00e9 au mod\u00e8le.\nLe system prompt est un ensemble d'instructions sp\u00e9ciales qui d\u00e9finit le r\u00f4le, le comportement et les contraintes du mod\u00e8le \u2014 il conditionne chaque r\u00e9ponse avant m\u00eame que l'utilisateur parle.\nTechniques : few-shot, chain-of-thought, assignation de r\u00f4le.\nSans code. Tr\u00e8s impactant, souvent sous-estim\u00e9.",
       "layerLabel_fr": "PATTERNS APPLICATIFS"
     },
     "position": {
@@ -1393,19 +1368,10 @@ const elements = [
   },
   {
     "data": {
-      "id": "prompt_system_prompt__inference",
-      "source": "prompt_system_prompt",
+      "id": "prompt_eng__inference",
+      "source": "prompt_eng",
       "target": "inference",
       "label": "frames",
-      "etype": "part_of"
-    }
-  },
-  {
-    "data": {
-      "id": "prompt_system_prompt__prompt_eng",
-      "source": "prompt_system_prompt",
-      "target": "prompt_eng",
-      "label": "formalized by",
       "etype": "enables"
     }
   },

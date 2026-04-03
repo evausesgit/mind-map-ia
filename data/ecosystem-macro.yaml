@@ -186,25 +186,6 @@ nodes:
         Pas un type de modèle à part — une capacité qui s'applique aux modèles propriétaires ou open source.
         Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.
 
-  - id: prompt_system_prompt
-    label:
-      en: "Prompt & System Prompt"
-      fr: "Prompt & System Prompt"
-    layer: 1
-    category: concepts
-    status: stable
-    since: "2022"
-    description:
-      en: >
-        A prompt is the input text sent to a model to get a response.
-        The system prompt is a special instruction set that defines the model's role,
-        behavior and constraints for the entire conversation.
-        The primary interface between humans and LLMs.
-      fr: >
-        Un prompt est le texte d'entrée envoyé au modèle pour obtenir une réponse.
-        Le system prompt est un ensemble d'instructions spéciales qui définit le rôle,
-        le comportement et les contraintes du modèle pour toute la conversation.
-        L'interface principale entre les humains et les LLM.
 
   - id: multimodality
     label:
@@ -443,13 +424,17 @@ nodes:
     status: stable
     since: "2022"
     description:
-      en: >
-        The practice of crafting inputs (prompts, system prompts, examples)
-        to reliably elicit the desired output quality from a model.
+      en: |
+        The practice of crafting inputs to reliably get the desired output from a model.
+        A prompt is the input text sent to the model.
+        The system prompt is a special instruction set that defines the model's role, behavior and constraints — it shapes every response before the user even speaks.
+        Techniques: few-shot examples, chain-of-thought, role assignment.
         No code required. High-leverage, often underestimated.
-      fr: >
-        L'art de formuler les entrées (prompts, system prompts, exemples)
-        pour obtenir de façon fiable la qualité de sortie souhaitée d'un modèle.
+      fr: |
+        L'art de formuler les entrées pour obtenir de façon fiable la sortie souhaitée d'un modèle.
+        Le prompt est le texte d'entrée envoyé au modèle.
+        Le system prompt est un ensemble d'instructions spéciales qui définit le rôle, le comportement et les contraintes du modèle — il conditionne chaque réponse avant même que l'utilisateur parle.
+        Techniques : few-shot, chain-of-thought, assignation de rôle.
         Sans code. Très impactant, souvent sous-estimé.
 
   - id: structured_gen
@@ -687,13 +672,9 @@ edges:
     to: rag_pattern
     label: "powers retrieval in"
     type: enables
-  - from: prompt_system_prompt
+  - from: prompt_eng
     to: inference
     label: "frames"
-    type: part_of
-  - from: prompt_system_prompt
-    to: prompt_eng
-    label: "formalized by"
     type: enables
   - from: multimodality
     to: frontier_models
