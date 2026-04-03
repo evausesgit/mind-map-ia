@@ -694,6 +694,7 @@ def generate_html(data, elements, maps=None, current_output=""):
       <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)" title="Zoom out">−</button>
       <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()" title="Reset layout">↺</button>
       <button class="ctrl-btn" onclick="exportLayout()" title="Export layout as JSON">⬇</button>
+      <button class="ctrl-btn" onclick="exportMarp()" title="Export as Marp presentation">▤</button>
     </div>
   </div>
 
@@ -1114,6 +1115,89 @@ async function exportLayout() {{
     }}
   }}
   // Fallback for browsers without File System Access API
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fname; a.click();
+  URL.revokeObjectURL(url);
+}}
+
+function exportMarp() {{
+  const l = lang;
+  const title = TITLES[l];
+
+  // Group nodes by layer, sorted by layer number (ascending)
+  const byLayer = {{}};
+  elements.forEach(el => {{
+    if (!el.data || !el.data.layer) return;
+    const layer = el.data.layer;
+    if (!byLayer[layer]) byLayer[layer] = [];
+    byLayer[layer].push(el.data);
+  }});
+
+  const statusEmoji = {{ stable: '🟢', evolving: '🟡', emerging: '🔵', deprecated: '🔴' }};
+
+  let md = `---
+marp: true
+theme: default
+paginate: true
+style: |
+  section {{ font-family: 'Segoe UI', sans-serif; }}
+  h1 {{ color: #1a237e; }}
+  h2 {{ color: #283593; border-bottom: 2px solid #3949ab; padding-bottom: 8px; }}
+  .node-title {{ font-weight: bold; color: #1a237e; }}
+  ul {{ margin-top: 8px; }}
+  li {{ margin-bottom: 6px; font-size: 0.9em; }}
+---
+
+# ${{title}}
+
+> ${{l === 'en' ? 'An interactive map of the AI/LLM ecosystem' : "Une carte interactive de l'écosystème IA/LLM"}}
+
+---
+
+`;
+
+  const layerOrder = Object.keys(byLayer).map(Number).sort((a, b) => b - a); // Layer 5→1 (Dev Tools → Foundations)
+  layerOrder.forEach(layerId => {{
+    const nodes = byLayer[layerId];
+    const layerLabel = nodes[0][`layerLabel_${{l}}`] || `Layer ${{layerId}}`;
+
+    md += `## ${{layerLabel}}\n\n`;
+    nodes.forEach(n => {{
+      const nodeLabel = n[`label_${{l}}`] || n.label;
+      const desc = n[`description_${{l}}`] || '';
+      const emoji = statusEmoji[n.status] || '';
+      // First sentence of description only (keep slides concise)
+      const shortDesc = desc ? desc.split(/[.!?]\\s/)[0].replace(/\n/g, ' ').trim() + '.' : '';
+      md += `- ${{emoji}} **${{nodeLabel}}** — ${{shortDesc}}\n`;
+    }});
+    md += `\n---\n\n`;
+  }});
+
+  // Detail slides: one per node
+  layerOrder.forEach(layerId => {{
+    const nodes = byLayer[layerId];
+    const layerLabel = nodes[0][`layerLabel_${{l}}`] || `Layer ${{layerId}}`;
+    nodes.forEach(n => {{
+      const nodeLabel = n[`label_${{l}}`] || n.label;
+      const desc = (n[`description_${{l}}`] || '').replace(/\n/g, '\n> ');
+      const emoji = statusEmoji[n.status] || '';
+      md += `## ${{emoji}} ${{nodeLabel}}\n`;
+      md += `*${{layerLabel}}*\n\n`;
+      if (desc) md += `> ${{desc}}\n\n`;
+      md += `---\n\n`;
+    }});
+  }});
+
+  // Summary slide
+  const totalNodes = elements.filter(el => el.data && el.data.layer).length;
+  md += `## ${{l === 'en' ? 'Summary' : 'Récapitulatif'}}\n\n`;
+  md += `- **${{totalNodes}}** ${{l === 'en' ? 'concepts mapped' : 'concepts cartographiés'}}\n`;
+  md += `- **${{layerOrder.length}}** ${{l === 'en' ? 'layers' : 'couches'}}\n\n`;
+  md += `*${{l === 'en' ? 'Generated from' : 'Généré depuis'}} ${{title}}*\n`;
+
+  const fname = (TITLES['en'] || 'presentation').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.md';
+  const blob = new Blob([md], {{ type: 'text/markdown' }});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = fname; a.click();
