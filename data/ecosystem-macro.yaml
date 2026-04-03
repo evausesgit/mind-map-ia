@@ -677,17 +677,17 @@ edges:
     to: public_api
     label: "reaches model through"
     type: enables
-  - from: public_api
+  - from: frontier_models
     to: inference
-    label: "triggers"
+    label: "runs as"
     type: enables
-  - from: self_hosted
+  - from: open_weights
     to: inference
-    label: "triggers"
+    label: "runs as"
     type: enables
-  - from: local_edge
+  - from: reasoning_models
     to: inference
-    label: "triggers"
+    label: "runs as"
     type: enables
   - from: multimodality
     to: frontier_models
