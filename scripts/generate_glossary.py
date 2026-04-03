@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate web/glossary.html from data/glossary.yaml"""
 
+import re
 import yaml
 import json
 from pathlib import Path
@@ -15,6 +16,41 @@ def t(field, lang):
     if isinstance(field, dict):
         return str(field.get(lang) or field.get("en") or "")
     return str(field) if field else ""
+
+
+def build_alias_entries(terms, skip_id=None):
+    """Return list of (alias, id) sorted longest-first, excluding skip_id."""
+    entries = []
+    for term in terms:
+        tid = term["id"]
+        if tid == skip_id:
+            continue
+        label_en = t(term["label"], "en")
+        aliases = term.get("aliases", [label_en])
+        for alias in aliases:
+            if alias.strip():
+                entries.append((alias, tid))
+    entries.sort(key=lambda x: len(x[0]), reverse=True)
+    return entries
+
+
+def link_terms(text, entries):
+    """Replace alias occurrences in text with <a href="#id"> links.
+    Skips replacements inside existing HTML tags."""
+    import html as html_mod
+    safe = html_mod.escape(text)
+    for alias, tid in entries:
+        escaped_alias = re.escape(alias)
+        pattern = re.compile(
+            r'(<[^>]*>)|(\b' + escaped_alias + r'\b)',
+            re.IGNORECASE
+        )
+        def replacer(m, tid=tid):
+            if m.group(1):
+                return m.group(1)  # leave HTML tags untouched
+            return f'<a href="#{tid}" class="gloss-link">{m.group(2)}</a>'
+        safe = pattern.sub(replacer, safe)
+    return safe
 
 
 def build_nav(maps):
@@ -56,17 +92,31 @@ def generate_html(data, maps):
 
     terms_sorted = sorted(terms, key=lambda x: t(x["label"], "en").lower())
 
+    # Build linked descriptions for every term (EN + FR)
+    term_descs = {}
+    for term in terms_sorted:
+        tid = term["id"]
+        entries = build_alias_entries(terms_sorted, skip_id=tid)
+        raw_en = t(term["description"], "en").strip()
+        raw_fr = t(term["description"], "fr").strip() or raw_en
+        term_descs[tid] = {
+            "en": link_terms(raw_en, entries),
+            "fr": link_terms(raw_fr, entries),
+        }
+    term_descs_js = json.dumps(term_descs, ensure_ascii=False)
+
     # Build term cards
     cards_html = ""
     for term in terms_sorted:
         tid = term["id"]
         label_en = t(term["label"], "en")
         label_fr = t(term["label"], "fr") or label_en
-        desc_en = t(term["description"], "en").strip()
-        desc_fr = t(term["description"], "fr").strip() or desc_en
         aliases = term.get("aliases", [])
         aliases_str = ", ".join(a for a in aliases if a.lower() != label_en.lower())
-        aliases_html = f'<div class="aliases" data-en="{aliases_str}" data-fr="{aliases_str}">{aliases_str}</div>' if aliases_str else ""
+        aliases_html = (
+            f'<div class="aliases" data-en="{aliases_str}" data-fr="{aliases_str}">{aliases_str}</div>'
+            if aliases_str else ""
+        )
 
         see_also = term.get("see_also")
         see_also_html = ""
@@ -80,13 +130,15 @@ def generate_html(data, maps):
                 f'</div>'
             )
 
+        linked_desc_en = term_descs[tid]["en"]
+
         cards_html += f"""
   <div class="term-card" id="{tid}">
     <div class="term-header">
       <span class="term-label" data-en="{label_en}" data-fr="{label_fr}">{label_en}</span>
       {aliases_html}
     </div>
-    <div class="term-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</div>
+    <div class="term-desc" data-tid="{tid}">{linked_desc_en}</div>
     {see_also_html}
   </div>"""
 
@@ -247,6 +299,14 @@ def generate_html(data, maps):
     line-height: 1.7;
     color: #444;
   }}
+  .gloss-link {{
+    color: #1A1A2E;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    font-weight: 500;
+  }}
+  .gloss-link:hover {{ color: #3498DB; text-decoration-style: solid; }}
   .see-also {{ margin-top: 10px; font-size: 13px; color: #555; }}
   .see-also-link {{ color: #1A1A2E; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }}
   .see-also-link:hover {{ color: #3498DB; }}
@@ -275,6 +335,7 @@ def generate_html(data, maps):
 
 <script>
 const TITLES = {{ "en": "{title_en}", "fr": "{title_fr}" }};
+const TERM_DESCS = {term_descs_js};
 let lang = 'en';
 
 function setLang(newLang) {{
@@ -283,8 +344,14 @@ function setLang(newLang) {{
     b.classList.toggle('active', b.dataset.lang === lang)
   );
   document.getElementById('main-title').textContent = TITLES[lang];
+  // Plain text elements
   document.querySelectorAll('[data-en]').forEach(el => {{
     el.textContent = el.dataset[lang] || el.dataset.en;
+  }});
+  // Term descriptions (contain linked HTML — use innerHTML)
+  document.querySelectorAll('.term-desc[data-tid]').forEach(el => {{
+    const d = TERM_DESCS[el.dataset.tid];
+    if (d) el.innerHTML = d[lang] || d.en;
   }});
 }}
 </script>
