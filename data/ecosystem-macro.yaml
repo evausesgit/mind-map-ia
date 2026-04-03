@@ -677,6 +677,18 @@ edges:
     to: public_api
     label: "reaches model through"
     type: enables
+  - from: public_api
+    to: inference
+    label: "triggers"
+    type: enables
+  - from: self_hosted
+    to: inference
+    label: "triggers"
+    type: enables
+  - from: local_edge
+    to: inference
+    label: "triggers"
+    type: enables
   - from: multimodality
     to: frontier_models
     label: "native to"
