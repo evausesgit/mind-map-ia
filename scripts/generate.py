@@ -1007,14 +1007,14 @@ const cy = cytoscape({{
         "transition-duration": "0.15s",
       }}
     }},
-    // Model types → tripled size
+    // Model types → 1.5× the (already-scaled) base node size
     {{
       selector: "node[category = 'model_types']",
       style: {{
-        "width": {NODE_WIDTH * 3},
-        "height": {NODE_HEIGHT * 3},
-        "text-max-width": "{NODE_WIDTH * 3 - 10}px",
-        "font-size": "18px",
+        "width": {int(node_w * 1.5)},
+        "height": {int(node_h * 1.5)},
+        "text-max-width": "{int(node_w * 1.5) - 10}px",
+        "font-size": "{int(node_font * 1.5)}px",
       }}
     }},
     // Status: evolving → orange border
