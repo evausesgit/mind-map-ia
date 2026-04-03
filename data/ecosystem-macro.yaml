@@ -674,8 +674,8 @@ edges:
     label: "powers retrieval in"
     type: enables
   - from: prompt_eng
-    to: inference
-    label: "frames"
+    to: access
+    label: "reaches model through"
     type: enables
   - from: multimodality
     to: frontier_models
