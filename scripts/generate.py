@@ -244,10 +244,17 @@ def generate_html(data, elements, maps=None, current_output=""):
     node_text_max     = int(130 * scale)
     node_text_max_prov= int(120 * scale)
 
-    # Glossary terms for inline linking
+    # Glossary terms for inline linking + search
     glossary_terms = load_glossary()
     glossary_js = json.dumps([
-        {"id": term["id"], "aliases": term.get("aliases", [])}
+        {
+            "id": term["id"],
+            "aliases": term.get("aliases", []),
+            "label_en": t(term["label"], "en"),
+            "label_fr": t(term["label"], "fr") or t(term["label"], "en"),
+            "description_en": t(term["description"], "en"),
+            "description_fr": t(term["description"], "fr") or t(term["description"], "en"),
+        }
         for term in glossary_terms
     ])
 
@@ -414,6 +421,16 @@ def generate_html(data, elements, maps=None, current_output=""):
   .search-item-label {{ font-size: 13px; font-weight: 600; color: white; }}
   .search-item-cat   {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
   .search-item-match {{ font-size: 11px; color: #E74C3C; font-style: italic; margin-top: 2px; }}
+  .search-section-title {{
+    padding: 6px 14px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #7F8C8D;
+    border-top: 1px solid #1E2D4E;
+  }}
+  .search-section-title:first-child {{ border-top: none; }}
   .search-empty {{
     padding: 16px;
     color: #7F8C8D;
@@ -935,38 +952,81 @@ function searchNodes(query) {{
   }}).toArray();
 }}
 
-function getMatchContext(node, query) {{
-  const q = query.toLowerCase();
-  const desc = node.data(`description_${{lang}}`) || node.data('description_en') || '';
-  const idx = desc.toLowerCase().indexOf(q);
-  if (idx === -1) return null;
-  const start = Math.max(0, idx - 20);
-  const end   = Math.min(desc.length, idx + query.length + 30);
-  return (start > 0 ? '…' : '') + desc.slice(start, end) + (end < desc.length ? '…' : '');
+function searchGlossary(query) {{
+  const q = query.toLowerCase().trim();
+  if (!q) return [];
+  return GLOSSARY_TERMS.filter(term => {{
+    const fields = [
+      term.label_en, term.label_fr,
+      term.description_en, term.description_fr,
+      ...(term.aliases || []),
+    ];
+    return fields.some(f => f && f.toLowerCase().includes(q));
+  }});
 }}
 
-function renderSearchResults(matches, query) {{
+function getMatchContext(text, query) {{
+  const q = query.toLowerCase();
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx === -1) return null;
+  const start = Math.max(0, idx - 20);
+  const end   = Math.min(text.length, idx + query.length + 30);
+  return (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+}}
+
+function renderSearchResults(nodeMatches, query) {{
+  const glossMatches = searchGlossary(query);
   const noResultsText = lang === 'fr' ? 'Aucun résultat' : 'No results';
-  if (matches.length === 0) {{
+
+  if (nodeMatches.length === 0 && glossMatches.length === 0) {{
     searchDropdown.innerHTML = `<div class="search-empty">${{noResultsText}}</div>`;
     searchDropdown.style.display = 'block';
     return;
   }}
-  searchDropdown.innerHTML = matches.slice(0, 8).map(node => {{
-    const label = node.data(`label_${{lang}}`) || node.data('label_en');
-    const color = node.data('color') || '#ccc';
-    const cat   = node.data('category') || '';
-    const ctx   = getMatchContext(node, query);
-    return `
-      <div class="search-item" onclick="selectSearchResult('${{node.id()}}')">
-        <span class="search-item-dot" style="background:${{color}}"></span>
-        <div>
-          <div class="search-item-label">${{label}}</div>
-          <div class="search-item-cat">${{cat}}</div>
-          ${{ctx ? `<div class="search-item-match">${{ctx}}</div>` : ''}}
-        </div>
-      </div>`;
-  }}).join('');
+
+  let html = '';
+
+  if (nodeMatches.length > 0) {{
+    const sectionLabel = lang === 'fr' ? 'Cette carte' : 'This map';
+    html += `<div class="search-section-title">${{sectionLabel}}</div>`;
+    html += nodeMatches.slice(0, 6).map(node => {{
+      const label = node.data(`label_${{lang}}`) || node.data('label_en');
+      const color = node.data('color') || '#ccc';
+      const cat   = node.data('category') || '';
+      const desc  = node.data(`description_${{lang}}`) || node.data('description_en') || '';
+      const ctx   = getMatchContext(desc, query);
+      return `
+        <div class="search-item" onclick="selectSearchResult('${{node.id()}}')">
+          <span class="search-item-dot" style="background:${{color}}"></span>
+          <div>
+            <div class="search-item-label">${{label}}</div>
+            <div class="search-item-cat">${{cat}}</div>
+            ${{ctx ? `<div class="search-item-match">${{ctx}}</div>` : ''}}
+          </div>
+        </div>`;
+    }}).join('');
+  }}
+
+  if (glossMatches.length > 0) {{
+    const sectionLabel = lang === 'fr' ? '📖 Glossaire' : '📖 Glossary';
+    html += `<div class="search-section-title">${{sectionLabel}}</div>`;
+    html += glossMatches.slice(0, 4).map(term => {{
+      const label = term[`label_${{lang}}`] || term.label_en;
+      const desc  = term[`description_${{lang}}`] || term.description_en || '';
+      const ctx   = getMatchContext(desc, query);
+      return `
+        <div class="search-item" onclick="window.open('glossary.html#${{term.id}}','_blank')">
+          <span class="search-item-dot" style="background:#95A5A6"></span>
+          <div>
+            <div class="search-item-label">${{label}}</div>
+            <div class="search-item-cat">glossary</div>
+            ${{ctx ? `<div class="search-item-match">${{ctx}}</div>` : ''}}
+          </div>
+        </div>`;
+    }}).join('');
+  }}
+
+  searchDropdown.innerHTML = html;
   searchDropdown.style.display = 'block';
 }}
 

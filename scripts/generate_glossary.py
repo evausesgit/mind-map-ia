@@ -310,6 +310,57 @@ def generate_html(data, maps):
   .see-also {{ margin-top: 10px; font-size: 13px; color: #555; }}
   .see-also-link {{ color: #1A1A2E; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }}
   .see-also-link:hover {{ color: #3498DB; }}
+  /* ── Search ── */
+  .search-wrapper {{
+    position: relative;
+    margin-left: 8px;
+  }}
+  .search-input {{
+    background: #0D1117;
+    border: 1.5px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 13px;
+    padding: 6px 32px 6px 32px;
+    width: 180px;
+    outline: none;
+    transition: all 0.2s;
+  }}
+  .search-input::placeholder {{ color: #555; }}
+  .search-input:focus {{
+    border-color: #E74C3C;
+    width: 260px;
+    background: #111;
+  }}
+  .search-icon {{
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #555;
+    pointer-events: none;
+  }}
+  .search-clear {{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 14px;
+    cursor: pointer;
+    display: none;
+    line-height: 1;
+  }}
+  .search-clear:hover {{ color: white; }}
+  .search-empty-msg {{
+    text-align: center;
+    padding: 40px 20px;
+    color: #95A5A6;
+    font-size: 14px;
+  }}
 </style>
 </head>
 <body>
@@ -319,9 +370,17 @@ def generate_html(data, maps):
     {nav_html}
     <h1 id="main-title">{title_en}</h1>
   </div>
-  <div class="lang-toggle">
-    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="text"
+             placeholder="Search..." autocomplete="off" />
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+    </div>
   </div>
 </header>
 
@@ -329,8 +388,11 @@ def generate_html(data, maps):
   {index_html}
 </div>
 
-<div class="content">
+<div class="content" id="cards-container">
 {cards_html}
+</div>
+<div class="search-empty-msg" id="no-results" style="display:none">
+  <span id="no-results-text">No results</span>
 </div>
 
 <script>
@@ -344,6 +406,8 @@ function setLang(newLang) {{
     b.classList.toggle('active', b.dataset.lang === lang)
   );
   document.getElementById('main-title').textContent = TITLES[lang];
+  document.getElementById('search-input').placeholder = lang === 'fr' ? 'Rechercher...' : 'Search...';
+  document.getElementById('no-results-text').textContent = lang === 'fr' ? 'Aucun résultat' : 'No results';
   // Plain text elements
   document.querySelectorAll('[data-en]').forEach(el => {{
     el.textContent = el.dataset[lang] || el.dataset.en;
@@ -353,7 +417,53 @@ function setLang(newLang) {{
     const d = TERM_DESCS[el.dataset.tid];
     if (d) el.innerHTML = d[lang] || d.en;
   }});
+  // Re-apply search filter in new language
+  const q = document.getElementById('search-input').value.trim();
+  if (q) filterCards(q);
 }}
+
+// ── Search / filter ──────────────────────────
+const searchInput = document.getElementById('search-input');
+const searchClear = document.getElementById('search-clear');
+
+function normalize(s) {{ return (s || '').toLowerCase(); }}
+
+function cardMatches(card, q) {{
+  const tid = card.querySelector('.term-desc') && card.querySelector('.term-desc').dataset.tid;
+  const label = normalize(card.querySelector('.term-label') ? card.querySelector('.term-label').textContent : '');
+  const aliases = normalize(card.querySelector('.aliases') ? card.querySelector('.aliases').textContent : '');
+  const desc = tid && TERM_DESCS[tid] ? normalize(TERM_DESCS[tid][lang] || TERM_DESCS[tid].en) : '';
+  return label.includes(q) || aliases.includes(q) || desc.includes(q);
+}}
+
+function filterCards(q) {{
+  const cards = document.querySelectorAll('.term-card');
+  let visible = 0;
+  cards.forEach(card => {{
+    const show = cardMatches(card, normalize(q));
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  }});
+  document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+}}
+
+function clearSearch() {{
+  searchInput.value = '';
+  searchClear.style.display = 'none';
+  document.querySelectorAll('.term-card').forEach(c => c.style.display = '');
+  document.getElementById('no-results').style.display = 'none';
+}}
+
+searchInput.addEventListener('input', () => {{
+  const q = searchInput.value;
+  searchClear.style.display = q ? 'block' : 'none';
+  if (!q.trim()) {{ clearSearch(); return; }}
+  filterCards(q.trim());
+}});
+
+searchInput.addEventListener('keydown', e => {{
+  if (e.key === 'Escape') clearSearch();
+}});
 </script>
 </body>
 </html>"""
