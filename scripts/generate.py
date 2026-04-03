@@ -1168,7 +1168,7 @@ style: |
       const desc = n[`description_${{l}}`] || '';
       const emoji = statusEmoji[n.status] || '';
       // First sentence of description only (keep slides concise)
-      const shortDesc = desc ? desc.split(/[.!?]\\s/)[0].replace(/\n/g, ' ').trim() + '.' : '';
+      const shortDesc = desc ? desc.split(/[.!?]\\s/)[0].replace(/\\n/g, ' ').trim() + '.' : '';
       md += `- ${{emoji}} **${{nodeLabel}}** — ${{shortDesc}}\n`;
     }});
     md += `\n---\n\n`;
@@ -1180,7 +1180,7 @@ style: |
     const layerLabel = nodes[0][`layerLabel_${{l}}`] || `Layer ${{layerId}}`;
     nodes.forEach(n => {{
       const nodeLabel = n[`label_${{l}}`] || n.label;
-      const desc = (n[`description_${{l}}`] || '').replace(/\n/g, '\n> ');
+      const desc = (n[`description_${{l}}`] || '').replace(/\\n/g, '\\n> ');
       const emoji = statusEmoji[n.status] || '';
       md += `## ${{emoji}} ${{nodeLabel}}\n`;
       md += `*${{layerLabel}}*\n\n`;
