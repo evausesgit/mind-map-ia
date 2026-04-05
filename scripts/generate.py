@@ -1891,6 +1891,27 @@ cy.on("tap", function(evt) {{
   }}
 }});
 
+// ── Drilldown nodes: cursor zoom-in + pulse ──
+const cyContainer = document.getElementById("cy");
+cy.on("mouseover", "node.has-drilldown", () => {{ cyContainer.style.cursor = "zoom-in"; }});
+cy.on("mouseout",  "node.has-drilldown", () => {{ cyContainer.style.cursor = ""; }});
+
+(function pulseDrilldowns() {{
+  cy.nodes(".has-drilldown").forEach(node => {{
+    (function pulse(n) {{
+      n.animate(
+        {{ style: {{ "border-width": 5, "border-color": "#FF8C7A" }} }},
+        {{ duration: 900, easing: "ease-in-out", complete: () =>
+          n.animate(
+            {{ style: {{ "border-width": 2, "border-color": "#E74C3C" }} }},
+            {{ duration: 900, easing: "ease-in-out", complete: () => pulse(n) }}
+          )
+        }}
+      );
+    }})(node);
+  }});
+}})();
+
 // ── Edge hover → show label ──────────────────
 cy.on("mouseover", "edge", function(evt) {{
   evt.target.addClass("highlighted");
