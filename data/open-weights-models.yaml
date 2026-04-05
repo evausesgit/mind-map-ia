@@ -1,0 +1,465 @@
+meta:
+  title:
+    en: "Open Source / Weights Models"
+    fr: "Modèles Open Source / Weights"
+  description:
+    en: "Organizations releasing open-weights models and their flagship releases"
+    fr: "Organisations publiant des modèles open weights et leurs sorties phares"
+  version: "2026-Q1"
+  date: "2026-04-05"
+  back_link: "macro.html"
+  layout_direction: ltr
+  column_scale: 0.45
+
+layers:
+  1:
+    en: "ORGANIZATIONS"
+    fr: "ORGANISATIONS"
+  2:
+    en: "MODEL FAMILIES"
+    fr: "FAMILLES DE MODÈLES"
+  3:
+    en: "CURRENT MODELS"
+    fr: "MODÈLES ACTUELS"
+
+categories:
+  - id: org
+    label:
+      en: "Organization"
+      fr: "Organisation"
+    color: "#58D68D"
+    description:
+      en: "Companies and research labs releasing open-weights models"
+      fr: "Entreprises et labos de recherche publiant des modèles open weights"
+
+  - id: model_family
+    label:
+      en: "Model Family"
+      fr: "Famille de Modèles"
+    color: "#A9CCE3"
+    description:
+      en: "A line of related open-weights models"
+      fr: "Une ligne de modèles open weights apparentés"
+
+  - id: model
+    label:
+      en: "Model"
+      fr: "Modèle"
+    color: "#D5F5E3"
+    description:
+      en: "A specific released model version"
+      fr: "Une version de modèle spécifique et publiée"
+
+nodes:
+  # ── LAYER 1 · ORGANIZATIONS ──────────────────
+
+  - id: meta_ai
+    label:
+      en: "Meta AI"
+      fr: "Meta AI"
+    layer: 1
+    category: org
+    node_type: provider
+    status: stable
+    since: "2023"
+    link: "https://ai.meta.com/llama/"
+    description:
+      en: |
+        Meta's AI research division. Released the Llama series as open weights,
+        triggering the open-source LLM revolution.
+        Llama models are the most widely used base models for fine-tuning and research worldwide.
+        Strategic bet: commoditize the model layer to benefit Meta's platforms.
+      fr: |
+        La division IA de Meta. A publié la série Llama en open weights,
+        déclenchant la révolution open source des LLM.
+        Les modèles Llama sont les modèles de base les plus utilisés pour le fine-tuning et la recherche.
+        Pari stratégique : commoditiser la couche modèle pour bénéficier aux plateformes de Meta.
+
+  - id: mistral_ai
+    label:
+      en: "Mistral AI"
+      fr: "Mistral AI"
+    layer: 1
+    category: org
+    node_type: provider
+    status: stable
+    since: "2023"
+    link: "https://mistral.ai"
+    description:
+      en: |
+        French startup founded by former DeepMind and Meta researchers.
+        Released the first competitive open-weights models rivaling GPT-3.5 at a fraction of the size.
+        Pioneered Mixture-of-Experts (MoE) architecture at scale with Mixtral 8x7B.
+        Hybrid strategy: open-weights community models + commercial API (Mistral Large).
+      fr: |
+        Startup française fondée par d'anciens chercheurs de DeepMind et Meta.
+        A publié les premiers modèles open weights compétitifs rivalisant avec GPT-3.5 à une fraction de la taille.
+        A popularisé l'architecture Mixture-of-Experts (MoE) à grande échelle avec Mixtral 8x7B.
+        Stratégie hybride : modèles communautaires open weights + API commerciale (Mistral Large).
+
+  - id: deepseek
+    label:
+      en: "DeepSeek"
+      fr: "DeepSeek"
+    layer: 1
+    category: org
+    node_type: provider
+    status: evolving
+    since: "2023"
+    link: "https://www.deepseek.com"
+    description:
+      en: |
+        Chinese AI lab backed by the quant fund High-Flyer. Caused a market shock in early 2025
+        by releasing DeepSeek-R1 — a reasoning model matching o1 performance at a fraction of the training cost.
+        Open-weights releases have dramatically pushed the efficiency frontier.
+        Demonstrated that frontier-quality models don't require frontier-level compute budgets.
+      fr: |
+        Laboratoire IA chinois soutenu par le fonds quantitatif High-Flyer. A causé un choc de marché début 2025
+        en publiant DeepSeek-R1 — un modèle de raisonnement comparable à o1 à une fraction du coût d'entraînement.
+        Les publications open weights ont considérablement repoussé la frontière d'efficacité.
+        A démontré que des modèles de qualité frontier ne nécessitent pas des budgets de calcul frontier.
+
+  - id: google_oss
+    label:
+      en: "Google"
+      fr: "Google"
+    layer: 1
+    category: org
+    node_type: provider
+    status: stable
+    since: "2024"
+    link: "https://ai.google.dev/gemma"
+    description:
+      en: |
+        Google releases Gemma as its open-weights model family, separate from the proprietary Gemini series.
+        Gemma models are designed to run efficiently on consumer hardware and edge devices.
+        Tight integration with Google's developer ecosystem (Keras, JAX, Vertex AI).
+      fr: |
+        Google publie Gemma comme sa famille de modèles open weights, distincte de la série Gemini propriétaire.
+        Les modèles Gemma sont conçus pour tourner efficacement sur du matériel grand public et des appareils edge.
+        Intégration étroite avec l'écosystème développeurs de Google (Keras, JAX, Vertex AI).
+
+  - id: microsoft
+    label:
+      en: "Microsoft"
+      fr: "Microsoft"
+    layer: 1
+    category: org
+    node_type: provider
+    status: stable
+    since: "2023"
+    link: "https://azure.microsoft.com/en-us/products/phi"
+    description:
+      en: |
+        Microsoft's Phi series challenges the assumption that bigger is always better.
+        Small Language Models (SLMs) trained on high-quality curated data ("textbook quality")
+        outperform much larger models on reasoning and coding benchmarks.
+        Optimized for on-device and edge deployment.
+      fr: |
+        La série Phi de Microsoft remet en question l'idée que plus grand est toujours meilleur.
+        Des Small Language Models (SLM) entraînés sur des données de haute qualité ("qualité manuel scolaire")
+        surpassent des modèles bien plus grands sur les benchmarks de raisonnement et de code.
+        Optimisés pour le déploiement on-device et edge.
+
+  # ── LAYER 2 · MODEL FAMILIES ─────────────────
+
+  - id: llama_family
+    label:
+      en: "Llama"
+      fr: "Llama"
+    layer: 2
+    category: model_family
+    status: evolving
+    since: "2023"
+    link: "https://ai.meta.com/llama/"
+    description:
+      en: |
+        Meta's flagship open-weights model family. The most widely downloaded and fine-tuned models on HuggingFace.
+        Used as the base for hundreds of specialized models (coding, medical, multilingual…).
+        Llama 3 (2024) established a new quality bar for open weights.
+        Available in 8B, 70B and 405B parameter variants.
+      fr: |
+        La famille de modèles open weights phare de Meta. Les modèles les plus téléchargés et fine-tunés sur HuggingFace.
+        Utilisés comme base pour des centaines de modèles spécialisés (code, médical, multilingue…).
+        Llama 3 (2024) a établi un nouveau standard de qualité pour l'open weights.
+        Disponible en variantes de 8B, 70B et 405B paramètres.
+
+  - id: mistral_family
+    label:
+      en: "Mistral / Mixtral"
+      fr: "Mistral / Mixtral"
+    layer: 2
+    category: model_family
+    status: evolving
+    since: "2023"
+    link: "https://mistral.ai/technology/"
+    description:
+      en: |
+        Two lines from Mistral AI: dense models (Mistral 7B, Mistral Small) and
+        Mixture-of-Experts models (Mixtral 8x7B, Mixtral 8x22B).
+        MoE architecture activates only a subset of parameters per token,
+        giving GPT-4 class quality at inference costs of much smaller models.
+      fr: |
+        Deux lignes chez Mistral AI : modèles denses (Mistral 7B, Mistral Small) et
+        modèles Mixture-of-Experts (Mixtral 8x7B, Mixtral 8x22B).
+        L'architecture MoE n'active qu'un sous-ensemble de paramètres par token,
+        offrant une qualité comparable à GPT-4 au coût d'inférence de modèles bien plus petits.
+
+  - id: deepseek_family
+    label:
+      en: "DeepSeek"
+      fr: "DeepSeek"
+    layer: 2
+    category: model_family
+    status: emerging
+    since: "2024"
+    link: "https://www.deepseek.com"
+    description:
+      en: |
+        DeepSeek's model line, covering general-purpose (V series) and reasoning (R series) models.
+        DeepSeek-V3: a MoE model matching GPT-4o at ~5% of the training cost.
+        DeepSeek-R1: first open-weights reasoning model matching OpenAI o1.
+        Both released under MIT license — fully permissive for commercial use.
+      fr: |
+        La gamme de modèles DeepSeek, couvrant les modèles polyvalents (série V) et de raisonnement (série R).
+        DeepSeek-V3 : un modèle MoE comparable à GPT-4o à ~5% du coût d'entraînement.
+        DeepSeek-R1 : premier modèle de raisonnement open weights comparable à o1 d'OpenAI.
+        Les deux publiés sous licence MIT — entièrement permissifs pour usage commercial.
+
+  - id: gemma_family
+    label:
+      en: "Gemma"
+      fr: "Gemma"
+    layer: 2
+    category: model_family
+    status: evolving
+    since: "2024"
+    link: "https://ai.google.dev/gemma"
+    description:
+      en: |
+        Google's open-weights model family, built on the same research as Gemini but designed
+        for local and edge deployment. Optimized for consumer GPUs and mobile devices.
+        Available in 2B, 7B, 9B and 27B variants.
+      fr: |
+        La famille de modèles open weights de Google, construite sur la même recherche que Gemini
+        mais conçue pour le déploiement local et edge. Optimisée pour les GPU grand public et mobiles.
+        Disponible en variantes 2B, 7B, 9B et 27B.
+
+  - id: phi_family
+    label:
+      en: "Phi"
+      fr: "Phi"
+    layer: 2
+    category: model_family
+    status: evolving
+    since: "2023"
+    link: "https://azure.microsoft.com/en-us/products/phi"
+    description:
+      en: |
+        Microsoft's Small Language Model family. Proves that data quality beats data quantity:
+        Phi models trained on curated "textbook quality" data outperform much larger models.
+        Phi-4 (14B) beats models 3-5x its size on math and coding.
+        Designed for on-device deployment on phones and laptops.
+      fr: |
+        La famille de Small Language Models de Microsoft. Prouve que la qualité des données prime sur la quantité :
+        les modèles Phi entraînés sur des données de "qualité manuel scolaire" surpassent des modèles bien plus grands.
+        Phi-4 (14B) dépasse des modèles 3 à 5 fois plus grands en maths et code.
+        Conçu pour le déploiement on-device sur téléphones et laptops.
+
+  # ── LAYER 3 · CURRENT MODELS ─────────────────
+
+  - id: llama33
+    label:
+      en: "Llama 3.3 (70B)"
+      fr: "Llama 3.3 (70B)"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct"
+    description:
+      en: |
+        Meta's most capable open-weights model. At 70B parameters, matches or beats
+        GPT-4o on most benchmarks while running on a single A100 GPU.
+        The go-to base model for production open-weights deployments in 2025.
+      fr: |
+        Le modèle open weights le plus puissant de Meta. À 70B paramètres, égale ou dépasse
+        GPT-4o sur la plupart des benchmarks tout en tournant sur un seul GPU A100.
+        Le modèle de base de référence pour les déploiements open weights en production en 2025.
+
+  - id: llama4
+    label:
+      en: "Llama 4"
+      fr: "Llama 4"
+    layer: 3
+    category: model
+    status: emerging
+    since: "2025"
+    link: "https://ai.meta.com/llama/"
+    description:
+      en: |
+        Meta's next-generation model. Introduces a MoE architecture for the first time in the Llama family.
+        Natively multimodal (text + vision). Multiple size variants targeting different use cases.
+        Marks Meta's move toward competing with frontier models, not just providing a base for fine-tuning.
+      fr: |
+        Le modèle nouvelle génération de Meta. Introduit une architecture MoE pour la première fois dans la famille Llama.
+        Nativement multimodal (texte + vision). Plusieurs variantes de taille ciblant différents cas d'usage.
+        Marque le passage de Meta à la compétition avec les modèles frontier, pas seulement comme base de fine-tuning.
+
+  - id: mixtral8x22b
+    label:
+      en: "Mixtral 8x22B"
+      fr: "Mixtral 8x22B"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1"
+    description:
+      en: |
+        Mistral's most capable open-weights model. 8 experts of 22B parameters each,
+        141B total but only 39B active per token.
+        Strong multilingual capabilities (EN, FR, DE, ES, IT).
+        Best-in-class open-weights model for instruction following and coding before DeepSeek-V3.
+      fr: |
+        Le modèle open weights le plus puissant de Mistral. 8 experts de 22B paramètres chacun,
+        141B au total mais seulement 39B actifs par token.
+        Solides capacités multilingues (EN, FR, DE, ES, IT).
+        Meilleur modèle open weights pour le suivi d'instructions et le code avant DeepSeek-V3.
+
+  - id: deepseek_v3
+    label:
+      en: "DeepSeek-V3"
+      fr: "DeepSeek-V3"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://huggingface.co/deepseek-ai/DeepSeek-V3"
+    description:
+      en: |
+        685B MoE model, 37B active per token. Trained for $5.5M — roughly 50x cheaper than comparable models.
+        Matches or beats GPT-4o and Claude 3.5 Sonnet on most benchmarks.
+        MIT license. Became the most downloaded model on HuggingFace within days of release.
+        Demonstrated that frontier performance is achievable without frontier-scale budgets.
+      fr: |
+        Modèle MoE de 685B, 37B actifs par token. Entraîné pour 5,5M$ — environ 50x moins cher que des modèles comparables.
+        Égale ou dépasse GPT-4o et Claude 3.5 Sonnet sur la plupart des benchmarks.
+        Licence MIT. Est devenu le modèle le plus téléchargé sur HuggingFace en quelques jours.
+        A démontré que les performances frontier sont atteignables sans budgets à l'échelle frontier.
+
+  - id: deepseek_r1
+    label:
+      en: "DeepSeek-R1"
+      fr: "DeepSeek-R1"
+    layer: 3
+    category: model
+    status: emerging
+    since: "2025"
+    link: "https://huggingface.co/deepseek-ai/DeepSeek-R1"
+    description:
+      en: |
+        First open-weights reasoning model matching OpenAI o1 performance.
+        Uses reinforcement learning (GRPO) to develop chain-of-thought reasoning without supervised data.
+        671B parameters, MIT license. Distilled versions available (7B–70B) for local deployment.
+        Caused a significant drop in AI company stock prices on release day (Jan 2025).
+      fr: |
+        Premier modèle de raisonnement open weights comparable aux performances d'OpenAI o1.
+        Utilise l'apprentissage par renforcement (GRPO) pour développer un raisonnement chaîne-de-pensée sans données supervisées.
+        671B paramètres, licence MIT. Versions distillées disponibles (7B–70B) pour déploiement local.
+        A provoqué une chute significative des cours des actions des sociétés IA le jour de sa sortie (jan 2025).
+
+  - id: gemma3
+    label:
+      en: "Gemma 3"
+      fr: "Gemma 3"
+    layer: 3
+    category: model
+    status: evolving
+    since: "2025"
+    link: "https://ai.google.dev/gemma/docs/gemma3"
+    description:
+      en: |
+        Google's latest open-weights release. Available in 1B, 4B, 12B and 27B variants.
+        Natively multimodal (text + vision). 128k context window.
+        The 27B variant outperforms Llama 3.3 70B on several benchmarks despite being 2.5x smaller.
+        Optimized for Google's TPUs and consumer hardware alike.
+      fr: |
+        La dernière publication open weights de Google. Disponible en variantes 1B, 4B, 12B et 27B.
+        Nativement multimodal (texte + vision). Fenêtre de contexte de 128k tokens.
+        La variante 27B surpasse Llama 3.3 70B sur plusieurs benchmarks malgré une taille 2,5x inférieure.
+        Optimisé pour les TPU de Google et le matériel grand public.
+
+  - id: phi4
+    label:
+      en: "Phi-4 (14B)"
+      fr: "Phi-4 (14B)"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://huggingface.co/microsoft/phi-4"
+    description:
+      en: |
+        Microsoft's best SLM. 14B parameters, but beats models 3-5x its size on STEM reasoning.
+        Trained on synthetic "textbook quality" data generated by GPT-4.
+        Runs on a laptop GPU (RTX 3080 or better). MIT license.
+        Ideal for local, private deployments where a small but capable model is needed.
+      fr: |
+        Le meilleur SLM de Microsoft. 14B paramètres, mais dépasse des modèles 3 à 5 fois plus grands en raisonnement STEM.
+        Entraîné sur des données synthétiques de "qualité manuel scolaire" générées par GPT-4.
+        Tourne sur un GPU laptop (RTX 3080 ou mieux). Licence MIT.
+        Idéal pour les déploiements locaux et privés où un modèle compact mais capable est nécessaire.
+
+edges:
+  # Orgs → Families
+  - from: meta_ai
+    to: llama_family
+    label: "develops"
+    type: part_of
+  - from: mistral_ai
+    to: mistral_family
+    label: "develops"
+    type: part_of
+  - from: deepseek
+    to: deepseek_family
+    label: "develops"
+    type: part_of
+  - from: google_oss
+    to: gemma_family
+    label: "develops"
+    type: part_of
+  - from: microsoft
+    to: phi_family
+    label: "develops"
+    type: part_of
+
+  # Families → Models
+  - from: llama_family
+    to: llama33
+    label: ""
+    type: part_of
+  - from: llama_family
+    to: llama4
+    label: ""
+    type: part_of
+  - from: mistral_family
+    to: mixtral8x22b
+    label: ""
+    type: part_of
+  - from: deepseek_family
+    to: deepseek_v3
+    label: ""
+    type: part_of
+  - from: deepseek_family
+    to: deepseek_r1
+    label: ""
+    type: part_of
+  - from: gemma_family
+    to: gemma3
+    label: ""
+    type: part_of
+  - from: phi_family
+    to: phi4
+    label: ""
+    type: part_of

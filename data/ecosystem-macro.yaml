@@ -262,6 +262,7 @@ nodes:
     since: "2023"
     link: "https://huggingface.co/models"
     ref: "https://arxiv.org/abs/2407.21783"
+    drilldown: "open-weights-models.html"
     description:
       en: |
         Weights are publicly downloadable — you can run, fine-tune and deploy the model yourself.

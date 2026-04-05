@@ -23,6 +23,18 @@ maps:
     output: ecosystem.html
     data: data/ecosystem.yaml
 
+  - id: open-weights-models
+    icon: "🔓"
+    title:
+      en: "Open Source / Weights Models"
+      fr: "Modèles Open Source / Weights"
+    description:
+      en: "Organizations releasing open-weights models and their flagship releases"
+      fr: "Labos publiant des modèles open weights et leurs sorties phares"
+    nodes: 17
+    output: open-weights-models.html
+    data: data/open-weights-models.yaml
+
   - id: proprietary-models
     icon: "🏢"
     title:
