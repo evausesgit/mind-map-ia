@@ -161,6 +161,28 @@ nodes:
         surpassent des modèles bien plus grands sur les benchmarks de raisonnement et de code.
         Optimisés pour le déploiement on-device et edge.
 
+  - id: alibaba
+    label:
+      en: "Alibaba / Qwen"
+      fr: "Alibaba / Qwen"
+    layer: 1
+    category: org
+    node_type: provider
+    status: evolving
+    since: "2023"
+    link: "https://huggingface.co/Qwen"
+    description:
+      en: |
+        Alibaba Cloud's AI research team. Releases the Qwen (通义千问) model family as open weights.
+        One of the most capable multilingual model families, with exceptional Chinese + English performance.
+        Widely used in enterprise settings in Asia and increasingly in Europe.
+        Qwen models are the most downloaded non-Western open-weights models on HuggingFace.
+      fr: |
+        L'équipe de recherche IA d'Alibaba Cloud. Publie la famille de modèles Qwen (通义千问) en open weights.
+        L'une des familles de modèles multilingues les plus performantes, avec d'excellentes performances en chinois et anglais.
+        Très utilisée en entreprise en Asie et de plus en plus en Europe.
+        Les modèles Qwen sont les modèles open weights non-occidentaux les plus téléchargés sur HuggingFace.
+
   # ── LAYER 2 · MODEL FAMILIES ─────────────────
 
   - id: llama_family
@@ -244,6 +266,29 @@ nodes:
         La famille de modèles open weights de Google, construite sur la même recherche que Gemini
         mais conçue pour le déploiement local et edge. Optimisée pour les GPU grand public et mobiles.
         Disponible en variantes 2B, 7B, 9B et 27B.
+
+  - id: qwen_family
+    label:
+      en: "Qwen"
+      fr: "Qwen"
+    layer: 2
+    category: model_family
+    status: evolving
+    since: "2023"
+    link: "https://huggingface.co/Qwen"
+    description:
+      en: |
+        Alibaba's open-weights model family. Available in sizes from 0.5B to 72B+.
+        Exceptionally strong in Chinese and English, with solid multilingual coverage.
+        Qwen2.5 set new benchmarks for open-weights models in late 2024.
+        Qwen2.5-Coder is one of the top open-weights models for code generation.
+        Used extensively in production at scale across Asia and increasingly globally.
+      fr: |
+        La famille de modèles open weights d'Alibaba. Disponible en tailles de 0,5B à 72B+.
+        Exceptionnellement fort en chinois et anglais, avec une bonne couverture multilingue.
+        Qwen2.5 a établi de nouveaux benchmarks pour les modèles open weights fin 2024.
+        Qwen2.5-Coder est l'un des meilleurs modèles open weights pour la génération de code.
+        Utilisé intensivement en production à grande échelle en Asie et de plus en plus dans le monde.
 
   - id: phi_family
     label:
@@ -390,6 +435,48 @@ nodes:
         La variante 27B surpasse Llama 3.3 70B sur plusieurs benchmarks malgré une taille 2,5x inférieure.
         Optimisé pour les TPU de Google et le matériel grand public.
 
+  - id: qwen25_72b
+    label:
+      en: "Qwen2.5-72B"
+      fr: "Qwen2.5-72B"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct"
+    description:
+      en: |
+        Alibaba's flagship open-weights model. 72B parameters, beats Llama 3.1 405B on several benchmarks.
+        128k context window. Strong on coding, math and instruction following.
+        Available in instruct and base variants. Apache 2.0 license.
+        The go-to open-weights model for teams needing strong multilingual (especially Chinese) support.
+      fr: |
+        Le modèle open weights phare d'Alibaba. 72B paramètres, dépasse Llama 3.1 405B sur plusieurs benchmarks.
+        Fenêtre de contexte 128k. Solide en code, maths et suivi d'instructions.
+        Disponible en variantes instruct et base. Licence Apache 2.0.
+        Le modèle open weights de référence pour les équipes ayant besoin de support multilingue fort (notamment chinois).
+
+  - id: qwen25_coder
+    label:
+      en: "Qwen2.5-Coder"
+      fr: "Qwen2.5-Coder"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct"
+    description:
+      en: |
+        Qwen's specialized code model (7B, 14B, 32B variants). The 32B version matches
+        GPT-4o on HumanEval and competitive coding benchmarks.
+        Supports 92 programming languages. Strong at code completion, debugging and explanation.
+        Widely used as the backend for enterprise coding assistants in Asia.
+      fr: |
+        Le modèle de code spécialisé de Qwen (variantes 7B, 14B, 32B). La version 32B égale
+        GPT-4o sur HumanEval et les benchmarks de code compétitif.
+        Supporte 92 langages de programmation. Solide en complétion, débogage et explication de code.
+        Très utilisé comme backend pour les assistants de code en entreprise en Asie.
+
   - id: phi4
     label:
       en: "Phi-4 (14B)"
@@ -433,6 +520,10 @@ edges:
     to: phi_family
     label: "develops"
     type: part_of
+  - from: alibaba
+    to: qwen_family
+    label: "develops"
+    type: part_of
 
   # Families → Models
   - from: llama_family
@@ -461,5 +552,13 @@ edges:
     type: part_of
   - from: phi_family
     to: phi4
+    label: ""
+    type: part_of
+  - from: qwen_family
+    to: qwen25_72b
+    label: ""
+    type: part_of
+  - from: qwen_family
+    to: qwen25_coder
     label: ""
     type: part_of
