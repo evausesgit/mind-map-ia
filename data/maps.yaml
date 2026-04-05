@@ -23,6 +23,18 @@ maps:
     output: ecosystem.html
     data: data/ecosystem.yaml
 
+  - id: proprietary-models
+    icon: "🏢"
+    title:
+      en: "Proprietary Models"
+      fr: "Modèles Propriétaires"
+    description:
+      en: "AI labs and their flagship model families"
+      fr: "Labos IA et leurs familles de modèles phares"
+    nodes: 9
+    output: proprietary-models.html
+    data: data/proprietary-models.yaml
+
   - id: dense-vs-moe
     icon: "⚡"
     title:

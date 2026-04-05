@@ -1,0 +1,461 @@
+meta:
+  title:
+    en: "Proprietary Models"
+    fr: "Modèles Propriétaires"
+  description:
+    en: "Major AI labs and their flagship models"
+    fr: "Principaux laboratoires IA et leurs modèles phares"
+  version: "2026-Q1"
+  date: "2026-04-05"
+  back_link: "macro.html"
+  layout_direction: ltr
+  column_scale: 0.45
+
+layers:
+  1:
+    en: "AI LABS"
+    fr: "LABORATOIRES IA"
+  2:
+    en: "MODEL FAMILIES"
+    fr: "FAMILLES DE MODÈLES"
+  3:
+    en: "CURRENT MODELS"
+    fr: "MODÈLES ACTUELS"
+
+categories:
+  - id: lab
+    label:
+      en: "AI Lab"
+      fr: "Labo IA"
+    color: "#F0A500"
+    description:
+      en: "Organizations that develop and maintain frontier AI models"
+      fr: "Organisations qui développent et maintiennent des modèles IA frontier"
+
+  - id: model_family
+    label:
+      en: "Model Family"
+      fr: "Famille de Modèles"
+    color: "#C39BD3"
+    description:
+      en: "A line of related models from the same lab"
+      fr: "Une ligne de modèles apparentés issus du même laboratoire"
+
+  - id: model
+    label:
+      en: "Model"
+      fr: "Modèle"
+    color: "#85C1E9"
+    description:
+      en: "A specific, released model version"
+      fr: "Une version de modèle spécifique et publiée"
+
+nodes:
+  # ── LAYER 1 · AI LABS ────────────────────────
+
+  - id: openai
+    label:
+      en: "OpenAI"
+      fr: "OpenAI"
+    layer: 1
+    category: lab
+    node_type: provider
+    status: stable
+    since: "2015"
+    link: "https://openai.com"
+    description:
+      en: |
+        Founded in 2015, OpenAI created the GPT series and ChatGPT — the product that triggered the
+        current AI wave. Shifted from non-profit to capped-profit.
+        Controls the largest share of the commercial LLM market via its API.
+      fr: |
+        Fondé en 2015, OpenAI a créé la série GPT et ChatGPT — le produit qui a déclenché
+        la vague IA actuelle. Passé du statut d'association à but non lucratif à une structure à profit plafonné.
+        Détient la plus grande part du marché commercial des LLM via son API.
+
+  - id: anthropic
+    label:
+      en: "Anthropic"
+      fr: "Anthropic"
+    layer: 1
+    category: lab
+    node_type: provider
+    status: stable
+    since: "2021"
+    link: "https://anthropic.com"
+    description:
+      en: |
+        Founded in 2021 by former OpenAI leaders, Anthropic focuses on AI safety research.
+        Introduced Constitutional AI (CAI) and developed the Model Context Protocol (MCP).
+        Claude 3.5 Sonnet and Claude 3.7 are widely used in production coding workflows.
+      fr: |
+        Fondé en 2021 par d'anciens dirigeants d'OpenAI, Anthropic se concentre sur la sécurité IA.
+        A introduit le Constitutional AI (CAI) et développé le Model Context Protocol (MCP).
+        Claude 3.5 Sonnet et Claude 3.7 sont très utilisés dans les workflows de code en production.
+
+  - id: google_deepmind
+    label:
+      en: "Google DeepMind"
+      fr: "Google DeepMind"
+    layer: 1
+    category: lab
+    node_type: provider
+    status: stable
+    since: "2010"
+    link: "https://deepmind.google"
+    description:
+      en: |
+        Merger of Google Brain and DeepMind (2023). World-class research lab behind AlphaFold and Gemini.
+        Has unique advantages: access to Google's infrastructure, Search, YouTube, and Android.
+        Gemini 2.5 Pro is among the top-performing models of 2025-2026.
+      fr: |
+        Fusion de Google Brain et DeepMind (2023). Laboratoire de recherche de premier plan.
+        Avantages uniques : accès à l'infrastructure Google, Search, YouTube et Android.
+        Gemini 2.5 Pro figure parmi les modèles les plus performants de 2025-2026.
+
+  - id: xai
+    label:
+      en: "xAI"
+      fr: "xAI"
+    layer: 1
+    category: lab
+    node_type: provider
+    status: evolving
+    since: "2023"
+    link: "https://x.ai"
+    description:
+      en: |
+        Elon Musk's AI company, founded in 2023. Creator of the Grok series.
+        Deeply integrated with X (Twitter), giving Grok unique access to real-time social data.
+        Open-sourced Grok-1 weights (314B parameters).
+      fr: |
+        La société IA d'Elon Musk, fondée en 2023. Créateur de la série Grok.
+        Profondément intégrée à X (Twitter), donnant à Grok un accès aux données sociales en temps réel.
+        A mis en open source les poids de Grok-1 (314 milliards de paramètres).
+
+  # ── LAYER 2 · MODEL FAMILIES ─────────────────
+
+  - id: gpt_family
+    label:
+      en: "GPT"
+      fr: "GPT"
+    layer: 2
+    category: model_family
+    status: evolving
+    since: "2018"
+    link: "https://platform.openai.com/docs/models"
+    description:
+      en: |
+        OpenAI's main line of general-purpose chat and API models.
+        GPT-3 (2020) proved scale, GPT-4 (2023) set the multimodal standard.
+        Used by millions of developers as the default API for text generation tasks.
+      fr: |
+        La principale gamme de modèles de chat et API d'OpenAI.
+        GPT-3 (2020) a prouvé la scalabilité, GPT-4 (2023) a établi le standard multimodal.
+        Utilisés par des millions de développeurs comme API par défaut.
+
+  - id: o_family
+    label:
+      en: "o-Series"
+      fr: "Série o"
+    layer: 2
+    category: model_family
+    status: emerging
+    since: "2024"
+    link: "https://openai.com/o3"
+    description:
+      en: |
+        OpenAI's reasoning-first model line. These models "think" step-by-step before responding.
+        Best for complex logic, math, research and multi-step problem solving.
+        Higher latency and cost than GPT — worth it for hard tasks.
+      fr: |
+        La gamme de modèles axée sur le raisonnement d'OpenAI.
+        Ces modèles "réfléchissent" étape par étape avant de répondre.
+        Idéaux pour la logique complexe, les maths et la résolution de problèmes multi-étapes.
+
+  - id: claude_family
+    label:
+      en: "Claude"
+      fr: "Claude"
+    layer: 2
+    category: model_family
+    status: evolving
+    since: "2023"
+    link: "https://anthropic.com/claude"
+    description:
+      en: |
+        Anthropic's flagship model family. Three tiers: Haiku (fast/cheap), Sonnet (balanced), Opus (most capable).
+        Known for following instructions precisely, long-context reliability, and clean long-form output.
+      fr: |
+        La famille de modèles phare d'Anthropic. Trois niveaux : Haiku, Sonnet, Opus.
+        Reconnu pour suivre les instructions avec précision et sa fiabilité sur de longs contextes.
+
+  - id: gemini_family
+    label:
+      en: "Gemini"
+      fr: "Gemini"
+    layer: 2
+    category: model_family
+    status: evolving
+    since: "2023"
+    link: "https://deepmind.google/technologies/gemini/"
+    description:
+      en: |
+        Google DeepMind's flagship model family. Three tiers: Flash (fast), Pro (balanced), Ultra (most capable).
+        Natively multimodal. Tight integration with Google Workspace, Search, and Android.
+      fr: |
+        La famille de modèles phare de Google DeepMind. Trois niveaux : Flash, Pro, Ultra.
+        Nativement multimodal. Intégration étroite avec Google Workspace, Search et Android.
+
+  - id: grok_family
+    label:
+      en: "Grok"
+      fr: "Grok"
+    layer: 2
+    category: model_family
+    status: emerging
+    since: "2023"
+    link: "https://x.ai/grok"
+    description:
+      en: |
+        xAI's model family. Unique differentiator: real-time access to X (Twitter) data.
+        Grok 3 introduced "think mode" — a reasoning layer similar to OpenAI's o-series.
+      fr: |
+        La famille de modèles de xAI. Différenciateur unique : accès en temps réel aux données X (Twitter).
+        Grok 3 a introduit le "think mode" — une couche de raisonnement similaire à la série o d'OpenAI.
+
+  # ── LAYER 3 · CURRENT MODELS ─────────────────
+
+  - id: gpt4o
+    label:
+      en: "GPT-4o"
+      fr: "GPT-4o"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://platform.openai.com/docs/models/gpt-4o"
+    description:
+      en: |
+        "Omni" model — fast, cheap, natively multimodal (text + vision + audio).
+        The default OpenAI API model for most production use cases.
+        Strong at coding, reasoning, and instruction following.
+      fr: |
+        Modèle "Omni" — rapide, économique, nativement multimodal (texte + vision + audio).
+        Le modèle API OpenAI par défaut pour la plupart des cas d'usage en production.
+        Solide en code, raisonnement et suivi d'instructions.
+
+  - id: gpt41
+    label:
+      en: "GPT-4.1"
+      fr: "GPT-4.1"
+    layer: 3
+    category: model
+    status: stable
+    since: "2025"
+    link: "https://platform.openai.com/docs/models"
+    description:
+      en: |
+        Optimized for coding and instruction following with 128k context window.
+        Lower cost than GPT-4o while maintaining strong performance on software tasks.
+        Available in mini and nano variants for cost-sensitive applications.
+      fr: |
+        Optimisé pour le code et le suivi d'instructions avec une fenêtre de contexte de 128k tokens.
+        Coût inférieur à GPT-4o tout en maintenant de bonnes performances sur les tâches logicielles.
+        Disponible en variantes mini et nano pour les applications sensibles au coût.
+
+  - id: gpt45
+    label:
+      en: "GPT-4.5"
+      fr: "GPT-4.5"
+    layer: 3
+    category: model
+    status: evolving
+    since: "2025"
+    link: "https://platform.openai.com/docs/models"
+    description:
+      en: |
+        OpenAI's most capable general-purpose model. Strong at nuanced writing, complex reasoning
+        and following subtle instructions. Higher cost — best reserved for hard tasks
+        where output quality matters most.
+      fr: |
+        Le modèle polyvalent le plus puissant d'OpenAI. Excellent en écriture nuancée, raisonnement
+        complexe et suivi d'instructions subtiles. Coût élevé — à réserver pour les tâches difficiles
+        où la qualité de sortie prime.
+
+  - id: o3
+    label:
+      en: "o3"
+      fr: "o3"
+    layer: 3
+    category: model
+    status: emerging
+    since: "2025"
+    link: "https://openai.com/o3"
+    description:
+      en: |
+        OpenAI's flagship reasoning model. Achieves frontier scores on math olympiad, competitive
+        coding (Codeforces), and scientific benchmarks.
+        Uses extended chain-of-thought with variable "thinking budget" for cost/quality tradeoff.
+      fr: |
+        Le modèle de raisonnement phare d'OpenAI. Atteint des scores frontier en olympiades de maths,
+        code compétitif (Codeforces) et benchmarks scientifiques.
+        Utilise une chaîne de pensée étendue avec un "budget de réflexion" variable.
+
+  - id: claude35sonnet
+    label:
+      en: "Claude 3.5 Sonnet"
+      fr: "Claude 3.5 Sonnet"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://anthropic.com/claude/sonnet"
+    description:
+      en: |
+        Anthropic's most popular model. Best-in-class for software development and code editing.
+        Combines strong reasoning with fast response times and a 200k context window.
+        Widely used as the default model in Cursor, GitHub Copilot and other coding tools.
+      fr: |
+        Le modèle le plus populaire d'Anthropic. Meilleur de sa catégorie pour le développement logiciel.
+        Combine un raisonnement solide avec des temps de réponse rapides et un contexte de 200k tokens.
+        Très utilisé comme modèle par défaut dans Cursor, GitHub Copilot et autres outils de code.
+
+  - id: claude37
+    label:
+      en: "Claude 3.7 Sonnet"
+      fr: "Claude 3.7 Sonnet"
+    layer: 3
+    category: model
+    status: evolving
+    since: "2025"
+    link: "https://anthropic.com/claude"
+    description:
+      en: |
+        Adds "extended thinking" — the model can reason at length before answering.
+        200k context window. Significantly better at complex multi-step tasks.
+        Marks Anthropic's entry into the reasoning model space, alongside o3 and Grok 3.
+      fr: |
+        Ajoute le "extended thinking" — le modèle peut raisonner longuement avant de répondre.
+        Contexte de 200k tokens. Bien meilleur sur les tâches multi-étapes complexes.
+        Marque l'entrée d'Anthropic dans l'espace des modèles de raisonnement.
+
+  - id: gemini25pro
+    label:
+      en: "Gemini 2.5 Pro"
+      fr: "Gemini 2.5 Pro"
+    layer: 3
+    category: model
+    status: evolving
+    since: "2025"
+    link: "https://deepmind.google/technologies/gemini/pro/"
+    description:
+      en: |
+        Google's most capable model. Top scores on major coding and reasoning benchmarks (2025).
+        1M token context window — can process entire codebases or long documents in one call.
+        Natively multimodal: text, image, audio, video, code.
+      fr: |
+        Le modèle le plus puissant de Google. Meilleurs scores sur les benchmarks de code et raisonnement (2025).
+        Fenêtre de contexte de 1M tokens — peut traiter des bases de code entières en un seul appel.
+        Nativement multimodal : texte, image, audio, vidéo, code.
+
+  - id: gemini20flash
+    label:
+      en: "Gemini 2.0 Flash"
+      fr: "Gemini 2.0 Flash"
+    layer: 3
+    category: model
+    status: stable
+    since: "2025"
+    link: "https://deepmind.google/technologies/gemini/"
+    description:
+      en: |
+        Google's fastest and most cost-efficient model. Extremely low latency with vision support.
+        Default choice for high-volume, cost-sensitive production workloads at Google scale.
+        Strong multimodal capabilities at a fraction of Pro's cost.
+      fr: |
+        Le modèle le plus rapide et économique de Google. Latence extrêmement faible avec vision.
+        Choix par défaut pour les workloads de production à fort volume chez Google.
+        Capacités multimodales solides à une fraction du coût de Pro.
+
+  - id: grok3
+    label:
+      en: "Grok 3"
+      fr: "Grok 3"
+    layer: 3
+    category: model
+    status: emerging
+    since: "2025"
+    link: "https://x.ai/grok"
+    description:
+      en: |
+        xAI's most capable model. Competitive with GPT-4o and Claude 3.5 on most benchmarks.
+        Unique access to real-time X (Twitter) data.
+        Introduces "think mode" — extended reasoning before answering.
+        Available via xAI API and X Premium subscription.
+      fr: |
+        Le modèle le plus puissant de xAI. Compétitif avec GPT-4o et Claude 3.5 sur la plupart des benchmarks.
+        Accès unique aux données X (Twitter) en temps réel.
+        Introduit le "think mode" — raisonnement étendu avant de répondre.
+        Disponible via l'API xAI et l'abonnement X Premium.
+
+edges:
+  # Labs → Families
+  - from: openai
+    to: gpt_family
+    label: "develops"
+    type: part_of
+  - from: openai
+    to: o_family
+    label: "develops"
+    type: part_of
+  - from: anthropic
+    to: claude_family
+    label: "develops"
+    type: part_of
+  - from: google_deepmind
+    to: gemini_family
+    label: "develops"
+    type: part_of
+  - from: xai
+    to: grok_family
+    label: "develops"
+    type: part_of
+
+  # Families → Specific models
+  - from: gpt_family
+    to: gpt4o
+    label: ""
+    type: part_of
+  - from: gpt_family
+    to: gpt41
+    label: ""
+    type: part_of
+  - from: gpt_family
+    to: gpt45
+    label: ""
+    type: part_of
+  - from: o_family
+    to: o3
+    label: ""
+    type: part_of
+  - from: claude_family
+    to: claude35sonnet
+    label: ""
+    type: part_of
+  - from: claude_family
+    to: claude37
+    label: ""
+    type: part_of
+  - from: gemini_family
+    to: gemini25pro
+    label: ""
+    type: part_of
+  - from: gemini_family
+    to: gemini20flash
+    label: ""
+    type: part_of
+  - from: grok_family
+    to: grok3
+    label: ""
+    type: part_of

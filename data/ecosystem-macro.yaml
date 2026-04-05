@@ -239,6 +239,7 @@ nodes:
     status: evolving
     since: "2022"
     link: "https://platform.openai.com/docs/models"
+    drilldown: "proprietary-models.html"
     description:
       en: |
         Models whose weights are PRIVATE, never downloadable.

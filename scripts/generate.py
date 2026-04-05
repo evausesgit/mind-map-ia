@@ -115,11 +115,13 @@ def load_layout(data_file):
     return {}
 
 
-def build_elements(data):
+def build_elements(data, data_file=None):
     category_colors = {c["id"]: c["color"] for c in data["categories"]}
-    saved_layout = load_layout(DATA_FILE)
+    saved_layout = load_layout(data_file if data_file is not None else DATA_FILE)
     scale = float(data.get("meta", {}).get("node_scale", 1))
     spacing_y = int(NODE_SPACING_Y * scale)
+    ltr = data.get("meta", {}).get("layout_direction", "rtl") == "ltr"
+    col_scale = float(data.get("meta", {}).get("column_scale", 1.0))
     raw_layers = data.get("layers", DEFAULT_LAYER_LABELS)
     layer_labels = {}
     for k, v in raw_layers.items():
@@ -143,6 +145,9 @@ def build_elements(data):
             buckets = [(LAYER_X[layer_id], nodes)]
 
         for x_pos, bucket in buckets:
+            x_pos = int(x_pos * col_scale)
+            if ltr:
+                x_pos = -x_pos
             n = len(bucket)
             for i, node in enumerate(bucket):
                 default_x = x_pos
@@ -163,6 +168,7 @@ def build_elements(data):
                     "since": str(node["since"]),
                     "link": node.get("link", ""),
                     "ref": node.get("ref", ""),
+                    "drilldown": node.get("drilldown", ""),
                     "color": category_colors.get(node["category"], "#BDC3C7"),
                     "layerLabel": t(
                         layer_labels.get(layer_id, f"Layer {layer_id}"), "en"
@@ -177,11 +183,14 @@ def build_elements(data):
                         layer_labels.get(layer_id, f"Layer {layer_id}"), lang
                     )
 
+                classes = f"status-{node['status']}"
+                if node.get("drilldown"):
+                    classes += " has-drilldown"
                 elements.append(
                     {
                         "data": node_data,
                         "position": {"x": x_pos_final, "y": y},
-                        "classes": f"status-{node['status']}",
+                        "classes": classes,
                     }
                 )
 
@@ -230,6 +239,32 @@ def build_nav(maps, current_output, lang="en"):
         "  </div>"
         "</div>"
     )
+
+
+def load_drilldown_datasets(data, maps):
+    """Load sub-map data for all nodes that have a drilldown field."""
+    result = {}
+    all_maps = maps or []
+    for node in data.get("nodes", []):
+        url = node.get("drilldown", "")
+        if not url:
+            continue
+        map_entry = next((m for m in all_maps if m.get("output") == url), None)
+        if not map_entry or not map_entry.get("data"):
+            continue
+        data_path = ROOT / map_entry["data"]
+        if not data_path.exists():
+            continue
+        with open(data_path) as f:
+            sub_data = yaml.safe_load(f)
+        sub_elements = build_elements(sub_data, data_file=data_path)
+        meta = sub_data.get("meta", {})
+        result[node["id"]] = {
+            "title_en": t(meta.get("title", ""), "en"),
+            "title_fr": t(meta.get("title", ""), "fr") or t(meta.get("title", ""), "en"),
+            "elements": sub_elements,
+        }
+    return result
 
 
 def generate_html(data, elements, maps=None, current_output=""):
@@ -309,6 +344,15 @@ def generate_html(data, elements, maps=None, current_output=""):
     legend_fr = legend_items("fr")
 
     nav_html = build_nav(maps or [], current_output) if maps else ""
+
+    drilldown_datasets = load_drilldown_datasets(data, maps or [])
+    drilldown_datasets_js = json.dumps(drilldown_datasets)
+
+    back_link = meta.get("back_link", "")
+    back_btn_html = (
+        f'<a href="{back_link}" class="back-btn" title="Back">← Back</a>'
+        if back_link else ""
+    )
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -464,6 +508,22 @@ def generate_html(data, elements, maps=None, current_output=""):
     border-color: #aaa;
     color: white;
   }}
+  .back-btn {{
+    padding: 4px 12px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }}
+  .back-btn:hover {{
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }}
   .nav-menu {{
     position: relative;
     margin-left: 8px;
@@ -533,8 +593,63 @@ def generate_html(data, elements, maps=None, current_output=""):
   .main {{
     display: flex;
     flex: 1;
+    min-height: 0;
     overflow: hidden;
   }}
+  #cy-area {{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }}
+  #cy-wrapper {{
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }}
+  #drilldown-section {{
+    flex: 0 0 0;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    border-top: 2px solid #E74C3C;
+    transition: flex-basis 0.35s ease;
+  }}
+  body.drilldown-active #drilldown-section {{
+    flex: 0 0 45%;
+  }}
+  #drilldown-label-box {{
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1A1A2E;
+    padding: 2px 16px;
+    color: #E74C3C;
+    font-weight: 700;
+    font-size: 12px;
+    border-radius: 3px;
+    z-index: 10;
+    white-space: nowrap;
+    pointer-events: none;
+  }}
+  #drilldown-close {{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    background: rgba(30,30,50,0.85);
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    cursor: pointer;
+    padding: 2px 8px;
+    font-size: 12px;
+  }}
+  #drilldown-close:hover {{ background: rgba(231,76,60,0.35); color: white; }}
+  #cy2 {{ width: 100%; height: 100%; }}
 
   #cy {{
     position: absolute;
@@ -651,6 +766,18 @@ def generate_html(data, elements, maps=None, current_output=""):
   }}
   .panel-link:hover {{ background: #3498DB11; }}
   .panel-link .link-icon {{ font-size: 14px; }}
+  .drilldown-hint {{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #E74C3C;
+    background: #E74C3C11;
+    border: 1px solid #E74C3C44;
+    border-radius: 5px;
+    padding: 3px 8px;
+    cursor: zoom-in;
+  }}
   #panel-body .since {{
     font-size: 12px;
     color: #7F8C8D;
@@ -779,6 +906,7 @@ def generate_html(data, elements, maps=None, current_output=""):
 
 <header>
   <div style="display:flex;align-items:center;gap:12px;">
+    {back_btn_html}
     {nav_html}
     <div>
       <h1 id="main-title">{title_en}</h1>
@@ -800,22 +928,29 @@ def generate_html(data, elements, maps=None, current_output=""):
 </header>
 
 <div class="main">
-  <div style="position:relative;flex:1;overflow:hidden;">
-    <div id="cy"></div>
-    <div id="cat-boxes" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;"></div>
-    <div id="controls">
-      <button class="ctrl-btn" onclick="cy.fit()"
-        data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
-      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)"
-        data-tip-en="Zoom in" data-tip-fr="Zoom avant">+</button>
-      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)"
-        data-tip-en="Zoom out" data-tip-fr="Zoom arrière">−</button>
-      <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()"
-        data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
-      <button class="ctrl-btn" onclick="exportLayout()"
-        data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
-      <button class="ctrl-btn" onclick="window.open('{OUTPUT_FILE.stem}-slides.html','_blank')"
-        data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
+  <div id="cy-area">
+    <div id="cy-wrapper">
+      <div id="cy"></div>
+      <div id="cat-boxes" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;"></div>
+      <div id="controls">
+        <button class="ctrl-btn" onclick="cy.fit()"
+          data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
+        <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)"
+          data-tip-en="Zoom in" data-tip-fr="Zoom avant">+</button>
+        <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)"
+          data-tip-en="Zoom out" data-tip-fr="Zoom arrière">−</button>
+        <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()"
+          data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
+        <button class="ctrl-btn" onclick="exportLayout()"
+          data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
+        <button class="ctrl-btn" onclick="window.open('{OUTPUT_FILE.stem}-slides.html','_blank')"
+          data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
+      </div>
+    </div>
+    <div id="drilldown-section">
+      <div id="drilldown-label-box"></div>
+      <button id="drilldown-close" onclick="closeDrilldown()">✕</button>
+      <div id="cy2"></div>
     </div>
   </div>
 
@@ -825,6 +960,9 @@ def generate_html(data, elements, maps=None, current_output=""):
       <div class="node-label" id="ph-label"></div>
       <div class="node-meta" id="ph-meta"></div>
       <span class="node-status" id="ph-status"></span>
+      <div id="ph-drilldown" style="display:none;margin-top:6px;">
+        <span class="drilldown-hint" id="ph-drilldown-hint"></span>
+      </div>
     </div>
     <div id="panel-body">
       <div class="empty-panel" id="empty-msg">
@@ -855,6 +993,7 @@ def generate_html(data, elements, maps=None, current_output=""):
 
 <script>
 const elements = {elements_json};
+const DRILLDOWN_DATA = {drilldown_datasets_js};
 const TITLES        = {titles_js};
 const STATUS_LABELS = {status_labels_js};
 const PANEL_LABELS  = {panel_labels_js};
@@ -1139,10 +1278,7 @@ document.addEventListener('click', e => {{
 }});
 
 
-const cy = cytoscape({{
-  container: document.getElementById("cy"),
-  elements: elements,
-  style: [
+const CY_STYLE = [
     // Provider nodes — ellipse to distinguish from models
     {{
       selector: "node[node_type='provider']",
@@ -1216,6 +1352,15 @@ const cy = cytoscape({{
         "border-style": "dashed",
       }}
     }},
+    // Nodes with drill-down → zoom-in cursor + subtle glow
+    {{
+      selector: ".has-drilldown",
+      style: {{
+        "border-color": "#E74C3C",
+        "border-width": 3,
+        "border-style": "double",
+      }}
+    }},
     // Status: deprecated → grey, muted
     {{
       selector: ".status-deprecated",
@@ -1281,7 +1426,12 @@ const cy = cytoscape({{
         "opacity": 0.15,
       }}
     }},
-  ],
+];
+
+const cy = cytoscape({{
+  container: document.getElementById("cy"),
+  elements: elements,
+  style: CY_STYLE,
   layout: {{
     name: "preset",
   }},
@@ -1612,15 +1762,26 @@ function showPanel(node) {{
     linksEl.appendChild(a);
   }}
   linksEl.style.display = (d.link || d.ref) ? "flex" : "none";
+
+  const drilldownEl = document.getElementById("ph-drilldown");
+  const drilldownHint = document.getElementById("ph-drilldown-hint");
+  if (DRILLDOWN_DATA[d.id]) {{
+    drilldownEl.style.display = "block";
+    drilldownHint.textContent = lang === "fr" ? "↗ Double-cliquez pour explorer" : "↗ Double-click to explore";
+    drilldownHint.onclick = () => {{
+      const dd = DRILLDOWN_DATA[d.id];
+      if (dd) showDrilldown(dd, d[`label_${{lang}}`] || d.label, d.color);
+    }};
+  }} else {{
+    drilldownEl.style.display = "none";
+  }}
 }}
 
 // ── Node click → panel ───────────────────────
 cy.on("tap", "node", function(evt) {{
   const node = evt.target;
-
   showPanel(node);
-
-  // Highlight node + connected edges/nodes
+  if (cy2) cy2.elements().removeClass("dimmed highlighted");
   cy.elements().addClass("dimmed");
   node.removeClass("dimmed");
   const connected = node.connectedEdges();
@@ -1632,12 +1793,92 @@ cy.on("tap", "node", function(evt) {{
   node.addClass("highlighted");
 }});
 
+// ── Node double-tap → drill-down inline ──────
+cy.on("dbltap", "node", function(evt) {{
+  const node = evt.target;
+  const dd = DRILLDOWN_DATA[node.id()];
+  if (!dd) return;
+  const label = node.data(`label_${{lang}}`) || node.data("label");
+  showDrilldown(dd, label, node.data("color"));
+}});
+
+let cy2 = null;
+
+function showDrilldown(dd, label, color) {{
+  const col = color || "#E74C3C";
+  const labelBox = document.getElementById("drilldown-label-box");
+  labelBox.textContent = label;
+  labelBox.style.color = col;
+  document.getElementById("drilldown-section").style.borderTopColor = col;
+  document.body.classList.add("drilldown-active");
+
+  if (cy2) {{ cy2.destroy(); cy2 = null; }}
+
+  // Wait for CSS transition (350ms) before initializing so the container has its final size
+  setTimeout(() => {{
+    cy2 = cytoscape({{
+      container: document.getElementById("cy2"),
+      elements: dd.elements,
+      style: CY_STYLE,
+      layout: {{ name: "preset" }},
+      wheelSensitivity: 0.3,
+      minZoom: 0.1,
+      maxZoom: 3,
+    }});
+
+    cy2.style()
+      .selector("node")
+      .style({{ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" }})
+      .selector("node[node_type='provider']")
+      .style({{ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" }})
+      .update();
+
+    cy2.resize();
+    cy2.fit(undefined, 30);
+
+    // ── cy2: node click → shared panel ───────────
+    cy2.on("tap", "node", function(evt) {{
+      const node = evt.target;
+      showPanel(node);
+      cy.elements().removeClass("dimmed highlighted");
+      cy2.elements().addClass("dimmed");
+      node.removeClass("dimmed");
+      const connected = node.connectedEdges();
+      connected.removeClass("dimmed").addClass("highlighted");
+      connected.connectedNodes().removeClass("dimmed");
+      node.addClass("highlighted");
+    }});
+
+    cy2.on("tap", function(evt) {{
+      if (evt.target === cy2) {{
+        currentNode = null;
+        cy2.elements().removeClass("dimmed highlighted");
+        document.getElementById("panel-header").style.display = "none";
+        document.getElementById("empty-msg").style.display = "flex";
+        document.getElementById("panel-content").style.display = "none";
+      }}
+    }});
+
+    cy2.on("mouseover", "edge", function(evt) {{ evt.target.addClass("highlighted"); }});
+    cy2.on("mouseout", "edge", function(evt) {{
+      if (!evt.target.source().hasClass("highlighted")) evt.target.removeClass("highlighted");
+    }});
+  }}, 380);
+}}
+
+function closeDrilldown() {{
+  document.body.classList.remove("drilldown-active");
+  document.getElementById("drilldown-section").style.display = "none";
+  if (cy2) {{ cy2.destroy(); cy2 = null; }}
+}}
+
 // ── Click background → reset ─────────────────
 cy.on("tap", function(evt) {{
   if (evt.target === cy) {{
     currentNode = null;
     history.replaceState(null, '', window.location.pathname + window.location.search);
     cy.elements().removeClass("dimmed highlighted");
+    if (cy2) cy2.elements().removeClass("dimmed highlighted");
     document.getElementById("panel-header").style.display = "none";
     document.getElementById("empty-msg").style.display = "flex";
     document.getElementById("panel-content").style.display = "none";
