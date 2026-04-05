@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP: The Standard for Connecting AI to Everything</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    color: #1A1A2E;
+    min-height: 100vh;
+  }
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-menu { position: relative; }
+  .nav-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 260px;
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1E2D4E;
+    text-decoration: none;
+    color: #BDC3C7;
+    font-size: 13px;
+    transition: background 0.1s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home { color: #BDC3C7 !important; font-size: 13px !important; border-bottom: 1px solid #1E2D4E; }
+  .nav-home:hover { color: #FF6B6B !important; }
+  .lang-toggle { display: flex; gap: 6px; }
+  .lang-btn {
+    background: none;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+
+  .page-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .page-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  .article-header { margin-bottom: 32px; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #27AE6022;
+    color: #27AE60;
+    border: 1px solid #27AE6044;
+  }
+  .date { font-size: 12px; color: #95A5A6; }
+  .article-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1A1A2E;
+    margin-bottom: 12px;
+  }
+  .article-summary {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #E8EAF6;
+    color: #3F51B5;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .article-body { line-height: 1.75; color: #2C3E50; }
+  .article-body h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #E8EAED;
+  }
+  .article-body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 24px 0 8px;
+  }
+  .article-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7F8C8D;
+    margin: 20px 0 6px;
+  }
+  .article-body p { margin-bottom: 14px; font-size: 15px; }
+  .article-body ul, .article-body ol {
+    margin: 8px 0 14px 20px;
+    font-size: 15px;
+  }
+  .article-body li { margin-bottom: 4px; }
+  .article-body strong { font-weight: 700; color: #1A1A2E; }
+  .article-body em { color: #555; }
+  .article-body code {
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 13px;
+    background: #EEF0F3;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #C0392B;
+  }
+  .article-body pre {
+    background: #1A1A2E;
+    color: #E8EAF6;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .article-body pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .article-body th {
+    background: #1A1A2E;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .article-body td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #E8EAED;
+  }
+  .article-body tr:nth-child(even) td { background: #F8F9FA; }
+  .article-body blockquote {
+    border-left: 3px solid #1A1A2E;
+    padding: 8px 16px;
+    margin: 12px 0;
+    color: #555;
+    background: #F0F0F5;
+    border-radius: 0 4px 4px 0;
+  }
+  .article-body hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 28px 0;
+  }
+  .article-body a { color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }
+  .article-body a:hover { color: #3498DB; }
+
+  /* Sidebar */
+  .sidebar { position: sticky; top: 80px; }
+  .toc { display: flex; flex-direction: column; gap: 4px; }
+  .toc-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #95A5A6;
+    margin-bottom: 8px;
+  }
+  .toc a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    padding: 3px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    line-height: 1.4;
+    transition: all 0.1s;
+  }
+  .toc a.toc-h3 {
+    padding-left: 20px;
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+  .toc a:hover { color: #1A1A2E; border-left-color: #1A1A2E; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="nav-menu">  <button class="nav-btn">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="../index.html" class="nav-home">← Home</a>   <a href="../macro.html">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="../ecosystem.html">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span>  </span></a><a href="../dense-vs-moe.html">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="../glossary.html">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <main>
+    <div class="article-header">
+      <div class="article-meta">
+        <span class="status-badge">stable</span>
+        <span class="date">2026-04-04</span>
+      </div>
+      <h1 class="article-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</h1>
+      <p class="article-summary" data-en="What MCP is, how it works architecturally, and why it matters for AI agent development." data-fr="Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA.">What MCP is, how it works architecturally, and why it matters for AI agent development.</p>
+      <div class="tags"><span class="tag">mcp</span><span class="tag">agents</span><span class="tag">tools</span><span class="tag">protocol</span><span class="tag">integration</span></div>
+    </div>
+
+    <div class="article-body" id="article-body">
+      <h2 id="what-is-mcp">What is MCP?</h2>
+<p>MCP (Model Context Protocol) is an open standard that defines how AI applications connect to external data sources and tools. Think of it as USB-C for AI: instead of every application building its own custom integration with every tool, MCP provides a single protocol that any compliant client and server can speak.</p>
+<p>Before MCP, every AI-powered IDE, chat interface, or workflow tool had to build bespoke connectors for every external resource it wanted to access — filesystem, databases, APIs, code interpreters. This was duplicated effort and a maintenance nightmare. MCP solves this with a shared protocol layer.</p>
+<p>Governed by the <strong>Linux Foundation</strong> (not proprietary to Anthropic), MCP is a community standard with official SDKs in 10 languages: TypeScript, Python, Java, Kotlin, C#, Go, PHP, Ruby, Rust, and Swift.</p>
+<h2 id="architecture">Architecture</h2>
+<p>MCP follows a <strong>client-server model</strong> with three roles:</p>
+<ul><li><strong>MCP Host</strong>: the application that wants to use AI + external tools (e.g., an IDE, a chat app)</li><li><strong>MCP Client</strong>: the component inside the host that speaks the MCP protocol</li><li><strong>MCP Server</strong>: an independent process exposing specific capabilities (filesystem, database, GitHub API, etc.)</li></ul>
+<pre><code>┌─────────────────────────┐
+│   Host (e.g. IDE)       │
+│  ┌───────────────────┐  │
+│  │   LLM             │  │
+│  │   MCP Client      │◄─┼──► MCP Server A (filesystem)
+│  └───────────────────┘  │◄──► MCP Server B (GitHub)
+└─────────────────────────┘◄───► MCP Server C (database)</code></pre>
+<p>The LLM never directly calls external tools. It asks the MCP Client, which routes the request to the right server. This separation keeps the model isolated from transport details.</p>
+<h2 id="the-three-primitives">The three primitives</h2>
+<p>Every MCP server exposes up to three types of capabilities:</p>
+<p><strong>Resources</strong> — read-only data the model can access</p>
+<ul><li>Files, database records, API responses</li><li>The model can browse and read, but not modify</li><li>Example: <code>file://project/src/main.py</code></li></ul>
+<p><strong>Tools</strong> — functions the model can call to take action</p>
+<ul><li>Write to a file, run a shell command, send an API request</li><li>These have side effects — they change the world</li><li>Example: <code>run_tests()</code>, <code>create_github_issue()</code></li></ul>
+<p><strong>Prompts</strong> — reusable, parameterized prompt templates</p>
+<ul><li>Predefined workflows the user can invoke</li><li>Example: a "code review" prompt template that automatically loads the diff + runs relevant tests</li></ul>
+<h2 id="why-it-matters">Why it matters</h2>
+<h3 id="for-developers-building-ai-features">For developers building AI features</h3>
+<p>Before MCP, adding "AI that can read your codebase" to your product meant writing a custom file reader, chunker, search index, and wiring it all to your model. With MCP, you expose a filesystem MCP server and any compliant AI client immediately has access — no custom integration.</p>
+<h3 id="for-the-agent-ecosystem">For the agent ecosystem</h3>
+<p>The arxiv study "How are AI agents used? Evidence from 177,000 MCP tools" (2026) analyzed 177,436 real-world MCP tools created between November 2024 and February 2026. Key findings:</p>
+<ul><li><strong>67% of all tools are for software development</strong> (90% of downloads)</li><li><strong>Action tools grew from 27% to 65%</strong> of the ecosystem over 16 months — agents are increasingly modifying external state, not just reading it</li><li>Most action tools handle medium-stakes tasks (file editing), but high-stakes tasks (financial transactions) are emerging</li></ul>
+<p>This tells you where the ecosystem is right now: primarily dev tooling, but moving fast toward general-purpose agents with real-world consequences.</p>
+<h3 id="for-ai-governance">For AI governance</h3>
+<p>The same study notes that monitoring at the <strong>tool layer</strong> is more tractable for regulation than monitoring at the model output layer. If you want to understand what AI agents are actually doing in the world, MCP's explicit primitives (resources/tools/prompts) give you clear audit points.</p>
+<h2 id="in-practice">In practice</h2>
+<p>Setting up a minimal MCP server in Python:</p>
+<pre><code class="language-python">from mcp.server import MCPServer
+from mcp.types import Tool, TextContent
+
+server = MCPServer("my-server")
+
+@server.tool("read_file")
+def read_file(path: str) -&gt; TextContent:
+    """Read a file from the filesystem."""
+    with open(path) as f:
+        return TextContent(text=f.read())
+
+@server.tool("write_file")
+def write_file(path: str, content: str) -&gt; TextContent:
+    """Write content to a file."""
+    with open(path, "w") as f:
+        f.write(content)
+    return TextContent(text=f"Written to {path}")
+
+server.run()</code></pre>
+<p>The MCP client (your AI host) discovers these tools automatically via the protocol handshake. The LLM receives their descriptions and can call them by name.</p>
+<h2 id="the-mcp-ecosystem">The MCP ecosystem</h2>
+<p>The community registry at <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a> lists hundreds of production MCP servers. Common categories:</p>
+<ul><li><strong>Developer tools</strong>: filesystem, Git, GitHub, terminal, code execution</li><li><strong>Data sources</strong>: databases (SQLite, PostgreSQL), APIs (Slack, Notion, Google Drive)</li><li><strong>Web</strong>: browser automation, web scraping, search</li><li><strong>Observability</strong>: logs, metrics, traces</li></ul>
+<p>The MCP Inspector (included in the org) lets you visually test and debug any MCP server before wiring it to a real AI client.</p>
+    </div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="toc-label" data-en="On this page" data-fr="Sur cette page">On this page</div>
+    <nav class="toc" id="toc-nav">
+      <nav class="toc"><a href="#what-is-mcp" class="toc-h2">What is MCP?</a>
+<a href="#architecture" class="toc-h2">Architecture</a>
+<a href="#the-three-primitives" class="toc-h2">The three primitives</a>
+<a href="#why-it-matters" class="toc-h2">Why it matters</a>
+<a href="#for-developers-building-ai-features" class="toc-h3">For developers building AI features</a>
+<a href="#for-the-agent-ecosystem" class="toc-h3">For the agent ecosystem</a>
+<a href="#for-ai-governance" class="toc-h3">For AI governance</a>
+<a href="#in-practice" class="toc-h2">In practice</a>
+<a href="#the-mcp-ecosystem" class="toc-h2">The MCP ecosystem</a></nav>
+    </nav>
+  </aside>
+</div>
+
+<script>
+const CONTENT = {
+  en: '<h2 id="what-is-mcp">What is MCP?</h2>\n<p>MCP (Model Context Protocol) is an open standard that defines how AI applications connect to external data sources and tools. Think of it as USB-C for AI: instead of every application building its own custom integration with every tool, MCP provides a single protocol that any compliant client and server can speak.</p>\n<p>Before MCP, every AI-powered IDE, chat interface, or workflow tool had to build bespoke connectors for every external resource it wanted to access — filesystem, databases, APIs, code interpreters. This was duplicated effort and a maintenance nightmare. MCP solves this with a shared protocol layer.</p>\n<p>Governed by the <strong>Linux Foundation</strong> (not proprietary to Anthropic), MCP is a community standard with official SDKs in 10 languages: TypeScript, Python, Java, Kotlin, C#, Go, PHP, Ruby, Rust, and Swift.</p>\n<h2 id="architecture">Architecture</h2>\n<p>MCP follows a <strong>client-server model</strong> with three roles:</p>\n<ul><li><strong>MCP Host</strong>: the application that wants to use AI + external tools (e.g., an IDE, a chat app)</li><li><strong>MCP Client</strong>: the component inside the host that speaks the MCP protocol</li><li><strong>MCP Server</strong>: an independent process exposing specific capabilities (filesystem, database, GitHub API, etc.)</li></ul>\n<pre><code>┌─────────────────────────┐\n│   Host (e.g. IDE)       │\n│  ┌───────────────────┐  │\n│  │   LLM             │  │\n│  │   MCP Client      │◄─┼──► MCP Server A (filesystem)\n│  └───────────────────┘  │◄──► MCP Server B (GitHub)\n└─────────────────────────┘◄───► MCP Server C (database)</code></pre>\n<p>The LLM never directly calls external tools. It asks the MCP Client, which routes the request to the right server. This separation keeps the model isolated from transport details.</p>\n<h2 id="the-three-primitives">The three primitives</h2>\n<p>Every MCP server exposes up to three types of capabilities:</p>\n<p><strong>Resources</strong> — read-only data the model can access</p>\n<ul><li>Files, database records, API responses</li><li>The model can browse and read, but not modify</li><li>Example: <code>file://project/src/main.py</code></li></ul>\n<p><strong>Tools</strong> — functions the model can call to take action</p>\n<ul><li>Write to a file, run a shell command, send an API request</li><li>These have side effects — they change the world</li><li>Example: <code>run_tests()</code>, <code>create_github_issue()</code></li></ul>\n<p><strong>Prompts</strong> — reusable, parameterized prompt templates</p>\n<ul><li>Predefined workflows the user can invoke</li><li>Example: a "code review" prompt template that automatically loads the diff + runs relevant tests</li></ul>\n<h2 id="why-it-matters">Why it matters</h2>\n<h3 id="for-developers-building-ai-features">For developers building AI features</h3>\n<p>Before MCP, adding "AI that can read your codebase" to your product meant writing a custom file reader, chunker, search index, and wiring it all to your model. With MCP, you expose a filesystem MCP server and any compliant AI client immediately has access — no custom integration.</p>\n<h3 id="for-the-agent-ecosystem">For the agent ecosystem</h3>\n<p>The arxiv study "How are AI agents used? Evidence from 177,000 MCP tools" (2026) analyzed 177,436 real-world MCP tools created between November 2024 and February 2026. Key findings:</p>\n<ul><li><strong>67% of all tools are for software development</strong> (90% of downloads)</li><li><strong>Action tools grew from 27% to 65%</strong> of the ecosystem over 16 months — agents are increasingly modifying external state, not just reading it</li><li>Most action tools handle medium-stakes tasks (file editing), but high-stakes tasks (financial transactions) are emerging</li></ul>\n<p>This tells you where the ecosystem is right now: primarily dev tooling, but moving fast toward general-purpose agents with real-world consequences.</p>\n<h3 id="for-ai-governance">For AI governance</h3>\n<p>The same study notes that monitoring at the <strong>tool layer</strong> is more tractable for regulation than monitoring at the model output layer. If you want to understand what AI agents are actually doing in the world, MCP\'s explicit primitives (resources/tools/prompts) give you clear audit points.</p>\n<h2 id="in-practice">In practice</h2>\n<p>Setting up a minimal MCP server in Python:</p>\n<pre><code class="language-python">from mcp.server import MCPServer\nfrom mcp.types import Tool, TextContent\n\nserver = MCPServer("my-server")\n\n@server.tool("read_file")\ndef read_file(path: str) -&gt; TextContent:\n    """Read a file from the filesystem."""\n    with open(path) as f:\n        return TextContent(text=f.read())\n\n@server.tool("write_file")\ndef write_file(path: str, content: str) -&gt; TextContent:\n    """Write content to a file."""\n    with open(path, "w") as f:\n        f.write(content)\n    return TextContent(text=f"Written to {path}")\n\nserver.run()</code></pre>\n<p>The MCP client (your AI host) discovers these tools automatically via the protocol handshake. The LLM receives their descriptions and can call them by name.</p>\n<h2 id="the-mcp-ecosystem">The MCP ecosystem</h2>\n<p>The community registry at <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a> lists hundreds of production MCP servers. Common categories:</p>\n<ul><li><strong>Developer tools</strong>: filesystem, Git, GitHub, terminal, code execution</li><li><strong>Data sources</strong>: databases (SQLite, PostgreSQL), APIs (Slack, Notion, Google Drive)</li><li><strong>Web</strong>: browser automation, web scraping, search</li><li><strong>Observability</strong>: logs, metrics, traces</li></ul>\n<p>The MCP Inspector (included in the org) lets you visually test and debug any MCP server before wiring it to a real AI client.</p>',
+  fr: '<h2 id="quest-ce-que-mcp">Qu\'est-ce que MCP ?</h2>\n<p>MCP (Model Context Protocol) est un standard ouvert qui définit comment les applications IA se connectent à des sources de données et des outils externes. C\'est le USB-C de l\'IA : au lieu que chaque application construise ses propres connecteurs sur mesure pour chaque outil, MCP fournit un protocole unique que n\'importe quel client et serveur compatible peut parler.</p>\n<p>Avant MCP, chaque IDE piloté par IA, chaque interface de chat ou workflow devait construire des connecteurs ad hoc pour chaque ressource externe — filesystem, bases de données, APIs, interpréteurs de code. C\'était du travail en double et un cauchemar à maintenir. MCP résout ça avec une couche de protocole partagée.</p>\n<p>Gouverné par la <strong>Linux Foundation</strong> (pas propriétaire d\'Anthropic), MCP est un standard communautaire avec des SDKs officiels dans 10 langages : TypeScript, Python, Java, Kotlin, C#, Go, PHP, Ruby, Rust, et Swift.</p>\n<h2 id="architecture">Architecture</h2>\n<p>MCP suit un <strong>modèle client-serveur</strong> avec trois rôles :</p>\n<ul><li><strong>MCP Host</strong> : l\'application qui veut utiliser l\'IA + des outils externes (ex : un IDE, une app de chat)</li><li><strong>MCP Client</strong> : le composant dans le host qui parle le protocole MCP</li><li><strong>MCP Server</strong> : un processus indépendant qui expose des capacités spécifiques (filesystem, base de données, API GitHub, etc.)</li></ul>\n<pre><code>┌─────────────────────────┐\n│   Host (ex. IDE)        │\n│  ┌───────────────────┐  │\n│  │   LLM             │  │\n│  │   MCP Client      │◄─┼──► MCP Server A (filesystem)\n│  └───────────────────┘  │◄──► MCP Server B (GitHub)\n└─────────────────────────┘◄───► MCP Server C (base de données)</code></pre>\n<p>Le LLM n\'appelle jamais directement les outils externes. Il demande au MCP Client, qui route la requête vers le bon serveur. Cette séparation isole le modèle des détails de transport.</p>\n<h2 id="les-trois-primitives">Les trois primitives</h2>\n<p>Chaque serveur MCP expose jusqu\'à trois types de capacités :</p>\n<p><strong>Resources</strong> — données en lecture seule que le modèle peut consulter</p>\n<ul><li>Fichiers, enregistrements de base de données, réponses d\'API</li><li>Le modèle peut parcourir et lire, mais pas modifier</li><li>Exemple : <code>file://projet/src/main.py</code></li></ul>\n<p><strong>Tools</strong> — fonctions que le modèle peut appeler pour agir</p>\n<ul><li>Écrire dans un fichier, exécuter une commande shell, envoyer une requête API</li><li>Ces opérations ont des effets de bord — elles changent l\'état du monde</li><li>Exemple : <code>run_tests()</code>, <code>create_github_issue()</code></li></ul>\n<p><strong>Prompts</strong> — templates de prompts paramétrés et réutilisables</p>\n<ul><li>Workflows prédéfinis que l\'utilisateur peut invoquer</li><li>Exemple : un template "code review" qui charge automatiquement le diff + lance les tests pertinents</li></ul>\n<h2 id="pourquoi-cest-important">Pourquoi c\'est important</h2>\n<h3 id="pour-les-développeurs-qui-construisent-des-features-ia">Pour les développeurs qui construisent des features IA</h3>\n<p>Avant MCP, ajouter "une IA qui peut lire ta codebase" à ton produit signifiait écrire un lecteur de fichiers custom, un chunker, un index de recherche, et tout câbler à ton modèle. Avec MCP, tu exposes un serveur MCP filesystem et n\'importe quel client IA compatible y a immédiatement accès — sans intégration sur mesure.</p>\n<h3 id="pour-lécosystème-des-agents">Pour l\'écosystème des agents</h3>\n<p>L\'étude arxiv "How are AI agents used? Evidence from 177,000 MCP tools" (2026) a analysé 177 436 tools MCP réels créés entre novembre 2024 et février 2026. Résultats clés :</p>\n<ul><li><strong>67% des tools concernent le software development</strong> (90% des downloads)</li><li><strong>Les action tools sont passés de 27% à 65%</strong> de l\'écosystème en 16 mois — les agents modifient de plus en plus l\'état externe, pas seulement la lecture</li><li>La plupart des action tools gèrent des tâches à enjeux modérés (édition de fichiers), mais les tâches à enjeux élevés (transactions financières) émergent</li></ul>\n<p>Ça te dit où en est l\'écosystème aujourd\'hui : principalement du dev tooling, mais qui évolue rapidement vers des agents généraux aux conséquences réelles.</p>\n<h3 id="pour-la-gouvernance-de-lia">Pour la gouvernance de l\'IA</h3>\n<p>La même étude note que le monitoring au <strong>niveau de la couche tool</strong> est plus praticable pour la régulation que le monitoring au niveau du model output. Si tu veux comprendre ce que les agents IA font concrètement dans le monde, les primitives explicites de MCP (resources/tools/prompts) donnent des points d\'audit clairs.</p>\n<h2 id="en-pratique">En pratique</h2>\n<p>Mettre en place un serveur MCP minimal en Python :</p>\n<pre><code class="language-python">from mcp.server import MCPServer\nfrom mcp.types import Tool, TextContent\n\nserver = MCPServer("mon-serveur")\n\n@server.tool("read_file")\ndef read_file(path: str) -&gt; TextContent:\n    """Lire un fichier depuis le filesystem."""\n    with open(path) as f:\n        return TextContent(text=f.read())\n\n@server.tool("write_file")\ndef write_file(path: str, content: str) -&gt; TextContent:\n    """Écrire du contenu dans un fichier."""\n    with open(path, "w") as f:\n        f.write(content)\n    return TextContent(text=f"Écrit dans {path}")\n\nserver.run()</code></pre>\n<p>Le client MCP (ton host IA) découvre ces tools automatiquement via le handshake du protocole. Le LLM reçoit leurs descriptions et peut les appeler par nom.</p>\n<h2 id="lécosystème-mcp">L\'écosystème MCP</h2>\n<p>Le registry communautaire sur <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a> liste des centaines de serveurs MCP en production. Catégories principales :</p>\n<ul><li><strong>Outils développeur</strong> : filesystem, Git, GitHub, terminal, exécution de code</li><li><strong>Sources de données</strong> : bases de données (SQLite, PostgreSQL), APIs (Slack, Notion, Google Drive)</li><li><strong>Web</strong> : automatisation navigateur, scraping, recherche</li><li><strong>Observabilité</strong> : logs, métriques, traces</li></ul>\n<p>Le MCP Inspector (inclus dans l\'org) permet de tester et déboguer visuellement n\'importe quel serveur MCP avant de le câbler à un vrai client IA.</p>',
+};
+const TOC = {
+  en: '<nav class="toc"><a href="#what-is-mcp" class="toc-h2">What is MCP?</a>\n<a href="#architecture" class="toc-h2">Architecture</a>\n<a href="#the-three-primitives" class="toc-h2">The three primitives</a>\n<a href="#why-it-matters" class="toc-h2">Why it matters</a>\n<a href="#for-developers-building-ai-features" class="toc-h3">For developers building AI features</a>\n<a href="#for-the-agent-ecosystem" class="toc-h3">For the agent ecosystem</a>\n<a href="#for-ai-governance" class="toc-h3">For AI governance</a>\n<a href="#in-practice" class="toc-h2">In practice</a>\n<a href="#the-mcp-ecosystem" class="toc-h2">The MCP ecosystem</a></nav>',
+  fr: '<nav class="toc"><a href="#quest-ce-que-mcp" class="toc-h2">Qu\'est-ce que MCP ?</a>\n<a href="#architecture" class="toc-h2">Architecture</a>\n<a href="#les-trois-primitives" class="toc-h2">Les trois primitives</a>\n<a href="#pourquoi-cest-important" class="toc-h2">Pourquoi c\'est important</a>\n<a href="#pour-les-développeurs-qui-construisent-des-features-ia" class="toc-h3">Pour les développeurs qui construisent des features IA</a>\n<a href="#pour-lécosystème-des-agents" class="toc-h3">Pour l\'écosystème des agents</a>\n<a href="#pour-la-gouvernance-de-lia" class="toc-h3">Pour la gouvernance de l\'IA</a>\n<a href="#en-pratique" class="toc-h2">En pratique</a>\n<a href="#lécosystème-mcp" class="toc-h2">L\'écosystème MCP</a></nav>',
+};
+let lang = 'en';
+
+function setLang(newLang) {
+  lang = newLang;
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  document.getElementById('toc-nav').innerHTML = TOC[lang] || TOC.en;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.en;
+  });
+}
+</script>
+</body>
+</html>

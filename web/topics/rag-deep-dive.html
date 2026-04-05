@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG: Retrieval-Augmented Generation</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    color: #1A1A2E;
+    min-height: 100vh;
+  }
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-menu { position: relative; }
+  .nav-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 260px;
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1E2D4E;
+    text-decoration: none;
+    color: #BDC3C7;
+    font-size: 13px;
+    transition: background 0.1s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home { color: #BDC3C7 !important; font-size: 13px !important; border-bottom: 1px solid #1E2D4E; }
+  .nav-home:hover { color: #FF6B6B !important; }
+  .lang-toggle { display: flex; gap: 6px; }
+  .lang-btn {
+    background: none;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+
+  .page-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .page-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  .article-header { margin-bottom: 32px; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #27AE6022;
+    color: #27AE60;
+    border: 1px solid #27AE6044;
+  }
+  .date { font-size: 12px; color: #95A5A6; }
+  .article-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1A1A2E;
+    margin-bottom: 12px;
+  }
+  .article-summary {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #E8EAF6;
+    color: #3F51B5;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .article-body { line-height: 1.75; color: #2C3E50; }
+  .article-body h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #E8EAED;
+  }
+  .article-body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 24px 0 8px;
+  }
+  .article-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7F8C8D;
+    margin: 20px 0 6px;
+  }
+  .article-body p { margin-bottom: 14px; font-size: 15px; }
+  .article-body ul, .article-body ol {
+    margin: 8px 0 14px 20px;
+    font-size: 15px;
+  }
+  .article-body li { margin-bottom: 4px; }
+  .article-body strong { font-weight: 700; color: #1A1A2E; }
+  .article-body em { color: #555; }
+  .article-body code {
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 13px;
+    background: #EEF0F3;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #C0392B;
+  }
+  .article-body pre {
+    background: #1A1A2E;
+    color: #E8EAF6;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .article-body pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .article-body th {
+    background: #1A1A2E;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .article-body td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #E8EAED;
+  }
+  .article-body tr:nth-child(even) td { background: #F8F9FA; }
+  .article-body blockquote {
+    border-left: 3px solid #1A1A2E;
+    padding: 8px 16px;
+    margin: 12px 0;
+    color: #555;
+    background: #F0F0F5;
+    border-radius: 0 4px 4px 0;
+  }
+  .article-body hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 28px 0;
+  }
+  .article-body a { color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }
+  .article-body a:hover { color: #3498DB; }
+
+  /* Sidebar */
+  .sidebar { position: sticky; top: 80px; }
+  .toc { display: flex; flex-direction: column; gap: 4px; }
+  .toc-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #95A5A6;
+    margin-bottom: 8px;
+  }
+  .toc a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    padding: 3px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    line-height: 1.4;
+    transition: all 0.1s;
+  }
+  .toc a.toc-h3 {
+    padding-left: 20px;
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+  .toc a:hover { color: #1A1A2E; border-left-color: #1A1A2E; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="nav-menu">  <button class="nav-btn">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="../index.html" class="nav-home">← Home</a>   <a href="../macro.html">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="../ecosystem.html">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span>  </span></a><a href="../dense-vs-moe.html">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="../glossary.html">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <main>
+    <div class="article-header">
+      <div class="article-meta">
+        <span class="status-badge">stable</span>
+        <span class="date">2026-04-04</span>
+      </div>
+      <h1 class="article-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</h1>
+      <p class="article-summary" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</p>
+      <div class="tags"><span class="tag">rag</span><span class="tag">retrieval</span><span class="tag">embeddings</span><span class="tag">vector-db</span></div>
+    </div>
+
+    <div class="article-body" id="article-body">
+      <h2 id="what-is-rag">What is RAG?</h2>
+<p>RAG (Retrieval-Augmented Generation) is a pattern that gives a language model access to an external knowledge base at inference time. Instead of relying solely on what was baked into its weights during training, the model first retrieves relevant documents from a database, then generates a response grounded in that retrieved context.</p>
+<p>The key insight: <strong>the model's knowledge and the model's reasoning are separated</strong>. You keep knowledge in a database you control, and use the LLM for what it's actually good at — synthesis, reasoning, and language generation.</p>
+<h2 id="how-it-works">How it works</h2>
+<p>A RAG pipeline has three stages:</p>
+<ol><li><strong>Indexing</strong> (offline, done once): Split your documents into chunks, embed each chunk into a vector, store vectors in a vector database.</li><li><strong>Retrieval</strong> (at query time): Embed the user's query, find the top-k chunks whose vectors are closest to the query vector.</li><li><strong>Generation</strong>: Inject the retrieved chunks into the model's context window as a prompt prefix, then generate the answer.</li></ol>
+<pre><code>User query
+    ↓
+[Embed query] → vector
+    ↓
+[Vector DB] → top-k relevant chunks
+    ↓
+[LLM] ← prompt = system + chunks + query
+    ↓
+Answer grounded in retrieved context</code></pre>
+<p>The quality of retrieval determines the quality of the answer. Garbage in, garbage out — no matter how good the LLM is.</p>
+<h2 id="when-to-use-it">When to use it</h2>
+<p>RAG is the right choice when:</p>
+<ul><li>Your knowledge base <strong>changes frequently</strong> (product docs, internal wikis, news)</li><li>You need <strong>citations</strong> — answers traceable to specific source documents</li><li>You're working with <strong>domain-specific or proprietary information</strong> the model wasn't trained on</li><li>You want to <strong>reduce hallucinations</strong> on factual questions</li><li><strong>Cost is a concern</strong> — fine-tuning is expensive, RAG can use any base model</li></ul>
+<h2 id="trade-offs-vs-fine-tuning">Trade-offs vs fine-tuning</h2>
+<table><thead><tr><td>Knowledge update</td><td>Change the DB, no retraining</td><td>Full or partial retraining</td></tr></thead><tbody><tr><td>Cost</td><td>Low (retrieval + inference)</td><td>High (GPU training)</td></tr><tr><td>Hallucination on facts</td><td>Lower (grounded in docs)</td><td>Higher (baked in weights)</td></tr><tr><td>Reasoning style / tone</td><td>Unchanged</td><td>Can be adapted</td></tr><tr><td>Latency</td><td>+retrieval step</td><td>Same as base model</td></tr><tr><td>Knowledge cutoff</td><td>None — DB is always current</td><td>Frozen at training time</td></tr></tbody></table>
+<p><strong>Rule of thumb</strong>: Use RAG for <em>what the model knows</em>. Use fine-tuning for <em>how the model behaves</em>.</p>
+<h2 id="failure-modes-to-know">Failure modes to know</h2>
+<ul><li><strong>Chunking too coarsely</strong>: relevant info gets split across chunks that aren't retrieved together</li><li><strong>Chunking too finely</strong>: chunks lose context, embeddings become noisy</li><li><strong>Query-document mismatch</strong>: user asks in a different "register" than how docs are written — semantic search struggles</li><li><strong>Context window overflow</strong>: retrieving too many chunks can push the actual question out of focus</li><li><strong>Retrieval without reranking</strong>: top-k by cosine similarity ≠ top-k by relevance to the actual question. A reranker (cross-encoder) helps.</li></ul>
+<h2 id="in-practice">In practice</h2>
+<p>A minimal RAG stack looks like:</p>
+<pre><code class="language-python"># 1. Embed the query
+query_vec = embedder.encode(user_query)
+
+# 2. Retrieve top-k chunks
+results = vector_db.search(query_vec, top_k=5)
+
+# 3. Build prompt
+context = "\n\n".join(r.text for r in results)
+prompt = f"Use the following context to answer.\n\n{context}\n\nQuestion: {user_query}"
+
+# 4. Generate
+answer = llm.generate(prompt)</code></pre>
+<p>In production, you'll want: a reranker after retrieval, hybrid search (dense + BM25), metadata filtering, and eval on retrieval quality separately from generation quality.</p>
+    </div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="toc-label" data-en="On this page" data-fr="Sur cette page">On this page</div>
+    <nav class="toc" id="toc-nav">
+      <nav class="toc"><a href="#what-is-rag" class="toc-h2">What is RAG?</a>
+<a href="#how-it-works" class="toc-h2">How it works</a>
+<a href="#when-to-use-it" class="toc-h2">When to use it</a>
+<a href="#trade-offs-vs-fine-tuning" class="toc-h2">Trade-offs vs fine-tuning</a>
+<a href="#failure-modes-to-know" class="toc-h2">Failure modes to know</a>
+<a href="#in-practice" class="toc-h2">In practice</a></nav>
+    </nav>
+  </aside>
+</div>
+
+<script>
+const CONTENT = {
+  en: '<h2 id="what-is-rag">What is RAG?</h2>\n<p>RAG (Retrieval-Augmented Generation) is a pattern that gives a language model access to an external knowledge base at inference time. Instead of relying solely on what was baked into its weights during training, the model first retrieves relevant documents from a database, then generates a response grounded in that retrieved context.</p>\n<p>The key insight: <strong>the model\'s knowledge and the model\'s reasoning are separated</strong>. You keep knowledge in a database you control, and use the LLM for what it\'s actually good at — synthesis, reasoning, and language generation.</p>\n<h2 id="how-it-works">How it works</h2>\n<p>A RAG pipeline has three stages:</p>\n<ol><li><strong>Indexing</strong> (offline, done once): Split your documents into chunks, embed each chunk into a vector, store vectors in a vector database.</li><li><strong>Retrieval</strong> (at query time): Embed the user\'s query, find the top-k chunks whose vectors are closest to the query vector.</li><li><strong>Generation</strong>: Inject the retrieved chunks into the model\'s context window as a prompt prefix, then generate the answer.</li></ol>\n<pre><code>User query\n    ↓\n[Embed query] → vector\n    ↓\n[Vector DB] → top-k relevant chunks\n    ↓\n[LLM] ← prompt = system + chunks + query\n    ↓\nAnswer grounded in retrieved context</code></pre>\n<p>The quality of retrieval determines the quality of the answer. Garbage in, garbage out — no matter how good the LLM is.</p>\n<h2 id="when-to-use-it">When to use it</h2>\n<p>RAG is the right choice when:</p>\n<ul><li>Your knowledge base <strong>changes frequently</strong> (product docs, internal wikis, news)</li><li>You need <strong>citations</strong> — answers traceable to specific source documents</li><li>You\'re working with <strong>domain-specific or proprietary information</strong> the model wasn\'t trained on</li><li>You want to <strong>reduce hallucinations</strong> on factual questions</li><li><strong>Cost is a concern</strong> — fine-tuning is expensive, RAG can use any base model</li></ul>\n<h2 id="trade-offs-vs-fine-tuning">Trade-offs vs fine-tuning</h2>\n<table><thead><tr><td>Knowledge update</td><td>Change the DB, no retraining</td><td>Full or partial retraining</td></tr></thead><tbody><tr><td>Cost</td><td>Low (retrieval + inference)</td><td>High (GPU training)</td></tr><tr><td>Hallucination on facts</td><td>Lower (grounded in docs)</td><td>Higher (baked in weights)</td></tr><tr><td>Reasoning style / tone</td><td>Unchanged</td><td>Can be adapted</td></tr><tr><td>Latency</td><td>+retrieval step</td><td>Same as base model</td></tr><tr><td>Knowledge cutoff</td><td>None — DB is always current</td><td>Frozen at training time</td></tr></tbody></table>\n<p><strong>Rule of thumb</strong>: Use RAG for <em>what the model knows</em>. Use fine-tuning for <em>how the model behaves</em>.</p>\n<h2 id="failure-modes-to-know">Failure modes to know</h2>\n<ul><li><strong>Chunking too coarsely</strong>: relevant info gets split across chunks that aren\'t retrieved together</li><li><strong>Chunking too finely</strong>: chunks lose context, embeddings become noisy</li><li><strong>Query-document mismatch</strong>: user asks in a different "register" than how docs are written — semantic search struggles</li><li><strong>Context window overflow</strong>: retrieving too many chunks can push the actual question out of focus</li><li><strong>Retrieval without reranking</strong>: top-k by cosine similarity ≠ top-k by relevance to the actual question. A reranker (cross-encoder) helps.</li></ul>\n<h2 id="in-practice">In practice</h2>\n<p>A minimal RAG stack looks like:</p>\n<pre><code class="language-python"># 1. Embed the query\nquery_vec = embedder.encode(user_query)\n\n# 2. Retrieve top-k chunks\nresults = vector_db.search(query_vec, top_k=5)\n\n# 3. Build prompt\ncontext = "\\n\\n".join(r.text for r in results)\nprompt = f"Use the following context to answer.\\n\\n{context}\\n\\nQuestion: {user_query}"\n\n# 4. Generate\nanswer = llm.generate(prompt)</code></pre>\n<p>In production, you\'ll want: a reranker after retrieval, hybrid search (dense + BM25), metadata filtering, and eval on retrieval quality separately from generation quality.</p>',
+  fr: '<h2 id="quest-ce-que-rag">Qu\'est-ce que RAG ?</h2>\n<p>RAG (Retrieval-Augmented Generation) est un pattern qui donne au modèle de langage accès à une base de connaissance externe au moment de l\'inférence. Plutôt que de s\'appuyer uniquement sur ce qui a été intégré dans ses poids pendant l\'entraînement, le modèle commence par récupérer des documents pertinents, puis génère une réponse ancrée dans ce contexte récupéré.</p>\n<p>L\'idée centrale : <strong>la connaissance du modèle et son raisonnement sont séparés</strong>. Tu gardes la connaissance dans une base que tu contrôles, et tu utilises le LLM pour ce qu\'il fait vraiment bien — la synthèse, le raisonnement, et la génération de texte.</p>\n<h2 id="comment-ça-fonctionne">Comment ça fonctionne</h2>\n<p>Un pipeline RAG comporte trois étapes :</p>\n<ol><li><strong>Indexation</strong> (offline, fait une fois) : découper les documents en chunks, embedder chaque chunk, stocker les vecteurs dans une base vectorielle.</li><li><strong>Récupération</strong> (au moment de la requête) : embedder la question de l\'utilisateur, trouver les top-k chunks dont les vecteurs sont les plus proches.</li><li><strong>Génération</strong> : injecter les chunks récupérés dans la fenêtre de contexte du modèle, puis générer la réponse.</li></ol>\n<pre><code>Question utilisateur\n    ↓\n[Embed query] → vecteur\n    ↓\n[Vector DB] → top-k chunks pertinents\n    ↓\n[LLM] ← prompt = système + chunks + question\n    ↓\nRéponse ancrée dans le contexte récupéré</code></pre>\n<p>La qualité de la récupération détermine la qualité de la réponse. Peu importe la puissance du LLM — si la récupération est mauvaise, la réponse le sera aussi.</p>\n<h2 id="quand-lutiliser">Quand l\'utiliser</h2>\n<p>RAG est le bon choix quand :</p>\n<ul><li>Ta base de connaissance <strong>change fréquemment</strong> (docs produit, wikis internes, actualités)</li><li>Tu as besoin de <strong>citations</strong> — des réponses traçables vers des documents sources précis</li><li>Tu travailles avec des <strong>informations spécifiques au domaine ou propriétaires</strong> que le modèle n\'a pas vues à l\'entraînement</li><li>Tu veux <strong>réduire les hallucinations</strong> sur les questions factuelles</li><li>Le <strong>coût est un critère</strong> — le fine-tuning est cher, RAG peut utiliser n\'importe quel modèle de base</li></ul>\n<h2 id="compromis-vs-fine-tuning">Compromis vs fine-tuning</h2>\n<table><thead><tr><td>Mise à jour des connaissances</td><td>Changer la DB, pas de ré-entraînement</td><td>Ré-entraînement complet ou partiel</td></tr></thead><tbody><tr><td>Coût</td><td>Faible (récupération + inférence)</td><td>Élevé (entraînement GPU)</td></tr><tr><td>Hallucinations sur les faits</td><td>Plus faibles (ancré dans les docs)</td><td>Plus élevées (intégré dans les poids)</td></tr><tr><td>Style de raisonnement / ton</td><td>Inchangé</td><td>Peut être adapté</td></tr><tr><td>Latence</td><td>+étape de récupération</td><td>Identique au modèle de base</td></tr><tr><td>Cutoff des connaissances</td><td>Aucun — la DB est toujours à jour</td><td>Figé au moment de l\'entraînement</td></tr></tbody></table>\n<p><strong>Règle empirique</strong> : RAG pour <em>ce que le modèle sait</em>. Fine-tuning pour <em>comment le modèle se comporte</em>.</p>\n<h2 id="modes-déchec-à-connaître">Modes d\'échec à connaître</h2>\n<ul><li><strong>Chunks trop gros</strong> : les informations pertinentes sont réparties sur des chunks non récupérés ensemble</li><li><strong>Chunks trop petits</strong> : les chunks perdent leur contexte, les embeddings deviennent bruités</li><li><strong>Décalage requête-document</strong> : l\'utilisateur pose la question différemment de comment les docs sont rédigés — la recherche sémantique s\'en sort mal</li><li><strong>Débordement de la fenêtre de contexte</strong> : trop de chunks peuvent éclipser la question elle-même</li><li><strong>Récupération sans reranking</strong> : top-k par similarité cosinus ≠ top-k par pertinence réelle. Un reranker (cross-encoder) aide.</li></ul>\n<h2 id="en-pratique">En pratique</h2>\n<p>Un stack RAG minimal ressemble à :</p>\n<pre><code class="language-python"># 1. Embedder la requête\nquery_vec = embedder.encode(user_query)\n\n# 2. Récupérer les top-k chunks\nresults = vector_db.search(query_vec, top_k=5)\n\n# 3. Construire le prompt\ncontext = "\\n\\n".join(r.text for r in results)\nprompt = f"Utilise le contexte suivant pour répondre.\\n\\n{context}\\n\\nQuestion : {user_query}"\n\n# 4. Générer\nanswer = llm.generate(prompt)</code></pre>\n<p>En production : ajoute un reranker après la récupération, une recherche hybride (dense + BM25), du filtrage par métadonnées, et évalue la qualité de la récupération séparément de la génération.</p>',
+};
+const TOC = {
+  en: '<nav class="toc"><a href="#what-is-rag" class="toc-h2">What is RAG?</a>\n<a href="#how-it-works" class="toc-h2">How it works</a>\n<a href="#when-to-use-it" class="toc-h2">When to use it</a>\n<a href="#trade-offs-vs-fine-tuning" class="toc-h2">Trade-offs vs fine-tuning</a>\n<a href="#failure-modes-to-know" class="toc-h2">Failure modes to know</a>\n<a href="#in-practice" class="toc-h2">In practice</a></nav>',
+  fr: '<nav class="toc"><a href="#quest-ce-que-rag" class="toc-h2">Qu\'est-ce que RAG ?</a>\n<a href="#comment-ça-fonctionne" class="toc-h2">Comment ça fonctionne</a>\n<a href="#quand-lutiliser" class="toc-h2">Quand l\'utiliser</a>\n<a href="#compromis-vs-fine-tuning" class="toc-h2">Compromis vs fine-tuning</a>\n<a href="#modes-déchec-à-connaître" class="toc-h2">Modes d\'échec à connaître</a>\n<a href="#en-pratique" class="toc-h2">En pratique</a></nav>',
+};
+let lang = 'en';
+
+function setLang(newLang) {
+  lang = newLang;
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  document.getElementById('toc-nav').innerHTML = TOC[lang] || TOC.en;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.en;
+  });
+}
+</script>
+</body>
+</html>

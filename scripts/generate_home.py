@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate web/index.html — the landing page listing all available mind maps."""
 
+import re
 import yaml
 import json
 from pathlib import Path
@@ -10,6 +11,7 @@ MAPS_FILE = ROOT / "data" / "maps.yaml"
 GLOSSARY_FILE = ROOT / "data" / "glossary.yaml"
 MACRO_FILE = ROOT / "data" / "ecosystem-macro.yaml"
 ECOSYSTEM_FILE = ROOT / "data" / "ecosystem.yaml"
+TOPICS_DIR = ROOT / "data" / "topics"
 OUTPUT = ROOT / "web" / "index.html"
 
 
@@ -41,6 +43,53 @@ def build_card(m):
         <div class="card-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</div>
         <div class="card-desc"  data-en="{desc_en}"  data-fr="{desc_fr}" >{desc_en}</div>
         <div class="card-meta" data-en="{meta_en}" data-fr="{meta_fr}">{meta_en}</div>
+      </div>
+      <div class="card-arrow">→</div>
+    </a>"""
+
+
+def parse_topic_frontmatter(path):
+    """Extract YAML frontmatter from a topic .md file."""
+    raw = path.read_text(encoding="utf-8")
+    fm_match = re.match(r"^---\n(.*?)\n---\n", raw, re.DOTALL)
+    if not fm_match:
+        return None
+    return yaml.safe_load(fm_match.group(1))
+
+
+def load_topics():
+    """Return list of topic frontmatter dicts, sorted by date desc."""
+    if not TOPICS_DIR.exists():
+        return []
+    topics = []
+    for path in sorted(TOPICS_DIR.glob("*.md")):
+        fm = parse_topic_frontmatter(path)
+        if fm:
+            topics.append(fm)
+    topics.sort(key=lambda x: str(x.get("date", "")), reverse=True)
+    return topics
+
+
+def build_topic_card(topic):
+    tid = topic.get("id", "")
+    title_en = t(topic.get("title", ""), "en")
+    title_fr = t(topic.get("title", ""), "fr") or title_en
+    summary_en = t(topic.get("summary", ""), "en")
+    summary_fr = t(topic.get("summary", ""), "fr") or summary_en
+    tags = topic.get("tags", [])
+    status = topic.get("status", "draft")
+    tags_html = "".join(f'<span class="topic-tag">{tag}</span>' for tag in tags[:4])
+    status_colors = {"stable": "#27AE60", "draft": "#E67E22", "review": "#3498DB"}
+    status_color = status_colors.get(status, "#7F8C8D")
+    return f"""
+    <a href="topics/{tid}.html" class="topic-card">
+      <div class="topic-card-body">
+        <div class="topic-card-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</div>
+        <div class="topic-card-desc" data-en="{summary_en}" data-fr="{summary_fr}">{summary_en}</div>
+        <div class="topic-card-footer">
+          <div class="topic-tags">{tags_html}</div>
+          <span class="topic-status" style="color:{status_color}">{status}</span>
+        </div>
       </div>
       <div class="card-arrow">→</div>
     </a>"""
@@ -93,6 +142,21 @@ def build_search_index():
                 "map": map_label,
             })
 
+    # Topics
+    for topic in load_topics():
+        tid = topic.get("id", "")
+        summary = topic.get("summary") or {}
+        if isinstance(summary, str):
+            summary = {"en": summary}
+        items.append({
+            "type": "topic",
+            "id": tid,
+            "label": topic.get("title", {}),
+            "aliases": topic.get("tags", []),
+            "desc": {k: (v or "")[:120] for k, v in summary.items()},
+            "url": f"topics/{tid}.html",
+        })
+
     return items
 
 
@@ -101,6 +165,9 @@ def main():
         config = yaml.safe_load(f)
     maps = config.get("maps", [])
     cards_html = "\n".join(build_card(m) for m in maps)
+    topics = load_topics()
+    topics_html = "\n".join(build_topic_card(topic) for topic in topics)
+    topics_section_display = "block" if topics else "none"
     search_index_json = json.dumps(build_search_index(), ensure_ascii=False)
 
     html = f"""<!DOCTYPE html>
@@ -205,6 +272,64 @@ def main():
   .card-arrow {{ font-size: 20px; color: #2C3E6E; flex-shrink: 0; transition: all 0.2s; }}
   .card:hover .card-arrow {{ color: #E74C3C; transform: translateX(4px); }}
 
+  /* Topics section */
+  .section-header {{
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    margin-top: 48px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #1E2D4E;
+  }}
+  .section-title {{
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #C39BD3;
+  }}
+  .topic-card {{
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 16px;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+  }}
+  .topic-card:hover {{
+    border-color: #C39BD3;
+    background: #1A2047;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(195,155,211,0.12);
+  }}
+  .topic-card:hover .card-arrow {{ color: #C39BD3; transform: translateX(4px); }}
+  .topic-card-body {{ flex: 1; }}
+  .topic-card-title {{ font-size: 16px; font-weight: 700; margin-bottom: 5px; color: white; }}
+  .topic-card-desc  {{ font-size: 13px; color: #7F8C8D; line-height: 1.5; margin-bottom: 10px; }}
+  .topic-card-footer {{ display: flex; align-items: center; justify-content: space-between; gap: 8px; }}
+  .topic-tags {{ display: flex; flex-wrap: wrap; gap: 5px; }}
+  .topic-tag {{
+    font-size: 10px;
+    padding: 1px 7px;
+    background: #3B1F4E;
+    color: #C39BD3;
+    border-radius: 4px;
+    font-weight: 600;
+  }}
+  .topic-status {{
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }}
+
   footer {{
     text-align: center;
     padding: 24px;
@@ -294,6 +419,7 @@ def main():
   }}
   .badge-glossary {{ background: #2C3E6E; color: #BDC3C7; }}
   .badge-node    {{ background: #1E3A2E; color: #82C8A0; }}
+  .badge-topic   {{ background: #3B1F4E; color: #C39BD3; }}
   .search-item-label {{ font-size: 13px; font-weight: 600; color: white; }}
   .search-item-sub   {{ font-size: 11px; color: #7F8C8D; }}
   .search-item-match {{ font-size: 11px; color: #E74C3C; font-style: italic; }}
@@ -329,6 +455,14 @@ def main():
   </div>
   <div class="cards">
     {cards_html}
+  </div>
+  <div style="display:{topics_section_display};width:100%">
+    <div class="section-header">
+      <span class="section-title" data-en="Deep Dives" data-fr="Articles de fond">Deep Dives</span>
+    </div>
+    <div class="cards" style="grid-template-columns:1fr">
+      {topics_html}
+    </div>
   </div>
 </main>
 
@@ -414,6 +548,8 @@ function renderResults(results) {{
     const {{ item, label, desc, mapLabel, matchText }} = r;
     const badge = item.type === 'glossary'
       ? `<span class="search-item-badge badge-glossary">${{currentLang === 'fr' ? 'Glossaire' : 'Glossary'}}</span>`
+      : item.type === 'topic'
+      ? `<span class="search-item-badge badge-topic">${{currentLang === 'fr' ? 'Article' : 'Deep Dive'}}</span>`
       : `<span class="search-item-badge badge-node">${{mapLabel}}</span>`;
     const sub = matchText
       ? `<div class="search-item-match">${{matchText}}</div>`

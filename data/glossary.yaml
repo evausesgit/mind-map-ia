@@ -194,6 +194,62 @@ terms:
         Très largement adopté en production — la méthode la plus fiable pour donner à un LLM
         accès à des données spécifiques.
 
+  - id: agentic
+    label:
+      en: "Agentic AI"
+      fr: "IA Agentique"
+    aliases: ["agentic", "agent IA", "AI agent", "AI agents", "agents IA", "agentic AI", "agentic system", "système agentique"]
+    description:
+      en: >
+        A mode of operation where an AI model acts autonomously over multiple steps to complete a goal,
+        rather than simply answering a single prompt.
+        An agentic system can use tools (web search, code execution, file access), plan a sequence of actions,
+        observe the results of each step, and adjust its behaviour accordingly — often without human
+        intervention between steps.
+        The key properties are: tool use, multi-step reasoning, and a feedback loop between action and observation.
+        Examples: Claude Code, OpenAI Operator, AutoGPT, LangChain agents.
+      fr: >
+        Un mode de fonctionnement où un modèle d'IA agit de façon autonome sur plusieurs étapes
+        pour accomplir un objectif, plutôt que de simplement répondre à un prompt unique.
+        Un système agentique peut utiliser des outils (recherche web, exécution de code, accès aux fichiers),
+        planifier une séquence d'actions, observer les résultats de chaque étape et adapter son comportement
+        en conséquence — souvent sans intervention humaine entre les étapes.
+        Les propriétés clés sont : utilisation d'outils, raisonnement multi-étapes,
+        et boucle de rétroaction entre action et observation.
+        Exemples : Claude Code, OpenAI Operator, AutoGPT, agents LangChain.
+
+  - id: mcp
+    label:
+      en: "MCP"
+      fr: "MCP"
+    aliases: ["MCP", "Model Context Protocol", "model context protocol"]
+    see_also:
+      url: "topics/mcp-explained.html"
+      label:
+        en: "MCP deep dive"
+        fr: "Article complet sur MCP"
+    description:
+      en: >
+        Model Context Protocol. An open standard (governed by the Linux Foundation) that defines
+        how AI applications connect to external data sources and tools.
+        MCP uses a client-server model: the **MCP Host** (your app) contains an **MCP Client**
+        that communicates with one or more **MCP Servers**, each exposing three types of capabilities:
+        **Resources** (read-only data), **Tools** (functions with side effects), and **Prompts** (reusable templates).
+        Before MCP, every AI application had to build custom integrations for every external resource.
+        MCP standardizes this layer so that any compliant client can talk to any compliant server.
+        Official SDKs exist for 10 languages. A community registry lists hundreds of production servers
+        covering filesystems, databases, GitHub, Slack, browser automation, and more.
+      fr: >
+        Model Context Protocol. Un standard ouvert (gouverné par la Linux Foundation) qui définit
+        comment les applications IA se connectent à des sources de données et outils externes.
+        MCP utilise un modèle client-serveur : le **MCP Host** (ton application) contient un **MCP Client**
+        qui communique avec un ou plusieurs **MCP Servers**, chacun exposant trois types de capacités :
+        **Resources** (données en lecture seule), **Tools** (fonctions avec effets de bord), et **Prompts** (templates réutilisables).
+        Avant MCP, chaque application IA devait construire des intégrations sur mesure pour chaque ressource.
+        MCP standardise cette couche pour que n'importe quel client compatible puisse parler à n'importe quel serveur compatible.
+        Des SDKs officiels existent pour 10 langages. Un registry communautaire liste des centaines de serveurs
+        couvrant filesystems, bases de données, GitHub, Slack, automatisation navigateur, et plus.
+
   - id: machine_learning
     label:
       en: "Machine Learning"
