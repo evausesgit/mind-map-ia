@@ -1794,12 +1794,19 @@ cy.on("tap", "node", function(evt) {{
 }});
 
 // ── Node double-tap → drill-down inline ──────
-cy.on("dbltap", "node", function(evt) {{
+let _tapTimer = null, _lastTapNode = null;
+cy.on("tap", "node", function(evt) {{
   const node = evt.target;
-  const dd = DRILLDOWN_DATA[node.id()];
-  if (!dd) return;
-  const label = node.data(`label_${{lang}}`) || node.data("label");
-  showDrilldown(dd, label, node.data("color"));
+  if (!DRILLDOWN_DATA[node.id()]) return;
+  if (_lastTapNode === node.id() && _tapTimer) {{
+    clearTimeout(_tapTimer); _tapTimer = null; _lastTapNode = null;
+    showDrilldown(DRILLDOWN_DATA[node.id()],
+      node.data(`label_${{lang}}`) || node.data("label"),
+      node.data("color"));
+  }} else {{
+    _lastTapNode = node.id();
+    _tapTimer = setTimeout(() => {{ _tapTimer = null; _lastTapNode = null; }}, 350);
+  }}
 }});
 
 let cy2 = null;
@@ -1868,7 +1875,6 @@ function showDrilldown(dd, label, color) {{
 
 function closeDrilldown() {{
   document.body.classList.remove("drilldown-active");
-  document.getElementById("drilldown-section").style.display = "none";
   if (cy2) {{ cy2.destroy(); cy2 = null; }}
 }}
 
