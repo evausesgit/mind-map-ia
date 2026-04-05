@@ -1,0 +1,275 @@
+meta:
+  title:
+    en: "AI Coding Assistants"
+    fr: "Assistants de Code IA"
+  description:
+    en: "Tools that integrate LLMs into the development workflow"
+    fr: "Outils qui intègrent les LLM dans le workflow de développement"
+  version: "2026-Q1"
+  date: "2026-04-05"
+  back_link: "macro.html"
+  layout_direction: ltr
+  column_scale: 0.5
+
+layers:
+  1:
+    en: "CATEGORIES"
+    fr: "CATÉGORIES"
+  2:
+    en: "TOOLS"
+    fr: "OUTILS"
+
+categories:
+  - id: category
+    label:
+      en: "Category"
+      fr: "Catégorie"
+    color: "#F0A500"
+    description:
+      en: "A type of AI coding assistant"
+      fr: "Un type d'assistant de code IA"
+
+  - id: tool
+    label:
+      en: "Tool"
+      fr: "Outil"
+    color: "#85C1E9"
+    description:
+      en: "A specific AI coding tool"
+      fr: "Un outil de code IA spécifique"
+
+nodes:
+  # ── LAYER 1 · CATEGORIES ─────────────────────
+
+  - id: ide_plugins
+    label:
+      en: "IDE Plugins"
+      fr: "Plugins IDE"
+    layer: 1
+    category: category
+    node_type: provider
+    status: stable
+    since: "2021"
+    link: "https://github.com/features/copilot"
+    description:
+      en: |
+        Plugins that add AI assistance to your existing editor (VS Code, JetBrains, Neovim…).
+        Core features: inline completion, chat sidebar, code explanation, test generation.
+        You stay in your editor — the AI assists without taking over.
+        Best for: developers who want AI help without changing their workflow.
+      fr: |
+        Plugins qui ajoutent l'assistance IA à votre éditeur existant (VS Code, JetBrains, Neovim…).
+        Fonctionnalités principales : complétion inline, chat sidebar, explication de code, génération de tests.
+        Vous restez dans votre éditeur — l'IA assiste sans prendre le contrôle.
+        Idéal pour : les développeurs qui veulent de l'aide IA sans changer leur workflow.
+
+  - id: agentic_ides
+    label:
+      en: "Agentic IDEs"
+      fr: "IDEs Agentiques"
+    layer: 1
+    category: category
+    node_type: provider
+    status: evolving
+    since: "2023"
+    link: "https://www.cursor.com"
+    description:
+      en: |
+        Full IDE experiences rebuilt around AI. Not just completion — the AI can read your entire codebase,
+        make multi-file edits, run commands, and iterate autonomously.
+        Composer/Agent mode: describe a feature, the AI implements it across multiple files.
+        Best for: teams ready to deeply integrate AI into their dev workflow.
+        Trade-off: vendor lock-in, steeper learning curve, subscription cost.
+      fr: |
+        Expériences IDE complètes reconstruites autour de l'IA. Pas juste de la complétion — l'IA peut lire
+        toute votre base de code, faire des modifications multi-fichiers, exécuter des commandes et itérer de façon autonome.
+        Mode Composer/Agent : décrivez une fonctionnalité, l'IA l'implémente dans plusieurs fichiers.
+        Idéal pour : les équipes prêtes à intégrer profondément l'IA dans leur workflow de dev.
+
+  - id: cli_agents
+    label:
+      en: "CLI Agents"
+      fr: "Agents CLI"
+    layer: 1
+    category: category
+    node_type: provider
+    status: evolving
+    since: "2024"
+    link: "https://claude.ai/code"
+    description:
+      en: |
+        AI coding agents that run in the terminal. Full access to the file system, shell commands,
+        git, and any CLI tool. No GUI — pure terminal workflow.
+        Can be run headlessly in CI/CD pipelines for automated coding tasks.
+        Best for: backend/devops engineers, power users, automated workflows.
+        Claude Code and Aider are the leading options.
+      fr: |
+        Agents de code IA qui tournent dans le terminal. Accès complet au système de fichiers, commandes shell,
+        git et tout outil CLI. Pas de GUI — workflow pur terminal.
+        Peut être exécuté en mode headless dans les pipelines CI/CD pour des tâches de code automatisées.
+        Idéal pour : ingénieurs backend/devops, power users, workflows automatisés.
+        Claude Code et Aider sont les options phares.
+
+  # ── LAYER 2 · TOOLS ──────────────────────────
+
+  - id: github_copilot
+    label:
+      en: "GitHub Copilot"
+      fr: "GitHub Copilot"
+    layer: 2
+    category: tool
+    status: stable
+    since: "2021"
+    link: "https://github.com/features/copilot"
+    description:
+      en: |
+        Microsoft/GitHub's AI coding tool — the most widely deployed (>1.8M paid users).
+        Integrates into VS Code, JetBrains, Neovim, Visual Studio.
+        Powered by GPT-4o and Claude (choice depends on task). GitHub Context: understands your entire repo.
+        Copilot Workspace: agentic task completion from issue to PR.
+        Enterprise plan: self-hosted option, policy controls, audit logs. The "safe" enterprise choice.
+      fr: |
+        L'outil de code IA de Microsoft/GitHub — le plus déployé (>1,8M utilisateurs payants).
+        S'intègre dans VS Code, JetBrains, Neovim, Visual Studio.
+        Propulsé par GPT-4o et Claude. GitHub Context : comprend toute votre base de code.
+        Copilot Workspace : complétion de tâche agentique de l'issue à la PR.
+        Plan Enterprise : option self-hosted, contrôles de politique, logs d'audit.
+
+  - id: cursor
+    label:
+      en: "Cursor"
+      fr: "Cursor"
+    layer: 2
+    category: tool
+    status: evolving
+    since: "2023"
+    link: "https://www.cursor.com"
+    description:
+      en: |
+        VS Code fork rebuilt for AI-first development. The most popular agentic IDE.
+        Cmd+K: inline edit with natural language. Chat: ask questions about your codebase.
+        Composer/Agent: multi-file autonomous implementation. @codebase: semantic search over your repo.
+        Uses Claude 3.5 Sonnet, GPT-4o and its own cursor-small model.
+        Fastest-growing dev tool of 2024 — the reference for "AI-native" development.
+      fr: |
+        Fork de VS Code reconstruit pour le développement IA-first. L'IDE agentique le plus populaire.
+        Cmd+K : édition inline en langage naturel. Chat : posez des questions sur votre base de code.
+        Composer/Agent : implémentation autonome multi-fichiers.
+        Utilise Claude 3.5 Sonnet, GPT-4o et son propre modèle cursor-small.
+        L'outil de dev à la croissance la plus rapide de 2024.
+
+  - id: windsurf
+    label:
+      en: "Windsurf (Codeium)"
+      fr: "Windsurf (Codeium)"
+    layer: 2
+    category: tool
+    status: evolving
+    since: "2024"
+    link: "https://codeium.com/windsurf"
+    description:
+      en: |
+        Codeium's agentic IDE. Direct Cursor competitor with a "Cascade" agent that maintains
+        full awareness of your codebase and actions taken.
+        Key differentiator: "Flow" paradigm — the agent proactively suggests what to do next,
+        not just reacting to commands.
+        Generous free tier. Acquired by OpenAI in 2025.
+      fr: |
+        L'IDE agentique de Codeium. Concurrent direct de Cursor avec un agent "Cascade"
+        qui maintient une conscience complète de votre base de code et des actions effectuées.
+        Différenciateur clé : paradigme "Flow" — l'agent suggère proactivement quoi faire ensuite.
+        Généreux tier gratuit. Acquis par OpenAI en 2025.
+
+  - id: claude_code
+    label:
+      en: "Claude Code"
+      fr: "Claude Code"
+    layer: 2
+    category: tool
+    status: evolving
+    since: "2025"
+    link: "https://claude.ai/code"
+    description:
+      en: |
+        Anthropic's CLI coding agent. Runs in the terminal with full access to files, shell, and git.
+        Agentic by design: can plan, implement, test and commit multi-step tasks autonomously.
+        Deep integration with Claude's extended context (200k tokens) — understands large codebases.
+        Supports MCP servers: extend with custom tools (databases, APIs, internal services).
+        Headless mode: scriptable for CI/CD automation. The power-user and DevOps choice.
+      fr: |
+        L'agent de code CLI d'Anthropic. Tourne dans le terminal avec accès complet aux fichiers, shell et git.
+        Agentique par conception : peut planifier, implémenter, tester et commiter des tâches multi-étapes de façon autonome.
+        Intégration profonde avec le contexte étendu de Claude (200k tokens) — comprend les grandes bases de code.
+        Supporte les serveurs MCP : extensible avec des outils personnalisés.
+        Mode headless : scriptable pour l'automatisation CI/CD.
+
+  - id: aider
+    label:
+      en: "Aider"
+      fr: "Aider"
+    layer: 2
+    category: tool
+    status: stable
+    since: "2023"
+    link: "https://aider.chat"
+    description:
+      en: |
+        Open-source CLI coding assistant. Works with any LLM (Claude, GPT-4, Gemini, local models via Ollama).
+        Git-native: automatically commits changes with meaningful messages.
+        Architect mode: separates planning (expensive model) from editing (cheaper model) for efficiency.
+        No subscription — you pay only for the API tokens you use.
+        Best for: open-source enthusiasts, cost-conscious developers, custom model setups.
+      fr: |
+        Assistant de code CLI open source. Fonctionne avec n'importe quel LLM (Claude, GPT-4, Gemini, modèles locaux via Ollama).
+        Git-native : commite automatiquement les modifications avec des messages significatifs.
+        Mode Architect : sépare la planification (modèle coûteux) de l'édition (modèle moins cher).
+        Pas d'abonnement — vous payez uniquement les tokens API consommés.
+        Idéal pour : fans d'open source, développeurs sensibles aux coûts, configurations de modèles personnalisées.
+
+  - id: codeium_plugin
+    label:
+      en: "Codeium (free)"
+      fr: "Codeium (gratuit)"
+    layer: 2
+    category: tool
+    status: stable
+    since: "2022"
+    link: "https://codeium.com"
+    description:
+      en: |
+        Free AI code completion plugin for 70+ editors. Not agentic — focused on inline completion and chat.
+        Unlimited free tier makes it the default choice for individual developers and students.
+        Supports VS Code, JetBrains, Vim, Emacs, and more.
+        Enterprise version: self-hosted deployment option for data-sensitive environments.
+      fr: |
+        Plugin gratuit de complétion de code IA pour 70+ éditeurs. Pas agentique — focalisé sur la complétion inline et le chat.
+        Le tier gratuit illimité en fait le choix par défaut pour les développeurs individuels et les étudiants.
+        Supporte VS Code, JetBrains, Vim, Emacs et plus.
+        Version Enterprise : option de déploiement self-hosted pour les environnements sensibles aux données.
+
+edges:
+  # Categories → Tools
+  - from: ide_plugins
+    to: github_copilot
+    label: ""
+    type: part_of
+  - from: ide_plugins
+    to: codeium_plugin
+    label: ""
+    type: part_of
+  - from: agentic_ides
+    to: cursor
+    label: ""
+    type: part_of
+  - from: agentic_ides
+    to: windsurf
+    label: ""
+    type: part_of
+  - from: cli_agents
+    to: claude_code
+    label: ""
+    type: part_of
+  - from: cli_agents
+    to: aider
+    label: ""
+    type: part_of

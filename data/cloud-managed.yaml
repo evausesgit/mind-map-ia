@@ -1,0 +1,366 @@
+meta:
+  title:
+    en: "Cloud Managed AI"
+    fr: "IA Cloud Managée"
+  description:
+    en: "Major cloud providers and their managed AI platforms"
+    fr: "Principaux fournisseurs cloud et leurs plateformes IA managées"
+  version: "2026-Q1"
+  date: "2026-04-05"
+  back_link: "macro.html"
+  layout_direction: ltr
+  column_scale: 0.45
+
+layers:
+  1:
+    en: "CLOUD PROVIDERS"
+    fr: "FOURNISSEURS CLOUD"
+  2:
+    en: "AI PLATFORMS"
+    fr: "PLATEFORMES IA"
+  3:
+    en: "KEY CAPABILITIES"
+    fr: "CAPACITÉS CLÉS"
+
+categories:
+  - id: provider
+    label:
+      en: "Cloud Provider"
+      fr: "Fournisseur Cloud"
+    color: "#5DADE2"
+    description:
+      en: "Major cloud infrastructure provider with managed AI services"
+      fr: "Fournisseur d'infrastructure cloud majeur avec services IA managés"
+
+  - id: platform
+    label:
+      en: "AI Platform"
+      fr: "Plateforme IA"
+    color: "#A9CCE3"
+    description:
+      en: "Managed service for accessing and deploying AI models"
+      fr: "Service managé pour accéder et déployer des modèles IA"
+
+  - id: capability
+    label:
+      en: "Key Capability"
+      fr: "Capacité Clé"
+    color: "#D6EAF8"
+    description:
+      en: "A differentiating feature of the platform"
+      fr: "Une fonctionnalité différenciante de la plateforme"
+
+nodes:
+  # ── LAYER 1 · CLOUD PROVIDERS ────────────────
+
+  - id: aws
+    label:
+      en: "AWS"
+      fr: "AWS"
+    layer: 1
+    category: provider
+    node_type: provider
+    status: stable
+    since: "2006"
+    link: "https://aws.amazon.com/ai/"
+    description:
+      en: |
+        Amazon Web Services — the largest cloud provider by market share.
+        AI strategy: be the neutral multi-model platform. Bedrock gives access to models
+        from Anthropic, Meta, Mistral, AI21, Cohere and Amazon's own Nova series.
+        Key enterprise advantage: deep integration with existing AWS services (S3, Lambda, SageMaker, IAM).
+        Strong compliance portfolio (HIPAA, SOC2, FedRAMP) — first choice for regulated industries.
+      fr: |
+        Amazon Web Services — le plus grand fournisseur cloud par part de marché.
+        Stratégie IA : être la plateforme multi-modèles neutre. Bedrock donne accès aux modèles
+        d'Anthropic, Meta, Mistral, AI21, Cohere et la propre série Nova d'Amazon.
+        Avantage enterprise clé : intégration profonde avec les services AWS existants (S3, Lambda, SageMaker, IAM).
+        Solide portefeuille de conformité (HIPAA, SOC2, FedRAMP) — premier choix pour les industries régulées.
+
+  - id: google_cloud
+    label:
+      en: "Google Cloud"
+      fr: "Google Cloud"
+    layer: 1
+    category: provider
+    node_type: provider
+    status: stable
+    since: "2008"
+    link: "https://cloud.google.com/ai"
+    description:
+      en: |
+        Google Cloud Platform — unique advantage: exclusive first access to Gemini models.
+        Vertex AI is the most feature-complete MLOps platform: training, serving, evaluation,
+        monitoring all in one place.
+        Strong on data/analytics integration (BigQuery ML, Looker).
+        Best choice for teams already in Google Workspace or using BigQuery.
+      fr: |
+        Google Cloud Platform — avantage unique : accès exclusif en premier aux modèles Gemini.
+        Vertex AI est la plateforme MLOps la plus complète : entraînement, service, évaluation,
+        monitoring dans un seul endroit.
+        Solide sur l'intégration data/analytics (BigQuery ML, Looker).
+        Meilleur choix pour les équipes déjà dans Google Workspace ou utilisant BigQuery.
+
+  - id: azure
+    label:
+      en: "Microsoft Azure"
+      fr: "Microsoft Azure"
+    layer: 1
+    category: provider
+    node_type: provider
+    status: stable
+    since: "2010"
+    link: "https://azure.microsoft.com/en-us/solutions/ai/"
+    description:
+      en: |
+        Microsoft Azure — unique advantage: exclusive first access to OpenAI models (GPT-4, o-series).
+        Azure OpenAI Service is the enterprise version of the OpenAI API: same models,
+        but with private endpoints, data residency guarantees, and enterprise SLAs.
+        Deep integration with Microsoft 365, Teams, and GitHub Copilot.
+        First choice for enterprises already in the Microsoft ecosystem.
+      fr: |
+        Microsoft Azure — avantage unique : accès exclusif en premier aux modèles OpenAI (GPT-4, série o).
+        Azure OpenAI Service est la version enterprise de l'API OpenAI : mêmes modèles,
+        mais avec des endpoints privés, garanties de résidence des données et SLAs enterprise.
+        Intégration profonde avec Microsoft 365, Teams et GitHub Copilot.
+        Premier choix pour les entreprises déjà dans l'écosystème Microsoft.
+
+  - id: cloudflare
+    label:
+      en: "Cloudflare"
+      fr: "Cloudflare"
+    layer: 1
+    category: provider
+    node_type: provider
+    status: evolving
+    since: "2023"
+    link: "https://developers.cloudflare.com/workers-ai/"
+    description:
+      en: |
+        Cloudflare Workers AI — the edge inference option.
+        Run open-weights models (Llama, Mistral, Phi…) on Cloudflare's global network of 300+ data centers.
+        Ultra-low latency for end users worldwide. No cold starts. Pay per inference.
+        Best for: lightweight AI features at the edge, geographically distributed applications,
+        or when you need inference physically close to users.
+      fr: |
+        Cloudflare Workers AI — l'option d'inférence edge.
+        Faites tourner des modèles open weights (Llama, Mistral, Phi…) sur le réseau mondial de Cloudflare (300+ data centers).
+        Latence ultra-faible pour les utilisateurs finaux partout dans le monde. Pas de cold starts. Paiement par inférence.
+        Idéal pour : fonctionnalités IA légères en edge, applications géographiquement distribuées,
+        ou quand vous avez besoin d'une inférence physiquement proche des utilisateurs.
+
+  # ── LAYER 2 · AI PLATFORMS ───────────────────
+
+  - id: bedrock
+    label:
+      en: "Amazon Bedrock"
+      fr: "Amazon Bedrock"
+    layer: 2
+    category: platform
+    status: stable
+    since: "2023"
+    link: "https://aws.amazon.com/bedrock/"
+    description:
+      en: |
+        AWS's managed AI platform. Single API to access models from Anthropic (Claude),
+        Meta (Llama), Mistral, Cohere, AI21 and Amazon Nova.
+        Key features: model comparison, Guardrails (content filtering), Knowledge Bases (managed RAG),
+        Agents (built-in agentic workflows), fine-tuning.
+        Data stays in your AWS account — no model provider sees your prompts or data.
+      fr: |
+        La plateforme IA managée d'AWS. API unique pour accéder aux modèles Anthropic (Claude),
+        Meta (Llama), Mistral, Cohere, AI21 et Amazon Nova.
+        Fonctionnalités clés : comparaison de modèles, Guardrails (filtrage de contenu),
+        Knowledge Bases (RAG managé), Agents (workflows agentiques intégrés), fine-tuning.
+        Les données restent dans votre compte AWS — aucun fournisseur de modèle ne voit vos prompts.
+
+  - id: vertex_ai
+    label:
+      en: "Vertex AI"
+      fr: "Vertex AI"
+    layer: 2
+    category: platform
+    status: stable
+    since: "2021"
+    link: "https://cloud.google.com/vertex-ai"
+    description:
+      en: |
+        Google Cloud's unified MLOps and AI platform. First access to Gemini models (Flash, Pro, Ultra).
+        End-to-end: data prep, training, evaluation, deployment, monitoring in one platform.
+        Model Garden: access to 150+ models including open-weights (Llama, Mistral, Gemma).
+        Agent Builder: no-code RAG and agent creation. Grounding with Google Search built-in.
+        Best-in-class for teams needing full ML lifecycle management.
+      fr: |
+        La plateforme MLOps et IA unifiée de Google Cloud. Accès en premier aux modèles Gemini (Flash, Pro, Ultra).
+        De bout en bout : préparation des données, entraînement, évaluation, déploiement, monitoring sur une plateforme.
+        Model Garden : accès à 150+ modèles dont les open weights (Llama, Mistral, Gemma).
+        Agent Builder : création RAG et agents sans code. Grounding avec Google Search intégré.
+
+  - id: azure_openai
+    label:
+      en: "Azure OpenAI"
+      fr: "Azure OpenAI"
+    layer: 2
+    category: platform
+    status: stable
+    since: "2023"
+    link: "https://azure.microsoft.com/en-us/products/ai-services/openai-service"
+    description:
+      en: |
+        Enterprise-grade access to OpenAI models (GPT-4o, GPT-4.1, o3, DALL-E, Whisper).
+        Same models as api.openai.com but deployed in your Azure region with data residency.
+        Private endpoints via VNet integration — data never leaves your network.
+        Built-in content filtering, abuse monitoring, usage quotas.
+        Required by many enterprise security policies that prohibit sending data to openai.com.
+      fr: |
+        Accès enterprise aux modèles OpenAI (GPT-4o, GPT-4.1, o3, DALL-E, Whisper).
+        Mêmes modèles qu'api.openai.com mais déployés dans votre région Azure avec résidence des données.
+        Endpoints privés via intégration VNet — les données ne quittent jamais votre réseau.
+        Filtrage de contenu intégré, surveillance des abus, quotas d'utilisation.
+        Requis par de nombreuses politiques de sécurité enterprise qui interdisent d'envoyer des données à openai.com.
+
+  - id: workers_ai
+    label:
+      en: "Workers AI"
+      fr: "Workers AI"
+    layer: 2
+    category: platform
+    status: evolving
+    since: "2023"
+    link: "https://developers.cloudflare.com/workers-ai/"
+    description:
+      en: |
+        Cloudflare's serverless AI inference platform. Run models directly in Workers (edge functions).
+        Available models: Llama 3, Mistral, Phi-2, Whisper, embedding models.
+        No GPU setup, no cold starts, global distribution by default.
+        Simple pricing: $0.011 per 1M neurons. Best for lightweight inference needs at global scale.
+      fr: |
+        La plateforme d'inférence IA serverless de Cloudflare. Faites tourner des modèles directement dans les Workers.
+        Modèles disponibles : Llama 3, Mistral, Phi-2, Whisper, modèles d'embedding.
+        Pas de configuration GPU, pas de cold starts, distribution mondiale par défaut.
+        Tarification simple. Idéal pour les besoins d'inférence légers à l'échelle mondiale.
+
+  # ── LAYER 3 · KEY CAPABILITIES ───────────────
+
+  - id: private_endpoints
+    label:
+      en: "Private Endpoints"
+      fr: "Endpoints Privés"
+    layer: 3
+    category: capability
+    status: stable
+    since: "2023"
+    link: "https://learn.microsoft.com/en-us/azure/ai-services/cognitive-services-virtual-networks"
+    description:
+      en: |
+        All major cloud AI platforms offer private network endpoints (VPC/VNet integration).
+        Your API calls never traverse the public internet — traffic stays within your cloud network.
+        Critical for enterprise security compliance (GDPR, HIPAA, financial regulation).
+        Also enables IP whitelisting, audit logging, and network-level access control.
+      fr: |
+        Toutes les grandes plateformes IA cloud offrent des endpoints réseau privés (intégration VPC/VNet).
+        Vos appels API ne traversent jamais l'internet public — le trafic reste dans votre réseau cloud.
+        Critique pour la conformité sécurité enterprise (RGPD, HIPAA, réglementation financière).
+        Permet aussi la liste blanche d'IP, la journalisation d'audit et le contrôle d'accès réseau.
+
+  - id: managed_rag
+    label:
+      en: "Managed RAG"
+      fr: "RAG Managé"
+    layer: 3
+    category: capability
+    status: evolving
+    since: "2023"
+    link: "https://aws.amazon.com/bedrock/knowledge-bases/"
+    description:
+      en: |
+        Each major platform now offers managed RAG without writing pipeline code.
+        AWS: Bedrock Knowledge Bases. Google: Vertex AI Agent Builder. Azure: AI Search + Azure OpenAI.
+        You provide documents, the platform handles chunking, embedding, vector storage and retrieval.
+        Trade-off: less control over the pipeline but drastically lower implementation cost.
+        Good starting point before building a custom RAG pipeline.
+      fr: |
+        Chaque grande plateforme offre désormais du RAG managé sans écrire de code de pipeline.
+        AWS : Bedrock Knowledge Bases. Google : Vertex AI Agent Builder. Azure : AI Search + Azure OpenAI.
+        Vous fournissez les documents, la plateforme gère le chunking, l'embedding, le stockage vectoriel et la récupération.
+        Compromis : moins de contrôle sur le pipeline mais coût d'implémentation drastiquement réduit.
+        Bon point de départ avant de construire un pipeline RAG personnalisé.
+
+  - id: fine_tuning_cloud
+    label:
+      en: "Fine-tuning"
+      fr: "Fine-tuning"
+    layer: 3
+    category: capability
+    status: stable
+    since: "2023"
+    link: "https://aws.amazon.com/bedrock/fine-tuning/"
+    description:
+      en: |
+        All major platforms offer managed fine-tuning: adapt a base model to your domain without managing GPUs.
+        AWS Bedrock: fine-tune Claude, Llama, Amazon Nova on your data. Azure: fine-tune GPT-4o mini.
+        Google Vertex: fine-tune Gemini models with supervised examples.
+        Your fine-tuning data stays in your cloud account. The resulting model is private to your account.
+        Useful when prompt engineering alone can't achieve the domain accuracy you need.
+      fr: |
+        Toutes les grandes plateformes offrent du fine-tuning managé : adapter un modèle de base à votre domaine sans gérer des GPU.
+        AWS Bedrock : fine-tuner Claude, Llama, Amazon Nova sur vos données. Azure : fine-tuner GPT-4o mini.
+        Google Vertex : fine-tuner les modèles Gemini avec des exemples supervisés.
+        Vos données de fine-tuning restent dans votre compte cloud. Le modèle résultant est privé à votre compte.
+
+edges:
+  # Providers → Platforms
+  - from: aws
+    to: bedrock
+    label: "offers"
+    type: part_of
+  - from: google_cloud
+    to: vertex_ai
+    label: "offers"
+    type: part_of
+  - from: azure
+    to: azure_openai
+    label: "offers"
+    type: part_of
+  - from: cloudflare
+    to: workers_ai
+    label: "offers"
+    type: part_of
+
+  # Platforms → Capabilities
+  - from: bedrock
+    to: private_endpoints
+    label: ""
+    type: part_of
+  - from: bedrock
+    to: managed_rag
+    label: ""
+    type: part_of
+  - from: bedrock
+    to: fine_tuning_cloud
+    label: ""
+    type: part_of
+  - from: vertex_ai
+    to: private_endpoints
+    label: ""
+    type: part_of
+  - from: vertex_ai
+    to: managed_rag
+    label: ""
+    type: part_of
+  - from: vertex_ai
+    to: fine_tuning_cloud
+    label: ""
+    type: part_of
+  - from: azure_openai
+    to: private_endpoints
+    label: ""
+    type: part_of
+  - from: azure_openai
+    to: managed_rag
+    label: ""
+    type: part_of
+  - from: azure_openai
+    to: fine_tuning_cloud
+    label: ""
+    type: part_of

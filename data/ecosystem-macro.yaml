@@ -321,6 +321,7 @@ nodes:
       en: "Cloud Managed"
       fr: "Cloud Managé"
     layer: 3
+    drilldown: "cloud-managed.html"
     category: access
     status: stable
     since: "2023"
@@ -380,6 +381,7 @@ nodes:
       en: "RAG"
       fr: "RAG"
     layer: 4
+    drilldown: "rag-pattern.html"
     category: patterns
     status: stable
     since: "2023"
@@ -400,6 +402,7 @@ nodes:
       en: "AI Agents"
       fr: "Agents IA"
     layer: 4
+    drilldown: "ai-agents.html"
     category: patterns
     status: evolving
     since: "2023"
@@ -535,6 +538,7 @@ nodes:
       en: "AI Coding\nAssistants"
       fr: "Assistants de Code IA"
     layer: 5
+    drilldown: "ai-coding-assistants.html"
     category: tooling
     status: evolving
     since: "2021"

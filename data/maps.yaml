@@ -23,6 +23,50 @@ maps:
     output: ecosystem.html
     data: data/ecosystem.yaml
 
+  - id: rag-pattern
+    icon: "🔍"
+    title:
+      en: "RAG"
+      fr: "RAG"
+    description:
+      en: "Pipeline stages, components and tools for Retrieval-Augmented Generation"
+      fr: "Étapes, composants et outils pour la génération augmentée par récupération"
+    output: rag-pattern.html
+    data: data/rag-pattern.yaml
+
+  - id: cloud-managed
+    icon: "☁️"
+    title:
+      en: "Cloud Managed AI"
+      fr: "IA Cloud Managée"
+    description:
+      en: "AWS, Google Cloud, Azure and Cloudflare AI platforms compared"
+      fr: "Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées"
+    output: cloud-managed.html
+    data: data/cloud-managed.yaml
+
+  - id: ai-agents
+    icon: "🤖"
+    title:
+      en: "AI Agents"
+      fr: "Agents IA"
+    description:
+      en: "Building blocks, patterns and frameworks for autonomous AI systems"
+      fr: "Briques, patterns et frameworks pour systèmes IA autonomes"
+    output: ai-agents.html
+    data: data/ai-agents.yaml
+
+  - id: ai-coding-assistants
+    icon: "💻"
+    title:
+      en: "AI Coding Assistants"
+      fr: "Assistants de Code IA"
+    description:
+      en: "IDE plugins, agentic IDEs and CLI agents for developers"
+      fr: "Plugins IDE, IDEs agentiques et agents CLI pour développeurs"
+    output: ai-coding-assistants.html
+    data: data/ai-coding-assistants.yaml
+
   - id: open-weights-models
     icon: "🔓"
     title:

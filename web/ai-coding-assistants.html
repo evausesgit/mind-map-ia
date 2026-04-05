@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Coding Assistants</title>
+<script src="cytoscape.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    border-bottom: 3px solid #E74C3C;
+  }
+  header h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+  header .meta { font-size: 12px; color: #95A5A6; }
+
+  /* ── Search ── */
+  .search-wrapper {
+    position: relative;
+    margin-left: 8px;
+  }
+  .search-input {
+    background: #0D1117;
+    border: 1.5px solid #333;
+    border-radius: 20px;
+    color: white;
+    font-size: 13px;
+    padding: 5px 14px 5px 32px;
+    width: 180px;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .search-input::placeholder { color: #555; }
+  .search-input:focus {
+    border-color: #E74C3C;
+    width: 240px;
+    background: #111;
+  }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 13px;
+    pointer-events: none;
+  }
+  .search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 14px;
+    cursor: pointer;
+    display: none;
+    background: none;
+    border: none;
+    line-height: 1;
+  }
+  .search-clear:hover { color: white; }
+  .search-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 300px;
+    background: #16213E;
+    border: 1px solid #2C3E6E;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 1000;
+    overflow: hidden;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .search-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #1E2D4E;
+    transition: background 0.1s;
+  }
+  .search-item:last-child { border-bottom: none; }
+  .search-item:hover { background: #1E2D4E; }
+  .search-item-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .search-item-label { font-size: 13px; font-weight: 600; color: white; }
+  .search-item-cat   { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .search-item-match { font-size: 11px; color: #E74C3C; font-style: italic; margin-top: 2px; }
+  .search-section-title {
+    padding: 6px 14px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #7F8C8D;
+    border-top: 1px solid #1E2D4E;
+  }
+  .search-section-title:first-child { border-top: none; }
+  .search-empty {
+    padding: 16px;
+    color: #7F8C8D;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .lang-toggle {
+    display: flex;
+    gap: 4px;
+    margin-left: 16px;
+  }
+  .lang-btn {
+    padding: 4px 10px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #95A5A6;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.15s;
+  }
+  .lang-btn.active {
+    background: #E74C3C;
+    border-color: #E74C3C;
+    color: white;
+  }
+  .lang-btn:hover:not(.active) {
+    border-color: #aaa;
+    color: white;
+  }
+  .back-btn {
+    padding: 4px 12px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .back-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
+  .nav-menu {
+    position: relative;
+    margin-left: 8px;
+  }
+  .nav-btn {
+    padding: 4px 12px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: #16213E;
+    border: 1px solid #2C3E6E;
+    border-radius: 10px;
+    min-width: 220px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 1000;
+    overflow: hidden;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown {
+    display: block;
+  }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: #BDC3C7;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.15s;
+    border-bottom: 1px solid #1E2D4E;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a.active { color: white; background: #1E2D4E; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px 10px;
+    color: #E74C3C;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #2C3E6E;
+  }
+  .nav-home:hover { color: #FF6B6B; }
+
+  .main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+  #cy-area {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+  #cy-wrapper {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  #drilldown-section {
+    flex: 0 0 0;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    border-top: 2px solid #E74C3C;
+    transition: flex-basis 0.35s ease;
+  }
+  body.drilldown-active #drilldown-section {
+    flex: 0 0 45%;
+  }
+  #drilldown-label-box {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1A1A2E;
+    padding: 2px 16px;
+    color: #E74C3C;
+    font-weight: 700;
+    font-size: 12px;
+    border-radius: 3px;
+    z-index: 10;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  #drilldown-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    background: rgba(30,30,50,0.85);
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    cursor: pointer;
+    padding: 2px 8px;
+    font-size: 12px;
+  }
+  #drilldown-close:hover { background: rgba(231,76,60,0.35); color: white; }
+  #cy2 { width: 100%; height: 100%; }
+
+  #cy {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #FAFAFA;
+  }
+
+  /* ── Side panel ── */
+  #panel {
+    width: 320px;
+    background: white;
+    border-left: 1px solid #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  #panel-header {
+    padding: 20px;
+    background: #1A1A2E;
+    color: white;
+    position: relative;
+  }
+  #panel-header .node-label {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  #panel-header .node-meta {
+    font-size: 12px;
+    color: #BDC3C7;
+  }
+  #panel-header .node-status {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  #share-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: 1px solid #ffffff33;
+    border-radius: 6px;
+    color: #BDC3C7;
+    font-size: 13px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  #share-btn:hover { border-color: #fff; color: #fff; }
+  #share-btn.copied { border-color: #2ECC71; color: #2ECC71; }
+
+  #panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  #panel-body .section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #95A5A6;
+    margin-bottom: 6px;
+  }
+  #panel-body .description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #2C3E50;
+    margin-bottom: 20px;
+  }
+  #panel-body .description p {
+    margin-bottom: 10px;
+  }
+  #panel-body .description p:last-child {
+    margin-bottom: 0;
+  }
+  #panel-body .description ol,
+  #panel-body .description ul {
+    margin: 8px 0 10px 18px;
+  }
+  #panel-body .description li {
+    margin-bottom: 4px;
+  }
+  #panel-body .description strong {
+    font-weight: 600;
+    color: #1A1A2E;
+  }
+  .gloss-link {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    color: inherit;
+  }
+  .panel-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #3498DB;
+    text-decoration: none;
+    padding: 4px 8px;
+    border: 1px solid #3498DB33;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .panel-link:hover { background: #3498DB11; }
+  .panel-link .link-icon { font-size: 14px; }
+  .drilldown-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #E74C3C;
+    background: #E74C3C11;
+    border: 1px solid #E74C3C44;
+    border-radius: 5px;
+    padding: 3px 8px;
+    cursor: zoom-in;
+  }
+  #panel-body .since {
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+
+  .empty-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #BDC3C7;
+    text-align: center;
+    padding: 20px;
+  }
+  .empty-panel .arrow { font-size: 32px; margin-bottom: 12px; }
+  .empty-panel p { font-size: 13px; line-height: 1.5; }
+
+  /* ── Legend ── */
+  #legend {
+    padding: 10px 14px;
+    border-top: 1px solid #F0F0F0;
+    background: #FAFAFA;
+    display: flex;
+    gap: 12px;
+  }
+  .legend-col {
+    flex: 1;
+    min-width: 0;
+  }
+  #legend h3 {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #95A5A6;
+    margin-bottom: 6px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #555;
+    margin-bottom: 3px;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .status-badge {
+    border: 1.5px solid;
+    border-radius: 10px;
+    padding: 1px 6px;
+    font-size: 9px;
+    font-weight: 600;
+  }
+
+  /* ── Category boxes ── */
+  .cat-box {
+    position: absolute;
+    border: 2px solid;
+    border-radius: 12px;
+    pointer-events: none;
+    box-sizing: border-box;
+  }
+  .cat-box-label {
+    position: absolute;
+    top: -11px;
+    left: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: #F8F9FA;
+    padding: 1px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* ── Controls ── */
+  #controls {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 10;
+  }
+  .ctrl-btn {
+    width: 36px;
+    height: 36px;
+    background: white;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background 0.15s;
+  }
+  .ctrl-btn:hover { background: #F0F0F0; }
+  .ctrl-btn.saved { border-color: #27AE60; color: #27AE60; }
+  .ctrl-btn[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 48px;
+    background: rgba(30,30,30,0.92);
+    color: #fff;
+    font-size: 11px;
+    white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: 5px;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .ctrl-btn { position: relative; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="macro.html" class="back-btn" title="Back">← Back</a>
+    <div class="nav-menu">  <button class="nav-btn" id="nav-toggle">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="index.html" class="nav-home">← Home</a>   <a href="macro.html" class="">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="ecosystem.html" class="">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span>  </span></a><a href="rag-pattern.html" class="">  <span class="nav-icon">🔍</span>  <span class="nav-info">    <span class="nav-title" data-en="RAG" data-fr="RAG">RAG</span>    <span class="nav-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span>  </span></a><a href="cloud-managed.html" class="">  <span class="nav-icon">☁️</span>  <span class="nav-info">    <span class="nav-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span>    <span class="nav-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span>  </span></a><a href="ai-agents.html" class="">  <span class="nav-icon">🤖</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span>    <span class="nav-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span>  </span></a><a href="ai-coding-assistants.html" class="active">  <span class="nav-icon">💻</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span>    <span class="nav-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span>  </span></a><a href="open-weights-models.html" class="">  <span class="nav-icon">🔓</span>  <span class="nav-info">    <span class="nav-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span>    <span class="nav-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span>  </span></a><a href="proprietary-models.html" class="">  <span class="nav-icon">🏢</span>  <span class="nav-info">    <span class="nav-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span>    <span class="nav-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span>  </span></a><a href="dense-vs-moe.html" class="">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="glossary.html" class="">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
+    <div>
+      <h1 id="main-title">AI Coding Assistants</h1>
+      <div class="meta">v2026-Q1 · 2026-04-05</div>
+    </div>
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="text"
+             placeholder="Search..." autocomplete="off" />
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+      <div class="search-dropdown" id="search-dropdown"></div>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+    </div>
+  </div>
+  <div class="meta" id="hint-text">Click a node to explore · Scroll to zoom · Drag to pan</div>
+</header>
+
+<div class="main">
+  <div id="cy-area">
+    <div id="cy-wrapper">
+      <div id="cy"></div>
+      <div id="cat-boxes" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;"></div>
+      <div id="controls">
+        <button class="ctrl-btn" onclick="cy.fit()"
+          data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
+        <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)"
+          data-tip-en="Zoom in" data-tip-fr="Zoom avant">+</button>
+        <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)"
+          data-tip-en="Zoom out" data-tip-fr="Zoom arrière">−</button>
+        <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()"
+          data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
+        <button class="ctrl-btn" onclick="exportLayout()"
+          data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
+        <button class="ctrl-btn" onclick="window.open('ai-coding-assistants-slides.html','_blank')"
+          data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
+      </div>
+    </div>
+    <div id="drilldown-section">
+      <div id="drilldown-label-box"></div>
+      <button id="drilldown-close" onclick="closeDrilldown()">✕</button>
+      <div id="cy2"></div>
+    </div>
+  </div>
+
+  <div id="panel">
+    <div id="panel-header" style="display:none;">
+      <button id="share-btn" onclick="shareNode()" title="Copy link">🔗</button>
+      <div class="node-label" id="ph-label"></div>
+      <div class="node-meta" id="ph-meta"></div>
+      <span class="node-status" id="ph-status"></span>
+      <div id="ph-drilldown" style="display:none;margin-top:6px;">
+        <span class="drilldown-hint" id="ph-drilldown-hint"></span>
+      </div>
+    </div>
+    <div id="panel-body">
+      <div class="empty-panel" id="empty-msg">
+        <div class="arrow">←</div>
+        <p>Click any node to see its definition and connections</p>
+      </div>
+      <div id="panel-content" style="display:none;">
+        <div class="section-title">Description</div>
+        <div class="description" id="pc-desc"></div>
+        <div class="section-title">Since</div>
+        <div class="since" id="pc-since"></div>
+        <div id="pc-links" style="display:none; margin-top:14px; display:flex; flex-direction:column; gap:6px;"></div>
+      </div>
+    </div>
+    <div id="legend">
+      <div class="legend-col">
+        <h3 id="legend-cat-title">Categories</h3>
+        <div id="legend-en"><div class="legend-item"><span class="legend-dot" style="background:#F0A500"></span>Category</div><div class="legend-item"><span class="legend-dot" style="background:#85C1E9"></span>Tool</div></div>
+        <div id="legend-fr" style="display:none"><div class="legend-item"><span class="legend-dot" style="background:#F0A500"></span>Catégorie</div><div class="legend-item"><span class="legend-dot" style="background:#85C1E9"></span>Outil</div></div>
+      </div>
+      <div class="legend-col">
+        <h3 id="legend-status-title">Status</h3>
+        <div id="status-legend-items"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const elements = [
+  {
+    "data": {
+      "id": "ide_plugins",
+      "label": "IDE Plugins",
+      "category": "category",
+      "subcategory": "",
+      "node_type": "provider",
+      "layer": 1,
+      "status": "stable",
+      "since": "2021",
+      "link": "https://github.com/features/copilot",
+      "ref": "",
+      "drilldown": "",
+      "color": "#F0A500",
+      "layerLabel": "CATEGORIES",
+      "label_en": "IDE Plugins",
+      "description_en": "Plugins that add AI assistance to your existing editor (VS Code, JetBrains, Neovim\u2026).\nCore features: inline completion, chat sidebar, code explanation, test generation.\nYou stay in your editor \u2014 the AI assists without taking over.\nBest for: developers who want AI help without changing their workflow.",
+      "layerLabel_en": "CATEGORIES",
+      "label_fr": "Plugins IDE",
+      "description_fr": "Plugins qui ajoutent l'assistance IA \u00e0 votre \u00e9diteur existant (VS Code, JetBrains, Neovim\u2026).\nFonctionnalit\u00e9s principales : compl\u00e9tion inline, chat sidebar, explication de code, g\u00e9n\u00e9ration de tests.\nVous restez dans votre \u00e9diteur \u2014 l'IA assiste sans prendre le contr\u00f4le.\nId\u00e9al pour : les d\u00e9veloppeurs qui veulent de l'aide IA sans changer leur workflow.",
+      "layerLabel_fr": "CAT\u00c9GORIES"
+    },
+    "position": {
+      "x": -550,
+      "y": -35.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "agentic_ides",
+      "label": "Agentic IDEs",
+      "category": "category",
+      "subcategory": "",
+      "node_type": "provider",
+      "layer": 1,
+      "status": "evolving",
+      "since": "2023",
+      "link": "https://www.cursor.com",
+      "ref": "",
+      "drilldown": "",
+      "color": "#F0A500",
+      "layerLabel": "CATEGORIES",
+      "label_en": "Agentic IDEs",
+      "description_en": "Full IDE experiences rebuilt around AI. Not just completion \u2014 the AI can read your entire codebase,\nmake multi-file edits, run commands, and iterate autonomously.\nComposer/Agent mode: describe a feature, the AI implements it across multiple files.\nBest for: teams ready to deeply integrate AI into their dev workflow.\nTrade-off: vendor lock-in, steeper learning curve, subscription cost.",
+      "layerLabel_en": "CATEGORIES",
+      "label_fr": "IDEs Agentiques",
+      "description_fr": "Exp\u00e9riences IDE compl\u00e8tes reconstruites autour de l'IA. Pas juste de la compl\u00e9tion \u2014 l'IA peut lire\ntoute votre base de code, faire des modifications multi-fichiers, ex\u00e9cuter des commandes et it\u00e9rer de fa\u00e7on autonome.\nMode Composer/Agent : d\u00e9crivez une fonctionnalit\u00e9, l'IA l'impl\u00e9mente dans plusieurs fichiers.\nId\u00e9al pour : les \u00e9quipes pr\u00eates \u00e0 int\u00e9grer profond\u00e9ment l'IA dans leur workflow de dev.",
+      "layerLabel_fr": "CAT\u00c9GORIES"
+    },
+    "position": {
+      "x": -550,
+      "y": 0.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "cli_agents",
+      "label": "CLI Agents",
+      "category": "category",
+      "subcategory": "",
+      "node_type": "provider",
+      "layer": 1,
+      "status": "evolving",
+      "since": "2024",
+      "link": "https://claude.ai/code",
+      "ref": "",
+      "drilldown": "",
+      "color": "#F0A500",
+      "layerLabel": "CATEGORIES",
+      "label_en": "CLI Agents",
+      "description_en": "AI coding agents that run in the terminal. Full access to the file system, shell commands,\ngit, and any CLI tool. No GUI \u2014 pure terminal workflow.\nCan be run headlessly in CI/CD pipelines for automated coding tasks.\nBest for: backend/devops engineers, power users, automated workflows.\nClaude Code and Aider are the leading options.",
+      "layerLabel_en": "CATEGORIES",
+      "label_fr": "Agents CLI",
+      "description_fr": "Agents de code IA qui tournent dans le terminal. Acc\u00e8s complet au syst\u00e8me de fichiers, commandes shell,\ngit et tout outil CLI. Pas de GUI \u2014 workflow pur terminal.\nPeut \u00eatre ex\u00e9cut\u00e9 en mode headless dans les pipelines CI/CD pour des t\u00e2ches de code automatis\u00e9es.\nId\u00e9al pour : ing\u00e9nieurs backend/devops, power users, workflows automatis\u00e9s.\nClaude Code et Aider sont les options phares.",
+      "layerLabel_fr": "CAT\u00c9GORIES"
+    },
+    "position": {
+      "x": -550,
+      "y": 35.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "github_copilot",
+      "label": "GitHub Copilot",
+      "category": "tool",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "stable",
+      "since": "2021",
+      "link": "https://github.com/features/copilot",
+      "ref": "",
+      "drilldown": "",
+      "color": "#85C1E9",
+      "layerLabel": "TOOLS",
+      "label_en": "GitHub Copilot",
+      "description_en": "Microsoft/GitHub's AI coding tool \u2014 the most widely deployed (>1.8M paid users).\nIntegrates into VS Code, JetBrains, Neovim, Visual Studio.\nPowered by GPT-4o and Claude (choice depends on task). GitHub Context: understands your entire repo.\nCopilot Workspace: agentic task completion from issue to PR.\nEnterprise plan: self-hosted option, policy controls, audit logs. The \"safe\" enterprise choice.",
+      "layerLabel_en": "TOOLS",
+      "label_fr": "GitHub Copilot",
+      "description_fr": "L'outil de code IA de Microsoft/GitHub \u2014 le plus d\u00e9ploy\u00e9 (>1,8M utilisateurs payants).\nS'int\u00e8gre dans VS Code, JetBrains, Neovim, Visual Studio.\nPropuls\u00e9 par GPT-4o et Claude. GitHub Context : comprend toute votre base de code.\nCopilot Workspace : compl\u00e9tion de t\u00e2che agentique de l'issue \u00e0 la PR.\nPlan Enterprise : option self-hosted, contr\u00f4les de politique, logs d'audit.",
+      "layerLabel_fr": "OUTILS"
+    },
+    "position": {
+      "x": -200,
+      "y": -87.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "cursor",
+      "label": "Cursor",
+      "category": "tool",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2023",
+      "link": "https://www.cursor.com",
+      "ref": "",
+      "drilldown": "",
+      "color": "#85C1E9",
+      "layerLabel": "TOOLS",
+      "label_en": "Cursor",
+      "description_en": "VS Code fork rebuilt for AI-first development. The most popular agentic IDE.\nCmd+K: inline edit with natural language. Chat: ask questions about your codebase.\nComposer/Agent: multi-file autonomous implementation. @codebase: semantic search over your repo.\nUses Claude 3.5 Sonnet, GPT-4o and its own cursor-small model.\nFastest-growing dev tool of 2024 \u2014 the reference for \"AI-native\" development.",
+      "layerLabel_en": "TOOLS",
+      "label_fr": "Cursor",
+      "description_fr": "Fork de VS Code reconstruit pour le d\u00e9veloppement IA-first. L'IDE agentique le plus populaire.\nCmd+K : \u00e9dition inline en langage naturel. Chat : posez des questions sur votre base de code.\nComposer/Agent : impl\u00e9mentation autonome multi-fichiers.\nUtilise Claude 3.5 Sonnet, GPT-4o et son propre mod\u00e8le cursor-small.\nL'outil de dev \u00e0 la croissance la plus rapide de 2024.",
+      "layerLabel_fr": "OUTILS"
+    },
+    "position": {
+      "x": -200,
+      "y": -52.5
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "windsurf",
+      "label": "Windsurf (Codeium)",
+      "category": "tool",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2024",
+      "link": "https://codeium.com/windsurf",
+      "ref": "",
+      "drilldown": "",
+      "color": "#85C1E9",
+      "layerLabel": "TOOLS",
+      "label_en": "Windsurf (Codeium)",
+      "description_en": "Codeium's agentic IDE. Direct Cursor competitor with a \"Cascade\" agent that maintains\nfull awareness of your codebase and actions taken.\nKey differentiator: \"Flow\" paradigm \u2014 the agent proactively suggests what to do next,\nnot just reacting to commands.\nGenerous free tier. Acquired by OpenAI in 2025.",
+      "layerLabel_en": "TOOLS",
+      "label_fr": "Windsurf (Codeium)",
+      "description_fr": "L'IDE agentique de Codeium. Concurrent direct de Cursor avec un agent \"Cascade\"\nqui maintient une conscience compl\u00e8te de votre base de code et des actions effectu\u00e9es.\nDiff\u00e9renciateur cl\u00e9 : paradigme \"Flow\" \u2014 l'agent sugg\u00e8re proactivement quoi faire ensuite.\nG\u00e9n\u00e9reux tier gratuit. Acquis par OpenAI en 2025.",
+      "layerLabel_fr": "OUTILS"
+    },
+    "position": {
+      "x": -200,
+      "y": -17.5
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "claude_code",
+      "label": "Claude Code",
+      "category": "tool",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "evolving",
+      "since": "2025",
+      "link": "https://claude.ai/code",
+      "ref": "",
+      "drilldown": "",
+      "color": "#85C1E9",
+      "layerLabel": "TOOLS",
+      "label_en": "Claude Code",
+      "description_en": "Anthropic's CLI coding agent. Runs in the terminal with full access to files, shell, and git.\nAgentic by design: can plan, implement, test and commit multi-step tasks autonomously.\nDeep integration with Claude's extended context (200k tokens) \u2014 understands large codebases.\nSupports MCP servers: extend with custom tools (databases, APIs, internal services).\nHeadless mode: scriptable for CI/CD automation. The power-user and DevOps choice.",
+      "layerLabel_en": "TOOLS",
+      "label_fr": "Claude Code",
+      "description_fr": "L'agent de code CLI d'Anthropic. Tourne dans le terminal avec acc\u00e8s complet aux fichiers, shell et git.\nAgentique par conception : peut planifier, impl\u00e9menter, tester et commiter des t\u00e2ches multi-\u00e9tapes de fa\u00e7on autonome.\nInt\u00e9gration profonde avec le contexte \u00e9tendu de Claude (200k tokens) \u2014 comprend les grandes bases de code.\nSupporte les serveurs MCP : extensible avec des outils personnalis\u00e9s.\nMode headless : scriptable pour l'automatisation CI/CD.",
+      "layerLabel_fr": "OUTILS"
+    },
+    "position": {
+      "x": -200,
+      "y": 17.5
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "aider",
+      "label": "Aider",
+      "category": "tool",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "stable",
+      "since": "2023",
+      "link": "https://aider.chat",
+      "ref": "",
+      "drilldown": "",
+      "color": "#85C1E9",
+      "layerLabel": "TOOLS",
+      "label_en": "Aider",
+      "description_en": "Open-source CLI coding assistant. Works with any LLM (Claude, GPT-4, Gemini, local models via Ollama).\nGit-native: automatically commits changes with meaningful messages.\nArchitect mode: separates planning (expensive model) from editing (cheaper model) for efficiency.\nNo subscription \u2014 you pay only for the API tokens you use.\nBest for: open-source enthusiasts, cost-conscious developers, custom model setups.",
+      "layerLabel_en": "TOOLS",
+      "label_fr": "Aider",
+      "description_fr": "Assistant de code CLI open source. Fonctionne avec n'importe quel LLM (Claude, GPT-4, Gemini, mod\u00e8les locaux via Ollama).\nGit-native : commite automatiquement les modifications avec des messages significatifs.\nMode Architect : s\u00e9pare la planification (mod\u00e8le co\u00fbteux) de l'\u00e9dition (mod\u00e8le moins cher).\nPas d'abonnement \u2014 vous payez uniquement les tokens API consomm\u00e9s.\nId\u00e9al pour : fans d'open source, d\u00e9veloppeurs sensibles aux co\u00fbts, configurations de mod\u00e8les personnalis\u00e9es.",
+      "layerLabel_fr": "OUTILS"
+    },
+    "position": {
+      "x": -200,
+      "y": 52.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "codeium_plugin",
+      "label": "Codeium (free)",
+      "category": "tool",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 2,
+      "status": "stable",
+      "since": "2022",
+      "link": "https://codeium.com",
+      "ref": "",
+      "drilldown": "",
+      "color": "#85C1E9",
+      "layerLabel": "TOOLS",
+      "label_en": "Codeium (free)",
+      "description_en": "Free AI code completion plugin for 70+ editors. Not agentic \u2014 focused on inline completion and chat.\nUnlimited free tier makes it the default choice for individual developers and students.\nSupports VS Code, JetBrains, Vim, Emacs, and more.\nEnterprise version: self-hosted deployment option for data-sensitive environments.",
+      "layerLabel_en": "TOOLS",
+      "label_fr": "Codeium (gratuit)",
+      "description_fr": "Plugin gratuit de compl\u00e9tion de code IA pour 70+ \u00e9diteurs. Pas agentique \u2014 focalis\u00e9 sur la compl\u00e9tion inline et le chat.\nLe tier gratuit illimit\u00e9 en fait le choix par d\u00e9faut pour les d\u00e9veloppeurs individuels et les \u00e9tudiants.\nSupporte VS Code, JetBrains, Vim, Emacs et plus.\nVersion Enterprise : option de d\u00e9ploiement self-hosted pour les environnements sensibles aux donn\u00e9es.",
+      "layerLabel_fr": "OUTILS"
+    },
+    "position": {
+      "x": -200,
+      "y": 87.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "ide_plugins__github_copilot",
+      "source": "ide_plugins",
+      "target": "github_copilot",
+      "label": "",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "ide_plugins__codeium_plugin",
+      "source": "ide_plugins",
+      "target": "codeium_plugin",
+      "label": "",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "agentic_ides__cursor",
+      "source": "agentic_ides",
+      "target": "cursor",
+      "label": "",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "agentic_ides__windsurf",
+      "source": "agentic_ides",
+      "target": "windsurf",
+      "label": "",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "cli_agents__claude_code",
+      "source": "cli_agents",
+      "target": "claude_code",
+      "label": "",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "cli_agents__aider",
+      "source": "cli_agents",
+      "target": "aider",
+      "label": "",
+      "etype": "part_of"
+    }
+  }
+];
+const DRILLDOWN_DATA = {};
+const TITLES        = {"en": "AI Coding Assistants", "fr": "Assistants de Code IA"};
+const STATUS_LABELS = {"en": {"stable": "stable", "evolving": "evolving", "emerging": "emerging", "deprecated": "deprecated"}, "fr": {"stable": "stable", "evolving": "en \u00e9volution", "emerging": "\u00e9mergent", "deprecated": "obsol\u00e8te"}};
+const PANEL_LABELS  = {"en": {"click_hint": "Click any node to see its definition and connections", "description": "Description", "since": "Since"}, "fr": {"click_hint": "Cliquez sur un n\u0153ud pour voir sa d\u00e9finition et ses connexions", "description": "Description", "since": "Depuis"}};
+const CATEGORIES    = [{"id": "category", "label_en": "Category", "label_fr": "Cat\u00e9gorie", "color": "#F0A500"}, {"id": "tool", "label_en": "Tool", "label_fr": "Outil", "color": "#85C1E9"}];
+const STATUS_COLORS = {"stable": "#27AE60", "evolving": "#E67E22", "emerging": "#8E44AD", "deprecated": "#95A5A6"};
+const GLOSSARY_TERMS = [{"id": "llm", "aliases": ["LLM", "LLMs", "Large Language Model", "Large Language Models", "grand mod\u00e8le de langage", "grands mod\u00e8les de langage"], "label_en": "Large Language Model", "label_fr": "Grand Mod\u00e8le de Langage", "description_en": "A language model trained on massive text datasets with billions of parameters. The \"large\" refers to both the size of the training data and the number of parameters. LLMs can understand and generate coherent text, answer questions, write code, and more. Examples: GPT-4, Claude, Gemini, Llama.\n", "description_fr": "Un mod\u00e8le de langage entra\u00een\u00e9 sur d'immenses corpus textuels avec des milliards de param\u00e8tres. Le \"grand\" fait r\u00e9f\u00e9rence \u00e0 la taille des donn\u00e9es d'entra\u00eenement et au nombre de param\u00e8tres. Les LLM peuvent comprendre et g\u00e9n\u00e9rer du texte coh\u00e9rent, r\u00e9pondre \u00e0 des questions, \u00e9crire du code, etc. Exemples : GPT-4, Claude, Gemini, Llama.\n"}, {"id": "weights", "aliases": ["weights", "weight", "model weights", "poids", "poids du mod\u00e8le", "open weights"], "label_en": "Weights", "label_fr": "Poids", "description_en": "The numerical parameters learned by a neural network during training. Weights encode everything the model has \"learned\" \u2014 grammar, facts, reasoning patterns. When a model is said to have billions of parameters, those parameters are its weights. \"Open weights\" means the trained weight files are publicly released, allowing anyone to run or fine-tune the model locally \u2014 even if the training data or code are not shared.\n", "description_fr": "Les param\u00e8tres num\u00e9riques appris par un r\u00e9seau de neurones pendant l'entra\u00eenement. Les poids encodent tout ce que le mod\u00e8le a \u00ab appris \u00bb \u2014 grammaire, faits, raisonnement. Quand on dit qu'un mod\u00e8le a des milliards de param\u00e8tres, ce sont ses poids. \u00ab Open weights \u00bb signifie que les fichiers de poids entra\u00een\u00e9s sont publi\u00e9s publiquement, permettant \u00e0 n'importe qui d'ex\u00e9cuter ou de fine-tuner le mod\u00e8le localement \u2014 m\u00eame si les donn\u00e9es d'entra\u00eenement ou le code source ne sont pas partag\u00e9s.\n"}, {"id": "dense_model", "aliases": ["dense model", "dense models", "mod\u00e8le dense", "mod\u00e8les denses"], "label_en": "Dense Model", "label_fr": "Mod\u00e8le Dense", "description_en": "A neural network architecture where every parameter is activated for every input. All weights participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B.\n", "description_fr": "Une architecture de r\u00e9seau de neurones o\u00f9 chaque param\u00e8tre est activ\u00e9 pour chaque entr\u00e9e. Tous les poids participent \u00e0 chaque passe avant. Les mod\u00e8les denses sont plus simples \u00e0 entra\u00eener, mais deviennent co\u00fbteux \u00e0 tr\u00e8s grande \u00e9chelle : doubler les param\u00e8tres double le calcul n\u00e9cessaire pour chaque inf\u00e9rence. Exemples : GPT-4 (suppos\u00e9 dense), Llama 3, Mistral 7B.\n"}, {"id": "moe_model", "aliases": ["MoE", "Mixture of Experts", "mixture of experts", "m\u00e9lange d'experts", "M\u00e9lange d'Experts"], "label_en": "Mixture of Experts", "label_fr": "M\u00e9lange d'Experts", "description_en": "An architecture where the model is divided into many specialized sub-networks (\"experts\"). For each token, a routing mechanism activates only a small subset of experts (typically 2\u20138). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference \u2014 achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.\n", "description_fr": "Une architecture o\u00f9 le mod\u00e8le est divis\u00e9 en nombreux sous-r\u00e9seaux sp\u00e9cialis\u00e9s (\u00ab experts \u00bb). Pour chaque token, un m\u00e9canisme de routage n'active qu'un petit sous-ensemble d'experts (typiquement 2 \u00e0 8). R\u00e9sultat : un mod\u00e8le peut avoir des centaines de milliards de param\u00e8tres au total mais n'en utiliser qu'une fraction par inf\u00e9rence \u2014 offrant une grande capacit\u00e9 \u00e0 moindre co\u00fbt de calcul. Exemples : GPT-4 (suppos\u00e9 MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.\n"}, {"id": "token", "aliases": ["token", "tokens", "tokenization", "tokenisation"], "label_en": "Token", "label_fr": "Token", "description_en": "The smallest unit of text a language model processes. A token is roughly 0.75 words in English \u2014 \"tokenization\" is typically split into [\"token\", \"ization\"]. Models don't see raw text: they convert everything into a sequence of token IDs before processing. The number of tokens in a request determines its cost and speed.\n", "description_fr": "La plus petite unit\u00e9 de texte trait\u00e9e par un mod\u00e8le de langage. Un token correspond environ \u00e0 0,75 mot en anglais \u2014 \u00ab tokenization \u00bb est typiquement d\u00e9coup\u00e9 en [\u00ab token \u00bb, \u00ab ization \u00bb]. Les mod\u00e8les ne voient pas le texte brut : ils convertissent tout en une s\u00e9quence d'identifiants de tokens. Le nombre de tokens d'une requ\u00eate d\u00e9termine son co\u00fbt et sa vitesse.\n"}, {"id": "context_window", "aliases": ["context window", "context length", "fen\u00eatre de contexte", "longueur de contexte", "context"], "label_en": "Context Window", "label_fr": "Fen\u00eatre de Contexte", "description_en": "The maximum number of tokens a model can process in a single interaction \u2014 both the input (prompt + history) and the output combined. It defines the model's \"working memory\": anything outside the window is invisible to it. Modern models range from 8k tokens (Llama 3 8B) to 1M+ tokens (Gemini 1.5 Pro). A larger context window means the model can read longer documents, hold longer conversations, and maintain more context \u2014 but also costs more to run.\n", "description_fr": "Le nombre maximum de tokens qu'un mod\u00e8le peut traiter en une seule interaction \u2014 entr\u00e9e (prompt + historique) et sortie confondus. Il d\u00e9finit la \u00ab m\u00e9moire de travail \u00bb du mod\u00e8le : tout ce qui d\u00e9passe cette limite lui est invisible. Les mod\u00e8les modernes vont de 8k tokens (Llama 3 8B) \u00e0 plus d'1M de tokens (Gemini 1.5 Pro). Une fen\u00eatre plus grande permet de lire des documents plus longs et de maintenir plus de contexte, mais co\u00fbte aussi plus cher \u00e0 l'ex\u00e9cution.\n"}, {"id": "rlhf", "aliases": ["RLHF", "Reinforcement Learning from Human Feedback", "reinforcement learning from human feedback"], "label_en": "RLHF", "label_fr": "RLHF", "description_en": "Reinforcement Learning from Human Feedback. A training technique used to align LLMs with human preferences after the initial pre-training phase. Human raters compare model outputs and rank them; these preferences train a reward model which then guides the LLM via reinforcement learning to produce more helpful, harmless, and honest responses. Used by OpenAI (InstructGPT, ChatGPT) and Anthropic (Claude).\n", "description_fr": "Apprentissage par renforcement \u00e0 partir des retours humains. Une technique d'entra\u00eenement utilis\u00e9e pour aligner les LLM sur les pr\u00e9f\u00e9rences humaines apr\u00e8s la phase de pr\u00e9-entra\u00eenement. Des \u00e9valuateurs humains comparent et classent les sorties du mod\u00e8le ; ces pr\u00e9f\u00e9rences entra\u00eenent un mod\u00e8le de r\u00e9compense qui guide ensuite le LLM par renforcement pour produire des r\u00e9ponses plus utiles, inoffensives et honn\u00eates. Utilis\u00e9 par OpenAI (InstructGPT, ChatGPT) et Anthropic (Claude).\n"}, {"id": "hallucination", "aliases": ["hallucination", "hallucinations", "hallucinate", "halluciner"], "label_en": "Hallucination", "label_fr": "Hallucination", "description_en": "When a model generates text that is factually incorrect, fabricated, or inconsistent with reality \u2014 stated with apparent confidence. Hallucinations arise because LLMs predict plausible continuations of text, not verified facts. Common examples: invented citations, wrong dates, non-existent people or products. Mitigated (but not eliminated) by RAG, grounding, and better alignment.\n", "description_fr": "Quand un mod\u00e8le g\u00e9n\u00e8re du texte factuellement incorrect, invent\u00e9, ou incoh\u00e9rent avec la r\u00e9alit\u00e9 \u2014 affirm\u00e9 avec une apparente confiance. Les hallucinations surviennent parce que les LLM pr\u00e9disent des continuations plausibles, pas des faits v\u00e9rifi\u00e9s. Exemples courants : citations invent\u00e9es, dates erron\u00e9es, personnes ou produits inexistants. Att\u00e9nu\u00e9es (mais non \u00e9limin\u00e9es) par le RAG, le grounding et un meilleur alignement.\n"}, {"id": "rag", "aliases": ["RAG", "Retrieval-Augmented Generation", "retrieval augmented generation", "retrieval-augmented generation"], "label_en": "RAG", "label_fr": "RAG", "description_en": "Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and hallucination problems by injecting real-time or domain-specific information into the prompt at query time. How it works: (1) the user query is converted to a vector, (2) semantically similar documents are retrieved from a knowledge base, (3) those documents are added to the prompt, (4) the model answers based on the provided context. Widely adopted in production \u2014 the most reliable way to give an LLM access to specific data.\n", "description_fr": "Retrieval-Augmented Generation (g\u00e9n\u00e9ration augment\u00e9e par r\u00e9cup\u00e9ration). Un pattern qui r\u00e9sout les probl\u00e8mes de date limite de connaissance et d'hallucination en injectant des informations actuelles ou sp\u00e9cifiques dans le prompt au moment de la requ\u00eate. Fonctionnement : (1) la requ\u00eate est convertie en vecteur, (2) les documents s\u00e9mantiquement proches sont r\u00e9cup\u00e9r\u00e9s depuis une base de connaissances, (3) ces documents sont ajout\u00e9s au prompt, (4) le mod\u00e8le r\u00e9pond en s'appuyant sur le contexte fourni. Tr\u00e8s largement adopt\u00e9 en production \u2014 la m\u00e9thode la plus fiable pour donner \u00e0 un LLM acc\u00e8s \u00e0 des donn\u00e9es sp\u00e9cifiques.\n"}, {"id": "agentic", "aliases": ["agentic", "agent IA", "AI agent", "AI agents", "agents IA", "agentic AI", "agentic system", "syst\u00e8me agentique"], "label_en": "Agentic AI", "label_fr": "IA Agentique", "description_en": "A mode of operation where an AI model acts autonomously over multiple steps to complete a goal, rather than simply answering a single prompt. An agentic system can use tools (web search, code execution, file access), plan a sequence of actions, observe the results of each step, and adjust its behaviour accordingly \u2014 often without human intervention between steps. The key properties are: tool use, multi-step reasoning, and a feedback loop between action and observation. Examples: Claude Code, OpenAI Operator, AutoGPT, LangChain agents.\n", "description_fr": "Un mode de fonctionnement o\u00f9 un mod\u00e8le d'IA agit de fa\u00e7on autonome sur plusieurs \u00e9tapes pour accomplir un objectif, plut\u00f4t que de simplement r\u00e9pondre \u00e0 un prompt unique. Un syst\u00e8me agentique peut utiliser des outils (recherche web, ex\u00e9cution de code, acc\u00e8s aux fichiers), planifier une s\u00e9quence d'actions, observer les r\u00e9sultats de chaque \u00e9tape et adapter son comportement en cons\u00e9quence \u2014 souvent sans intervention humaine entre les \u00e9tapes. Les propri\u00e9t\u00e9s cl\u00e9s sont : utilisation d'outils, raisonnement multi-\u00e9tapes, et boucle de r\u00e9troaction entre action et observation. Exemples : Claude Code, OpenAI Operator, AutoGPT, agents LangChain.\n"}, {"id": "mcp", "aliases": ["MCP", "Model Context Protocol", "model context protocol"], "label_en": "MCP", "label_fr": "MCP", "description_en": "Model Context Protocol. An open standard (governed by the Linux Foundation) that defines how AI applications connect to external data sources and tools. MCP uses a client-server model: the **MCP Host** (your app) contains an **MCP Client** that communicates with one or more **MCP Servers**, each exposing three types of capabilities: **Resources** (read-only data), **Tools** (functions with side effects), and **Prompts** (reusable templates). Before MCP, every AI application had to build custom integrations for every external resource. MCP standardizes this layer so that any compliant client can talk to any compliant server. Official SDKs exist for 10 languages. A community registry lists hundreds of production servers covering filesystems, databases, GitHub, Slack, browser automation, and more.\n", "description_fr": "Model Context Protocol. Un standard ouvert (gouvern\u00e9 par la Linux Foundation) qui d\u00e9finit comment les applications IA se connectent \u00e0 des sources de donn\u00e9es et outils externes. MCP utilise un mod\u00e8le client-serveur : le **MCP Host** (ton application) contient un **MCP Client** qui communique avec un ou plusieurs **MCP Servers**, chacun exposant trois types de capacit\u00e9s : **Resources** (donn\u00e9es en lecture seule), **Tools** (fonctions avec effets de bord), et **Prompts** (templates r\u00e9utilisables). Avant MCP, chaque application IA devait construire des int\u00e9grations sur mesure pour chaque ressource. MCP standardise cette couche pour que n'importe quel client compatible puisse parler \u00e0 n'importe quel serveur compatible. Des SDKs officiels existent pour 10 langages. Un registry communautaire liste des centaines de serveurs couvrant filesystems, bases de donn\u00e9es, GitHub, Slack, automatisation navigateur, et plus.\n"}, {"id": "machine_learning", "aliases": ["ML", "machine learning", "apprentissage automatique"], "label_en": "Machine Learning", "label_fr": "Machine Learning", "description_en": "A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without being explicitly programmed for each case. Deep Learning and LLMs are branches of Machine Learning.\n", "description_fr": "Un sous-domaine de l'intelligence artificielle o\u00f9 les syst\u00e8mes apprennent \u00e0 partir de donn\u00e9es pour am\u00e9liorer leurs performances sur une t\u00e2che, sans \u00eatre explicitement programm\u00e9s pour chaque cas. Le Deep Learning et les LLM sont des branches du Machine Learning.\n"}];
+
+function linkGlossaryTerms(text) {
+  if (!GLOSSARY_TERMS.length) return text;
+  // Escape HTML entities first
+  let safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Build sorted alias→id map (longest first to avoid partial matches)
+  const entries = [];
+  GLOSSARY_TERMS.forEach(term => {
+    term.aliases.forEach(alias => entries.push({ alias, id: term.id }));
+  });
+  entries.sort((a, b) => b.alias.length - a.alias.length);
+  // Split on existing <span> tags so we never mutate already-linked text or attributes
+  entries.forEach(({ alias, id }) => {
+    const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\$&');
+    const re = new RegExp(`\\b(${escaped})\\b`, 'gi');
+    // Replace only in text segments (outside any HTML tags)
+    safe = safe.replace(/(<[^>]*>)|([^<]+)/g, (match, tag, txt) => {
+      if (tag) return tag; // leave HTML tags untouched
+      return txt.replace(re, `<span class="gloss-link" onclick="window.open('glossary.html#${id}','_blank')">$1</span>`);
+    });
+  });
+  return safe;
+}
+
+function formatDesc(rawText) {
+  if (!rawText) return '';
+  const lines = rawText.split('\n');
+  let html = '';
+  let inOl = false, inUl = false;
+
+  const flush = () => {
+    if (inOl) { html += '</ol>'; inOl = false; }
+    if (inUl) { html += '</ul>'; inUl = false; }
+  };
+
+  const inline = (s) => {
+    // Bold: **text**
+    const linked = linkGlossaryTerms(s);
+    return linked.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  };
+
+  lines.forEach(line => {
+    const trimmed = line.trim();
+    if (!trimmed) { flush(); return; }
+
+    const olMatch = trimmed.match(/^(\d+)\. (.+)/);
+    const ulMatch = trimmed.match(/^[-*] (.+)/);
+
+    if (olMatch) {
+      if (inUl) { html += '</ul>'; inUl = false; }
+      if (!inOl) { html += '<ol>'; inOl = true; }
+      html += `<li>${inline(olMatch[2])}</li>`;
+    } else if (ulMatch) {
+      if (inOl) { html += '</ol>'; inOl = false; }
+      if (!inUl) { html += '<ul>'; inUl = true; }
+      html += `<li>${inline(ulMatch[1])}</li>`;
+    } else {
+      flush();
+      html += `<p>${inline(trimmed)}</p>`;
+    }
+  });
+
+  flush();
+  return html;
+}
+
+let lang = 'en';
+
+function setLang(newLang) {
+  lang = newLang;
+
+  // Toggle buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+
+  // Update control button tooltips
+  document.querySelectorAll('.ctrl-btn[data-tip-en]').forEach(btn => {
+    btn.dataset.tip = btn.dataset['tip' + newLang.charAt(0).toUpperCase() + newLang.slice(1)];
+  });
+  drawCategoryBoxes();
+
+  // Header title
+  document.getElementById('main-title').textContent = TITLES[lang];
+
+  // Hint text
+  document.getElementById('hint-text').textContent =
+    lang === 'fr' ? 'Cliquez sur un nœud · Molette pour zoomer · Glisser pour naviguer'
+                  : 'Click a node to explore · Scroll to zoom · Drag to pan';
+
+  // Legend
+  document.getElementById('legend-en').style.display = lang === 'en' ? '' : 'none';
+  document.getElementById('legend-fr').style.display = lang === 'fr' ? '' : 'none';
+  document.getElementById('legend-cat-title').textContent =
+    lang === 'fr' ? 'Catégories' : 'Categories';
+  document.getElementById('legend-status-title').textContent =
+    lang === 'fr' ? 'Statut' : 'Status';
+  renderStatusLegend();
+
+  // Search placeholder
+  document.getElementById('search-input').placeholder = lang === 'fr' ? 'Rechercher...' : 'Search...';
+
+  // Nav dropdown titles
+  document.querySelectorAll('.nav-title, .nav-desc').forEach(el => {
+    const txt = el.dataset[lang];
+    if (txt) el.textContent = txt;
+  });
+
+  // Node labels in graph
+  cy.batch(() => {
+    cy.nodes().forEach(n => {
+      const lbl = n.data(`label_${lang}`);
+      if (lbl) n.data('label', lbl);
+      const ll = n.data(`layerLabel_${lang}`);
+      if (ll) n.data('layerLabel', ll);
+    });
+  });
+
+  // Refresh open panel
+  if (currentNode) showPanel(currentNode);
+}
+
+function renderStatusLegend() {
+  const sl = STATUS_LABELS[lang];
+  document.getElementById('status-legend-items').innerHTML =
+    Object.entries(sl).map(([k, v]) =>
+      `<div class="legend-item"><span class="status-badge" style="color:${STATUS_COLORS[k]};border-color:${STATUS_COLORS[k]}">${v}</span></div>`
+    ).join('');
+}
+renderStatusLegend();
+
+// ── Search ────────────────────────────────────
+const searchInput    = document.getElementById('search-input');
+const searchDropdown = document.getElementById('search-dropdown');
+const searchClear    = document.getElementById('search-clear');
+
+function searchNodes(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) return [];
+  return cy.nodes().filter(n => {
+    const fields = [
+      n.data('label_en'), n.data('label_fr'),
+      n.data('description_en'), n.data('description_fr'),
+      n.data('category'), n.data('subcategory'),
+    ];
+    return fields.some(f => f && f.toLowerCase().includes(q));
+  }).toArray();
+}
+
+function searchGlossary(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) return [];
+  return GLOSSARY_TERMS.filter(term => {
+    const fields = [
+      term.label_en, term.label_fr,
+      term.description_en, term.description_fr,
+      ...(term.aliases || []),
+    ];
+    return fields.some(f => f && f.toLowerCase().includes(q));
+  });
+}
+
+function getMatchContext(text, query) {
+  const q = query.toLowerCase();
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx === -1) return null;
+  const start = Math.max(0, idx - 20);
+  const end   = Math.min(text.length, idx + query.length + 30);
+  return (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+}
+
+function renderSearchResults(nodeMatches, query) {
+  const glossMatches = searchGlossary(query);
+  const noResultsText = lang === 'fr' ? 'Aucun résultat' : 'No results';
+
+  if (nodeMatches.length === 0 && glossMatches.length === 0) {
+    searchDropdown.innerHTML = `<div class="search-empty">${noResultsText}</div>`;
+    searchDropdown.style.display = 'block';
+    return;
+  }
+
+  let html = '';
+
+  if (nodeMatches.length > 0) {
+    const sectionLabel = lang === 'fr' ? 'Cette carte' : 'This map';
+    html += `<div class="search-section-title">${sectionLabel}</div>`;
+    html += nodeMatches.slice(0, 6).map(node => {
+      const label = node.data(`label_${lang}`) || node.data('label_en');
+      const color = node.data('color') || '#ccc';
+      const cat   = node.data('category') || '';
+      const desc  = node.data(`description_${lang}`) || node.data('description_en') || '';
+      const ctx   = getMatchContext(desc, query);
+      return `
+        <div class="search-item" onclick="selectSearchResult('${node.id()}')">
+          <span class="search-item-dot" style="background:${color}"></span>
+          <div>
+            <div class="search-item-label">${label}</div>
+            <div class="search-item-cat">${cat}</div>
+            ${ctx ? `<div class="search-item-match">${ctx}</div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  if (glossMatches.length > 0) {
+    const sectionLabel = lang === 'fr' ? '📖 Glossaire' : '📖 Glossary';
+    html += `<div class="search-section-title">${sectionLabel}</div>`;
+    html += glossMatches.slice(0, 4).map(term => {
+      const label = term[`label_${lang}`] || term.label_en;
+      const desc  = term[`description_${lang}`] || term.description_en || '';
+      const ctx   = getMatchContext(desc, query);
+      return `
+        <div class="search-item" onclick="window.open('glossary.html#${term.id}','_blank')">
+          <span class="search-item-dot" style="background:#95A5A6"></span>
+          <div>
+            <div class="search-item-label">${label}</div>
+            <div class="search-item-cat">glossary</div>
+            ${ctx ? `<div class="search-item-match">${ctx}</div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  searchDropdown.innerHTML = html;
+  searchDropdown.style.display = 'block';
+}
+
+function selectSearchResult(nodeId) {
+  const node = cy.getElementById(nodeId);
+  if (!node || node.empty()) return;
+  clearSearchUI();
+  cy.animate({ center: { eles: node }, zoom: 1.4 }, { duration: 400 });
+  showPanel(node);
+  cy.elements().addClass('dimmed');
+  node.removeClass('dimmed');
+  const connected = node.connectedEdges();
+  connected.removeClass('dimmed').addClass('highlighted');
+  connected.connectedNodes().removeClass('dimmed');
+  node.addClass('highlighted');
+}
+
+function clearSearchUI() {
+  searchInput.value = '';
+  searchDropdown.style.display = 'none';
+  searchClear.style.display = 'none';
+}
+
+function clearSearch() {
+  clearSearchUI();
+  cy.elements().removeClass('dimmed highlighted');
+  currentNode = null;
+  document.getElementById('panel-header').style.display = 'none';
+  document.getElementById('empty-msg').style.display = 'flex';
+  document.getElementById('panel-content').style.display = 'none';
+}
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value;
+  searchClear.style.display = q ? 'block' : 'none';
+  if (!q.trim()) { searchDropdown.style.display = 'none'; return; }
+  renderSearchResults(searchNodes(q), q);
+});
+
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') clearSearch();
+  if (e.key === 'Enter') {
+    const matches = searchNodes(searchInput.value);
+    if (matches.length === 1) selectSearchResult(matches[0].id());
+  }
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrapper')) {
+    searchDropdown.style.display = 'none';
+  }
+});
+
+
+const CY_STYLE = [
+    // Provider nodes — ellipse to distinguish from models
+    {
+      selector: "node[node_type='provider']",
+      style: {
+        "width": 140,
+        "height": 44,
+        "shape": "ellipse",
+        "background-color": "data(color)",
+        "background-opacity": 0.85,
+        "label": "data(label)",
+        "text-valign": "center",
+        "text-halign": "center",
+        "font-size": "12px",
+        "font-weight": "700",
+        "color": "#1A1A2E",
+        "border-width": 2,
+        "border-color": "data(color)",
+        "text-wrap": "wrap",
+        "text-max-width": "120px",
+      }
+    },
+    // Nodes
+    {
+      selector: "node",
+      style: {
+        "width": 140,
+        "height": 44,
+        "shape": "round-rectangle",
+        "background-color": "data(color)",
+        "background-opacity": 0.9,
+        "label": "data(label)",
+        "text-valign": "center",
+        "text-halign": "center",
+        "font-size": "12px",
+        "font-weight": "600",
+        "color": "#1A1A2E",
+        "border-width": 2,
+        "border-color": "data(color)",
+        "border-opacity": 1,
+        "text-wrap": "wrap",
+        "text-max-width": "130px",
+        "overlay-padding": "6px",
+        "transition-property": "border-color, border-width, background-opacity",
+        "transition-duration": "0.15s",
+      }
+    },
+    // Model types → 1.5× the (already-scaled) base node size
+    {
+      selector: "node[category = 'model_types']",
+      style: {
+        "width": 210,
+        "height": 66,
+        "text-max-width": "200px",
+        "font-size": "18px",
+      }
+    },
+    // Status: evolving → orange border
+    {
+      selector: ".status-evolving",
+      style: {
+        "border-color": "#E67E22",
+        "border-width": 3,
+      }
+    },
+    // Status: emerging → dashed purple border
+    {
+      selector: ".status-emerging",
+      style: {
+        "border-color": "#8E44AD",
+        "border-width": 3,
+        "border-style": "dashed",
+      }
+    },
+    // Nodes with drill-down → zoom-in cursor + subtle glow
+    {
+      selector: ".has-drilldown",
+      style: {
+        "border-color": "#E74C3C",
+        "border-width": 3,
+        "border-style": "double",
+      }
+    },
+    // Status: deprecated → grey, muted
+    {
+      selector: ".status-deprecated",
+      style: {
+        "background-opacity": 0.4,
+        "color": "#999",
+        "border-color": "#BDC3C7",
+      }
+    },
+    // Hover
+    {
+      selector: "node:active, node.highlighted",
+      style: {
+        "border-width": 3,
+        "border-color": "#1A1A2E",
+        "background-opacity": 1,
+        "z-index": 999,
+      }
+    },
+    // Selected
+    {
+      selector: "node:selected",
+      style: {
+        "border-width": 3,
+        "border-color": "#E74C3C",
+        "background-opacity": 1,
+      }
+    },
+    // Edges
+    {
+      selector: "edge",
+      style: {
+        "width": 1.5,
+        "line-color": "#BDC3C7",
+        "target-arrow-color": "#BDC3C7",
+        "target-arrow-shape": "triangle",
+        "curve-style": "bezier",
+        "arrow-scale": 1,
+        "label": "",
+        "font-size": "9px",
+        "color": "#7F8C8D",
+        "text-background-color": "white",
+        "text-background-opacity": 0.8,
+        "text-background-padding": "2px",
+        "opacity": 0.6,
+      }
+    },
+    {
+      selector: "edge.highlighted",
+      style: {
+        "width": 2.5,
+        "line-color": "#E74C3C",
+        "target-arrow-color": "#E74C3C",
+        "label": "data(label)",
+        "opacity": 1,
+        "z-index": 999,
+      }
+    },
+    // Dimmed (when a node is selected)
+    {
+      selector: ".dimmed",
+      style: {
+        "opacity": 0.15,
+      }
+    },
+];
+
+const cy = cytoscape({
+  container: document.getElementById("cy"),
+  elements: elements,
+  style: CY_STYLE,
+  layout: {
+    name: "preset",
+  },
+  wheelSensitivity: 0.3,
+  minZoom: 0.2,
+  maxZoom: 3,
+});
+
+// ── Fit on load ──────────────────────────────
+// ── Layout persistence (localStorage) ───────
+const STORAGE_KEY = 'mindmap_positions_' + window.location.pathname;
+
+function savePositions() {
+  const positions = {};
+  cy.nodes().forEach(n => {
+    const p = n.position();
+    positions[n.id()] = { x: Math.round(p.x), y: Math.round(p.y) };
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(positions));
+  const btn = document.getElementById('reset-btn');
+  btn.classList.add('saved');
+  btn.title = 'Reset to auto layout';
+}
+
+async function exportLayout() {
+  const positions = {};
+  cy.nodes().forEach(n => {
+    const p = n.position();
+    positions[n.id()] = { x: Math.round(p.x), y: Math.round(p.y) };
+  });
+  const json  = JSON.stringify(positions, null, 2);
+  const fname = 'ai-coding-assistants-layout.json';
+  const blob  = new Blob([json], { type: 'application/json' });
+  if (window.showSaveFilePicker) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: fname,
+        types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return; // user cancelled
+    }
+  }
+  // Fallback for browsers without File System Access API
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fname; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function _unused_openPresentation() {
+  const l = lang;
+  const title = TITLES[l];
+
+  // Group nodes by layer
+  const byLayer = {};
+  elements.forEach(el => {
+    if (!el.data || !el.data.layer) return;
+    const layer = el.data.layer;
+    if (!byLayer[layer]) byLayer[layer] = [];
+    byLayer[layer].push(el.data);
+  });
+
+  const statusEmoji = { stable: '🟢', evolving: '🟡', emerging: '🔵', deprecated: '🔴' };
+  const layerOrder = Object.keys(byLayer).map(Number).sort((a, b) => b - a);
+  const slides = [];
+
+  // Title slide
+  const subtitle = l === 'en' ? 'AI / LLM Ecosystem' : 'Écosystème IA / LLM';
+  slides.push('<div class="slide-type-title"><div class="slide-title-content"><h1>' + title + '</h1><p class="subtitle">' + subtitle + '</p></div></div>');
+
+  // Overview slide per layer
+  layerOrder.forEach(layerId => {
+    const nodes = byLayer[layerId];
+    const layerLabel = nodes[0]['layerLabel_' + l] || ('Layer ' + layerId);
+    const items = nodes.map(n => {
+      const nodeLabel = n['label_' + l] || n.label;
+      const desc = n['description_' + l] || '';
+      const shortDesc = desc ? desc.split(/[.!?][ \n]/)[0].replace(/\n/g, ' ').trim() + '.' : '';
+      const emoji = statusEmoji[n.status] || '';
+      return '<li>' + emoji + ' <strong>' + nodeLabel + '</strong>' + (shortDesc ? ' — ' + shortDesc : '') + '</li>';
+    }).join('');
+    slides.push('<div class="slide-layer-num">Layer ' + layerId + '</div><h2>' + layerLabel + '</h2><ul>' + items + '</ul>');
+  });
+
+  // Detail slide per node
+  layerOrder.forEach(layerId => {
+    const nodes = byLayer[layerId];
+    const layerLabel = nodes[0]['layerLabel_' + l] || ('Layer ' + layerId);
+    nodes.forEach(n => {
+      const nodeLabel = n['label_' + l] || n.label;
+      const desc = (n['description_' + l] || '').replace(/\n/g, '<br>');
+      const emoji = statusEmoji[n.status] || '';
+      const statusLabel = n.status || '';
+      slides.push(
+        '<div class="slide-node-layer">' + layerLabel + '</div>' +
+        '<h2>' + emoji + ' ' + nodeLabel + '</h2>' +
+        (desc ? '<p class="node-desc">' + desc + '</p>' : '') +
+        '<span class="slide-status status-' + statusLabel + '">' + statusLabel + '</span>'
+      );
+    });
+  });
+
+  // Summary slide
+  const totalNodes = elements.filter(el => el.data && el.data.layer).length;
+  const summaryTitle = l === 'en' ? 'Summary' : 'Récapitulatif';
+  slides.push(
+    '<div class="slide-type-title"><div class="slide-title-content">' +
+    '<h2>' + summaryTitle + '</h2>' +
+    '<p class="stat">' + totalNodes + ' concepts</p>' +
+    '<p class="stat">' + layerOrder.length + (l === 'en' ? ' layers' : ' couches') + '</p>' +
+    '<p class="generated-from">' + title + '</p>' +
+    '</div></div>'
+  );
+
+  // Build popup via DOM (avoids script-close tag inside a JS string breaking the outer page)
+  const w = window.open('', '_blank');
+  if (!w) return;
+  const d = w.document;
+  d.open();
+  d.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + '</title></head><body></body></html>');
+  d.close();
+
+  const style = d.createElement('style');
+  style.textContent = [
+    '* { box-sizing:border-box; margin:0; padding:0 }',
+    'body { background:#0d1117; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; font-family:"Segoe UI",sans-serif; overflow:hidden }',
+    '#slide { background:#fff; width:min(92vw,960px); aspect-ratio:16/9; border-radius:12px; padding:48px 64px; display:flex; flex-direction:column; justify-content:center; box-shadow:0 20px 60px rgba(0,0,0,.5); position:relative; overflow:hidden }',
+    '#slide h1 { font-size:2.4em; color:#1a237e; margin-bottom:16px }',
+    '#slide h2 { font-size:1.6em; color:#283593; border-bottom:2px solid #3949ab; padding-bottom:10px; margin-bottom:20px }',
+    '.subtitle { font-size:1.2em; color:#555 }',
+    '.slide-type-title { display:flex; align-items:center; justify-content:center; text-align:center; height:100% }',
+    '.slide-title-content { display:flex; flex-direction:column; gap:12px }',
+    '.slide-layer-num,.slide-node-layer { position:absolute; top:20px; right:28px; font-size:.75em; color:#9fa8da; font-weight:600; letter-spacing:1px; text-transform:uppercase }',
+    'ul { list-style:none; display:flex; flex-direction:column; gap:8px }',
+    'li { font-size:.9em; color:#333; line-height:1.4 }',
+    'li strong { color:#1a237e }',
+    '.node-desc { font-size:.92em; color:#444; line-height:1.7; margin-top:8px }',
+    '.slide-status { position:absolute; bottom:20px; right:28px; font-size:.72em; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:3px 10px; border-radius:10px; border:1.5px solid }',
+    '.status-stable { color:#2e7d32; border-color:#2e7d32 }',
+    '.status-evolving { color:#e65100; border-color:#e65100 }',
+    '.status-emerging { color:#1565c0; border-color:#1565c0 }',
+    '.status-deprecated { color:#b71c1c; border-color:#b71c1c }',
+    '.stat { font-size:1.4em; font-weight:700; color:#3949ab }',
+    '.generated-from { font-size:.85em; color:#999; margin-top:12px }',
+    '#nav { display:flex; align-items:center; gap:20px; margin-top:20px }',
+    '.nav-btn { background:#3949ab; color:#fff; border:none; border-radius:8px; padding:10px 24px; font-size:1em; cursor:pointer; transition:background .15s }',
+    '.nav-btn:hover { background:#283593 }',
+    '.nav-btn:disabled { background:#555; cursor:default }',
+    '#counter { color:#aaa; font-size:.9em; min-width:80px; text-align:center }',
+    '#progress { position:absolute; bottom:0; left:0; height:3px; background:#3949ab; transition:width .3s; border-radius:0 0 0 12px }'
+  ].join(' ');
+  d.head.appendChild(style);
+
+  d.body.innerHTML =
+    '<div id="slide"><div id="progress"></div><div id="slide-content"></div></div>' +
+    '<div id="nav">' +
+    '<button class="nav-btn" id="prev">&#8592;</button>' +
+    '<span id="counter"></span>' +
+    '<button class="nav-btn" id="next">&#8594;</button>' +
+    '</div>';
+
+  // Pass slides via window property to avoid serialization issues
+  w.PRESENTATION_SLIDES = slides;
+  const init = d.createElement('script');
+  init.textContent = '(function(){ var s = window.PRESENTATION_SLIDES; var cur = 0; function render(){ document.getElementById("slide-content").innerHTML = s[cur]; document.getElementById("counter").textContent = (cur+1)+" / "+s.length; document.getElementById("prev").disabled = cur===0; document.getElementById("next").disabled = cur===s.length-1; document.getElementById("progress").style.width = ((cur+1)/s.length*100)+"%"; } function go(d){ cur=Math.max(0,Math.min(s.length-1,cur+d)); render(); } document.getElementById("prev").onclick=function(){go(-1);}; document.getElementById("next").onclick=function(){go(1);}; document.addEventListener("keydown",function(e){ if(e.key==="ArrowRight"||e.key==="ArrowDown")go(1); if(e.key==="ArrowLeft"||e.key==="ArrowUp")go(-1); }); render(); })();';
+  d.body.appendChild(init);
+}
+
+function loadPositions() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return false;
+  try {
+    const positions = JSON.parse(raw);
+    cy.batch(() => {
+      cy.nodes().forEach(n => {
+        if (positions[n.id()]) n.position(positions[n.id()]);
+      });
+    });
+    document.getElementById('reset-btn').classList.add('saved');
+    return true;
+  } catch(e) { return false; }
+}
+
+function resetLayout() {
+  localStorage.removeItem(STORAGE_KEY);
+  document.getElementById('reset-btn').classList.remove('saved');
+  document.getElementById('reset-btn').title = 'Reset layout';
+  // Restore original positions from elements data
+  cy.batch(() => {
+    elements.forEach(el => {
+      if (el.position) {
+        const node = cy.getElementById(el.data.id);
+        if (node) node.position(el.position);
+      }
+    });
+  });
+  cy.fit(undefined, 40);
+  drawCategoryBoxes();
+}
+
+// ── Category bounding boxes ──────────────────
+function drawCategoryBoxes() {
+  const container = document.getElementById('cat-boxes');
+  if (!container) return;
+  container.innerHTML = '';
+  const zoom = cy.zoom();
+  const pan  = cy.pan();
+  const cyRect = document.getElementById('cy').getBoundingClientRect();
+
+  CATEGORIES.forEach(cat => {
+    const nodes = cy.nodes('[category = "' + cat.id + '"]');
+    if (nodes.length === 0) return;
+    const bb = nodes.boundingBox();
+    const pad = 24;
+    const x = (bb.x1 - pad) * zoom + pan.x;
+    const y = (bb.y1 - pad) * zoom + pan.y;
+    const w = (bb.x2 - bb.x1 + pad * 2) * zoom;
+    const h = (bb.y2 - bb.y1 + pad * 2) * zoom;
+
+    const box = document.createElement('div');
+    box.className = 'cat-box';
+    box.style.left   = x + 'px';
+    box.style.top    = y + 'px';
+    box.style.width  = w + 'px';
+    box.style.height = h + 'px';
+    box.style.borderColor = cat.color;
+    box.style.opacity = '0.5';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'cat-box-label';
+    lbl.style.color = cat.color;
+    lbl.textContent = cat['label_' + lang] || cat.label_en;
+    box.appendChild(lbl);
+    container.appendChild(box);
+  });
+}
+
+cy.ready(() => {
+  if (!loadPositions()) {
+    cy.fit(undefined, 40);
+  }
+  // Init tooltips in default language
+  document.querySelectorAll('.ctrl-btn[data-tip-en]').forEach(btn => {
+    btn.dataset.tip = btn.dataset.tipEn;
+  });
+  drawCategoryBoxes();
+
+  // Open node from URL hash (shareable links)
+  const hash = window.location.hash.slice(1);
+  if (hash) {
+    const node = cy.getElementById(hash);
+    if (!node.empty()) {
+      cy.animate({ center: { eles: node }, zoom: 1.4 }, { duration: 400 });
+      showPanel(node);
+      cy.elements().addClass('dimmed');
+      node.removeClass('dimmed');
+      node.connectedEdges().removeClass('dimmed').addClass('highlighted');
+      node.connectedEdges().connectedNodes().removeClass('dimmed');
+      node.addClass('highlighted');
+    }
+  }
+});
+
+cy.on('viewport position dragfree', drawCategoryBoxes);
+
+// Auto-save on drag
+cy.on('dragfree', 'node', savePositions);
+
+let currentNode = null;
+
+function shareNode() {
+  const url = window.location.href.split('#')[0] + '#' + currentNode.id();
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('share-btn');
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '🔗'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+function showPanel(node) {
+  currentNode = node;
+  const d = node.data();
+  history.replaceState(null, '', '#' + d.id);
+  const pl = PANEL_LABELS[lang];
+  const sl = STATUS_LABELS[lang];
+
+  document.getElementById("panel-header").style.display = "block";
+  document.getElementById("ph-label").textContent = d[`label_${lang}`] || d.label;
+
+  let meta = `Layer ${d.layer}`;
+  if (d.node_type) meta += ` · ${d.node_type}`;
+  if (d.subcategory) meta += ` · ${d.subcategory}`;
+  document.getElementById("ph-meta").textContent = meta;
+
+  const statusEl = document.getElementById("ph-status");
+  statusEl.textContent = sl[d.status] || d.status;
+  statusEl.style.background = STATUS_COLORS[d.status] + "33";
+  statusEl.style.color = STATUS_COLORS[d.status];
+  statusEl.style.border = `1px solid ${STATUS_COLORS[d.status]}`;
+
+  document.getElementById("empty-msg").style.display = "none";
+  document.getElementById("panel-content").style.display = "block";
+  document.querySelector("#panel-content .section-title").textContent = pl.description;
+  document.querySelectorAll("#panel-content .section-title")[1].textContent = pl.since;
+  document.getElementById("pc-desc").innerHTML = formatDesc(d[`description_${lang}`] || "");
+  document.getElementById("pc-since").textContent = d.since;
+
+  const linksEl = document.getElementById("pc-links");
+  linksEl.innerHTML = "";
+  if (d.link) {
+    const a = document.createElement("a");
+    a.href = d.link; a.target = "_blank"; a.rel = "noopener";
+    a.className = "panel-link";
+    a.innerHTML = '<span class="link-icon">🌐</span>' + (lang === "fr" ? "Site officiel" : "Official site");
+    linksEl.appendChild(a);
+  }
+  if (d.ref) {
+    const a = document.createElement("a");
+    a.href = d.ref; a.target = "_blank"; a.rel = "noopener";
+    a.className = "panel-link";
+    a.innerHTML = '<span class="link-icon">📄</span>' + (lang === "fr" ? "Référence" : "Reference");
+    linksEl.appendChild(a);
+  }
+  linksEl.style.display = (d.link || d.ref) ? "flex" : "none";
+
+  const drilldownEl = document.getElementById("ph-drilldown");
+  const drilldownHint = document.getElementById("ph-drilldown-hint");
+  if (DRILLDOWN_DATA[d.id]) {
+    drilldownEl.style.display = "block";
+    drilldownHint.textContent = lang === "fr" ? "↗ Double-cliquez pour explorer" : "↗ Double-click to explore";
+    drilldownHint.onclick = () => {
+      const dd = DRILLDOWN_DATA[d.id];
+      if (dd) showDrilldown(dd, d[`label_${lang}`] || d.label, d.color);
+    };
+  } else {
+    drilldownEl.style.display = "none";
+  }
+}
+
+// ── Node click → panel ───────────────────────
+cy.on("tap", "node", function(evt) {
+  const node = evt.target;
+  showPanel(node);
+  if (cy2) cy2.elements().removeClass("dimmed highlighted");
+  cy.elements().addClass("dimmed");
+  node.removeClass("dimmed");
+  const connected = node.connectedEdges();
+  connected.removeClass("dimmed").addClass("highlighted");
+  connected.connectedNodes().removeClass("dimmed");
+  cy.nodes().not(node).not(connected.connectedNodes()).each(n => {
+    n.removeClass("highlighted");
+  });
+  node.addClass("highlighted");
+});
+
+// ── Node double-tap → drill-down inline ──────
+let _tapTimer = null, _lastTapNode = null;
+cy.on("tap", "node", function(evt) {
+  const node = evt.target;
+  if (!DRILLDOWN_DATA[node.id()]) return;
+  if (_lastTapNode === node.id() && _tapTimer) {
+    clearTimeout(_tapTimer); _tapTimer = null; _lastTapNode = null;
+    showDrilldown(DRILLDOWN_DATA[node.id()],
+      node.data(`label_${lang}`) || node.data("label"),
+      node.data("color"));
+  } else {
+    _lastTapNode = node.id();
+    _tapTimer = setTimeout(() => { _tapTimer = null; _lastTapNode = null; }, 350);
+  }
+});
+
+let cy2 = null;
+
+function showDrilldown(dd, label, color) {
+  const col = color || "#E74C3C";
+  const labelBox = document.getElementById("drilldown-label-box");
+  labelBox.textContent = label;
+  labelBox.style.color = col;
+  document.getElementById("drilldown-section").style.borderTopColor = col;
+  document.body.classList.add("drilldown-active");
+
+  if (cy2) { cy2.destroy(); cy2 = null; }
+
+  // Wait for CSS transition (350ms) before initializing so the container has its final size
+  setTimeout(() => {
+    cy2 = cytoscape({
+      container: document.getElementById("cy2"),
+      elements: dd.elements,
+      style: CY_STYLE,
+      layout: { name: "preset" },
+      wheelSensitivity: 0.3,
+      minZoom: 0.1,
+      maxZoom: 3,
+    });
+
+    cy2.style()
+      .selector("node")
+      .style({ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" })
+      .selector("node[node_type='provider']")
+      .style({ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" })
+      .update();
+
+    cy2.resize();
+    cy2.fit(undefined, 30);
+
+    // ── cy2: node click → shared panel ───────────
+    cy2.on("tap", "node", function(evt) {
+      const node = evt.target;
+      showPanel(node);
+      cy.elements().removeClass("dimmed highlighted");
+      cy2.elements().addClass("dimmed");
+      node.removeClass("dimmed");
+      const connected = node.connectedEdges();
+      connected.removeClass("dimmed").addClass("highlighted");
+      connected.connectedNodes().removeClass("dimmed");
+      node.addClass("highlighted");
+    });
+
+    cy2.on("tap", function(evt) {
+      if (evt.target === cy2) {
+        currentNode = null;
+        cy2.elements().removeClass("dimmed highlighted");
+        document.getElementById("panel-header").style.display = "none";
+        document.getElementById("empty-msg").style.display = "flex";
+        document.getElementById("panel-content").style.display = "none";
+      }
+    });
+
+    cy2.on("mouseover", "edge", function(evt) { evt.target.addClass("highlighted"); });
+    cy2.on("mouseout", "edge", function(evt) {
+      if (!evt.target.source().hasClass("highlighted")) evt.target.removeClass("highlighted");
+    });
+  }, 380);
+}
+
+function closeDrilldown() {
+  document.body.classList.remove("drilldown-active");
+  if (cy2) { cy2.destroy(); cy2 = null; }
+}
+
+// ── Click background → reset ─────────────────
+cy.on("tap", function(evt) {
+  if (evt.target === cy) {
+    currentNode = null;
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    cy.elements().removeClass("dimmed highlighted");
+    if (cy2) cy2.elements().removeClass("dimmed highlighted");
+    document.getElementById("panel-header").style.display = "none";
+    document.getElementById("empty-msg").style.display = "flex";
+    document.getElementById("panel-content").style.display = "none";
+  }
+});
+
+// ── Drilldown nodes: cursor zoom-in + pulse ──
+const cyContainer = document.getElementById("cy");
+cy.on("mouseover", "node.has-drilldown", () => { cyContainer.style.cursor = "zoom-in"; });
+cy.on("mouseout",  "node.has-drilldown", () => { cyContainer.style.cursor = ""; });
+
+(function pulseDrilldowns() {
+  cy.nodes(".has-drilldown").forEach(node => {
+    (function pulse(n) {
+      n.animate(
+        { style: { "border-width": 5, "border-color": "#FF8C7A" } },
+        { duration: 900, easing: "ease-in-out", complete: () =>
+          n.animate(
+            { style: { "border-width": 2, "border-color": "#E74C3C" } },
+            { duration: 900, easing: "ease-in-out", complete: () => pulse(n) }
+          )
+        }
+      );
+    })(node);
+  });
+})();
+
+// ── Edge hover → show label ──────────────────
+cy.on("mouseover", "edge", function(evt) {
+  evt.target.addClass("highlighted");
+});
+cy.on("mouseout", "edge", function(evt) {
+  if (!evt.target.source().hasClass("highlighted")) {
+    evt.target.removeClass("highlighted");
+  }
+});
+</script>
+
+</body>
+</html>

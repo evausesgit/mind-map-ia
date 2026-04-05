@@ -1,0 +1,354 @@
+meta:
+  title:
+    en: "RAG — Retrieval-Augmented Generation"
+    fr: "RAG — Génération Augmentée par Récupération"
+  description:
+    en: "Pipeline stages, key components and tools for building RAG systems"
+    fr: "Étapes du pipeline, composants clés et outils pour construire des systèmes RAG"
+  version: "2026-Q1"
+  date: "2026-04-05"
+  back_link: "macro.html"
+  layout_direction: ltr
+  column_scale: 0.45
+
+layers:
+  1:
+    en: "PIPELINE STAGES"
+    fr: "ÉTAPES DU PIPELINE"
+  2:
+    en: "KEY COMPONENTS"
+    fr: "COMPOSANTS CLÉS"
+  3:
+    en: "TOOLS & FRAMEWORKS"
+    fr: "OUTILS & FRAMEWORKS"
+
+categories:
+  - id: stage
+    label:
+      en: "Stage"
+      fr: "Étape"
+    color: "#58D68D"
+    description:
+      en: "A major phase of the RAG pipeline"
+      fr: "Une phase majeure du pipeline RAG"
+
+  - id: component
+    label:
+      en: "Component"
+      fr: "Composant"
+    color: "#F0A500"
+    description:
+      en: "A technical building block within a RAG stage"
+      fr: "Un bloc technique au sein d'une étape RAG"
+
+  - id: tool
+    label:
+      en: "Tool / Framework"
+      fr: "Outil / Framework"
+    color: "#85C1E9"
+    description:
+      en: "A library or service used to implement RAG"
+      fr: "Une bibliothèque ou service utilisé pour implémenter RAG"
+
+nodes:
+  # ── LAYER 1 · PIPELINE STAGES ────────────────
+
+  - id: ingestion
+    label:
+      en: "Ingestion"
+      fr: "Ingestion"
+    layer: 1
+    category: stage
+    node_type: provider
+    status: stable
+    since: "2023"
+    link: "https://python.langchain.com/docs/how_to/#document-loaders"
+    description:
+      en: |
+        Loading and preparing documents before they can be searched.
+        Steps: load raw files (PDF, HTML, code, DB…), clean text, split into chunks,
+        generate embeddings for each chunk, store vectors in a vector database.
+        Quality of ingestion determines quality of retrieval — garbage in, garbage out.
+      fr: |
+        Chargement et préparation des documents avant qu'ils puissent être recherchés.
+        Étapes : charger les fichiers bruts (PDF, HTML, code, BDD…), nettoyer le texte,
+        découper en chunks, générer des embeddings pour chaque chunk, stocker dans une base vectorielle.
+        La qualité de l'ingestion détermine la qualité de la récupération.
+
+  - id: retrieval
+    label:
+      en: "Retrieval"
+      fr: "Récupération"
+    layer: 1
+    category: stage
+    node_type: provider
+    status: stable
+    since: "2023"
+    link: "https://python.langchain.com/docs/how_to/#retrievers"
+    description:
+      en: |
+        Finding the most relevant chunks for a user query at runtime.
+        The query is embedded with the same model used at ingestion,
+        then the nearest vectors are retrieved from the database (semantic similarity).
+        Optional: reranking — a second model re-scores the top candidates for precision.
+        This stage is the heart of RAG; poor retrieval = poor answers.
+      fr: |
+        Trouver les chunks les plus pertinents pour une requête utilisateur au moment de l'exécution.
+        La requête est embeddée avec le même modèle qu'à l'ingestion,
+        puis les vecteurs les plus proches sont récupérés (similarité sémantique).
+        Optionnel : reranking — un second modèle re-score les candidats pour plus de précision.
+        Cette étape est le cœur de RAG ; une mauvaise récupération = de mauvaises réponses.
+
+  - id: generation
+    label:
+      en: "Generation"
+      fr: "Génération"
+    layer: 1
+    category: stage
+    node_type: provider
+    status: stable
+    since: "2023"
+    link: "https://python.langchain.com/docs/how_to/#chat-models"
+    description:
+      en: |
+        Producing the final answer by combining the retrieved context with the user query.
+        The retrieved chunks are injected into the LLM prompt as context.
+        The LLM generates an answer grounded in the provided documents — not from memory.
+        Key design choice: how to structure the prompt template to avoid hallucination
+        and instruct the model to say "I don't know" when the context is insufficient.
+      fr: |
+        Production de la réponse finale en combinant le contexte récupéré avec la requête utilisateur.
+        Les chunks récupérés sont injectés dans le prompt LLM comme contexte.
+        Le LLM génère une réponse ancrée dans les documents fournis — pas depuis sa mémoire.
+        Choix de conception clé : structurer le prompt pour éviter les hallucinations
+        et dire "Je ne sais pas" quand le contexte est insuffisant.
+
+  # ── LAYER 2 · KEY COMPONENTS ─────────────────
+
+  - id: chunking
+    label:
+      en: "Chunking"
+      fr: "Chunking"
+    layer: 2
+    category: component
+    status: evolving
+    since: "2023"
+    link: "https://www.pinecone.io/learn/chunking-strategies/"
+    description:
+      en: |
+        Splitting documents into pieces small enough for an embedding model to capture their meaning.
+        Strategies: fixed size (simple), recursive (respects structure), semantic (groups related sentences).
+        Chunk size is a critical hyperparameter: too small = lost context, too large = noisy retrieval.
+        Overlap between chunks prevents information loss at boundaries.
+      fr: |
+        Découper les documents en morceaux assez petits pour qu'un modèle d'embedding en capture le sens.
+        Stratégies : taille fixe (simple), récursif (respecte la structure), sémantique (regroupe les phrases liées).
+        La taille du chunk est un hyperparamètre critique : trop petit = contexte perdu, trop grand = récupération bruitée.
+        Le chevauchement entre chunks évite les pertes d'information aux frontières.
+
+  - id: embedding
+    label:
+      en: "Embedding Model"
+      fr: "Modèle d'Embedding"
+    layer: 2
+    category: component
+    status: stable
+    since: "2022"
+    link: "https://huggingface.co/spaces/mteb/leaderboard"
+    description:
+      en: |
+        The model that converts text to vectors. Used twice: at ingestion (documents) and retrieval (queries).
+        Must be the same model for both — different models produce incompatible vector spaces.
+        Top choices: OpenAI text-embedding-3-large, Voyage-3, Cohere embed-v3, nomic-embed-text.
+        MTEB leaderboard ranks models by retrieval quality across domains and languages.
+      fr: |
+        Le modèle qui convertit le texte en vecteurs. Utilisé deux fois : à l'ingestion (documents) et à la récupération (requêtes).
+        Doit être le même modèle pour les deux — des modèles différents produisent des espaces vectoriels incompatibles.
+        Top choices : OpenAI text-embedding-3-large, Voyage-3, Cohere embed-v3, nomic-embed-text.
+        Le classement MTEB évalue les modèles par qualité de récupération.
+
+  - id: vector_store
+    label:
+      en: "Vector Store"
+      fr: "Base Vectorielle"
+    layer: 2
+    category: component
+    status: stable
+    since: "2021"
+    link: "https://www.pinecone.io/learn/vector-database/"
+    description:
+      en: |
+        Database storing document embeddings and enabling fast similarity search (ANN — approximate nearest neighbors).
+        The storage backbone of any RAG system. Supports metadata filtering to combine vector and keyword search.
+        Managed options: Pinecone, Weaviate, Qdrant. Self-hosted: Chroma, Milvus. SQL extensions: pgvector.
+        Choice depends on scale, latency requirements, and existing infrastructure.
+      fr: |
+        Base de données stockant les embeddings et permettant une recherche de similarité rapide (ANN).
+        L'épine dorsale du stockage de tout système RAG. Supporte le filtrage par métadonnées pour combiner recherche vectorielle et par mots-clés.
+        Options managées : Pinecone, Weaviate, Qdrant. Auto-hébergées : Chroma, Milvus. Extensions SQL : pgvector.
+        Le choix dépend de l'échelle, des exigences de latence et de l'infrastructure existante.
+
+  - id: reranker
+    label:
+      en: "Reranker"
+      fr: "Reranker"
+    layer: 2
+    category: component
+    status: evolving
+    since: "2023"
+    link: "https://docs.cohere.com/docs/reranking"
+    description:
+      en: |
+        A second-pass model that re-scores retrieved chunks by relevance to the query.
+        Retrieval (ANN) optimizes for speed; reranking optimizes for precision.
+        Takes top-k retrieved chunks (e.g. 20), re-scores them, keeps top-n (e.g. 5) for the prompt.
+        Significantly improves answer quality at the cost of added latency.
+        Best options: Cohere Rerank, Jina Reranker, ColBERT.
+      fr: |
+        Un modèle de second passage qui re-score les chunks récupérés par pertinence à la requête.
+        La récupération (ANN) optimise la vitesse ; le reranking optimise la précision.
+        Prend les top-k chunks récupérés (ex : 20), les re-score, garde les top-n (ex : 5) pour le prompt.
+        Améliore significativement la qualité des réponses au prix d'une latence supplémentaire.
+        Meilleures options : Cohere Rerank, Jina Reranker, ColBERT.
+
+  # ── LAYER 3 · TOOLS & FRAMEWORKS ─────────────
+
+  - id: langchain
+    label:
+      en: "LangChain"
+      fr: "LangChain"
+    layer: 3
+    category: tool
+    status: stable
+    since: "2022"
+    link: "https://python.langchain.com/docs/tutorials/rag/"
+    description:
+      en: |
+        The most widely adopted LLM orchestration framework. Provides ready-made components
+        for every RAG stage: document loaders, text splitters, embedding wrappers, vector store integrations,
+        retriever abstractions, and chain/pipeline composition.
+        Large ecosystem, but can be verbose and hard to debug.
+        LangGraph (from LangChain) adds stateful agent workflows on top.
+      fr: |
+        Le framework d'orchestration LLM le plus adopté. Fournit des composants prêts à l'emploi
+        pour chaque étape RAG : chargeurs de documents, découpeurs de texte, wrappers d'embedding,
+        intégrations de bases vectorielles, abstractions de retrievers et composition de pipelines.
+        Grand écosystème, mais peut être verbeux et difficile à déboguer.
+        LangGraph ajoute des workflows d'agents avec état par-dessus.
+
+  - id: llamaindex
+    label:
+      en: "LlamaIndex"
+      fr: "LlamaIndex"
+    layer: 3
+    category: tool
+    status: stable
+    since: "2022"
+    link: "https://docs.llamaindex.ai/en/stable/getting_started/concepts/"
+    description:
+      en: |
+        Framework purpose-built for RAG and knowledge-intensive applications.
+        Stronger than LangChain for complex indexing strategies (hierarchical, multi-document, graph-based).
+        Provides QueryEngine, RetrieverRouter, SubQuestionQueryEngine for advanced retrieval.
+        Better abstraction for production RAG pipelines, especially with structured/unstructured mixed data.
+      fr: |
+        Framework conçu spécifiquement pour RAG et les applications à forte intensité de connaissance.
+        Plus puissant que LangChain pour les stratégies d'indexation complexes (hiérarchique, multi-documents, graphe).
+        Fournit QueryEngine, RetrieverRouter, SubQuestionQueryEngine pour une récupération avancée.
+        Meilleure abstraction pour les pipelines RAG en production, notamment avec des données mixtes.
+
+  - id: pgvector
+    label:
+      en: "pgvector"
+      fr: "pgvector"
+    layer: 3
+    category: tool
+    status: stable
+    since: "2021"
+    link: "https://github.com/pgvector/pgvector"
+    description:
+      en: |
+        PostgreSQL extension adding vector similarity search. The pragmatic enterprise choice:
+        no new infrastructure, vectors live alongside relational data in your existing Postgres.
+        Supports L2, cosine and inner product distance. Works with all Postgres-compatible services
+        (AWS RDS, Supabase, Neon, Railway). Best for teams with existing Postgres and moderate scale.
+      fr: |
+        Extension PostgreSQL ajoutant la recherche de similarité vectorielle. Le choix pragmatique en entreprise :
+        pas de nouvelle infrastructure, les vecteurs coexistent avec les données relationnelles dans votre Postgres existant.
+        Supporte les distances L2, cosinus et produit scalaire. Fonctionne avec tous les services compatibles Postgres
+        (AWS RDS, Supabase, Neon, Railway). Idéal pour les équipes avec Postgres existant et une échelle modérée.
+
+  - id: pinecone
+    label:
+      en: "Pinecone"
+      fr: "Pinecone"
+    layer: 3
+    category: tool
+    status: stable
+    since: "2021"
+    link: "https://www.pinecone.io"
+    description:
+      en: |
+        Managed vector database built for production RAG at scale.
+        Serverless pricing (pay per query, not per server). Sub-10ms latency at any scale.
+        Supports hybrid search (dense + sparse vectors) and metadata filtering.
+        No infrastructure to manage. Best choice for teams wanting a fully managed, battle-tested vector store
+        without operational burden.
+      fr: |
+        Base de données vectorielle managée conçue pour RAG en production à grande échelle.
+        Tarification serverless (paiement par requête). Latence sous 10ms à toute échelle.
+        Supporte la recherche hybride (vecteurs denses + creux) et le filtrage par métadonnées.
+        Aucune infrastructure à gérer. Meilleur choix pour les équipes voulant un vector store entièrement managé.
+
+edges:
+  # Stages → Components
+  - from: ingestion
+    to: chunking
+    label: "requires"
+    type: part_of
+  - from: ingestion
+    to: embedding
+    label: "requires"
+    type: part_of
+  - from: ingestion
+    to: vector_store
+    label: "stores into"
+    type: part_of
+  - from: retrieval
+    to: embedding
+    label: "uses"
+    type: part_of
+  - from: retrieval
+    to: vector_store
+    label: "queries"
+    type: part_of
+  - from: retrieval
+    to: reranker
+    label: "optionally"
+    type: part_of
+  - from: generation
+    to: reranker
+    label: "receives from"
+    type: part_of
+
+  # Components → Tools
+  - from: vector_store
+    to: pgvector
+    label: ""
+    type: part_of
+  - from: vector_store
+    to: pinecone
+    label: ""
+    type: part_of
+  - from: chunking
+    to: langchain
+    label: ""
+    type: implemented_by
+  - from: chunking
+    to: llamaindex
+    label: ""
+    type: implemented_by
+  - from: reranker
+    to: langchain
+    label: ""
+    type: implemented_by

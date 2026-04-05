@@ -1,0 +1,366 @@
+meta:
+  title:
+    en: "AI Agents"
+    fr: "Agents IA"
+  description:
+    en: "Agent patterns, building blocks and frameworks for autonomous AI systems"
+    fr: "Patterns, briques et frameworks pour les systèmes IA autonomes"
+  version: "2026-Q1"
+  date: "2026-04-05"
+  back_link: "macro.html"
+  layout_direction: ltr
+  column_scale: 0.45
+
+layers:
+  1:
+    en: "BUILDING BLOCKS"
+    fr: "BRIQUES FONDAMENTALES"
+  2:
+    en: "AGENT PATTERNS"
+    fr: "PATTERNS D'AGENTS"
+  3:
+    en: "FRAMEWORKS"
+    fr: "FRAMEWORKS"
+
+categories:
+  - id: block
+    label:
+      en: "Building Block"
+      fr: "Brique"
+    color: "#F4D03F"
+    description:
+      en: "A fundamental capability every agent needs"
+      fr: "Une capacité fondamentale que tout agent nécessite"
+
+  - id: pattern
+    label:
+      en: "Agent Pattern"
+      fr: "Pattern d'Agent"
+    color: "#58D68D"
+    description:
+      en: "An architectural pattern for structuring agent behavior"
+      fr: "Un pattern architectural pour structurer le comportement d'un agent"
+
+  - id: framework
+    label:
+      en: "Framework"
+      fr: "Framework"
+    color: "#85C1E9"
+    description:
+      en: "A library or platform for building AI agents"
+      fr: "Une bibliothèque ou plateforme pour construire des agents IA"
+
+nodes:
+  # ── LAYER 1 · BUILDING BLOCKS ────────────────
+
+  - id: planning
+    label:
+      en: "Planning"
+      fr: "Planification"
+    layer: 1
+    category: block
+    node_type: provider
+    status: evolving
+    since: "2023"
+    link: "https://www.anthropic.com/research/building-effective-agents"
+    description:
+      en: |
+        The agent's ability to break a goal into steps before acting.
+        Approaches: direct generation (LLM lists steps), tree-of-thought (explores branches),
+        ReAct (interleaves reasoning and action), Plan-then-Execute (separate planning and execution phases).
+        Better planning = fewer wasted tool calls = lower cost and higher success rate.
+        Key insight (Anthropic): simple, explicit prompts often outperform complex planning frameworks.
+      fr: |
+        La capacité de l'agent à décomposer un objectif en étapes avant d'agir.
+        Approches : génération directe (le LLM liste les étapes), tree-of-thought (exploration de branches),
+        ReAct (raisonnement et action entrelacés), Plan-then-Execute (phases de planification et d'exécution séparées).
+        Meilleure planification = moins d'appels d'outils inutiles = coût réduit et taux de succès plus élevé.
+
+  - id: memory
+    label:
+      en: "Memory"
+      fr: "Mémoire"
+    layer: 1
+    category: block
+    node_type: provider
+    status: evolving
+    since: "2023"
+    link: "https://python.langchain.com/docs/how_to/#memory"
+    description:
+      en: |
+        How an agent retains and retrieves information across steps and sessions.
+        Four types: in-context (in the prompt, temporary), external (vector DB, persistent),
+        episodic (past interactions, retrieved by similarity), semantic (structured facts/knowledge).
+        Memory is often the hardest part of building production agents.
+        Large context windows (200k+) reduce the need for explicit memory management.
+      fr: |
+        Comment un agent retient et récupère des informations entre les étapes et les sessions.
+        Quatre types : in-context (dans le prompt, temporaire), externe (DB vectorielle, persistant),
+        épisodique (interactions passées, récupérées par similarité), sémantique (faits/connaissances structurés).
+        La mémoire est souvent la partie la plus difficile des agents en production.
+
+  - id: tool_use_block
+    label:
+      en: "Tool Use"
+      fr: "Utilisation d'Outils"
+    layer: 1
+    category: block
+    node_type: provider
+    status: stable
+    since: "2023"
+    link: "https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview"
+    description:
+      en: |
+        The agent's ability to call external functions: web search, database queries, code execution,
+        API calls, file operations, email/calendar…
+        Tool use is what transforms a chatbot into an agent — the ability to ACT, not just respond.
+        MCP (Model Context Protocol) standardizes how tools are declared and called across models.
+        Key design principle: give the agent the minimum set of tools needed for the task.
+      fr: |
+        La capacité de l'agent à appeler des fonctions externes : recherche web, requêtes DB, exécution de code,
+        appels API, opérations fichiers, email/calendrier…
+        L'utilisation d'outils transforme un chatbot en agent — la capacité d'AGIR, pas seulement de répondre.
+        MCP (Model Context Protocol) standardise comment les outils sont déclarés et appelés.
+        Principe de conception clé : donner à l'agent le minimum d'outils nécessaires pour la tâche.
+
+  - id: orchestration_block
+    label:
+      en: "Orchestration"
+      fr: "Orchestration"
+    layer: 1
+    category: block
+    node_type: provider
+    status: evolving
+    since: "2023"
+    link: "https://www.anthropic.com/research/building-effective-agents"
+    description:
+      en: |
+        Managing the flow of execution: which agent runs when, how agents communicate,
+        handling errors, retries and interruptions.
+        Single-agent: one LLM loops until done. Multi-agent: specialized sub-agents
+        handle different parts of a task, orchestrated by a supervisor agent.
+        Human-in-the-loop: checkpoints where a human approves before the agent continues.
+        The more autonomous the agent, the more critical robust orchestration becomes.
+      fr: |
+        Gérer le flux d'exécution : quel agent tourne quand, comment les agents communiquent,
+        gestion des erreurs, reprises et interruptions.
+        Mono-agent : un LLM boucle jusqu'à la fin. Multi-agents : des sous-agents spécialisés
+        gèrent différentes parties d'une tâche, orchestrés par un agent superviseur.
+        Human-in-the-loop : points de contrôle où un humain approuve avant que l'agent continue.
+
+  # ── LAYER 2 · AGENT PATTERNS ─────────────────
+
+  - id: react_pattern
+    label:
+      en: "ReAct"
+      fr: "ReAct"
+    layer: 2
+    category: pattern
+    status: stable
+    since: "2022"
+    link: "https://arxiv.org/abs/2210.03629"
+    description:
+      en: |
+        Reasoning + Acting. The dominant single-agent pattern.
+        Loop: Thought (LLM reasons about what to do) → Action (call a tool) → Observation (tool result) → repeat.
+        Simple, interpretable, works well for tool-using tasks.
+        Limitation: no long-horizon planning, can get stuck in loops.
+        Used by default in most LangChain and LlamaIndex agent implementations.
+      fr: |
+        Reasoning + Acting. Le pattern mono-agent dominant.
+        Boucle : Thought (le LLM raisonne sur quoi faire) → Action (appel d'outil) → Observation (résultat) → répéter.
+        Simple, interprétable, fonctionne bien pour les tâches utilisant des outils.
+        Limitation : pas de planification à long horizon, peut se bloquer en boucles.
+        Utilisé par défaut dans la plupart des implémentations d'agents LangChain et LlamaIndex.
+
+  - id: plan_execute
+    label:
+      en: "Plan & Execute"
+      fr: "Plan & Execute"
+    layer: 2
+    category: pattern
+    status: evolving
+    since: "2023"
+    link: "https://langchain-ai.github.io/langgraph/tutorials/plan-and-execute/plan-and-execute/"
+    description:
+      en: |
+        Separates planning from execution into two distinct phases.
+        Phase 1 (Planner): the LLM creates a complete step-by-step plan upfront.
+        Phase 2 (Executor): each step is executed in order, with the plan updated if needed.
+        Better for complex, multi-step tasks where a global view improves efficiency.
+        More predictable than ReAct — easier to debug and interrupt.
+      fr: |
+        Sépare la planification de l'exécution en deux phases distinctes.
+        Phase 1 (Planificateur) : le LLM crée un plan complet étape par étape à l'avance.
+        Phase 2 (Exécuteur) : chaque étape est exécutée dans l'ordre, le plan étant mis à jour si nécessaire.
+        Meilleur pour les tâches complexes multi-étapes où une vue globale améliore l'efficacité.
+        Plus prévisible que ReAct — plus facile à déboguer et à interrompre.
+
+  - id: multi_agent
+    label:
+      en: "Multi-Agent"
+      fr: "Multi-Agent"
+    layer: 2
+    category: pattern
+    status: evolving
+    since: "2024"
+    link: "https://www.anthropic.com/research/building-effective-agents"
+    description:
+      en: |
+        Multiple specialized agents working together, each handling a specific sub-task.
+        Patterns: Supervisor (one agent routes tasks to specialists), Pipeline (sequential handoffs),
+        Swarm (peer-to-peer collaboration between agents).
+        When to use: task exceeds a single context window, parallelizable sub-tasks,
+        different sub-tasks need different tools or model strengths.
+        Challenge: inter-agent communication errors compound — keep interfaces simple.
+      fr: |
+        Plusieurs agents spécialisés travaillant ensemble, chacun gérant une sous-tâche spécifique.
+        Patterns : Supervisor (un agent route les tâches vers des spécialistes), Pipeline (transferts séquentiels),
+        Swarm (collaboration peer-to-peer entre agents).
+        Quand l'utiliser : tâche dépasse une fenêtre de contexte, sous-tâches parallélisables,
+        différentes sous-tâches nécessitent différents outils ou forces de modèles.
+
+  # ── LAYER 3 · FRAMEWORKS ─────────────────────
+
+  - id: langgraph
+    label:
+      en: "LangGraph"
+      fr: "LangGraph"
+    layer: 3
+    category: framework
+    status: evolving
+    since: "2024"
+    link: "https://langchain-ai.github.io/langgraph/"
+    description:
+      en: |
+        LangChain's framework for stateful, multi-step agent workflows.
+        Models agent logic as a directed graph: nodes are LLM calls or tools, edges are transitions.
+        Built-in: persistence (checkpoint state), human-in-the-loop, streaming, time-travel debugging.
+        Best for complex workflows that need branching, loops and state management.
+        The production-grade choice for teams already using LangChain.
+      fr: |
+        Le framework de LangChain pour les workflows d'agents avec état et multi-étapes.
+        Modélise la logique d'agent comme un graphe dirigé : les nœuds sont des appels LLM ou outils, les arêtes sont des transitions.
+        Intégré : persistance (état checkpoint), human-in-the-loop, streaming, débogage time-travel.
+        Idéal pour les workflows complexes nécessitant des branchements, boucles et gestion d'état.
+
+  - id: crewai
+    label:
+      en: "CrewAI"
+      fr: "CrewAI"
+    layer: 3
+    category: framework
+    status: evolving
+    since: "2024"
+    link: "https://www.crewai.com"
+    description:
+      en: |
+        Role-based multi-agent framework. Define agents with roles, goals and backstories;
+        assign tasks; let agents collaborate as a "crew".
+        Intuitive abstraction for non-ML teams: think "hire a team of AI specialists".
+        Built-in memory, process management (sequential, hierarchical, parallel).
+        Large community, fast-growing ecosystem. Good for business process automation.
+      fr: |
+        Framework multi-agents basé sur les rôles. Définissez des agents avec des rôles, objectifs et historiques ;
+        assignez des tâches ; laissez les agents collaborer comme une "équipe".
+        Abstraction intuitive pour les équipes non-ML : pensez "embaucher une équipe de spécialistes IA".
+        Mémoire intégrée, gestion de processus (séquentiel, hiérarchique, parallèle).
+
+  - id: autogen
+    label:
+      en: "AutoGen / AG2"
+      fr: "AutoGen / AG2"
+    layer: 3
+    category: framework
+    status: evolving
+    since: "2023"
+    link: "https://ag2.ai"
+    description:
+      en: |
+        Microsoft Research's multi-agent framework. Agents communicate via a conversational interface —
+        each agent has a role and responds to messages from other agents.
+        Strong for: code generation + execution loops, research tasks, debate-style reasoning.
+        AG2 is the community fork (post-Microsoft). Supports human-in-the-loop naturally.
+        Best for research prototyping and technical automation tasks.
+      fr: |
+        Le framework multi-agents de Microsoft Research. Les agents communiquent via une interface conversationnelle —
+        chaque agent a un rôle et répond aux messages des autres agents.
+        Solide pour : boucles de génération + exécution de code, tâches de recherche, raisonnement par débat.
+        AG2 est le fork communautaire (post-Microsoft). Supporte le human-in-the-loop naturellement.
+
+  - id: anthropic_sdk
+    label:
+      en: "Anthropic Agent SDK"
+      fr: "SDK Agents Anthropic"
+    layer: 3
+    category: framework
+    status: evolving
+    since: "2025"
+    link: "https://github.com/anthropics/anthropic-sdk-python"
+    description:
+      en: |
+        Anthropic's official Python SDK for building agents with Claude.
+        Lightweight by design — close to the raw API, minimal abstraction.
+        Built-in tool use, streaming, and MCP client integration.
+        Claude Code itself is built on this SDK.
+        Philosophy: explicit > magic. You control the loop, the SDK handles API communication.
+        Best for teams who want full control without framework overhead.
+      fr: |
+        Le SDK Python officiel d'Anthropic pour construire des agents avec Claude.
+        Léger par conception — proche de l'API brute, abstraction minimale.
+        Utilisation d'outils, streaming et intégration client MCP intégrés.
+        Claude Code lui-même est construit sur ce SDK.
+        Philosophie : explicite > magie. Vous contrôlez la boucle, le SDK gère la communication API.
+
+edges:
+  # Blocks → Patterns
+  - from: planning
+    to: react_pattern
+    label: "enables"
+    type: part_of
+  - from: planning
+    to: plan_execute
+    label: "central to"
+    type: part_of
+  - from: planning
+    to: multi_agent
+    label: "enables"
+    type: part_of
+  - from: tool_use_block
+    to: react_pattern
+    label: "required by"
+    type: part_of
+  - from: tool_use_block
+    to: plan_execute
+    label: "required by"
+    type: part_of
+  - from: memory
+    to: multi_agent
+    label: "critical for"
+    type: part_of
+  - from: orchestration_block
+    to: multi_agent
+    label: "defines"
+    type: part_of
+
+  # Patterns → Frameworks
+  - from: react_pattern
+    to: langgraph
+    label: ""
+    type: implemented_by
+  - from: plan_execute
+    to: langgraph
+    label: ""
+    type: implemented_by
+  - from: multi_agent
+    to: crewai
+    label: ""
+    type: implemented_by
+  - from: multi_agent
+    to: autogen
+    label: ""
+    type: implemented_by
+  - from: react_pattern
+    to: anthropic_sdk
+    label: ""
+    type: implemented_by
