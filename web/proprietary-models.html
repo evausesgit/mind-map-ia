@@ -236,6 +236,19 @@
 
   .main {
     display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+  #cy-area {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+  #cy-wrapper {
+    position: relative;
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
@@ -244,26 +257,24 @@
     flex: 0 0 0;
     min-height: 0;
     overflow: hidden;
-    margin: 0 12px 12px 12px;
-    border: 2px solid #E74C3C;
-    border-radius: 8px;
     position: relative;
+    border-top: 2px solid #E74C3C;
     transition: flex-basis 0.35s ease;
   }
   body.drilldown-active #drilldown-section {
-    flex: 0 0 44vh;
+    flex: 0 0 45%;
   }
   #drilldown-label-box {
     position: absolute;
-    top: -13px;
-    left: 20px;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
     background: #1A1A2E;
-    padding: 2px 14px;
+    padding: 2px 16px;
     color: #E74C3C;
     font-weight: 700;
-    font-size: 13px;
-    border-radius: 4px;
-    border: 1.5px solid #E74C3C;
+    font-size: 12px;
+    border-radius: 3px;
     z-index: 10;
     white-space: nowrap;
     pointer-events: none;
@@ -540,7 +551,7 @@
 <header>
   <div style="display:flex;align-items:center;gap:12px;">
     <a href="macro.html" class="back-btn" title="Back">← Back</a>
-    <div class="nav-menu">  <button class="nav-btn" id="nav-toggle">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="index.html" class="nav-home">← Home</a>   <a href="macro.html" class="">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="ecosystem.html" class="">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span>  </span></a><a href="proprietary-models.html" class="active">  <span class="nav-icon">🏢</span>  <span class="nav-info">    <span class="nav-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span>    <span class="nav-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span>  </span></a><a href="dense-vs-moe.html" class="">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="glossary.html" class="">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
+    <div class="nav-menu">  <button class="nav-btn" id="nav-toggle">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="index.html" class="nav-home">← Home</a>   <a href="macro.html" class="">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="ecosystem.html" class="">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span>  </span></a><a href="rag-pattern.html" class="">  <span class="nav-icon">🔍</span>  <span class="nav-info">    <span class="nav-title" data-en="RAG" data-fr="RAG">RAG</span>    <span class="nav-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span>  </span></a><a href="cloud-managed.html" class="">  <span class="nav-icon">☁️</span>  <span class="nav-info">    <span class="nav-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span>    <span class="nav-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span>  </span></a><a href="ai-agents.html" class="">  <span class="nav-icon">🤖</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span>    <span class="nav-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span>  </span></a><a href="ai-coding-assistants.html" class="">  <span class="nav-icon">💻</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span>    <span class="nav-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span>  </span></a><a href="open-weights-models.html" class="">  <span class="nav-icon">🔓</span>  <span class="nav-info">    <span class="nav-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span>    <span class="nav-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span>  </span></a><a href="proprietary-models.html" class="active">  <span class="nav-icon">🏢</span>  <span class="nav-info">    <span class="nav-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span>    <span class="nav-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span>  </span></a><a href="dense-vs-moe.html" class="">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="glossary.html" class="">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
     <div>
       <h1 id="main-title">Proprietary Models</h1>
       <div class="meta">v2026-Q1 · 2026-04-05</div>
@@ -561,22 +572,29 @@
 </header>
 
 <div class="main">
-  <div style="position:relative;flex:1;overflow:hidden;">
-    <div id="cy"></div>
-    <div id="cat-boxes" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;"></div>
-    <div id="controls">
-      <button class="ctrl-btn" onclick="cy.fit()"
-        data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
-      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)"
-        data-tip-en="Zoom in" data-tip-fr="Zoom avant">+</button>
-      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)"
-        data-tip-en="Zoom out" data-tip-fr="Zoom arrière">−</button>
-      <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()"
-        data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
-      <button class="ctrl-btn" onclick="exportLayout()"
-        data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
-      <button class="ctrl-btn" onclick="window.open('proprietary-models-slides.html','_blank')"
-        data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
+  <div id="cy-area">
+    <div id="cy-wrapper">
+      <div id="cy"></div>
+      <div id="cat-boxes" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;"></div>
+      <div id="controls">
+        <button class="ctrl-btn" onclick="cy.fit()"
+          data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
+        <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)"
+          data-tip-en="Zoom in" data-tip-fr="Zoom avant">+</button>
+        <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)"
+          data-tip-en="Zoom out" data-tip-fr="Zoom arrière">−</button>
+        <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()"
+          data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
+        <button class="ctrl-btn" onclick="exportLayout()"
+          data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
+        <button class="ctrl-btn" onclick="window.open('proprietary-models-slides.html','_blank')"
+          data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
+      </div>
+    </div>
+    <div id="drilldown-section">
+      <div id="drilldown-label-box"></div>
+      <button id="drilldown-close" onclick="closeDrilldown()">✕</button>
+      <div id="cy2"></div>
     </div>
   </div>
 
@@ -615,12 +633,6 @@
       </div>
     </div>
   </div>
-</div>
-
-<div id="drilldown-section">
-  <div id="drilldown-label-box"></div>
-  <button id="drilldown-close" onclick="closeDrilldown()">✕ Close</button>
-  <div id="cy2"></div>
 </div>
 
 <script>
@@ -1615,13 +1627,18 @@ const CY_STYLE = [
         "border-style": "dashed",
       }
     },
-    // Nodes with drill-down → zoom-in cursor + subtle glow
+    // Nodes with drill-down → visible glow + double border
     {
       selector: ".has-drilldown",
       style: {
         "border-color": "#E74C3C",
         "border-width": 3,
         "border-style": "double",
+        "shadow-blur": 12,
+        "shadow-color": "#E74C3C",
+        "shadow-offset-x": 0,
+        "shadow-offset-y": 0,
+        "shadow-opacity": 0.6,
       }
     },
     // Status: deprecated → grey, muted
@@ -2033,7 +2050,7 @@ function showPanel(node) {
     drilldownHint.textContent = lang === "fr" ? "↗ Double-cliquez pour explorer" : "↗ Double-click to explore";
     drilldownHint.onclick = () => {
       const dd = DRILLDOWN_DATA[d.id];
-      if (dd) showDrilldown(dd, d[`label_${lang}`] || d.label);
+      if (dd) showDrilldown(dd, d[`label_${lang}`] || d.label, d.color);
     };
   } else {
     drilldownEl.style.display = "none";
@@ -2043,10 +2060,8 @@ function showPanel(node) {
 // ── Node click → panel ───────────────────────
 cy.on("tap", "node", function(evt) {
   const node = evt.target;
-
   showPanel(node);
-
-  // Highlight node + connected edges/nodes
+  if (cy2) cy2.elements().removeClass("dimmed highlighted");
   cy.elements().addClass("dimmed");
   node.removeClass("dimmed");
   const connected = node.connectedEdges();
@@ -2059,47 +2074,87 @@ cy.on("tap", "node", function(evt) {
 });
 
 // ── Node double-tap → drill-down inline ──────
-cy.on("dbltap", "node", function(evt) {
+let _tapTimer = null, _lastTapNode = null;
+cy.on("tap", "node", function(evt) {
   const node = evt.target;
-  const dd = DRILLDOWN_DATA[node.id()];
-  if (!dd) return;
-  const label = node.data(`label_${lang}`) || node.data("label");
-  showDrilldown(dd, label);
+  if (!DRILLDOWN_DATA[node.id()]) return;
+  if (_lastTapNode === node.id() && _tapTimer) {
+    clearTimeout(_tapTimer); _tapTimer = null; _lastTapNode = null;
+    showDrilldown(DRILLDOWN_DATA[node.id()],
+      node.data(`label_${lang}`) || node.data("label"),
+      node.data("color"));
+  } else {
+    _lastTapNode = node.id();
+    _tapTimer = setTimeout(() => { _tapTimer = null; _lastTapNode = null; }, 350);
+  }
 });
 
 let cy2 = null;
 
-function showDrilldown(dd, label) {
-  document.getElementById("drilldown-label-box").textContent = label;
+function showDrilldown(dd, label, color) {
+  const col = color || "#E74C3C";
+  const labelBox = document.getElementById("drilldown-label-box");
+  labelBox.textContent = label;
+  labelBox.style.color = col;
+  document.getElementById("drilldown-section").style.borderTopColor = col;
   document.body.classList.add("drilldown-active");
-  const section = document.getElementById("drilldown-section");
-  section.style.display = "block";
 
   if (cy2) { cy2.destroy(); cy2 = null; }
 
-  cy2 = cytoscape({
-    container: document.getElementById("cy2"),
-    elements: dd.elements,
-    style: CY_STYLE,
-    layout: { name: "preset" },
-    wheelSensitivity: 0.3,
-    minZoom: 0.1,
-    maxZoom: 3,
-  });
+  // Wait for CSS transition (350ms) before initializing so the container has its final size
+  setTimeout(() => {
+    cy2 = cytoscape({
+      container: document.getElementById("cy2"),
+      elements: dd.elements,
+      style: CY_STYLE,
+      layout: { name: "preset" },
+      wheelSensitivity: 0.3,
+      minZoom: 0.1,
+      maxZoom: 3,
+    });
 
-  cy2.style()
-    .selector("node")
-    .style({ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" })
-    .selector("node[node_type='provider']")
-    .style({ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" })
-    .update();
+    cy2.style()
+      .selector("node")
+      .style({ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" })
+      .selector("node[node_type='provider']")
+      .style({ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" })
+      .update();
 
-  setTimeout(() => cy2.fit(undefined, 30), 80);
+    cy2.resize();
+    cy2.fit(undefined, 30);
+
+    // ── cy2: node click → shared panel ───────────
+    cy2.on("tap", "node", function(evt) {
+      const node = evt.target;
+      showPanel(node);
+      cy.elements().removeClass("dimmed highlighted");
+      cy2.elements().addClass("dimmed");
+      node.removeClass("dimmed");
+      const connected = node.connectedEdges();
+      connected.removeClass("dimmed").addClass("highlighted");
+      connected.connectedNodes().removeClass("dimmed");
+      node.addClass("highlighted");
+    });
+
+    cy2.on("tap", function(evt) {
+      if (evt.target === cy2) {
+        currentNode = null;
+        cy2.elements().removeClass("dimmed highlighted");
+        document.getElementById("panel-header").style.display = "none";
+        document.getElementById("empty-msg").style.display = "flex";
+        document.getElementById("panel-content").style.display = "none";
+      }
+    });
+
+    cy2.on("mouseover", "edge", function(evt) { evt.target.addClass("highlighted"); });
+    cy2.on("mouseout", "edge", function(evt) {
+      if (!evt.target.source().hasClass("highlighted")) evt.target.removeClass("highlighted");
+    });
+  }, 380);
 }
 
 function closeDrilldown() {
   document.body.classList.remove("drilldown-active");
-  document.getElementById("drilldown-section").style.display = "none";
   if (cy2) { cy2.destroy(); cy2 = null; }
 }
 
@@ -2109,11 +2164,39 @@ cy.on("tap", function(evt) {
     currentNode = null;
     history.replaceState(null, '', window.location.pathname + window.location.search);
     cy.elements().removeClass("dimmed highlighted");
+    if (cy2) cy2.elements().removeClass("dimmed highlighted");
     document.getElementById("panel-header").style.display = "none";
     document.getElementById("empty-msg").style.display = "flex";
     document.getElementById("panel-content").style.display = "none";
   }
 });
+
+// ── Drilldown nodes: ↗ label + cursor + glow pulse ──
+const cyContainer = document.getElementById("cy");
+cy.on("mouseover", "node.has-drilldown", () => { cyContainer.style.cursor = "zoom-in"; });
+cy.on("mouseout",  "node.has-drilldown", () => { cyContainer.style.cursor = ""; });
+
+// Append ↗ indicator to label (function style overrides data reference)
+cy.style()
+  .selector(".has-drilldown")
+  .style({ "label": ele => ele.data("label") + "  ↗" })
+  .update();
+
+(function pulseDrilldowns() {
+  cy.nodes(".has-drilldown").forEach(node => {
+    (function pulse(n) {
+      n.animate(
+        { style: { "shadow-blur": 22, "shadow-opacity": 0.9, "border-width": 4, "border-color": "#FF6B6B" } },
+        { duration: 950, easing: "ease-in-out", complete: () =>
+          n.animate(
+            { style: { "shadow-blur": 8, "shadow-opacity": 0.4, "border-width": 2, "border-color": "#E74C3C" } },
+            { duration: 950, easing: "ease-in-out", complete: () => pulse(n) }
+          )
+        }
+      );
+    })(node);
+  });
+})();
 
 // ── Edge hover → show label ──────────────────
 cy.on("mouseover", "edge", function(evt) {

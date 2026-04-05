@@ -152,6 +152,22 @@
     border-color: #aaa;
     color: white;
   }
+  .back-btn {
+    padding: 4px 12px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .back-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
   .nav-menu {
     position: relative;
     margin-left: 8px;
@@ -221,8 +237,63 @@
   .main {
     display: flex;
     flex: 1;
+    min-height: 0;
     overflow: hidden;
   }
+  #cy-area {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+  #cy-wrapper {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  #drilldown-section {
+    flex: 0 0 0;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    border-top: 2px solid #E74C3C;
+    transition: flex-basis 0.35s ease;
+  }
+  body.drilldown-active #drilldown-section {
+    flex: 0 0 45%;
+  }
+  #drilldown-label-box {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1A1A2E;
+    padding: 2px 16px;
+    color: #E74C3C;
+    font-weight: 700;
+    font-size: 12px;
+    border-radius: 3px;
+    z-index: 10;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  #drilldown-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    background: rgba(30,30,50,0.85);
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    cursor: pointer;
+    padding: 2px 8px;
+    font-size: 12px;
+  }
+  #drilldown-close:hover { background: rgba(231,76,60,0.35); color: white; }
+  #cy2 { width: 100%; height: 100%; }
 
   #cy {
     position: absolute;
@@ -339,6 +410,18 @@
   }
   .panel-link:hover { background: #3498DB11; }
   .panel-link .link-icon { font-size: 14px; }
+  .drilldown-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #E74C3C;
+    background: #E74C3C11;
+    border: 1px solid #E74C3C44;
+    border-radius: 5px;
+    padding: 3px 8px;
+    cursor: zoom-in;
+  }
   #panel-body .since {
     font-size: 12px;
     color: #7F8C8D;
@@ -467,7 +550,8 @@
 
 <header>
   <div style="display:flex;align-items:center;gap:12px;">
-    <div class="nav-menu">  <button class="nav-btn" id="nav-toggle">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="index.html" class="nav-home">← Home</a>   <a href="macro.html" class="">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="ecosystem.html" class="active">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span>  </span></a><a href="dense-vs-moe.html" class="">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="glossary.html" class="">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
+    
+    <div class="nav-menu">  <button class="nav-btn" id="nav-toggle">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="index.html" class="nav-home">← Home</a>   <a href="macro.html" class="">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="ecosystem.html" class="active">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span>  </span></a><a href="rag-pattern.html" class="">  <span class="nav-icon">🔍</span>  <span class="nav-info">    <span class="nav-title" data-en="RAG" data-fr="RAG">RAG</span>    <span class="nav-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span>  </span></a><a href="cloud-managed.html" class="">  <span class="nav-icon">☁️</span>  <span class="nav-info">    <span class="nav-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span>    <span class="nav-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span>  </span></a><a href="ai-agents.html" class="">  <span class="nav-icon">🤖</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span>    <span class="nav-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span>  </span></a><a href="ai-coding-assistants.html" class="">  <span class="nav-icon">💻</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span>    <span class="nav-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span>  </span></a><a href="open-weights-models.html" class="">  <span class="nav-icon">🔓</span>  <span class="nav-info">    <span class="nav-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span>    <span class="nav-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span>  </span></a><a href="proprietary-models.html" class="">  <span class="nav-icon">🏢</span>  <span class="nav-info">    <span class="nav-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span>    <span class="nav-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span>  </span></a><a href="dense-vs-moe.html" class="">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="glossary.html" class="">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
     <div>
       <h1 id="main-title">The LLM Ecosystem Today</h1>
       <div class="meta">v2026-Q1 · 2026-04-02</div>
@@ -488,22 +572,29 @@
 </header>
 
 <div class="main">
-  <div style="position:relative;flex:1;overflow:hidden;">
-    <div id="cy"></div>
-    <div id="cat-boxes" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;"></div>
-    <div id="controls">
-      <button class="ctrl-btn" onclick="cy.fit()"
-        data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
-      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)"
-        data-tip-en="Zoom in" data-tip-fr="Zoom avant">+</button>
-      <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)"
-        data-tip-en="Zoom out" data-tip-fr="Zoom arrière">−</button>
-      <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()"
-        data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
-      <button class="ctrl-btn" onclick="exportLayout()"
-        data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
-      <button class="ctrl-btn" onclick="window.open('ecosystem-slides.html','_blank')"
-        data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
+  <div id="cy-area">
+    <div id="cy-wrapper">
+      <div id="cy"></div>
+      <div id="cat-boxes" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;"></div>
+      <div id="controls">
+        <button class="ctrl-btn" onclick="cy.fit()"
+          data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
+        <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)"
+          data-tip-en="Zoom in" data-tip-fr="Zoom avant">+</button>
+        <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)"
+          data-tip-en="Zoom out" data-tip-fr="Zoom arrière">−</button>
+        <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()"
+          data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
+        <button class="ctrl-btn" onclick="exportLayout()"
+          data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
+        <button class="ctrl-btn" onclick="window.open('ecosystem-slides.html','_blank')"
+          data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
+      </div>
+    </div>
+    <div id="drilldown-section">
+      <div id="drilldown-label-box"></div>
+      <button id="drilldown-close" onclick="closeDrilldown()">✕</button>
+      <div id="cy2"></div>
     </div>
   </div>
 
@@ -513,6 +604,9 @@
       <div class="node-label" id="ph-label"></div>
       <div class="node-meta" id="ph-meta"></div>
       <span class="node-status" id="ph-status"></span>
+      <div id="ph-drilldown" style="display:none;margin-top:6px;">
+        <span class="drilldown-hint" id="ph-drilldown-hint"></span>
+      </div>
     </div>
     <div id="panel-body">
       <div class="empty-panel" id="empty-msg">
@@ -555,6 +649,7 @@ const elements = [
       "since": "2017",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Transformer",
@@ -582,6 +677,7 @@ const elements = [
       "since": "2017",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Token",
@@ -609,6 +705,7 @@ const elements = [
       "since": "2017",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Context Window",
@@ -636,6 +733,7 @@ const elements = [
       "since": "2013",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Embedding",
@@ -663,6 +761,7 @@ const elements = [
       "since": "2020",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Prompt",
@@ -690,6 +789,7 @@ const elements = [
       "since": "2017",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Inference",
@@ -717,6 +817,7 @@ const elements = [
       "since": "2017",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Temperature",
@@ -744,6 +845,7 @@ const elements = [
       "since": "2018",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Pre-training",
@@ -771,6 +873,7 @@ const elements = [
       "since": "2018",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "Fine-tuning",
@@ -798,6 +901,7 @@ const elements = [
       "since": "2022",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F4D03F",
       "layerLabel": "LAYER 1 \u00b7 FOUNDATIONS",
       "label_en": "RLHF",
@@ -825,6 +929,7 @@ const elements = [
       "since": "2015",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "OpenAI",
@@ -852,6 +957,7 @@ const elements = [
       "since": "2021",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Anthropic",
@@ -879,6 +985,7 @@ const elements = [
       "since": "2023",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Google DeepMind",
@@ -906,6 +1013,7 @@ const elements = [
       "since": "2023",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "xAI",
@@ -933,6 +1041,7 @@ const elements = [
       "since": "2023",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Meta",
@@ -960,6 +1069,7 @@ const elements = [
       "since": "2023",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Mistral AI",
@@ -987,6 +1097,7 @@ const elements = [
       "since": "2023",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "DeepSeek AI",
@@ -1014,6 +1125,7 @@ const elements = [
       "since": "2023",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Alibaba",
@@ -1041,6 +1153,7 @@ const elements = [
       "since": "2023",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#F0A500",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Microsoft",
@@ -1068,6 +1181,7 @@ const elements = [
       "since": "2024-05",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "GPT-4o",
@@ -1095,6 +1209,7 @@ const elements = [
       "since": "2025-04",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "o3 / o4-mini",
@@ -1122,6 +1237,7 @@ const elements = [
       "since": "2024-06",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Claude 3.5 / 3.7",
@@ -1149,6 +1265,7 @@ const elements = [
       "since": "2024-12",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Gemini 2.0",
@@ -1176,6 +1293,7 @@ const elements = [
       "since": "2025-02",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Grok 3",
@@ -1203,6 +1321,7 @@ const elements = [
       "since": "2024-04",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Llama 3.x",
@@ -1230,6 +1349,7 @@ const elements = [
       "since": "2023-09",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Mistral / Mixtral",
@@ -1257,6 +1377,7 @@ const elements = [
       "since": "2024-12",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "DeepSeek V3 / R1",
@@ -1284,6 +1405,7 @@ const elements = [
       "since": "2024-09",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Qwen 2.5",
@@ -1311,6 +1433,7 @@ const elements = [
       "since": "2024-06",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Gemma 2",
@@ -1338,6 +1461,7 @@ const elements = [
       "since": "2024-12",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Phi-4",
@@ -1365,6 +1489,7 @@ const elements = [
       "since": "2024-01",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "text-embedding-3",
@@ -1392,6 +1517,7 @@ const elements = [
       "since": "2024-10",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "Voyage-3",
@@ -1419,6 +1545,7 @@ const elements = [
       "since": "2024-02",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#C39BD3",
       "layerLabel": "LAYER 2 \u00b7 PROVIDERS & MODELS",
       "label_en": "nomic-embed",
@@ -1446,6 +1573,7 @@ const elements = [
       "since": "2020",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "LLM API",
@@ -1473,6 +1601,7 @@ const elements = [
       "since": "2023-04",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "AWS Bedrock",
@@ -1500,6 +1629,7 @@ const elements = [
       "since": "2023-03",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "Google Vertex AI",
@@ -1527,6 +1657,7 @@ const elements = [
       "since": "2023-01",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "Azure OpenAI",
@@ -1554,6 +1685,7 @@ const elements = [
       "since": "2018",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "HuggingFace",
@@ -1581,6 +1713,7 @@ const elements = [
       "since": "2023-07",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#85929E",
       "layerLabel": "LAYER 3 \u00b7 INFRASTRUCTURE & ACCESS",
       "label_en": "Ollama",
@@ -1608,6 +1741,7 @@ const elements = [
       "since": "2020-05",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "RAG",
@@ -1635,6 +1769,7 @@ const elements = [
       "since": "2021",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Vector Database",
@@ -1662,6 +1797,7 @@ const elements = [
       "since": "2023-03",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Agent",
@@ -1689,6 +1825,7 @@ const elements = [
       "since": "2023-06",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Tool Use / Function Calling",
@@ -1716,6 +1853,7 @@ const elements = [
       "since": "2023-11",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Structured Output",
@@ -1743,6 +1881,7 @@ const elements = [
       "since": "2022",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "System Prompt",
@@ -1770,6 +1909,7 @@ const elements = [
       "since": "2023-06",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "Memory",
@@ -1797,6 +1937,7 @@ const elements = [
       "since": "2024-11",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "LAYER 4 \u00b7 BUILDING BLOCKS",
       "label_en": "MCP",
@@ -1824,6 +1965,7 @@ const elements = [
       "since": "2022-10",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "LangChain",
@@ -1851,6 +1993,7 @@ const elements = [
       "since": "2024-01",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "LangGraph",
@@ -1878,6 +2021,7 @@ const elements = [
       "since": "2022-11",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "LlamaIndex",
@@ -1905,6 +2049,7 @@ const elements = [
       "since": "2023-03",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "Cursor",
@@ -1932,6 +2077,7 @@ const elements = [
       "since": "2021-06",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "GitHub Copilot",
@@ -1959,6 +2105,7 @@ const elements = [
       "since": "2025-02",
       "link": "",
       "ref": "",
+      "drilldown": "",
       "color": "#5DADE2",
       "layerLabel": "LAYER 5 \u00b7 DEVELOPER TOOLS",
       "label_en": "Claude Code",
@@ -2560,12 +2707,13 @@ const elements = [
     }
   }
 ];
+const DRILLDOWN_DATA = {};
 const TITLES        = {"en": "The LLM Ecosystem Today", "fr": "L'\u00c9cosyst\u00e8me LLM Aujourd'hui"};
 const STATUS_LABELS = {"en": {"stable": "stable", "evolving": "evolving", "emerging": "emerging", "deprecated": "deprecated"}, "fr": {"stable": "stable", "evolving": "en \u00e9volution", "emerging": "\u00e9mergent", "deprecated": "obsol\u00e8te"}};
 const PANEL_LABELS  = {"en": {"click_hint": "Click any node to see its definition and connections", "description": "Description", "since": "Since"}, "fr": {"click_hint": "Cliquez sur un n\u0153ud pour voir sa d\u00e9finition et ses connexions", "description": "Description", "since": "Depuis"}};
 const CATEGORIES    = [{"id": "foundations", "label_en": "Foundations", "label_fr": "Fondamentaux", "color": "#F4D03F"}, {"id": "providers", "label_en": "Providers", "label_fr": "Fournisseurs", "color": "#F0A500"}, {"id": "models", "label_en": "Models", "label_fr": "Mod\u00e8les", "color": "#C39BD3"}, {"id": "infrastructure", "label_en": "Infrastructure & Access", "label_fr": "Infrastructure & Acc\u00e8s", "color": "#85929E"}, {"id": "building_blocks", "label_en": "Building Blocks", "label_fr": "Briques Applicatives", "color": "#58D68D"}, {"id": "dev_tools", "label_en": "Developer Tools", "label_fr": "Outils D\u00e9veloppeurs", "color": "#5DADE2"}];
 const STATUS_COLORS = {"stable": "#27AE60", "evolving": "#E67E22", "emerging": "#8E44AD", "deprecated": "#95A5A6"};
-const GLOSSARY_TERMS = [{"id": "llm", "aliases": ["LLM", "LLMs", "Large Language Model", "Large Language Models", "grand mod\u00e8le de langage", "grands mod\u00e8les de langage"], "label_en": "Large Language Model", "label_fr": "Grand Mod\u00e8le de Langage", "description_en": "A language model trained on massive text datasets with billions of parameters. The \"large\" refers to both the size of the training data and the number of parameters. LLMs can understand and generate coherent text, answer questions, write code, and more. Examples: GPT-4, Claude, Gemini, Llama.\n", "description_fr": "Un mod\u00e8le de langage entra\u00een\u00e9 sur d'immenses corpus textuels avec des milliards de param\u00e8tres. Le \"grand\" fait r\u00e9f\u00e9rence \u00e0 la taille des donn\u00e9es d'entra\u00eenement et au nombre de param\u00e8tres. Les LLM peuvent comprendre et g\u00e9n\u00e9rer du texte coh\u00e9rent, r\u00e9pondre \u00e0 des questions, \u00e9crire du code, etc. Exemples : GPT-4, Claude, Gemini, Llama.\n"}, {"id": "weights", "aliases": ["weights", "weight", "model weights", "poids", "poids du mod\u00e8le", "open weights"], "label_en": "Weights", "label_fr": "Poids", "description_en": "The numerical parameters learned by a neural network during training. Weights encode everything the model has \"learned\" \u2014 grammar, facts, reasoning patterns. When a model is said to have billions of parameters, those parameters are its weights. \"Open weights\" means the trained weight files are publicly released, allowing anyone to run or fine-tune the model locally \u2014 even if the training data or code are not shared.\n", "description_fr": "Les param\u00e8tres num\u00e9riques appris par un r\u00e9seau de neurones pendant l'entra\u00eenement. Les poids encodent tout ce que le mod\u00e8le a \u00ab appris \u00bb \u2014 grammaire, faits, raisonnement. Quand on dit qu'un mod\u00e8le a des milliards de param\u00e8tres, ce sont ses poids. \u00ab Open weights \u00bb signifie que les fichiers de poids entra\u00een\u00e9s sont publi\u00e9s publiquement, permettant \u00e0 n'importe qui d'ex\u00e9cuter ou de fine-tuner le mod\u00e8le localement \u2014 m\u00eame si les donn\u00e9es d'entra\u00eenement ou le code source ne sont pas partag\u00e9s.\n"}, {"id": "dense_model", "aliases": ["dense model", "dense models", "mod\u00e8le dense", "mod\u00e8les denses"], "label_en": "Dense Model", "label_fr": "Mod\u00e8le Dense", "description_en": "A neural network architecture where every parameter is activated for every input. All weights participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B.\n", "description_fr": "Une architecture de r\u00e9seau de neurones o\u00f9 chaque param\u00e8tre est activ\u00e9 pour chaque entr\u00e9e. Tous les poids participent \u00e0 chaque passe avant. Les mod\u00e8les denses sont plus simples \u00e0 entra\u00eener, mais deviennent co\u00fbteux \u00e0 tr\u00e8s grande \u00e9chelle : doubler les param\u00e8tres double le calcul n\u00e9cessaire pour chaque inf\u00e9rence. Exemples : GPT-4 (suppos\u00e9 dense), Llama 3, Mistral 7B.\n"}, {"id": "moe_model", "aliases": ["MoE", "Mixture of Experts", "mixture of experts", "m\u00e9lange d'experts", "M\u00e9lange d'Experts"], "label_en": "Mixture of Experts", "label_fr": "M\u00e9lange d'Experts", "description_en": "An architecture where the model is divided into many specialized sub-networks (\"experts\"). For each token, a routing mechanism activates only a small subset of experts (typically 2\u20138). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference \u2014 achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.\n", "description_fr": "Une architecture o\u00f9 le mod\u00e8le est divis\u00e9 en nombreux sous-r\u00e9seaux sp\u00e9cialis\u00e9s (\u00ab experts \u00bb). Pour chaque token, un m\u00e9canisme de routage n'active qu'un petit sous-ensemble d'experts (typiquement 2 \u00e0 8). R\u00e9sultat : un mod\u00e8le peut avoir des centaines de milliards de param\u00e8tres au total mais n'en utiliser qu'une fraction par inf\u00e9rence \u2014 offrant une grande capacit\u00e9 \u00e0 moindre co\u00fbt de calcul. Exemples : GPT-4 (suppos\u00e9 MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.\n"}, {"id": "token", "aliases": ["token", "tokens", "tokenization", "tokenisation"], "label_en": "Token", "label_fr": "Token", "description_en": "The smallest unit of text a language model processes. A token is roughly 0.75 words in English \u2014 \"tokenization\" is typically split into [\"token\", \"ization\"]. Models don't see raw text: they convert everything into a sequence of token IDs before processing. The number of tokens in a request determines its cost and speed.\n", "description_fr": "La plus petite unit\u00e9 de texte trait\u00e9e par un mod\u00e8le de langage. Un token correspond environ \u00e0 0,75 mot en anglais \u2014 \u00ab tokenization \u00bb est typiquement d\u00e9coup\u00e9 en [\u00ab token \u00bb, \u00ab ization \u00bb]. Les mod\u00e8les ne voient pas le texte brut : ils convertissent tout en une s\u00e9quence d'identifiants de tokens. Le nombre de tokens d'une requ\u00eate d\u00e9termine son co\u00fbt et sa vitesse.\n"}, {"id": "context_window", "aliases": ["context window", "context length", "fen\u00eatre de contexte", "longueur de contexte", "context"], "label_en": "Context Window", "label_fr": "Fen\u00eatre de Contexte", "description_en": "The maximum number of tokens a model can process in a single interaction \u2014 both the input (prompt + history) and the output combined. It defines the model's \"working memory\": anything outside the window is invisible to it. Modern models range from 8k tokens (Llama 3 8B) to 1M+ tokens (Gemini 1.5 Pro). A larger context window means the model can read longer documents, hold longer conversations, and maintain more context \u2014 but also costs more to run.\n", "description_fr": "Le nombre maximum de tokens qu'un mod\u00e8le peut traiter en une seule interaction \u2014 entr\u00e9e (prompt + historique) et sortie confondus. Il d\u00e9finit la \u00ab m\u00e9moire de travail \u00bb du mod\u00e8le : tout ce qui d\u00e9passe cette limite lui est invisible. Les mod\u00e8les modernes vont de 8k tokens (Llama 3 8B) \u00e0 plus d'1M de tokens (Gemini 1.5 Pro). Une fen\u00eatre plus grande permet de lire des documents plus longs et de maintenir plus de contexte, mais co\u00fbte aussi plus cher \u00e0 l'ex\u00e9cution.\n"}, {"id": "rlhf", "aliases": ["RLHF", "Reinforcement Learning from Human Feedback", "reinforcement learning from human feedback"], "label_en": "RLHF", "label_fr": "RLHF", "description_en": "Reinforcement Learning from Human Feedback. A training technique used to align LLMs with human preferences after the initial pre-training phase. Human raters compare model outputs and rank them; these preferences train a reward model which then guides the LLM via reinforcement learning to produce more helpful, harmless, and honest responses. Used by OpenAI (InstructGPT, ChatGPT) and Anthropic (Claude).\n", "description_fr": "Apprentissage par renforcement \u00e0 partir des retours humains. Une technique d'entra\u00eenement utilis\u00e9e pour aligner les LLM sur les pr\u00e9f\u00e9rences humaines apr\u00e8s la phase de pr\u00e9-entra\u00eenement. Des \u00e9valuateurs humains comparent et classent les sorties du mod\u00e8le ; ces pr\u00e9f\u00e9rences entra\u00eenent un mod\u00e8le de r\u00e9compense qui guide ensuite le LLM par renforcement pour produire des r\u00e9ponses plus utiles, inoffensives et honn\u00eates. Utilis\u00e9 par OpenAI (InstructGPT, ChatGPT) et Anthropic (Claude).\n"}, {"id": "hallucination", "aliases": ["hallucination", "hallucinations", "hallucinate", "halluciner"], "label_en": "Hallucination", "label_fr": "Hallucination", "description_en": "When a model generates text that is factually incorrect, fabricated, or inconsistent with reality \u2014 stated with apparent confidence. Hallucinations arise because LLMs predict plausible continuations of text, not verified facts. Common examples: invented citations, wrong dates, non-existent people or products. Mitigated (but not eliminated) by RAG, grounding, and better alignment.\n", "description_fr": "Quand un mod\u00e8le g\u00e9n\u00e8re du texte factuellement incorrect, invent\u00e9, ou incoh\u00e9rent avec la r\u00e9alit\u00e9 \u2014 affirm\u00e9 avec une apparente confiance. Les hallucinations surviennent parce que les LLM pr\u00e9disent des continuations plausibles, pas des faits v\u00e9rifi\u00e9s. Exemples courants : citations invent\u00e9es, dates erron\u00e9es, personnes ou produits inexistants. Att\u00e9nu\u00e9es (mais non \u00e9limin\u00e9es) par le RAG, le grounding et un meilleur alignement.\n"}, {"id": "rag", "aliases": ["RAG", "Retrieval-Augmented Generation", "retrieval augmented generation", "retrieval-augmented generation"], "label_en": "RAG", "label_fr": "RAG", "description_en": "Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and hallucination problems by injecting real-time or domain-specific information into the prompt at query time. How it works: (1) the user query is converted to a vector, (2) semantically similar documents are retrieved from a knowledge base, (3) those documents are added to the prompt, (4) the model answers based on the provided context. Widely adopted in production \u2014 the most reliable way to give an LLM access to specific data.\n", "description_fr": "Retrieval-Augmented Generation (g\u00e9n\u00e9ration augment\u00e9e par r\u00e9cup\u00e9ration). Un pattern qui r\u00e9sout les probl\u00e8mes de date limite de connaissance et d'hallucination en injectant des informations actuelles ou sp\u00e9cifiques dans le prompt au moment de la requ\u00eate. Fonctionnement : (1) la requ\u00eate est convertie en vecteur, (2) les documents s\u00e9mantiquement proches sont r\u00e9cup\u00e9r\u00e9s depuis une base de connaissances, (3) ces documents sont ajout\u00e9s au prompt, (4) le mod\u00e8le r\u00e9pond en s'appuyant sur le contexte fourni. Tr\u00e8s largement adopt\u00e9 en production \u2014 la m\u00e9thode la plus fiable pour donner \u00e0 un LLM acc\u00e8s \u00e0 des donn\u00e9es sp\u00e9cifiques.\n"}, {"id": "machine_learning", "aliases": ["ML", "machine learning", "apprentissage automatique"], "label_en": "Machine Learning", "label_fr": "Machine Learning", "description_en": "A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without being explicitly programmed for each case. Deep Learning and LLMs are branches of Machine Learning.\n", "description_fr": "Un sous-domaine de l'intelligence artificielle o\u00f9 les syst\u00e8mes apprennent \u00e0 partir de donn\u00e9es pour am\u00e9liorer leurs performances sur une t\u00e2che, sans \u00eatre explicitement programm\u00e9s pour chaque cas. Le Deep Learning et les LLM sont des branches du Machine Learning.\n"}];
+const GLOSSARY_TERMS = [{"id": "llm", "aliases": ["LLM", "LLMs", "Large Language Model", "Large Language Models", "grand mod\u00e8le de langage", "grands mod\u00e8les de langage"], "label_en": "Large Language Model", "label_fr": "Grand Mod\u00e8le de Langage", "description_en": "A language model trained on massive text datasets with billions of parameters. The \"large\" refers to both the size of the training data and the number of parameters. LLMs can understand and generate coherent text, answer questions, write code, and more. Examples: GPT-4, Claude, Gemini, Llama.\n", "description_fr": "Un mod\u00e8le de langage entra\u00een\u00e9 sur d'immenses corpus textuels avec des milliards de param\u00e8tres. Le \"grand\" fait r\u00e9f\u00e9rence \u00e0 la taille des donn\u00e9es d'entra\u00eenement et au nombre de param\u00e8tres. Les LLM peuvent comprendre et g\u00e9n\u00e9rer du texte coh\u00e9rent, r\u00e9pondre \u00e0 des questions, \u00e9crire du code, etc. Exemples : GPT-4, Claude, Gemini, Llama.\n"}, {"id": "weights", "aliases": ["weights", "weight", "model weights", "poids", "poids du mod\u00e8le", "open weights"], "label_en": "Weights", "label_fr": "Poids", "description_en": "The numerical parameters learned by a neural network during training. Weights encode everything the model has \"learned\" \u2014 grammar, facts, reasoning patterns. When a model is said to have billions of parameters, those parameters are its weights. \"Open weights\" means the trained weight files are publicly released, allowing anyone to run or fine-tune the model locally \u2014 even if the training data or code are not shared.\n", "description_fr": "Les param\u00e8tres num\u00e9riques appris par un r\u00e9seau de neurones pendant l'entra\u00eenement. Les poids encodent tout ce que le mod\u00e8le a \u00ab appris \u00bb \u2014 grammaire, faits, raisonnement. Quand on dit qu'un mod\u00e8le a des milliards de param\u00e8tres, ce sont ses poids. \u00ab Open weights \u00bb signifie que les fichiers de poids entra\u00een\u00e9s sont publi\u00e9s publiquement, permettant \u00e0 n'importe qui d'ex\u00e9cuter ou de fine-tuner le mod\u00e8le localement \u2014 m\u00eame si les donn\u00e9es d'entra\u00eenement ou le code source ne sont pas partag\u00e9s.\n"}, {"id": "dense_model", "aliases": ["dense model", "dense models", "mod\u00e8le dense", "mod\u00e8les denses"], "label_en": "Dense Model", "label_fr": "Mod\u00e8le Dense", "description_en": "A neural network architecture where every parameter is activated for every input. All weights participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B.\n", "description_fr": "Une architecture de r\u00e9seau de neurones o\u00f9 chaque param\u00e8tre est activ\u00e9 pour chaque entr\u00e9e. Tous les poids participent \u00e0 chaque passe avant. Les mod\u00e8les denses sont plus simples \u00e0 entra\u00eener, mais deviennent co\u00fbteux \u00e0 tr\u00e8s grande \u00e9chelle : doubler les param\u00e8tres double le calcul n\u00e9cessaire pour chaque inf\u00e9rence. Exemples : GPT-4 (suppos\u00e9 dense), Llama 3, Mistral 7B.\n"}, {"id": "moe_model", "aliases": ["MoE", "Mixture of Experts", "mixture of experts", "m\u00e9lange d'experts", "M\u00e9lange d'Experts"], "label_en": "Mixture of Experts", "label_fr": "M\u00e9lange d'Experts", "description_en": "An architecture where the model is divided into many specialized sub-networks (\"experts\"). For each token, a routing mechanism activates only a small subset of experts (typically 2\u20138). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference \u2014 achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.\n", "description_fr": "Une architecture o\u00f9 le mod\u00e8le est divis\u00e9 en nombreux sous-r\u00e9seaux sp\u00e9cialis\u00e9s (\u00ab experts \u00bb). Pour chaque token, un m\u00e9canisme de routage n'active qu'un petit sous-ensemble d'experts (typiquement 2 \u00e0 8). R\u00e9sultat : un mod\u00e8le peut avoir des centaines de milliards de param\u00e8tres au total mais n'en utiliser qu'une fraction par inf\u00e9rence \u2014 offrant une grande capacit\u00e9 \u00e0 moindre co\u00fbt de calcul. Exemples : GPT-4 (suppos\u00e9 MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.\n"}, {"id": "token", "aliases": ["token", "tokens", "tokenization", "tokenisation"], "label_en": "Token", "label_fr": "Token", "description_en": "The smallest unit of text a language model processes. A token is roughly 0.75 words in English \u2014 \"tokenization\" is typically split into [\"token\", \"ization\"]. Models don't see raw text: they convert everything into a sequence of token IDs before processing. The number of tokens in a request determines its cost and speed.\n", "description_fr": "La plus petite unit\u00e9 de texte trait\u00e9e par un mod\u00e8le de langage. Un token correspond environ \u00e0 0,75 mot en anglais \u2014 \u00ab tokenization \u00bb est typiquement d\u00e9coup\u00e9 en [\u00ab token \u00bb, \u00ab ization \u00bb]. Les mod\u00e8les ne voient pas le texte brut : ils convertissent tout en une s\u00e9quence d'identifiants de tokens. Le nombre de tokens d'une requ\u00eate d\u00e9termine son co\u00fbt et sa vitesse.\n"}, {"id": "context_window", "aliases": ["context window", "context length", "fen\u00eatre de contexte", "longueur de contexte", "context"], "label_en": "Context Window", "label_fr": "Fen\u00eatre de Contexte", "description_en": "The maximum number of tokens a model can process in a single interaction \u2014 both the input (prompt + history) and the output combined. It defines the model's \"working memory\": anything outside the window is invisible to it. Modern models range from 8k tokens (Llama 3 8B) to 1M+ tokens (Gemini 1.5 Pro). A larger context window means the model can read longer documents, hold longer conversations, and maintain more context \u2014 but also costs more to run.\n", "description_fr": "Le nombre maximum de tokens qu'un mod\u00e8le peut traiter en une seule interaction \u2014 entr\u00e9e (prompt + historique) et sortie confondus. Il d\u00e9finit la \u00ab m\u00e9moire de travail \u00bb du mod\u00e8le : tout ce qui d\u00e9passe cette limite lui est invisible. Les mod\u00e8les modernes vont de 8k tokens (Llama 3 8B) \u00e0 plus d'1M de tokens (Gemini 1.5 Pro). Une fen\u00eatre plus grande permet de lire des documents plus longs et de maintenir plus de contexte, mais co\u00fbte aussi plus cher \u00e0 l'ex\u00e9cution.\n"}, {"id": "rlhf", "aliases": ["RLHF", "Reinforcement Learning from Human Feedback", "reinforcement learning from human feedback"], "label_en": "RLHF", "label_fr": "RLHF", "description_en": "Reinforcement Learning from Human Feedback. A training technique used to align LLMs with human preferences after the initial pre-training phase. Human raters compare model outputs and rank them; these preferences train a reward model which then guides the LLM via reinforcement learning to produce more helpful, harmless, and honest responses. Used by OpenAI (InstructGPT, ChatGPT) and Anthropic (Claude).\n", "description_fr": "Apprentissage par renforcement \u00e0 partir des retours humains. Une technique d'entra\u00eenement utilis\u00e9e pour aligner les LLM sur les pr\u00e9f\u00e9rences humaines apr\u00e8s la phase de pr\u00e9-entra\u00eenement. Des \u00e9valuateurs humains comparent et classent les sorties du mod\u00e8le ; ces pr\u00e9f\u00e9rences entra\u00eenent un mod\u00e8le de r\u00e9compense qui guide ensuite le LLM par renforcement pour produire des r\u00e9ponses plus utiles, inoffensives et honn\u00eates. Utilis\u00e9 par OpenAI (InstructGPT, ChatGPT) et Anthropic (Claude).\n"}, {"id": "hallucination", "aliases": ["hallucination", "hallucinations", "hallucinate", "halluciner"], "label_en": "Hallucination", "label_fr": "Hallucination", "description_en": "When a model generates text that is factually incorrect, fabricated, or inconsistent with reality \u2014 stated with apparent confidence. Hallucinations arise because LLMs predict plausible continuations of text, not verified facts. Common examples: invented citations, wrong dates, non-existent people or products. Mitigated (but not eliminated) by RAG, grounding, and better alignment.\n", "description_fr": "Quand un mod\u00e8le g\u00e9n\u00e8re du texte factuellement incorrect, invent\u00e9, ou incoh\u00e9rent avec la r\u00e9alit\u00e9 \u2014 affirm\u00e9 avec une apparente confiance. Les hallucinations surviennent parce que les LLM pr\u00e9disent des continuations plausibles, pas des faits v\u00e9rifi\u00e9s. Exemples courants : citations invent\u00e9es, dates erron\u00e9es, personnes ou produits inexistants. Att\u00e9nu\u00e9es (mais non \u00e9limin\u00e9es) par le RAG, le grounding et un meilleur alignement.\n"}, {"id": "rag", "aliases": ["RAG", "Retrieval-Augmented Generation", "retrieval augmented generation", "retrieval-augmented generation"], "label_en": "RAG", "label_fr": "RAG", "description_en": "Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and hallucination problems by injecting real-time or domain-specific information into the prompt at query time. How it works: (1) the user query is converted to a vector, (2) semantically similar documents are retrieved from a knowledge base, (3) those documents are added to the prompt, (4) the model answers based on the provided context. Widely adopted in production \u2014 the most reliable way to give an LLM access to specific data.\n", "description_fr": "Retrieval-Augmented Generation (g\u00e9n\u00e9ration augment\u00e9e par r\u00e9cup\u00e9ration). Un pattern qui r\u00e9sout les probl\u00e8mes de date limite de connaissance et d'hallucination en injectant des informations actuelles ou sp\u00e9cifiques dans le prompt au moment de la requ\u00eate. Fonctionnement : (1) la requ\u00eate est convertie en vecteur, (2) les documents s\u00e9mantiquement proches sont r\u00e9cup\u00e9r\u00e9s depuis une base de connaissances, (3) ces documents sont ajout\u00e9s au prompt, (4) le mod\u00e8le r\u00e9pond en s'appuyant sur le contexte fourni. Tr\u00e8s largement adopt\u00e9 en production \u2014 la m\u00e9thode la plus fiable pour donner \u00e0 un LLM acc\u00e8s \u00e0 des donn\u00e9es sp\u00e9cifiques.\n"}, {"id": "agentic", "aliases": ["agentic", "agent IA", "AI agent", "AI agents", "agents IA", "agentic AI", "agentic system", "syst\u00e8me agentique"], "label_en": "Agentic AI", "label_fr": "IA Agentique", "description_en": "A mode of operation where an AI model acts autonomously over multiple steps to complete a goal, rather than simply answering a single prompt. An agentic system can use tools (web search, code execution, file access), plan a sequence of actions, observe the results of each step, and adjust its behaviour accordingly \u2014 often without human intervention between steps. The key properties are: tool use, multi-step reasoning, and a feedback loop between action and observation. Examples: Claude Code, OpenAI Operator, AutoGPT, LangChain agents.\n", "description_fr": "Un mode de fonctionnement o\u00f9 un mod\u00e8le d'IA agit de fa\u00e7on autonome sur plusieurs \u00e9tapes pour accomplir un objectif, plut\u00f4t que de simplement r\u00e9pondre \u00e0 un prompt unique. Un syst\u00e8me agentique peut utiliser des outils (recherche web, ex\u00e9cution de code, acc\u00e8s aux fichiers), planifier une s\u00e9quence d'actions, observer les r\u00e9sultats de chaque \u00e9tape et adapter son comportement en cons\u00e9quence \u2014 souvent sans intervention humaine entre les \u00e9tapes. Les propri\u00e9t\u00e9s cl\u00e9s sont : utilisation d'outils, raisonnement multi-\u00e9tapes, et boucle de r\u00e9troaction entre action et observation. Exemples : Claude Code, OpenAI Operator, AutoGPT, agents LangChain.\n"}, {"id": "mcp", "aliases": ["MCP", "Model Context Protocol", "model context protocol"], "label_en": "MCP", "label_fr": "MCP", "description_en": "Model Context Protocol. An open standard (governed by the Linux Foundation) that defines how AI applications connect to external data sources and tools. MCP uses a client-server model: the **MCP Host** (your app) contains an **MCP Client** that communicates with one or more **MCP Servers**, each exposing three types of capabilities: **Resources** (read-only data), **Tools** (functions with side effects), and **Prompts** (reusable templates). Before MCP, every AI application had to build custom integrations for every external resource. MCP standardizes this layer so that any compliant client can talk to any compliant server. Official SDKs exist for 10 languages. A community registry lists hundreds of production servers covering filesystems, databases, GitHub, Slack, browser automation, and more.\n", "description_fr": "Model Context Protocol. Un standard ouvert (gouvern\u00e9 par la Linux Foundation) qui d\u00e9finit comment les applications IA se connectent \u00e0 des sources de donn\u00e9es et outils externes. MCP utilise un mod\u00e8le client-serveur : le **MCP Host** (ton application) contient un **MCP Client** qui communique avec un ou plusieurs **MCP Servers**, chacun exposant trois types de capacit\u00e9s : **Resources** (donn\u00e9es en lecture seule), **Tools** (fonctions avec effets de bord), et **Prompts** (templates r\u00e9utilisables). Avant MCP, chaque application IA devait construire des int\u00e9grations sur mesure pour chaque ressource. MCP standardise cette couche pour que n'importe quel client compatible puisse parler \u00e0 n'importe quel serveur compatible. Des SDKs officiels existent pour 10 langages. Un registry communautaire liste des centaines de serveurs couvrant filesystems, bases de donn\u00e9es, GitHub, Slack, automatisation navigateur, et plus.\n"}, {"id": "machine_learning", "aliases": ["ML", "machine learning", "apprentissage automatique"], "label_en": "Machine Learning", "label_fr": "Machine Learning", "description_en": "A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without being explicitly programmed for each case. Deep Learning and LLMs are branches of Machine Learning.\n", "description_fr": "Un sous-domaine de l'intelligence artificielle o\u00f9 les syst\u00e8mes apprennent \u00e0 partir de donn\u00e9es pour am\u00e9liorer leurs performances sur une t\u00e2che, sans \u00eatre explicitement programm\u00e9s pour chaque cas. Le Deep Learning et les LLM sont des branches du Machine Learning.\n"}];
 
 function linkGlossaryTerms(text) {
   if (!GLOSSARY_TERMS.length) return text;
@@ -2844,10 +2992,7 @@ document.addEventListener('click', e => {
 });
 
 
-const cy = cytoscape({
-  container: document.getElementById("cy"),
-  elements: elements,
-  style: [
+const CY_STYLE = [
     // Provider nodes — ellipse to distinguish from models
     {
       selector: "node[node_type='provider']",
@@ -2921,6 +3066,20 @@ const cy = cytoscape({
         "border-style": "dashed",
       }
     },
+    // Nodes with drill-down → visible glow + double border
+    {
+      selector: ".has-drilldown",
+      style: {
+        "border-color": "#E74C3C",
+        "border-width": 3,
+        "border-style": "double",
+        "shadow-blur": 12,
+        "shadow-color": "#E74C3C",
+        "shadow-offset-x": 0,
+        "shadow-offset-y": 0,
+        "shadow-opacity": 0.6,
+      }
+    },
     // Status: deprecated → grey, muted
     {
       selector: ".status-deprecated",
@@ -2986,7 +3145,12 @@ const cy = cytoscape({
         "opacity": 0.15,
       }
     },
-  ],
+];
+
+const cy = cytoscape({
+  container: document.getElementById("cy"),
+  elements: elements,
+  style: CY_STYLE,
   layout: {
     name: "preset",
   },
@@ -3317,15 +3481,26 @@ function showPanel(node) {
     linksEl.appendChild(a);
   }
   linksEl.style.display = (d.link || d.ref) ? "flex" : "none";
+
+  const drilldownEl = document.getElementById("ph-drilldown");
+  const drilldownHint = document.getElementById("ph-drilldown-hint");
+  if (DRILLDOWN_DATA[d.id]) {
+    drilldownEl.style.display = "block";
+    drilldownHint.textContent = lang === "fr" ? "↗ Double-cliquez pour explorer" : "↗ Double-click to explore";
+    drilldownHint.onclick = () => {
+      const dd = DRILLDOWN_DATA[d.id];
+      if (dd) showDrilldown(dd, d[`label_${lang}`] || d.label, d.color);
+    };
+  } else {
+    drilldownEl.style.display = "none";
+  }
 }
 
 // ── Node click → panel ───────────────────────
 cy.on("tap", "node", function(evt) {
   const node = evt.target;
-
   showPanel(node);
-
-  // Highlight node + connected edges/nodes
+  if (cy2) cy2.elements().removeClass("dimmed highlighted");
   cy.elements().addClass("dimmed");
   node.removeClass("dimmed");
   const connected = node.connectedEdges();
@@ -3337,17 +3512,130 @@ cy.on("tap", "node", function(evt) {
   node.addClass("highlighted");
 });
 
+// ── Node double-tap → drill-down inline ──────
+let _tapTimer = null, _lastTapNode = null;
+cy.on("tap", "node", function(evt) {
+  const node = evt.target;
+  if (!DRILLDOWN_DATA[node.id()]) return;
+  if (_lastTapNode === node.id() && _tapTimer) {
+    clearTimeout(_tapTimer); _tapTimer = null; _lastTapNode = null;
+    showDrilldown(DRILLDOWN_DATA[node.id()],
+      node.data(`label_${lang}`) || node.data("label"),
+      node.data("color"));
+  } else {
+    _lastTapNode = node.id();
+    _tapTimer = setTimeout(() => { _tapTimer = null; _lastTapNode = null; }, 350);
+  }
+});
+
+let cy2 = null;
+
+function showDrilldown(dd, label, color) {
+  const col = color || "#E74C3C";
+  const labelBox = document.getElementById("drilldown-label-box");
+  labelBox.textContent = label;
+  labelBox.style.color = col;
+  document.getElementById("drilldown-section").style.borderTopColor = col;
+  document.body.classList.add("drilldown-active");
+
+  if (cy2) { cy2.destroy(); cy2 = null; }
+
+  // Wait for CSS transition (350ms) before initializing so the container has its final size
+  setTimeout(() => {
+    cy2 = cytoscape({
+      container: document.getElementById("cy2"),
+      elements: dd.elements,
+      style: CY_STYLE,
+      layout: { name: "preset" },
+      wheelSensitivity: 0.3,
+      minZoom: 0.1,
+      maxZoom: 3,
+    });
+
+    cy2.style()
+      .selector("node")
+      .style({ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" })
+      .selector("node[node_type='provider']")
+      .style({ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" })
+      .update();
+
+    cy2.resize();
+    cy2.fit(undefined, 30);
+
+    // ── cy2: node click → shared panel ───────────
+    cy2.on("tap", "node", function(evt) {
+      const node = evt.target;
+      showPanel(node);
+      cy.elements().removeClass("dimmed highlighted");
+      cy2.elements().addClass("dimmed");
+      node.removeClass("dimmed");
+      const connected = node.connectedEdges();
+      connected.removeClass("dimmed").addClass("highlighted");
+      connected.connectedNodes().removeClass("dimmed");
+      node.addClass("highlighted");
+    });
+
+    cy2.on("tap", function(evt) {
+      if (evt.target === cy2) {
+        currentNode = null;
+        cy2.elements().removeClass("dimmed highlighted");
+        document.getElementById("panel-header").style.display = "none";
+        document.getElementById("empty-msg").style.display = "flex";
+        document.getElementById("panel-content").style.display = "none";
+      }
+    });
+
+    cy2.on("mouseover", "edge", function(evt) { evt.target.addClass("highlighted"); });
+    cy2.on("mouseout", "edge", function(evt) {
+      if (!evt.target.source().hasClass("highlighted")) evt.target.removeClass("highlighted");
+    });
+  }, 380);
+}
+
+function closeDrilldown() {
+  document.body.classList.remove("drilldown-active");
+  if (cy2) { cy2.destroy(); cy2 = null; }
+}
+
 // ── Click background → reset ─────────────────
 cy.on("tap", function(evt) {
   if (evt.target === cy) {
     currentNode = null;
     history.replaceState(null, '', window.location.pathname + window.location.search);
     cy.elements().removeClass("dimmed highlighted");
+    if (cy2) cy2.elements().removeClass("dimmed highlighted");
     document.getElementById("panel-header").style.display = "none";
     document.getElementById("empty-msg").style.display = "flex";
     document.getElementById("panel-content").style.display = "none";
   }
 });
+
+// ── Drilldown nodes: ↗ label + cursor + glow pulse ──
+const cyContainer = document.getElementById("cy");
+cy.on("mouseover", "node.has-drilldown", () => { cyContainer.style.cursor = "zoom-in"; });
+cy.on("mouseout",  "node.has-drilldown", () => { cyContainer.style.cursor = ""; });
+
+// Append ↗ indicator to label (function style overrides data reference)
+cy.style()
+  .selector(".has-drilldown")
+  .style({ "label": ele => ele.data("label") + "  ↗" })
+  .update();
+
+(function pulseDrilldowns() {
+  cy.nodes(".has-drilldown").forEach(node => {
+    (function pulse(n) {
+      n.animate(
+        { style: { "shadow-blur": 22, "shadow-opacity": 0.9, "border-width": 4, "border-color": "#FF6B6B" } },
+        { duration: 950, easing: "ease-in-out", complete: () =>
+          n.animate(
+            { style: { "shadow-blur": 8, "shadow-opacity": 0.4, "border-width": 2, "border-color": "#E74C3C" } },
+            { duration: 950, easing: "ease-in-out", complete: () => pulse(n) }
+          )
+        }
+      );
+    })(node);
+  });
+})();
 
 // ── Edge hover → show label ──────────────────
 cy.on("mouseover", "edge", function(evt) {

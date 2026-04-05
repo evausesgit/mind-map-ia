@@ -1352,13 +1352,18 @@ const CY_STYLE = [
         "border-style": "dashed",
       }}
     }},
-    // Nodes with drill-down → zoom-in cursor + subtle glow
+    // Nodes with drill-down → visible glow + double border
     {{
       selector: ".has-drilldown",
       style: {{
         "border-color": "#E74C3C",
         "border-width": 3,
         "border-style": "double",
+        "shadow-blur": 12,
+        "shadow-color": "#E74C3C",
+        "shadow-offset-x": 0,
+        "shadow-offset-y": 0,
+        "shadow-opacity": 0.6,
       }}
     }},
     // Status: deprecated → grey, muted
@@ -1891,20 +1896,26 @@ cy.on("tap", function(evt) {{
   }}
 }});
 
-// ── Drilldown nodes: cursor zoom-in + pulse ──
+// ── Drilldown nodes: ↗ label + cursor + glow pulse ──
 const cyContainer = document.getElementById("cy");
 cy.on("mouseover", "node.has-drilldown", () => {{ cyContainer.style.cursor = "zoom-in"; }});
 cy.on("mouseout",  "node.has-drilldown", () => {{ cyContainer.style.cursor = ""; }});
+
+// Append ↗ indicator to label (function style overrides data reference)
+cy.style()
+  .selector(".has-drilldown")
+  .style({{ "label": ele => ele.data("label") + "  ↗" }})
+  .update();
 
 (function pulseDrilldowns() {{
   cy.nodes(".has-drilldown").forEach(node => {{
     (function pulse(n) {{
       n.animate(
-        {{ style: {{ "border-width": 5, "border-color": "#FF8C7A" }} }},
-        {{ duration: 900, easing: "ease-in-out", complete: () =>
+        {{ style: {{ "shadow-blur": 22, "shadow-opacity": 0.9, "border-width": 4, "border-color": "#FF6B6B" }} }},
+        {{ duration: 950, easing: "ease-in-out", complete: () =>
           n.animate(
-            {{ style: {{ "border-width": 2, "border-color": "#E74C3C" }} }},
-            {{ duration: 900, easing: "ease-in-out", complete: () => pulse(n) }}
+            {{ style: {{ "shadow-blur": 8, "shadow-opacity": 0.4, "border-width": 2, "border-color": "#E74C3C" }} }},
+            {{ duration: 950, easing: "ease-in-out", complete: () => pulse(n) }}
           )
         }}
       );
