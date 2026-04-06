@@ -2,240 +2,458 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Logo Test — EA</title>
+<title>Logo — Réseau / Cerveau</title>
 <style>
   body { background: #0F0F1A; color: white; font-family: sans-serif; padding: 40px; }
-  .grid { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; }
-  .option { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  .label { font-size: 12px; color: #7F8C8D; text-align: center; max-width: 160px; line-height: 1.5; }
+  .grid { display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start; margin-top: 32px; }
+  .option { display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 210px; }
+  .label { font-size: 12px; color: #7F8C8D; text-align: center; line-height: 1.6; }
   .box {
     background: #1A1A2E;
     border: 1px solid #2C3E6E;
     border-radius: 12px;
-    padding: 28px 32px;
+    padding: 32px 36px;
     display: flex; align-items: center; justify-content: center;
-    min-width: 160px; min-height: 120px;
+    min-width: 190px; min-height: 150px;
   }
-  h1 { margin-bottom: 40px; font-size: 18px; color: #E74C3C; letter-spacing: 1px; }
-
-  /* dark header simulation */
+  h1 { margin-bottom: 6px; font-size: 18px; color: #E74C3C; letter-spacing: 1px; }
+  .sub { color: #7F8C8D; font-size: 13px; margin-bottom: 0; }
   .header-sim {
     background: #1A1A2E;
     border: 1px solid #2C3E6E;
     border-radius: 8px;
     padding: 10px 18px;
     display: flex; align-items: center; gap: 8px;
-    margin-top: 8px;
     font-size: 12px; color: #7F8C8D;
   }
 </style>
 </head>
 <body>
-<h1>EA — Eva ATTAL · Logo proposals</h1>
+<h1>Logo — Réseau de neurones / Cerveau</h1>
+<div class="sub">5 propositions. Dis-moi laquelle tu préfères ou ce qu'on peut combiner.</div>
 <div class="grid">
 
-  <!-- Option 1 : E et A en nœuds / réseau -->
+  <!-- ===== OPTION 1 : Réseau feedforward ===== -->
   <div class="option">
     <div class="box">
-      <svg width="130" height="80" viewBox="0 0 130 80" fill="none">
-        <!-- E — lignes -->
-        <line x1="12" y1="12" x2="12" y2="68" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="12" y1="12" x2="42" y2="12" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="12" y1="40" x2="36" y2="40" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="12" y1="68" x2="42" y2="68" stroke="#E74C3C" stroke-width="2.5"/>
-        <!-- E — nœuds -->
-        <circle cx="12" cy="12" r="4.5" fill="white"/>
-        <circle cx="42" cy="12" r="3.5" fill="#E74C3C"/>
-        <circle cx="12" cy="40" r="4"   fill="white"/>
-        <circle cx="36" cy="40" r="3.5" fill="#E74C3C"/>
-        <circle cx="12" cy="68" r="4.5" fill="white"/>
-        <circle cx="42" cy="68" r="3.5" fill="#E74C3C"/>
-        <!-- A — lignes -->
-        <line x1="80" y1="12" x2="62" y2="68" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="80" y1="12" x2="98" y2="68" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="67" y1="48" x2="93" y2="48" stroke="#E74C3C" stroke-width="2.5"/>
-        <!-- A — connexions croisées légères -->
-        <line x1="80" y1="12" x2="93" y2="48" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.2"/>
-        <line x1="80" y1="12" x2="67" y2="48" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.2"/>
-        <!-- A — nœuds -->
-        <circle cx="80" cy="12" r="4.5" fill="white"/>
-        <circle cx="62" cy="68" r="3.5" fill="#E74C3C"/>
-        <circle cx="98" cy="68" r="3.5" fill="#E74C3C"/>
-        <circle cx="67" cy="48" r="3.5" fill="white"/>
-        <circle cx="93" cy="48" r="3.5" fill="white"/>
+      <svg width="140" height="86" viewBox="0 0 140 86" fill="none">
+        <!-- L1→L2 connections -->
+        <line x1="14" y1="16" x2="50" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="16" x2="50" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="16" x2="50" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="16" x2="50" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="43" x2="50" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="43" x2="50" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="43" x2="50" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="43" x2="50" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="70" x2="50" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="70" x2="50" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="70" x2="50" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="70" x2="50" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <!-- L2→L3 connections -->
+        <line x1="50" y1="8"  x2="90" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="8"  x2="90" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="8"  x2="90" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="8"  x2="90" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="28" x2="90" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="28" x2="90" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="28" x2="90" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="28" x2="90" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="52" x2="90" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="52" x2="90" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="52" x2="90" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="52" x2="90" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="72" x2="90" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="72" x2="90" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="72" x2="90" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="72" x2="90" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <!-- L3→L4 connections (red) -->
+        <line x1="90" y1="8"  x2="126" y2="30" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="28" x2="126" y2="30" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="52" x2="126" y2="30" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="72" x2="126" y2="30" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="8"  x2="126" y2="56" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="28" x2="126" y2="56" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="52" x2="126" y2="56" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="72" x2="126" y2="56" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <!-- Layer 1 nodes (input) -->
+        <circle cx="14" cy="16" r="5.5" fill="white"/>
+        <circle cx="14" cy="43" r="5.5" fill="white"/>
+        <circle cx="14" cy="70" r="5.5" fill="white"/>
+        <!-- Layer 2 nodes -->
+        <circle cx="50" cy="8"  r="4.5" fill="white"/>
+        <circle cx="50" cy="28" r="4.5" fill="white"/>
+        <circle cx="50" cy="52" r="4.5" fill="white"/>
+        <circle cx="50" cy="72" r="4.5" fill="white"/>
+        <!-- Layer 3 nodes -->
+        <circle cx="90" cy="8"  r="4.5" fill="white"/>
+        <circle cx="90" cy="28" r="4.5" fill="white"/>
+        <circle cx="90" cy="52" r="4.5" fill="white"/>
+        <circle cx="90" cy="72" r="4.5" fill="white"/>
+        <!-- Layer 4 nodes (output, red) -->
+        <circle cx="126" cy="30" r="7" fill="#E74C3C"/>
+        <circle cx="126" cy="56" r="7" fill="#E74C3C"/>
       </svg>
     </div>
-    <div class="label">Option 1<br><strong>EA en nœuds</strong><br>Lettres tracées comme un réseau</div>
+    <div class="label">
+      <strong>Option 1 — Réseau feedforward</strong><br>
+      Géométrique, technique. 3 couches cachées, neurones de sortie rouges.
+    </div>
     <div class="header-sim">
-      <svg width="32" height="20" viewBox="0 0 130 80" fill="none">
-        <line x1="12" y1="12" x2="12" y2="68" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="12" y1="12" x2="42" y2="12" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="12" y1="40" x2="36" y2="40" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="12" y1="68" x2="42" y2="68" stroke="#E74C3C" stroke-width="2.5"/>
-        <circle cx="12" cy="12" r="4.5" fill="white"/>
-        <circle cx="42" cy="12" r="3.5" fill="#E74C3C"/>
-        <circle cx="12" cy="40" r="4"   fill="white"/>
-        <circle cx="36" cy="40" r="3.5" fill="#E74C3C"/>
-        <circle cx="12" cy="68" r="4.5" fill="white"/>
-        <circle cx="42" cy="68" r="3.5" fill="#E74C3C"/>
-        <line x1="80" y1="12" x2="62" y2="68" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="80" y1="12" x2="98" y2="68" stroke="#E74C3C" stroke-width="2.5"/>
-        <line x1="67" y1="48" x2="93" y2="48" stroke="#E74C3C" stroke-width="2.5"/>
-        <circle cx="80" cy="12" r="4.5" fill="white"/>
-        <circle cx="62" cy="68" r="3.5" fill="#E74C3C"/>
-        <circle cx="98" cy="68" r="3.5" fill="#E74C3C"/>
-        <circle cx="67" cy="48" r="3.5" fill="white"/>
-        <circle cx="93" cy="48" r="3.5" fill="white"/>
+      <svg width="36" height="22" viewBox="0 0 140 86" fill="none">
+        <line x1="14" y1="16" x2="50" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="43" x2="50" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="70" x2="50" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="14" y1="16" x2="50" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.15"/>
+        <line x1="14" y1="70" x2="50" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.15"/>
+        <line x1="50" y1="8"  x2="90" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="28" x2="90" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="52" x2="90" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="50" y1="72" x2="90" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.18"/>
+        <line x1="90" y1="8"  x2="126" y2="30" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="28" x2="126" y2="30" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="52" x2="126" y2="56" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="90" y1="72" x2="126" y2="56" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <circle cx="14" cy="16" r="5.5" fill="white"/>
+        <circle cx="14" cy="43" r="5.5" fill="white"/>
+        <circle cx="14" cy="70" r="5.5" fill="white"/>
+        <circle cx="50" cy="8"  r="4.5" fill="white"/>
+        <circle cx="50" cy="28" r="4.5" fill="white"/>
+        <circle cx="50" cy="52" r="4.5" fill="white"/>
+        <circle cx="50" cy="72" r="4.5" fill="white"/>
+        <circle cx="90" cy="8"  r="4.5" fill="white"/>
+        <circle cx="90" cy="28" r="4.5" fill="white"/>
+        <circle cx="90" cy="52" r="4.5" fill="white"/>
+        <circle cx="90" cy="72" r="4.5" fill="white"/>
+        <circle cx="126" cy="30" r="7" fill="#E74C3C"/>
+        <circle cx="126" cy="56" r="7" fill="#E74C3C"/>
       </svg>
       aperçu header
     </div>
   </div>
 
-  <!-- Option 2 : Monogramme EA entrelacé -->
+  <!-- ===== OPTION 2 : Cerveau profil + nœuds actifs ===== -->
   <div class="option">
     <div class="box">
-      <svg width="110" height="80" viewBox="0 0 110 80" fill="none">
-        <!-- E bold -->
-        <rect x="10" y="12" width="5" height="56" fill="white"/>
-        <rect x="10" y="12" width="36" height="7" fill="white"/>
-        <rect x="10" y="37" width="28" height="6" fill="#E74C3C"/>
-        <rect x="10" y="61" width="36" height="7" fill="white"/>
-        <!-- A overlapping, shifted right -->
-        <polygon points="72,12 54,68 62,68 72,38 82,68 90,68" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-        <line x1="58" y1="52" x2="86" y2="52" stroke="#E74C3C" stroke-width="5"/>
-        <!-- node décoratif -->
-        <circle cx="72" cy="12" r="5" fill="#E74C3C"/>
+      <svg width="114" height="90" viewBox="0 0 114 90" fill="none">
+        <!-- Cerebrum outline (profile view) -->
+        <path d="M 22 66
+          C 22 50, 15 30, 26 18
+          C 37 6, 54 4, 68 9
+          C 82 14, 90 28, 92 42
+          C 94 56, 87 66, 75 70
+          C 63 73, 48 72, 38 69
+          C 30 66, 24 66, 22 66 Z"
+          fill="none" stroke="white" stroke-width="2.2"/>
+        <!-- Cerebellum (small bump at back) -->
+        <path d="M 75 70
+          C 82 68, 96 70, 100 78
+          C 102 84, 96 88, 89 86
+          C 80 82, 75 76, 75 70 Z"
+          fill="none" stroke="white" stroke-width="1.5"/>
+        <!-- Brain stem -->
+        <path d="M 30 68 Q 26 76 28 84"
+          fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- Gyri / sulci lines -->
+        <path d="M 30 22 Q 45 17 58 24" fill="none" stroke="white" stroke-width="1.2" stroke-opacity="0.38"/>
+        <path d="M 24 40 Q 43 36 60 40" fill="none" stroke="white" stroke-width="1.2" stroke-opacity="0.38"/>
+        <path d="M 26 56 Q 42 52 56 56" fill="none" stroke="white" stroke-width="1.2" stroke-opacity="0.38"/>
+        <path d="M 56 12 Q 68 16 74 28" fill="none" stroke="white" stroke-width="1.2" stroke-opacity="0.38"/>
+        <path d="M 66 34 Q 76 38 82 50" fill="none" stroke="white" stroke-width="1.2" stroke-opacity="0.38"/>
+        <!-- Internal network connections -->
+        <line x1="40" y1="28" x2="58" y2="22" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.5"/>
+        <line x1="40" y1="28" x2="52" y2="44" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.5"/>
+        <line x1="58" y1="22" x2="70" y2="36" stroke="white" stroke-width="1" stroke-opacity="0.35"/>
+        <line x1="33" y1="48" x2="52" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.35"/>
+        <line x1="52" y1="44" x2="70" y2="36" stroke="white" stroke-width="1" stroke-opacity="0.35"/>
+        <line x1="52" y1="44" x2="64" y2="56" stroke="white" stroke-width="1" stroke-opacity="0.35"/>
+        <line x1="46" y1="58" x2="64" y2="56" stroke="white" stroke-width="1" stroke-opacity="0.35"/>
+        <!-- Network nodes -->
+        <circle cx="40" cy="28" r="4.5" fill="#E74C3C"/>
+        <circle cx="58" cy="22" r="3.5" fill="white"/>
+        <circle cx="33" cy="48" r="3"   fill="white"/>
+        <circle cx="52" cy="44" r="5.5" fill="white"/>
+        <circle cx="70" cy="36" r="4.5" fill="#E74C3C"/>
+        <circle cx="46" cy="58" r="3"   fill="white"/>
+        <circle cx="64" cy="56" r="3.5" fill="white"/>
       </svg>
     </div>
-    <div class="label">Option 2<br><strong>Monogramme plein</strong><br>E bloc + A contour</div>
+    <div class="label">
+      <strong>Option 2 — Cerveau profil</strong><br>
+      Silhouette de cerveau (profil) avec nœuds actifs et connexions internes.
+    </div>
     <div class="header-sim">
-      <svg width="28" height="20" viewBox="0 0 110 80" fill="none">
-        <rect x="10" y="12" width="5" height="56" fill="white"/>
-        <rect x="10" y="12" width="36" height="7" fill="white"/>
-        <rect x="10" y="37" width="28" height="6" fill="#E74C3C"/>
-        <rect x="10" y="61" width="36" height="7" fill="white"/>
-        <polygon points="72,12 54,68 62,68 72,38 82,68 90,68" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-        <line x1="58" y1="52" x2="86" y2="52" stroke="#E74C3C" stroke-width="5"/>
-        <circle cx="72" cy="12" r="5" fill="#E74C3C"/>
+      <svg width="30" height="24" viewBox="0 0 114 90" fill="none">
+        <path d="M 22 66 C 22 50, 15 30, 26 18 C 37 6, 54 4, 68 9 C 82 14, 90 28, 92 42 C 94 56, 87 66, 75 70 C 63 73, 48 72, 38 69 C 30 66, 24 66, 22 66 Z" fill="none" stroke="white" stroke-width="2.2"/>
+        <path d="M 75 70 C 82 68, 96 70, 100 78 C 102 84, 96 88, 89 86 C 80 82, 75 76, 75 70 Z" fill="none" stroke="white" stroke-width="1.5"/>
+        <path d="M 30 68 Q 26 76 28 84" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="40" y1="28" x2="52" y2="44" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.5"/>
+        <line x1="52" y1="44" x2="70" y2="36" stroke="white" stroke-width="1" stroke-opacity="0.35"/>
+        <circle cx="40" cy="28" r="4.5" fill="#E74C3C"/>
+        <circle cx="52" cy="44" r="5.5" fill="white"/>
+        <circle cx="70" cy="36" r="4.5" fill="#E74C3C"/>
       </svg>
       aperçu header
     </div>
   </div>
 
-  <!-- Option 3 : EA badge cercle -->
+  <!-- ===== OPTION 3 : Réseau organique (biologique) ===== -->
   <div class="option">
     <div class="box">
-      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
-        <circle cx="45" cy="45" r="38" stroke="#E74C3C" stroke-width="2"/>
-        <circle cx="45" cy="45" r="34" stroke="#E74C3C" stroke-width="0.5" stroke-opacity="0.3"/>
-        <text x="45" y="56" text-anchor="middle" font-family="Georgia, serif" font-size="30" font-weight="700" fill="white" letter-spacing="2">EA</text>
-        <!-- petits nœuds décoratifs sur le cercle -->
-        <circle cx="45" cy="7"  r="3" fill="#E74C3C"/>
-        <circle cx="45" cy="83" r="3" fill="#E74C3C"/>
-        <circle cx="7"  cy="45" r="3" fill="#E74C3C"/>
-        <circle cx="83" cy="45" r="3" fill="#E74C3C"/>
+      <svg width="120" height="82" viewBox="0 0 120 82" fill="none">
+        <!-- Background connections (white, subtle) -->
+        <line x1="10" y1="16" x2="24" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="10" y1="16" x2="22" y2="34" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="10" y1="52" x2="22" y2="34" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="10" y1="52" x2="28" y2="64" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="24" y1="8"  x2="22" y2="34" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="24" y1="8"  x2="42" y2="16" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="22" y1="34" x2="28" y2="64" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="22" y1="34" x2="42" y2="16" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="22" y1="34" x2="40" y2="48" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="28" y1="64" x2="40" y2="48" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="28" y1="64" x2="46" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="42" y1="16" x2="40" y2="48" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="40" y1="48" x2="46" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <!-- Active connections (red) -->
+        <line x1="42" y1="16" x2="60" y2="10" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="42" y1="16" x2="56" y2="38" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="40" y1="48" x2="56" y2="38" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="40" y1="48" x2="58" y2="64" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="46" y1="72" x2="58" y2="64" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="60" y1="10" x2="56" y2="38" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="60" y1="10" x2="76" y2="20" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="56" y1="38" x2="58" y2="64" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="56" y1="38" x2="76" y2="20" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="56" y1="38" x2="72" y2="50" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="58" y1="64" x2="72" y2="50" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="58" y1="64" x2="78" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="76" y1="20" x2="72" y2="50" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="76" y1="20" x2="92" y2="14" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="72" y1="50" x2="78" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="72" y1="50" x2="94" y2="44" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="78" y1="72" x2="94" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="78" y1="72" x2="108" y2="60" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="92" y1="14" x2="94" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="92" y1="14" x2="108" y2="26" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="94" y1="44" x2="108" y2="26" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="94" y1="44" x2="108" y2="60" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="108" y1="26" x2="108" y2="60" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <!-- Long-range connections (subtle) -->
+        <line x1="10"  y1="16" x2="56" y2="38" stroke="white" stroke-width="0.8" stroke-opacity="0.1"/>
+        <line x1="28"  y1="64" x2="72" y2="50" stroke="white" stroke-width="0.8" stroke-opacity="0.1"/>
+        <!-- Nodes -->
+        <circle cx="10"  cy="16" r="3.5" fill="white"/>
+        <circle cx="10"  cy="52" r="3"   fill="white"/>
+        <circle cx="24"  cy="8"  r="3"   fill="white"/>
+        <circle cx="22"  cy="34" r="5"   fill="#E74C3C"/>
+        <circle cx="28"  cy="64" r="3"   fill="white"/>
+        <circle cx="42"  cy="16" r="3.5" fill="white"/>
+        <circle cx="40"  cy="48" r="3"   fill="white"/>
+        <circle cx="46"  cy="72" r="3"   fill="white"/>
+        <circle cx="60"  cy="10" r="4.5" fill="#E74C3C"/>
+        <circle cx="56"  cy="38" r="5"   fill="white"/>
+        <circle cx="58"  cy="64" r="3"   fill="white"/>
+        <circle cx="76"  cy="20" r="3.5" fill="white"/>
+        <circle cx="72"  cy="50" r="4.5" fill="#E74C3C"/>
+        <circle cx="78"  cy="72" r="3"   fill="white"/>
+        <circle cx="92"  cy="14" r="3.5" fill="white"/>
+        <circle cx="94"  cy="44" r="3"   fill="white"/>
+        <circle cx="108" cy="26" r="4.5" fill="#E74C3C"/>
+        <circle cx="108" cy="60" r="3.5" fill="white"/>
       </svg>
     </div>
-    <div class="label">Option 3<br><strong>Badge circulaire</strong><br>EA serif dans un cercle rouge</div>
+    <div class="label">
+      <strong>Option 3 — Réseau organique</strong><br>
+      Nœuds irréguliers, connexions denses. Style biologique, proche d'un vrai tissu neuronal.
+    </div>
     <div class="header-sim">
-      <svg width="22" height="22" viewBox="0 0 90 90" fill="none">
-        <circle cx="45" cy="45" r="38" stroke="#E74C3C" stroke-width="2"/>
-        <text x="45" y="56" text-anchor="middle" font-family="Georgia, serif" font-size="30" font-weight="700" fill="white" letter-spacing="2">EA</text>
-        <circle cx="45" cy="7"  r="3" fill="#E74C3C"/>
-        <circle cx="45" cy="83" r="3" fill="#E74C3C"/>
-        <circle cx="7"  cy="45" r="3" fill="#E74C3C"/>
-        <circle cx="83" cy="45" r="3" fill="#E74C3C"/>
+      <svg width="32" height="22" viewBox="0 0 120 82" fill="none">
+        <line x1="22" y1="34" x2="42" y2="16" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="42" y1="16" x2="60" y2="10" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="56" y1="38" x2="72" y2="50" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="72" y1="50" x2="94" y2="44" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="94" y1="44" x2="108" y2="60" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.45"/>
+        <line x1="22" y1="34" x2="40" y2="48" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="40" y1="48" x2="56" y2="38" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="56" y1="38" x2="76" y2="20" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <circle cx="22"  cy="34" r="5"   fill="#E74C3C"/>
+        <circle cx="42"  cy="16" r="3.5" fill="white"/>
+        <circle cx="40"  cy="48" r="3"   fill="white"/>
+        <circle cx="60"  cy="10" r="4.5" fill="#E74C3C"/>
+        <circle cx="56"  cy="38" r="5"   fill="white"/>
+        <circle cx="76"  cy="20" r="3.5" fill="white"/>
+        <circle cx="72"  cy="50" r="4.5" fill="#E74C3C"/>
+        <circle cx="94"  cy="44" r="3"   fill="white"/>
+        <circle cx="108" cy="26" r="4.5" fill="#E74C3C"/>
+        <circle cx="108" cy="60" r="3.5" fill="white"/>
       </svg>
       aperçu header
     </div>
   </div>
 
-  <!-- Option 4 : EA minimaliste avec point rouge -->
+  <!-- ===== OPTION 4 : Connectome circulaire ===== -->
   <div class="option">
     <div class="box">
-      <svg width="110" height="80" viewBox="0 0 110 80" fill="none">
-        <text x="10" y="62" font-family="'Helvetica Neue', Arial, sans-serif" font-size="58" font-weight="800" fill="white" letter-spacing="-2">E</text>
-        <circle cx="60" cy="40" r="5" fill="#E74C3C"/>
-        <text x="68" y="62" font-family="'Helvetica Neue', Arial, sans-serif" font-size="58" font-weight="800" fill="white" letter-spacing="-2">A</text>
-        <!-- underline rouge -->
-        <line x1="10" y1="70" x2="100" y2="70" stroke="#E74C3C" stroke-width="2.5"/>
+      <svg width="104" height="104" viewBox="0 0 104 104" fill="none">
+        <!-- Outer ring (very subtle) -->
+        <circle cx="52" cy="52" r="46" stroke="white" stroke-width="0.5" stroke-opacity="0.12"/>
+        <!-- Diameter cross-connections -->
+        <line x1="52" y1="6"  x2="52" y2="98" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <line x1="75" y1="13" x2="29" y2="91" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <line x1="92" y1="29" x2="12" y2="75" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <line x1="98" y1="52" x2="6"  y2="52" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <line x1="92" y1="75" x2="12" y2="29" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <line x1="75" y1="91" x2="29" y2="13" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <!-- Skip-1 chord connections -->
+        <line x1="52" y1="6"  x2="92" y2="29" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="52" y1="6"  x2="12" y2="29" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="75" y1="13" x2="98" y2="52" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="75" y1="13" x2="29" y2="13" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="92" y1="29" x2="98" y2="75" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="98" y1="52" x2="75" y2="91" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="92" y1="75" x2="52" y2="98" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="75" y1="91" x2="12" y2="75" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="29" y1="91" x2="6"  y2="52" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="12" y1="75" x2="6"  y2="29" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="6"  y1="29" x2="29" y2="13" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="12" y1="29" x2="52" y2="98" stroke="white" stroke-width="1" stroke-opacity="0.2"/>
+        <!-- Active red pathways -->
+        <line x1="98" y1="52" x2="52" y2="6"  stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="98" y1="52" x2="75" y2="13" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="6"  y1="52" x2="29" y2="91" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="6"  y1="52" x2="52" y2="98" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <!-- Ring (adjacent) connections -->
+        <line x1="52" y1="6"  x2="75" y2="13" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="75" y1="13" x2="92" y2="29" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="92" y1="29" x2="98" y2="52" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="98" y1="52" x2="92" y2="75" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="92" y1="75" x2="75" y2="91" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="75" y1="91" x2="52" y2="98" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="52" y1="98" x2="29" y2="91" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="29" y1="91" x2="12" y2="75" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="12" y1="75" x2="6"  y2="52" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="6"  y1="52" x2="12" y2="29" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="12" y1="29" x2="29" y2="13" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="29" y1="13" x2="52" y2="6"  stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <!-- Ring nodes -->
+        <circle cx="52" cy="6"  r="5"   fill="white"/>
+        <circle cx="75" cy="13" r="4"   fill="white"/>
+        <circle cx="92" cy="29" r="4"   fill="white"/>
+        <circle cx="98" cy="52" r="6.5" fill="#E74C3C"/>
+        <circle cx="92" cy="75" r="4"   fill="white"/>
+        <circle cx="75" cy="91" r="4"   fill="white"/>
+        <circle cx="52" cy="98" r="5"   fill="white"/>
+        <circle cx="29" cy="91" r="4"   fill="white"/>
+        <circle cx="12" cy="75" r="4"   fill="white"/>
+        <circle cx="6"  cy="52" r="6.5" fill="#E74C3C"/>
+        <circle cx="12" cy="29" r="4"   fill="white"/>
+        <circle cx="29" cy="13" r="4"   fill="white"/>
       </svg>
     </div>
-    <div class="label">Option 4<br><strong>E·A minimaliste</strong><br>Point rouge séparateur + soulignement</div>
+    <div class="label">
+      <strong>Option 4 — Connectome</strong><br>
+      Régions du cerveau reliées en anneau avec connexions croisées. Inspiré des visualisations scientifiques de connectome.
+    </div>
     <div class="header-sim">
-      <svg width="36" height="22" viewBox="0 0 110 80" fill="none">
-        <text x="10" y="62" font-family="'Helvetica Neue', Arial, sans-serif" font-size="58" font-weight="800" fill="white" letter-spacing="-2">E</text>
-        <circle cx="60" cy="40" r="5" fill="#E74C3C"/>
-        <text x="68" y="62" font-family="'Helvetica Neue', Arial, sans-serif" font-size="58" font-weight="800" fill="white" letter-spacing="-2">A</text>
-        <line x1="10" y1="70" x2="100" y2="70" stroke="#E74C3C" stroke-width="2.5"/>
+      <svg width="26" height="26" viewBox="0 0 104 104" fill="none">
+        <circle cx="52" cy="52" r="46" stroke="white" stroke-width="0.5" stroke-opacity="0.12"/>
+        <line x1="52" y1="6"  x2="52" y2="98" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <line x1="98" y1="52" x2="6"  y2="52" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <line x1="92" y1="29" x2="12" y2="75" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <line x1="92" y1="75" x2="12" y2="29" stroke="white" stroke-width="1" stroke-opacity="0.12"/>
+        <line x1="98" y1="52" x2="52" y2="6"  stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="6"  y1="52" x2="52" y2="98" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="52" y1="6"  x2="75" y2="13" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="75" y1="13" x2="92" y2="29" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="92" y1="29" x2="98" y2="52" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="98" y1="52" x2="92" y2="75" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="92" y1="75" x2="75" y2="91" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="75" y1="91" x2="52" y2="98" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="52" y1="98" x2="29" y2="91" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="29" y1="91" x2="12" y2="75" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="12" y1="75" x2="6"  y2="52" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="6"  y1="52" x2="12" y2="29" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="12" y1="29" x2="29" y2="13" stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <line x1="29" y1="13" x2="52" y2="6"  stroke="white" stroke-width="1.8" stroke-opacity="0.32"/>
+        <circle cx="52" cy="6"  r="5"   fill="white"/>
+        <circle cx="75" cy="13" r="4"   fill="white"/>
+        <circle cx="92" cy="29" r="4"   fill="white"/>
+        <circle cx="98" cy="52" r="6.5" fill="#E74C3C"/>
+        <circle cx="92" cy="75" r="4"   fill="white"/>
+        <circle cx="75" cy="91" r="4"   fill="white"/>
+        <circle cx="52" cy="98" r="5"   fill="white"/>
+        <circle cx="29" cy="91" r="4"   fill="white"/>
+        <circle cx="12" cy="75" r="4"   fill="white"/>
+        <circle cx="6"  cy="52" r="6.5" fill="#E74C3C"/>
+        <circle cx="12" cy="29" r="4"   fill="white"/>
+        <circle cx="29" cy="13" r="4"   fill="white"/>
       </svg>
       aperçu header
     </div>
   </div>
 
-  <!-- Option 5 : EA avec réseau en arrière-plan -->
+  <!-- ===== OPTION 5 : Cerveau vue du dessus + corpus callosum ===== -->
   <div class="option">
     <div class="box">
-      <svg width="110" height="80" viewBox="0 0 110 80" fill="none">
-        <!-- réseau décoratif derrière -->
-        <line x1="8"  y1="20" x2="28" y2="40" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
-        <line x1="28" y1="40" x2="8"  y2="60" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
-        <line x1="88" y1="15" x2="102" y2="40" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
-        <line x1="102" y1="40" x2="88" y2="65" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
-        <circle cx="8"  cy="20" r="2.5" fill="#E74C3C" opacity="0.4"/>
-        <circle cx="8"  cy="60" r="2.5" fill="#E74C3C" opacity="0.4"/>
-        <circle cx="28" cy="40" r="2.5" fill="#E74C3C" opacity="0.4"/>
-        <circle cx="88" cy="15" r="2.5" fill="#E74C3C" opacity="0.4"/>
-        <circle cx="88" cy="65" r="2.5" fill="#E74C3C" opacity="0.4"/>
-        <circle cx="102" cy="40" r="2.5" fill="#E74C3C" opacity="0.4"/>
-        <!-- EA serif, bien visible -->
-        <text x="55" y="57" text-anchor="middle"
-              font-family="Georgia, 'Times New Roman', serif"
-              font-size="46" font-weight="700" fill="white" letter-spacing="4">EA</text>
-        <!-- trait rouge sous le A -->
-        <line x1="74" y1="62" x2="88" y2="62" stroke="#E74C3C" stroke-width="3"/>
+      <svg width="114" height="88" viewBox="0 0 114 88" fill="none">
+        <!-- Left hemisphere arc -->
+        <path d="M 57 8
+          C 46 6, 20 12, 10 28
+          C 2 42, 8 62, 22 70
+          C 32 78, 48 80, 57 74"
+          fill="none" stroke="white" stroke-width="2.2"/>
+        <!-- Right hemisphere arc -->
+        <path d="M 57 8
+          C 68 6, 94 12, 104 28
+          C 112 42, 106 62, 92 70
+          C 82 78, 66 80, 57 74"
+          fill="none" stroke="white" stroke-width="2.2"/>
+        <!-- Central fissure -->
+        <line x1="57" y1="8" x2="57" y2="74" stroke="white" stroke-width="1.2" stroke-opacity="0.28"/>
+        <!-- Left hemisphere internal connections -->
+        <line x1="26" y1="28" x2="40" y2="20" stroke="white" stroke-width="1" stroke-opacity="0.28"/>
+        <line x1="26" y1="28" x2="38" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.28"/>
+        <line x1="40" y1="20" x2="38" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="38" y1="44" x2="30" y2="60" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="26" y1="28" x2="30" y2="60" stroke="white" stroke-width="1" stroke-opacity="0.15"/>
+        <!-- Right hemisphere internal connections -->
+        <line x1="88" y1="28" x2="74" y2="20" stroke="white" stroke-width="1" stroke-opacity="0.28"/>
+        <line x1="88" y1="28" x2="76" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.28"/>
+        <line x1="74" y1="20" x2="76" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="76" y1="44" x2="84" y2="60" stroke="white" stroke-width="1" stroke-opacity="0.22"/>
+        <line x1="88" y1="28" x2="84" y2="60" stroke="white" stroke-width="1" stroke-opacity="0.15"/>
+        <!-- Corpus callosum (cross-hemisphere red connections) -->
+        <line x1="40" y1="20" x2="74" y2="20" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="38" y1="44" x2="76" y2="44" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="30" y1="60" x2="84" y2="60" stroke="#E74C3C" stroke-width="1"   stroke-opacity="0.35"/>
+        <!-- Left nodes -->
+        <circle cx="26" cy="28" r="4.5" fill="white"/>
+        <circle cx="40" cy="20" r="4"   fill="#E74C3C"/>
+        <circle cx="38" cy="44" r="4"   fill="#E74C3C"/>
+        <circle cx="30" cy="60" r="3.5" fill="white"/>
+        <!-- Right nodes (mirror) -->
+        <circle cx="88" cy="28" r="4.5" fill="white"/>
+        <circle cx="74" cy="20" r="4"   fill="#E74C3C"/>
+        <circle cx="76" cy="44" r="4"   fill="#E74C3C"/>
+        <circle cx="84" cy="60" r="3.5" fill="white"/>
       </svg>
     </div>
-    <div class="label">Option 5<br><strong>EA serif + réseau</strong><br>Lettres au premier plan, réseau en fond</div>
+    <div class="label">
+      <strong>Option 5 — Cerveau vue du dessus</strong><br>
+      Deux hémisphères avec connexions rouges (corps calleux). Symétrique, équilibré.
+    </div>
     <div class="header-sim">
-      <svg width="34" height="22" viewBox="0 0 110 80" fill="none">
-        <line x1="8"  y1="20" x2="28" y2="40" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
-        <line x1="28" y1="40" x2="8"  y2="60" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
-        <line x1="88" y1="15" x2="102" y2="40" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
-        <line x1="102" y1="40" x2="88" y2="65" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
-        <circle cx="8"  cy="20" r="2.5" fill="#E74C3C" opacity="0.5"/>
-        <circle cx="8"  cy="60" r="2.5" fill="#E74C3C" opacity="0.5"/>
-        <circle cx="28" cy="40" r="2.5" fill="#E74C3C" opacity="0.5"/>
-        <circle cx="88" cy="15" r="2.5" fill="#E74C3C" opacity="0.5"/>
-        <circle cx="88" cy="65" r="2.5" fill="#E74C3C" opacity="0.5"/>
-        <circle cx="102" cy="40" r="2.5" fill="#E74C3C" opacity="0.5"/>
-        <text x="55" y="57" text-anchor="middle" font-family="Georgia, serif" font-size="46" font-weight="700" fill="white" letter-spacing="4">EA</text>
-        <line x1="74" y1="62" x2="88" y2="62" stroke="#E74C3C" stroke-width="3"/>
-      </svg>
-      aperçu header
-    </div>
-  </div>
-
-  <!-- Option 6 : E et A dans un carré rouge -->
-  <div class="option">
-    <div class="box">
-      <svg width="90" height="80" viewBox="0 0 90 80" fill="none">
-        <rect x="5" y="8" width="80" height="64" rx="6" fill="#E74C3C"/>
-        <text x="45" y="57" text-anchor="middle"
-              font-family="'Helvetica Neue', Arial, sans-serif"
-              font-size="42" font-weight="900" fill="white" letter-spacing="1">EA</text>
-        <!-- nœuds aux coins -->
-        <circle cx="5"  cy="8"  r="3" fill="white" opacity="0.6"/>
-        <circle cx="85" cy="8"  r="3" fill="white" opacity="0.6"/>
-        <circle cx="5"  cy="72" r="3" fill="white" opacity="0.6"/>
-        <circle cx="85" cy="72" r="3" fill="white" opacity="0.6"/>
-      </svg>
-    </div>
-    <div class="label">Option 6<br><strong>EA sur fond rouge</strong><br>Carré arrondi, impact fort</div>
-    <div class="header-sim">
-      <svg width="26" height="22" viewBox="0 0 90 80" fill="none">
-        <rect x="5" y="8" width="80" height="64" rx="6" fill="#E74C3C"/>
-        <text x="45" y="57" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="42" font-weight="900" fill="white" letter-spacing="1">EA</text>
+      <svg width="30" height="24" viewBox="0 0 114 88" fill="none">
+        <path d="M 57 8 C 46 6, 20 12, 10 28 C 2 42, 8 62, 22 70 C 32 78, 48 80, 57 74" fill="none" stroke="white" stroke-width="2.2"/>
+        <path d="M 57 8 C 68 6, 94 12, 104 28 C 112 42, 106 62, 92 70 C 82 78, 66 80, 57 74" fill="none" stroke="white" stroke-width="2.2"/>
+        <line x1="57" y1="8" x2="57" y2="74" stroke="white" stroke-width="1.2" stroke-opacity="0.28"/>
+        <line x1="40" y1="20" x2="74" y2="20" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="38" y1="44" x2="76" y2="44" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <circle cx="40" cy="20" r="4"   fill="#E74C3C"/>
+        <circle cx="38" cy="44" r="4"   fill="#E74C3C"/>
+        <circle cx="74" cy="20" r="4"   fill="#E74C3C"/>
+        <circle cx="76" cy="44" r="4"   fill="#E74C3C"/>
       </svg>
       aperçu header
     </div>
@@ -243,6 +461,6 @@
 
 </div>
 
-<p style="margin-top:48px;color:#555;font-size:12px;">Chaque option inclut un aperçu à taille réelle (header). Dis-moi laquelle tu préfères ou ce qu'on peut combiner.</p>
+<p style="margin-top:56px;color:#555;font-size:12px;">Dis-moi laquelle tu préfères (1–5), ou ce qu'on peut combiner / ajuster.</p>
 </body>
 </html>
