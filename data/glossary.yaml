@@ -250,6 +250,86 @@ terms:
         Des SDKs officiels existent pour 10 langages. Un registry communautaire liste des centaines de serveurs
         couvrant filesystems, bases de données, GitHub, Slack, automatisation navigateur, et plus.
 
+  - id: hipaa
+    label:
+      en: "HIPAA"
+      fr: "HIPAA"
+    aliases: ["HIPAA", "Health Insurance Portability and Accountability Act"]
+    description:
+      en: >
+        Health Insurance Portability and Accountability Act. A US federal law (1996) that sets strict
+        rules on how health information (medical records, diagnoses, prescriptions…) can be stored,
+        shared and processed.
+        In the AI context: any cloud platform or application that handles patient data in the US must
+        be "HIPAA-compliant" — meaning the vendor signs a Business Associate Agreement (BAA) and
+        implements specific technical safeguards (encryption, access controls, audit logs).
+        AWS Bedrock, Azure OpenAI and Google Vertex AI all offer HIPAA-eligible configurations.
+        Non-compliance can lead to fines up to $1.9M per violation category per year.
+      fr: >
+        Health Insurance Portability and Accountability Act. Loi fédérale américaine (1996) qui fixe
+        des règles strictes sur la façon dont les informations de santé (dossiers médicaux, diagnostics,
+        ordonnances…) peuvent être stockées, partagées et traitées.
+        Dans le contexte IA : toute plateforme cloud ou application qui traite des données de patients
+        aux États-Unis doit être « HIPAA-compliant » — le fournisseur signe un Business Associate Agreement (BAA)
+        et met en place des mesures techniques spécifiques (chiffrement, contrôle d'accès, logs d'audit).
+        AWS Bedrock, Azure OpenAI et Google Vertex AI proposent tous des configurations éligibles HIPAA.
+        Non-conformité : amendes jusqu'à 1,9 M$ par catégorie de violation par an.
+
+  - id: soc2
+    label:
+      en: "SOC 2"
+      fr: "SOC 2"
+    aliases: ["SOC 2", "SOC2", "SOC 2 Type II", "SOC 2 Type I", "System and Organization Controls"]
+    description:
+      en: >
+        Service Organization Control 2. An auditing framework created by the AICPA (American Institute
+        of CPAs) that evaluates how a cloud service provider manages data security.
+        SOC 2 covers five "Trust Service Criteria": Security, Availability, Processing Integrity,
+        Confidentiality, and Privacy.
+        Two levels: Type I (snapshot audit — controls exist at a point in time),
+        Type II (operational audit — controls worked consistently over 6–12 months).
+        Type II is the standard enterprise buyers require.
+        In the AI context: SOC 2 Type II is the baseline certification expected from any AI API
+        provider (OpenAI, Anthropic, Google, AWS…) before enterprise procurement teams will approve it.
+      fr: >
+        Service Organization Control 2. Un cadre d'audit créé par l'AICPA (Institut américain des CPA)
+        qui évalue comment un fournisseur de services cloud gère la sécurité des données.
+        SOC 2 couvre cinq « Trust Service Criteria » : Sécurité, Disponibilité, Intégrité de traitement,
+        Confidentialité et Vie privée.
+        Deux niveaux : Type I (audit instantané — les contrôles existent à un instant T),
+        Type II (audit opérationnel — les contrôles ont fonctionné de façon constante sur 6 à 12 mois).
+        Le Type II est le standard exigé par les acheteurs entreprises.
+        Dans le contexte IA : SOC 2 Type II est la certification de base attendue de tout fournisseur
+        d'API IA (OpenAI, Anthropic, Google, AWS…) avant qu'une équipe achats enterprise l'approuve.
+
+  - id: fedramp
+    label:
+      en: "FedRAMP"
+      fr: "FedRAMP"
+    aliases: ["FedRAMP", "Federal Risk and Authorization Management Program"]
+    description:
+      en: >
+        Federal Risk and Authorization Management Program. A US government program that standardizes
+        security assessment and authorization for cloud services used by federal agencies.
+        Any cloud provider wanting to sell to the US federal government must obtain FedRAMP authorization.
+        Three impact levels: Low, Moderate (most civilian agencies), High (sensitive government data).
+        The process is lengthy (12–18 months) and expensive — effectively a barrier to entry.
+        In the AI context: FedRAMP authorization is required for AI platforms used in government
+        (defense, healthcare, intelligence). AWS GovCloud and Azure Government have FedRAMP High;
+        Google Vertex AI and some OpenAI/Anthropic offerings have Moderate.
+        FedRAMP is the AI compliance requirement you hear about in US public sector deals.
+      fr: >
+        Federal Risk and Authorization Management Program. Un programme du gouvernement américain
+        qui standardise l'évaluation et l'autorisation de sécurité des services cloud utilisés
+        par les agences fédérales.
+        Tout fournisseur cloud souhaitant vendre au gouvernement américain doit obtenir une autorisation FedRAMP.
+        Trois niveaux d'impact : Low, Moderate (la plupart des agences civiles), High (données gouvernementales sensibles).
+        Le processus est long (12 à 18 mois) et coûteux — une véritable barrière à l'entrée.
+        Dans le contexte IA : l'autorisation FedRAMP est requise pour les plateformes IA utilisées
+        dans le secteur gouvernemental (défense, santé, renseignement).
+        AWS GovCloud et Azure Government ont FedRAMP High ; Google Vertex AI et certaines offres
+        OpenAI/Anthropic ont Moderate.
+
   - id: machine_learning
     label:
       en: "Machine Learning"

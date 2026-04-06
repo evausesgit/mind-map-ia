@@ -110,5 +110,5 @@ maps:
     description:
       en: "Key terms and concepts of the LLM & AI ecosystem"
       fr: "Termes et concepts clés de l'écosystème LLM & IA"
-    terms: 5
+    terms: 8
     output: glossary.html
