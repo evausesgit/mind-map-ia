@@ -198,6 +198,31 @@ nodes:
         Pas un type de modèle à part — une capacité qui s'applique aux modèles propriétaires ou open source.
         Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.
 
+  - id: transformer
+    label:
+      en: "Transformer"
+      fr: "Transformer"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2017"
+    link: "https://arxiv.org/abs/1706.03762"
+    description:
+      en: |
+        The neural network architecture behind every modern LLM.
+        Introduced in "Attention Is All You Need" (Google, 2017).
+        Key innovation: self-attention — the model weighs the relevance of every word
+        against every other word simultaneously, enabling massive parallel training.
+        Before Transformers: RNNs processed text sequentially, couldn't scale.
+        After: GPT, BERT, Claude, Gemini, Llama — all Transformers.
+      fr: |
+        L'architecture de réseau de neurones derrière tous les LLM modernes.
+        Introduite dans "Attention Is All You Need" (Google, 2017).
+        Innovation clé : l'auto-attention — le modèle pondère simultanément la pertinence
+        de chaque mot par rapport à tous les autres, permettant un entraînement massivement parallèle.
+        Avant les Transformers : les RNN traitaient le texte séquentiellement, ne passaient pas à l'échelle.
+        Après : GPT, BERT, Claude, Gemini, Llama — tous des Transformers.
+
   - id: multimodality
     label:
       en: "Multimodality"
@@ -611,6 +636,11 @@ nodes:
         Exemples : HuggingFace, Ollama, Replicate.
 
 edges:
+  - from: transformer
+    to: language_model
+    label: "architecture of"
+    type: part_of
+
   - from: language_model
     to: frontier_models
     label: "manifests as"
