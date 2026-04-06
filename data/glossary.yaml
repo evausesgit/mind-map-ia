@@ -330,6 +330,63 @@ terms:
         AWS GovCloud et Azure Government ont FedRAMP High ; Google Vertex AI et certaines offres
         OpenAI/Anthropic ont Moderate.
 
+  - id: transformer
+    label:
+      en: "Transformer"
+      fr: "Transformer"
+    aliases: ["Transformer", "transformer", "transformers", "attention mechanism", "mécanisme d'attention", "self-attention"]
+    description:
+      en: >
+        The neural network architecture that underpins virtually all modern LLMs.
+        Introduced in the 2017 paper "Attention Is All You Need" (Vaswani et al., Google).
+        Key innovation: the **self-attention mechanism**, which lets the model weigh the relevance
+        of every word against every other word in the input simultaneously — instead of processing
+        tokens one by one like older RNNs.
+        This parallelism made it possible to train on massive datasets using GPUs/TPUs at scale.
+        Two variants: **Encoder** (BERT — good for understanding/classification),
+        **Decoder** (GPT, Claude, Llama — good for generation), and **Encoder-Decoder** (T5, translation).
+        Every LLM you use today — GPT-4, Claude, Gemini, Llama — is a Transformer.
+      fr: >
+        L'architecture de réseau de neurones qui sous-tend pratiquement tous les LLM modernes.
+        Introduite dans le papier "Attention Is All You Need" (2017, Vaswani et al., Google).
+        Innovation clé : le **mécanisme d'auto-attention**, qui permet au modèle de pondérer la pertinence
+        de chaque mot par rapport à tous les autres simultanément — au lieu de traiter les tokens
+        un par un comme les anciens RNN.
+        Ce parallélisme a rendu possible l'entraînement sur des corpus massifs avec des GPU/TPU.
+        Deux variantes principales : **Encoder** (BERT — compréhension/classification),
+        **Decoder** (GPT, Claude, Llama — génération), et **Encoder-Decoder** (T5, traduction).
+        Chaque LLM que vous utilisez aujourd'hui — GPT-4, Claude, Gemini, Llama — est un Transformer.
+
+  - id: temperature
+    label:
+      en: "Temperature"
+      fr: "Température"
+    aliases: ["temperature", "température", "temp", "sampling temperature"]
+    description:
+      en: >
+        A parameter (typically between 0 and 2) that controls how random or deterministic
+        a model's outputs are.
+        Technically: it scales the probability distribution over the vocabulary before sampling
+        the next token. Low temperature → the model concentrates probability on the most likely
+        tokens (predictable, repetitive). High temperature → probability is spread more evenly
+        (creative, varied, but also more likely to hallucinate).
+        **Temperature 0**: near-deterministic — the model almost always picks the highest-probability token.
+        Good for: code generation, factual Q&A, structured outputs.
+        **Temperature 0.7–1**: balanced creativity. Good for: chat, writing assistance.
+        **Temperature > 1**: highly creative/random. Good for: brainstorming, creative writing.
+        Often used alongside **top-p** (nucleus sampling) to further control output diversity.
+      fr: >
+        Un paramètre (typiquement entre 0 et 2) qui contrôle le degré de hasard ou de déterminisme
+        dans les sorties du modèle.
+        Techniquement : il met à l'échelle la distribution de probabilité sur le vocabulaire avant
+        d'échantillonner le prochain token. Température basse → le modèle concentre la probabilité
+        sur les tokens les plus probables (prévisible, répétitif). Température haute → la probabilité
+        est répartie plus uniformément (créatif, varié, mais aussi plus sujet aux hallucinations).
+        **Température 0** : quasi-déterministe. Idéal pour : génération de code, Q&R factuelles, sorties structurées.
+        **Température 0,7–1** : créativité équilibrée. Idéal pour : chat, aide à l'écriture.
+        **Température > 1** : très créatif/aléatoire. Idéal pour : brainstorming, écriture créative.
+        Souvent utilisée avec **top-p** (nucleus sampling) pour contrôler davantage la diversité des sorties.
+
   - id: machine_learning
     label:
       en: "Machine Learning"
