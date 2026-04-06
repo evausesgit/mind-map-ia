@@ -426,6 +426,16 @@ def main():
     margin: 0 auto;
     width: 100%;
   }}
+  .site-intro {{
+    width: 100%;
+    font-size: 14px;
+    color: #7F8C8D;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    text-align: center;
+  }}
+  .site-intro strong {{ color: #BDC3C7; font-weight: 700; }}
+
   /* ── Featured card ── */
   .card-featured {{
     width: 100%;
@@ -581,6 +591,12 @@ def main():
 </header>
 
 <main>
+  <p class="site-intro" id="site-intro">
+    Three ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem,
+    <strong>Deep Dives</strong> for in-depth articles,
+    <strong>Glossary</strong> to understand the terminology.
+  </p>
+
   {featured_html}
 
   <div class="section-sep">
@@ -611,8 +627,16 @@ def main():
 
 <script>
 const uiTexts = {{
-  en: {{ footer: "Open source · Built to learn and share · ", searchPlaceholder: "Search concepts, models, tools…" }},
-  fr: {{ footer: "Open source · Construit pour apprendre et partager · ", searchPlaceholder: "Rechercher concepts, modèles, outils…" }}
+  en: {{
+    footer: "Open source · Built to learn and share · ",
+    searchPlaceholder: "Search concepts, models, tools…",
+    intro: "Three ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem, <strong>Deep Dives</strong> for in-depth articles, <strong>Glossary</strong> to understand the terminology."
+  }},
+  fr: {{
+    footer: "Open source · Construit pour apprendre et partager · ",
+    searchPlaceholder: "Rechercher concepts, modèles, outils…",
+    intro: "Trois façons d'apprendre : <strong>Mind Maps</strong> pour visualiser l'écosystème, <strong>Deep Dives</strong> pour des articles approfondis, <strong>Glossaire</strong> pour comprendre la terminologie."
+  }}
 }};
 let currentLang = 'en';
 function setLang(lang) {{
@@ -620,6 +644,7 @@ function setLang(lang) {{
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
   document.getElementById('footer-text').textContent = uiTexts[lang].footer;
   document.getElementById('search-input').placeholder = uiTexts[lang].searchPlaceholder;
+  document.getElementById('site-intro').innerHTML = uiTexts[lang].intro;
   document.querySelectorAll('[data-en]').forEach(el => {{
     el.textContent = lang === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
   }});
