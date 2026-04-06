@@ -1087,8 +1087,8 @@ function setLang(newLang) {{
 
   // Hint text
   document.getElementById('hint-text').textContent =
-    lang === 'fr' ? 'Cliquez sur un nœud · Molette pour zoomer · Glisser pour naviguer'
-                  : 'Click a node to explore · Scroll to zoom · Drag to pan';
+    lang === 'fr' ? 'Cliquez sur un nœud · Double-cliquez pour explorer · Molette pour zoomer · Glisser pour naviguer'
+                  : 'Click a node · Double-click to explore · Scroll to zoom · Drag to pan';
 
   // Legend
   document.getElementById('legend-en').style.display = lang === 'en' ? '' : 'none';
