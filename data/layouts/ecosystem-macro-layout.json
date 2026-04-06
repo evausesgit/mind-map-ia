@@ -4,12 +4,12 @@
     "y": -171
   },
   "token_context": {
-    "x": 1126,
-    "y": -281
+    "x": 1044,
+    "y": -350
   },
   "embedding_vectors": {
-    "x": 826,
-    "y": 254
+    "x": 943,
+    "y": 389
   },
   "training_alignment": {
     "x": 1064,
@@ -23,9 +23,9 @@
     "x": 1255,
     "y": 78
   },
-  "prompt_system_prompt": {
-    "x": 1003,
-    "y": 106
+  "transformer": {
+    "x": 1334,
+    "y": -184
   },
   "multimodality": {
     "x": 1103,
@@ -44,44 +44,48 @@
     "y": 211
   },
   "public_api": {
-    "x": -238,
-    "y": -269
+    "x": -84,
+    "y": -234
   },
   "cloud_managed": {
-    "x": -230,
-    "y": -164
+    "x": -121,
+    "y": 56
   },
   "self_hosted": {
-    "x": -244,
-    "y": 227
+    "x": -106,
+    "y": 288
   },
   "local_edge": {
-    "x": -258,
-    "y": -358
+    "x": -123,
+    "y": -422
   },
   "rag_pattern": {
-    "x": -631,
-    "y": -426
+    "x": -623,
+    "y": -535
   },
   "agents_pattern": {
-    "x": -803,
-    "y": -143
+    "x": -679,
+    "y": -398
   },
   "tool_use_pattern": {
-    "x": -579,
-    "y": -117
+    "x": -506,
+    "y": -286
+  },
+  "mcp_pattern": {
+    "x": -695,
+    "y": -138
   },
   "finetuning_pattern": {
-    "x": -489,
-    "y": -17
+    "x": -515,
+    "y": -20
   },
   "prompt_eng": {
-    "x": -756,
-    "y": 140
+    "x": -701,
+    "y": 135
   },
   "structured_gen": {
-    "x": -578,
-    "y": 189
+    "x": -502,
+    "y": 267
   },
   "orch_frameworks": {
     "x": -1080,

@@ -4,6 +4,7 @@ Generate a standalone HTML mind map from ecosystem.yaml
 Usage: python scripts/generate.py
 """
 
+import re
 import yaml
 import json
 from pathlib import Path
@@ -14,6 +15,7 @@ ROOT = Path(__file__).parent.parent
 MAPS_FILE = ROOT / "data" / "maps.yaml"
 LAYOUTS_DIR = ROOT / "data" / "layouts"
 GLOSSARY_FILE = ROOT / "data" / "glossary.yaml"
+TOPICS_DIR = ROOT / "data" / "topics"
 
 
 def load_glossary():
@@ -35,6 +37,20 @@ def load_maps():
         with open(MAPS_FILE) as f:
             return yaml.safe_load(f).get("maps", [])
     return []
+
+
+def load_topics_meta():
+    """Return list of topic frontmatter dicts from data/topics/*.md."""
+    if not TOPICS_DIR.exists():
+        return []
+    topics = []
+    for path in sorted(TOPICS_DIR.glob("*.md")):
+        raw = path.read_text(encoding="utf-8")
+        fm_match = re.match(r"^---\n(.*?)\n---\n", raw, re.DOTALL)
+        if fm_match:
+            topics.append(yaml.safe_load(fm_match.group(1)))
+    topics.sort(key=lambda x: str(x.get("date", "")), reverse=True)
+    return topics
 
 
 # ── Layout constants ──────────────────────────────────────────
@@ -211,33 +227,68 @@ def build_elements(data, data_file=None):
     return elements
 
 
-def build_nav(maps, current_output, lang="en"):
-    """Build the nav dropdown HTML for all available maps."""
+def build_nav(maps, current_output, topics=None):
+    """Build the site-wide nav: logo + Mind Maps dropdown + Deep Dives dropdown."""
     current_name = Path(current_output).name
-    items = ""
+
+    # ── Mind Maps dropdown ──────────────────────────────────────
+    map_items = ""
     for m in maps:
+        if m.get("id") == "glossary":
+            continue
         is_active = m["output"] == current_name
         title_en = t(m.get("title", ""), "en")
         title_fr = t(m.get("title", ""), "fr") or title_en
-        desc_en = t(m.get("description", ""), "en")
-        desc_fr = t(m.get("description", ""), "fr") or desc_en
-        items += (
-            f'<a href="{m["output"]}" class="{"active" if is_active else ""}">'
-            f'  <span class="nav-icon">{m.get("icon", "📄")}</span>'
-            f'  <span class="nav-info">'
-            f'    <span class="nav-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'    <span class="nav-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f"  </span>"
-            f"</a>"
+        desc_en  = t(m.get("description", ""), "en")
+        desc_fr  = t(m.get("description", ""), "fr") or desc_en
+        active_cls = " active" if is_active else ""
+        map_items += (
+            f'<a href="{m["output"]}" class="nav-item{active_cls}">'
+            f'<span class="nav-item-icon">{m.get("icon","📄")}</span>'
+            f'<span class="nav-item-info">'
+            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f'</span></a>'
         )
+
+    # ── Deep Dives dropdown ─────────────────────────────────────
+    dive_items = ""
+    for topic in (topics or []):
+        tid = topic.get("id", "")
+        title_en  = t(topic.get("title",   ""), "en")
+        title_fr  = t(topic.get("title",   ""), "fr") or title_en
+        summ_en   = t(topic.get("summary", ""), "en")
+        summ_fr   = t(topic.get("summary", ""), "fr") or summ_en
+        is_active = current_name == f"{tid}.html"
+        active_cls = " active" if is_active else ""
+        dive_items += (
+            f'<a href="topics/{tid}.html" class="nav-item{active_cls}">'
+            f'<span class="nav-item-icon">📝</span>'
+            f'<span class="nav-item-info">'
+            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
+            f'</span></a>'
+        )
+
+    glossary_active = " active" if current_name == "glossary.html" else ""
+
     return (
-        '<div class="nav-menu">'
-        '  <button class="nav-btn" id="nav-toggle">≡ Maps ▾</button>'
-        '  <div class="nav-dropdown">'
-        '    <a href="index.html" class="nav-home">← Home</a>'
-        f"   {items}"
-        "  </div>"
-        "</div>"
+        f'<a href="index.html" class="nav-logo" title="Home">🧠</a>'
+        f'<div class="nav-group">'
+        f'  <button class="nav-btn">'
+        f'    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾'
+        f'  </button>'
+        f'  <div class="nav-dropdown">{map_items}</div>'
+        f'</div>'
+        f'<div class="nav-group">'
+        f'  <button class="nav-btn">'
+        f'    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾'
+        f'  </button>'
+        f'  <div class="nav-dropdown">{dive_items}</div>'
+        f'</div>'
+        f'<a href="glossary.html" class="nav-glossary-link{glossary_active}">'
+        f'  <span data-en="📖 Glossary" data-fr="📖 Glossaire">📖 Glossary</span>'
+        f'</a>'
     )
 
 
@@ -343,16 +394,11 @@ def generate_html(data, elements, maps=None, current_output=""):
     legend_en = legend_items("en")
     legend_fr = legend_items("fr")
 
-    nav_html = build_nav(maps or [], current_output) if maps else ""
+    topics = load_topics_meta()
+    nav_html = build_nav(maps or [], current_output, topics=topics) if maps else ""
 
     drilldown_datasets = load_drilldown_datasets(data, maps or [])
     drilldown_datasets_js = json.dumps(drilldown_datasets)
-
-    back_link = meta.get("back_link", "")
-    back_btn_html = (
-        f'<a href="{back_link}" class="back-btn" title="Back">← Back</a>'
-        if back_link else ""
-    )
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -376,10 +422,12 @@ def generate_html(data, elements, maps=None, current_output=""):
   header {{
     background: #1A1A2E;
     color: white;
-    padding: 12px 24px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 4px;
     flex-shrink: 0;
     border-bottom: 3px solid #E74C3C;
   }}
@@ -508,8 +556,8 @@ def generate_html(data, elements, maps=None, current_output=""):
     border-color: #aaa;
     color: white;
   }}
-  .back-btn {{
-    padding: 4px 12px;
+  .glossary-header-btn {{
+    padding: 4px 10px;
     border: 1.5px solid #555;
     border-radius: 6px;
     background: transparent;
@@ -518,18 +566,36 @@ def generate_html(data, elements, maps=None, current_output=""):
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
-    cursor: pointer;
+    transition: all 0.15s;
   }}
-  .back-btn:hover {{
-    background: rgba(255,255,255,0.1);
-    color: white;
+  .glossary-header-btn:hover {{
+    border-color: #C39BD3;
+    color: #C39BD3;
   }}
-  .nav-menu {{
+  header {{
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }}
+  .hint-bar {{
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: #95A5A6;
+  }}
+  /* ── Site nav ── */
+  .nav-logo {{
+    font-size: 20px;
+    text-decoration: none;
+    margin-right: 4px;
+    opacity: 0.85;
+    transition: opacity 0.15s;
+  }}
+  .nav-logo:hover {{ opacity: 1; }}
+  .nav-group {{
     position: relative;
-    margin-left: 8px;
   }}
   .nav-btn {{
-    padding: 4px 12px;
+    padding: 4px 10px;
     border: 1.5px solid #555;
     border-radius: 6px;
     background: transparent;
@@ -541,6 +607,8 @@ def generate_html(data, elements, maps=None, current_output=""):
     white-space: nowrap;
   }}
   .nav-btn:hover {{ border-color: #aaa; color: white; }}
+  .nav-group:hover .nav-dropdown,
+  .nav-group:focus-within .nav-dropdown {{ display: block; }}
   .nav-dropdown {{
     display: none;
     position: absolute;
@@ -549,46 +617,44 @@ def generate_html(data, elements, maps=None, current_output=""):
     background: #16213E;
     border: 1px solid #2C3E6E;
     border-radius: 10px;
-    min-width: 220px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    min-width: 260px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     z-index: 1000;
     overflow: hidden;
   }}
-  .nav-menu:hover .nav-dropdown,
-  .nav-menu:focus-within .nav-dropdown {{
-    display: block;
-  }}
-  .nav-dropdown a {{
+  .nav-item {{
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 16px;
+    padding: 10px 14px;
     color: #BDC3C7;
     text-decoration: none;
     font-size: 13px;
-    transition: background 0.15s;
+    transition: background 0.12s;
     border-bottom: 1px solid #1E2D4E;
   }}
-  .nav-dropdown a:last-child {{ border-bottom: none; }}
-  .nav-dropdown a:hover {{ background: #1E2D4E; color: white; }}
-  .nav-dropdown a.active {{ color: white; background: #1E2D4E; }}
-  .nav-dropdown a .nav-icon {{ font-size: 18px; }}
-  .nav-dropdown a .nav-info {{ display: flex; flex-direction: column; }}
-  .nav-dropdown a .nav-title {{ font-weight: 600; }}
-  .nav-dropdown a .nav-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
-  .nav-home {{
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px 10px;
-    color: #E74C3C;
+  .nav-item:last-child {{ border-bottom: none; }}
+  .nav-item:hover {{ background: #1E2D4E; color: white; }}
+  .nav-item.active {{ background: #1E2D4E; color: white; }}
+  .nav-item-icon {{ font-size: 16px; flex-shrink: 0; }}
+  .nav-item-info {{ display: flex; flex-direction: column; }}
+  .nav-item-title {{ font-weight: 600; font-size: 13px; }}
+  .nav-item-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
+  .nav-glossary-link {{
+    padding: 4px 10px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    color: #BDC3C7;
     text-decoration: none;
     font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid #2C3E6E;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.15s;
   }}
-  .nav-home:hover {{ color: #FF6B6B; }}
+  .nav-glossary-link:hover, .nav-glossary-link.active {{
+    border-color: #C39BD3;
+    color: #C39BD3;
+  }}
 
   .main {{
     display: flex;
@@ -905,13 +971,14 @@ def generate_html(data, elements, maps=None, current_output=""):
 <body>
 
 <header>
-  <div style="display:flex;align-items:center;gap:12px;">
-    {back_btn_html}
+  <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
     {nav_html}
-    <div>
+    <div style="margin-left:12px;min-width:0;">
       <h1 id="main-title">{title_en}</h1>
       <div class="meta">v{meta["version"]} · {meta["date"]}</div>
     </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
     <div class="search-wrapper">
       <span class="search-icon">🔍</span>
       <input class="search-input" id="search-input" type="text"
@@ -919,12 +986,15 @@ def generate_html(data, elements, maps=None, current_output=""):
       <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
       <div class="search-dropdown" id="search-dropdown"></div>
     </div>
+    <a href="glossary.html" class="glossary-header-btn">
+      <span data-en="📖 Glossary" data-fr="📖 Glossaire">📖 Glossary</span>
+    </a>
     <div class="lang-toggle">
       <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
       <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
     </div>
   </div>
-  <div class="meta" id="hint-text">Click a node · Double-click to explore · Scroll to zoom · Drag to pan</div>
+  <div class="meta hint-bar" id="hint-text">Click a node · Double-click to explore · Scroll to zoom · Drag to pan</div>
 </header>
 
 <div class="main">

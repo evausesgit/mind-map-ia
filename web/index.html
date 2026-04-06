@@ -14,23 +14,92 @@
     display: flex;
     flex-direction: column;
   }
+
+  /* ── Header ── */
   header {
-    padding: 20px 40px;
+    padding: 14px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #1E2D4E;
+    background: #0D1117;
+  }
+  .header-left { display: flex; align-items: center; gap: 8px; }
+  .logo {
+    font-size: 20px;
+    text-decoration: none;
+    margin-right: 4px;
+  }
+  .header-right { display: flex; align-items: center; gap: 8px; }
+
+  /* ── Nav dropdowns ── */
+  .nav-group { position: relative; }
+  .nav-btn {
+    padding: 5px 11px;
+    border: 1.5px solid #333;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #888; color: white; }
+  .nav-group:hover .nav-dropdown,
+  .nav-group:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: #16213E;
+    border: 1px solid #2C3E6E;
+    border-radius: 10px;
+    min-width: 280px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    z-index: 1000;
+    overflow: hidden;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    color: #BDC3C7;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.12s;
     border-bottom: 1px solid #1E2D4E;
   }
-  .logo {
-    font-size: 14px;
-    font-weight: 700;
-    color: #E74C3C;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+  .nav-item:last-child { border-bottom: none; }
+  .nav-item:hover { background: #1E2D4E; color: white; }
+  .nav-item-icon { font-size: 16px; flex-shrink: 0; }
+  .nav-item-info { display: flex; flex-direction: column; }
+  .nav-item-title { font-weight: 600; font-size: 13px; }
+  .nav-item-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+
+  /* ── Glossary button ── */
+  .glossary-btn {
+    padding: 5px 11px;
+    border: 1.5px solid #555;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.15s;
   }
-  .lang-toggle { display: flex; gap: 6px; }
+  .glossary-btn:hover { border-color: #C39BD3; color: #C39BD3; }
+
+  /* ── Lang ── */
+  .lang-toggle { display: flex; gap: 5px; }
   .lang-btn {
-    padding: 4px 12px;
+    padding: 4px 10px;
     border: 1.5px solid #333;
     border-radius: 6px;
     background: transparent;
@@ -43,89 +112,182 @@
   .lang-btn.active { background: #E74C3C; border-color: #E74C3C; color: white; }
   .lang-btn:hover:not(.active) { border-color: #aaa; color: white; }
 
+  /* ── Search ── */
+  .search-wrapper { position: relative; width: 220px; }
+  .search-icon {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    font-size: 13px; pointer-events: none; color: #555;
+  }
+  .search-input {
+    width: 100%;
+    background: #0F0F1A;
+    border: 1.5px solid #1E2D4E;
+    border-radius: 8px;
+    color: white;
+    font-size: 13px;
+    padding: 6px 26px 6px 30px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input::placeholder { color: #444; }
+  .search-input:focus { border-color: #E74C3C; }
+  .search-clear {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: #555; font-size: 14px;
+    cursor: pointer; display: none; line-height: 1; padding: 0;
+  }
+  .search-clear:hover { color: white; }
+  .search-dropdown {
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+    background: #16213E; border: 1px solid #1E2D4E; border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5); z-index: 200;
+    max-height: 360px; overflow-y: auto; display: none;
+  }
+  .search-dropdown.open { display: block; }
+  .search-item {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 10px 14px; border-bottom: 1px solid #1E2D4E;
+    text-decoration: none; color: inherit; transition: background 0.1s;
+  }
+  .search-item:last-child { border-bottom: none; }
+  .search-item:hover { background: #1E2D4E; }
+  .search-item-top { display: flex; align-items: center; gap: 8px; }
+  .search-item-badge {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; padding: 1px 6px; border-radius: 4px; flex-shrink: 0;
+  }
+  .badge-glossary { background: #2C3E6E; color: #BDC3C7; }
+  .badge-node    { background: #1E3A2E; color: #82C8A0; }
+  .badge-topic   { background: #3B1F4E; color: #C39BD3; }
+  .search-item-label { font-size: 13px; font-weight: 600; color: white; }
+  .search-item-sub   { font-size: 11px; color: #7F8C8D; }
+  .search-item-match { font-size: 11px; color: #E74C3C; font-style: italic; }
+  .search-empty { padding: 16px; text-align: center; color: #555; font-size: 13px; }
+
+  /* ── Main layout ── */
   main {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 60px 40px;
-    max-width: 900px;
+    padding: 48px 40px 64px;
+    max-width: 960px;
     margin: 0 auto;
     width: 100%;
   }
-  .hero { text-align: center; margin-bottom: 60px; }
+  .hero { text-align: center; margin-bottom: 40px; }
   .hero h1 {
-    font-size: clamp(28px, 5vw, 48px);
+    font-size: clamp(26px, 4vw, 44px);
     font-weight: 800;
     line-height: 1.15;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     background: linear-gradient(135deg, #fff 40%, #C39BD3);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   .hero p {
-    font-size: 16px;
+    font-size: 15px;
     color: #7F8C8D;
-    max-width: 520px;
+    max-width: 500px;
     line-height: 1.6;
     margin: 0 auto;
   }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; width: 100%; }
+
+  /* ── Featured card (Big Picture) ── */
+  .card-featured {
+    width: 100%;
+    background: linear-gradient(135deg, #16213E 60%, #1A2847);
+    border: 2px solid #E74C3C;
+    border-radius: 20px;
+    padding: 32px 36px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 24px rgba(231,76,60,0.12);
+  }
+  .card-featured:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(231,76,60,0.25);
+    border-color: #FF6B6B;
+  }
+  .featured-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #E74C3C;
+  }
+  .card-featured-body {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .card-featured-icon { font-size: 52px; flex-shrink: 0; }
+  .card-featured .card-title { font-size: 22px; margin-bottom: 8px; }
+  .card-featured .card-desc  { font-size: 14px; margin-bottom: 10px; }
+  .card-featured .card-arrow { font-size: 24px; color: #E74C3C; flex-shrink: 0; transition: transform 0.2s; }
+  .card-featured:hover .card-arrow { transform: translateX(6px); }
+
+  /* ── Section separator ── */
+  .section-sep {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 24px;
+  }
+  .section-sep-line { flex: 1; height: 1px; background: #1E2D4E; }
+  .section-sep-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #2C3E6E;
+    white-space: nowrap;
+  }
+
+  /* ── Regular cards grid ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; width: 100%; }
   .card {
     background: #16213E;
     border: 1px solid #1E2D4E;
-    border-radius: 16px;
-    padding: 28px;
+    border-radius: 14px;
+    padding: 22px;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
     text-decoration: none;
     color: inherit;
     transition: all 0.2s;
-    cursor: pointer;
   }
   .card:hover {
     border-color: #E74C3C;
     background: #1A2847;
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(231,76,60,0.15);
+    box-shadow: 0 6px 24px rgba(231,76,60,0.12);
   }
-  .card-icon { font-size: 36px; flex-shrink: 0; }
-  .card-body { flex: 1; }
-  .card-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; color: white; }
-  .card-desc  { font-size: 13px; color: #7F8C8D; line-height: 1.5; margin-bottom: 10px; }
-  .card-meta  { font-size: 11px; color: #E74C3C; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
-  .card-arrow { font-size: 20px; color: #2C3E6E; flex-shrink: 0; transition: all 0.2s; }
+  .card-icon { font-size: 30px; flex-shrink: 0; }
+  .card-body { flex: 1; min-width: 0; }
+  .card-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; color: white; }
+  .card-desc  { font-size: 12px; color: #7F8C8D; line-height: 1.5; margin-bottom: 8px; }
+  .card-meta  { font-size: 10px; color: #E74C3C; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+  .card-arrow { font-size: 18px; color: #2C3E6E; flex-shrink: 0; transition: all 0.2s; }
   .card:hover .card-arrow { color: #E74C3C; transform: translateX(4px); }
 
-  /* Topics section */
-  .section-header {
-    width: 100%;
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    margin-top: 48px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #1E2D4E;
-  }
-  .section-title {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #C39BD3;
-  }
+  /* ── Deep Dives ── */
   .topic-card {
     background: #16213E;
     border: 1px solid #1E2D4E;
-    border-radius: 16px;
-    padding: 22px 28px;
+    border-radius: 14px;
+    padding: 20px 22px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     text-decoration: none;
     color: inherit;
     transition: all 0.2s;
@@ -134,28 +296,22 @@
     border-color: #C39BD3;
     background: #1A2047;
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(195,155,211,0.12);
+    box-shadow: 0 6px 24px rgba(195,155,211,0.12);
   }
   .topic-card:hover .card-arrow { color: #C39BD3; transform: translateX(4px); }
   .topic-card-body { flex: 1; }
-  .topic-card-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; color: white; }
-  .topic-card-desc  { font-size: 13px; color: #7F8C8D; line-height: 1.5; margin-bottom: 10px; }
+  .topic-card-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: white; }
+  .topic-card-desc  { font-size: 12px; color: #7F8C8D; line-height: 1.5; margin-bottom: 8px; }
   .topic-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .topic-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .topic-tags { display: flex; flex-wrap: wrap; gap: 4px; }
   .topic-tag {
-    font-size: 10px;
-    padding: 1px 7px;
-    background: #3B1F4E;
-    color: #C39BD3;
-    border-radius: 4px;
-    font-weight: 600;
+    font-size: 10px; padding: 1px 6px;
+    background: #3B1F4E; color: #C39BD3;
+    border-radius: 4px; font-weight: 600;
   }
   .topic-status {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    flex-shrink: 0;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
   }
 
   footer {
@@ -165,114 +321,30 @@
     font-size: 12px;
     border-top: 1px solid #1A1A2E;
   }
-
-  /* Search */
-  .search-wrapper {
-    position: relative;
-    width: 260px;
-  }
-  .search-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 13px;
-    pointer-events: none;
-    color: #555;
-  }
-  .search-input {
-    width: 100%;
-    background: #0F0F1A;
-    border: 1.5px solid #1E2D4E;
-    border-radius: 8px;
-    color: white;
-    font-size: 13px;
-    padding: 7px 28px 7px 30px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .search-input::placeholder { color: #444; }
-  .search-input:focus { border-color: #E74C3C; }
-  .search-clear {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #555;
-    font-size: 14px;
-    cursor: pointer;
-    display: none;
-    line-height: 1;
-    padding: 0;
-  }
-  .search-clear:hover { color: white; }
-  .search-dropdown {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    right: 0;
-    background: #16213E;
-    border: 1px solid #1E2D4E;
-    border-radius: 10px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-    z-index: 100;
-    max-height: 360px;
-    overflow-y: auto;
-    display: none;
-  }
-  .search-dropdown.open { display: block; }
-  .search-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 10px 14px;
-    border-bottom: 1px solid #1E2D4E;
-    text-decoration: none;
-    color: inherit;
-    transition: background 0.1s;
-  }
-  .search-item:last-child { border-bottom: none; }
-  .search-item:hover { background: #1E2D4E; }
-  .search-item-top { display: flex; align-items: center; gap: 8px; }
-  .search-item-badge {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    padding: 1px 6px;
-    border-radius: 4px;
-    flex-shrink: 0;
-  }
-  .badge-glossary { background: #2C3E6E; color: #BDC3C7; }
-  .badge-node    { background: #1E3A2E; color: #82C8A0; }
-  .badge-topic   { background: #3B1F4E; color: #C39BD3; }
-  .search-item-label { font-size: 13px; font-weight: 600; color: white; }
-  .search-item-sub   { font-size: 11px; color: #7F8C8D; }
-  .search-item-match { font-size: 11px; color: #E74C3C; font-style: italic; }
-  .search-empty {
-    padding: 16px;
-    text-align: center;
-    color: #555;
-    font-size: 13px;
-  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">🧠 mind-map-ia</div>
-  <div class="search-wrapper">
-    <span class="search-icon">🔍</span>
-    <input class="search-input" id="search-input" type="text"
-           placeholder="Search..." autocomplete="off" spellcheck="false">
-    <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
-    <div class="search-dropdown" id="search-dropdown"></div>
+  <div class="header-left">
+    <a href="index.html" class="logo" title="Home">🧠</a>
+    <div class="nav-group">  <button class="nav-btn">    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾  </button>  <div class="nav-dropdown"><a href="macro.html" class="nav-item"><span class="nav-item-icon">🗺️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</span><span class="nav-item-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span></span></a><a href="ecosystem.html" class="nav-item"><span class="nav-item-icon">🔬</span><span class="nav-item-info"><span class="nav-item-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span><span class="nav-item-desc" data-en="Providers, models, infrastructure and developer tools" data-fr="Fournisseurs, modèles, infrastructure et outils développeurs">Providers, models, infrastructure and developer tools</span></span></a><a href="rag-pattern.html" class="nav-item"><span class="nav-item-icon">🔍</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG" data-fr="RAG">RAG</span><span class="nav-item-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span></span></a><a href="cloud-managed.html" class="nav-item"><span class="nav-item-icon">☁️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span><span class="nav-item-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span></span></a><a href="ai-agents.html" class="nav-item"><span class="nav-item-icon">🤖</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span><span class="nav-item-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span></span></a><a href="ai-coding-assistants.html" class="nav-item"><span class="nav-item-icon">💻</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span><span class="nav-item-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span></span></a><a href="open-weights-models.html" class="nav-item"><span class="nav-item-icon">🔓</span><span class="nav-item-info"><span class="nav-item-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span><span class="nav-item-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span></span></a><a href="proprietary-models.html" class="nav-item"><span class="nav-item-icon">🏢</span><span class="nav-item-info"><span class="nav-item-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span><span class="nav-item-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span></span></a><a href="dense-vs-moe.html" class="nav-item"><span class="nav-item-icon">⚡</span><span class="nav-item-info"><span class="nav-item-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span><span class="nav-item-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾  </button>  <div class="nav-dropdown"><a href="topics/mcp-explained.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</span><span class="nav-item-desc" data-en="What MCP is, how it works architecturally, and why it matters for AI agent development." data-fr="Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA.">What MCP is, how it works architecturally, and why it matters for AI agent development.</span></span></a><a href="topics/rag-deep-dive.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</span><span class="nav-item-desc" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</span></span></a></div></div>
   </div>
-  <div class="lang-toggle">
-    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  <div class="header-right">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="text"
+             placeholder="Search…" autocomplete="off" spellcheck="false">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+      <div class="search-dropdown" id="search-dropdown"></div>
+    </div>
+    <a href="glossary.html" class="glossary-btn">
+      <span data-en="📖 Glossary" data-fr="📖 Glossaire">📖 Glossary</span>
+    </a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+    </div>
   </div>
 </header>
 
@@ -281,18 +353,29 @@
     <h1 id="hero-title">LLM & AI Ecosystem<br>Mind Maps</h1>
     <p id="hero-desc">Interactive pedagogical maps to understand the AI landscape — models, tools, concepts and how they connect.</p>
   </div>
-  <div class="cards">
-    
-    <a href="macro.html" class="card">
-      <div class="card-icon">🗺️</div>
-      <div class="card-body">
-        <div class="card-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</div>
-        <div class="card-desc"  data-en="Concepts and categories — the best place to start"  data-fr="Concepts et catégories — le meilleur point de départ" >Concepts and categories — the best place to start</div>
-        <div class="card-meta" data-en="26 nodes" data-fr="26 nœuds">26 nodes</div>
+
+  
+    <a href="macro.html" class="card card-featured">
+      <div class="featured-badge" data-en="Start here · Best entry point" data-fr="Commencer ici · Meilleur point d'entrée">Start here · Best entry point</div>
+      <div class="card-featured-body">
+        <div class="card-featured-icon">🗺️</div>
+        <div class="card-body">
+          <div class="card-title" data-en="Big Picture" data-fr="Vue d'Ensemble">Big Picture</div>
+          <div class="card-desc"  data-en="Concepts and categories — the best place to start"  data-fr="Concepts et catégories — le meilleur point de départ" >Concepts and categories — the best place to start</div>
+          <div class="card-meta"  data-en="26 nodes"  data-fr="26 nœuds" >26 nodes</div>
+        </div>
+        <div class="card-arrow">→</div>
       </div>
-      <div class="card-arrow">→</div>
     </a>
 
+  <div class="section-sep">
+    <div class="section-sep-line"></div>
+    <span class="section-sep-label" data-en="ALL MAPS" data-fr="TOUTES LES CARTES">ALL MAPS</span>
+    <div class="section-sep-line"></div>
+  </div>
+
+  <div class="cards">
+    
     <a href="ecosystem.html" class="card">
       <div class="card-icon">🔬</div>
       <div class="card-body">
@@ -372,7 +455,7 @@
       </div>
       <div class="card-arrow">→</div>
     </a>
-
+    
     <a href="glossary.html" class="card">
       <div class="card-icon">📖</div>
       <div class="card-body">
@@ -383,12 +466,14 @@
       <div class="card-arrow">→</div>
     </a>
   </div>
-  <div style="display:block;width:100%">
-    <div class="section-header">
-      <span class="section-title" data-en="Deep Dives" data-fr="Articles de fond">Deep Dives</span>
-    </div>
-    <div class="cards" style="grid-template-columns:1fr">
-      
+
+  <div class="section-sep" style="margin-top:40px;">
+    <div class="section-sep-line"></div>
+    <span class="section-sep-label" data-en="DEEP DIVES" data-fr="ARTICLES DE FOND">DEEP DIVES</span>
+    <div class="section-sep-line"></div>
+  </div>
+  <div class="cards" style="grid-template-columns:1fr">
+    
     <a href="topics/mcp-explained.html" class="topic-card">
       <div class="topic-card-body">
         <div class="topic-card-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</div>
@@ -412,7 +497,6 @@
       </div>
       <div class="card-arrow">→</div>
     </a>
-    </div>
   </div>
 </main>
 
@@ -436,9 +520,7 @@ const heroTexts = {
     searchPlaceholder: "Rechercher concepts, modèles, outils…"
   }
 };
-
 let currentLang = 'en';
-
 function setLang(lang) {
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
@@ -453,13 +535,10 @@ function setLang(lang) {
   if (q) renderResults(doSearch(q));
 }
 
-// ── Search ──────────────────────────────────────────────────────────────────
-const SEARCH_INDEX = [{"type": "glossary", "id": "llm", "label": {"en": "Large Language Model", "fr": "Grand Modèle de Langage"}, "aliases": ["LLM", "LLMs", "Large Language Model", "Large Language Models", "grand modèle de langage", "grands modèles de langage"], "desc": {"en": "A language model trained on massive text datasets with billions of parameters. The \"large\" refers to both the size of th", "fr": "Un modèle de langage entraîné sur d'immenses corpus textuels avec des milliards de paramètres. Le \"grand\" fait référence"}, "url": "glossary.html#llm"}, {"type": "glossary", "id": "weights", "label": {"en": "Weights", "fr": "Poids"}, "aliases": ["weights", "weight", "model weights", "poids", "poids du modèle", "open weights"], "desc": {"en": "The numerical parameters learned by a neural network during training. Weights encode everything the model has \"learned\" ", "fr": "Les paramètres numériques appris par un réseau de neurones pendant l'entraînement. Les poids encodent tout ce que le mod"}, "url": "glossary.html#weights"}, {"type": "glossary", "id": "dense_model", "label": {"en": "Dense Model", "fr": "Modèle Dense"}, "aliases": ["dense model", "dense models", "modèle dense", "modèles denses"], "desc": {"en": "A neural network architecture where every parameter is activated for every input. All weights participate in every forwa", "fr": "Une architecture de réseau de neurones où chaque paramètre est activé pour chaque entrée. Tous les poids participent à c"}, "url": "glossary.html#dense_model"}, {"type": "glossary", "id": "moe_model", "label": {"en": "Mixture of Experts", "fr": "Mélange d'Experts"}, "aliases": ["MoE", "Mixture of Experts", "mixture of experts", "mélange d'experts", "Mélange d'Experts"], "desc": {"en": "An architecture where the model is divided into many specialized sub-networks (\"experts\"). For each token, a routing mec", "fr": "Une architecture où le modèle est divisé en nombreux sous-réseaux spécialisés (« experts »). Pour chaque token, un mécan"}, "url": "glossary.html#moe_model"}, {"type": "glossary", "id": "token", "label": {"en": "Token", "fr": "Token"}, "aliases": ["token", "tokens", "tokenization", "tokenisation"], "desc": {"en": "The smallest unit of text a language model processes. A token is roughly 0.75 words in English — \"tokenization\" is typic", "fr": "La plus petite unité de texte traitée par un modèle de langage. Un token correspond environ à 0,75 mot en anglais — « to"}, "url": "glossary.html#token"}, {"type": "glossary", "id": "context_window", "label": {"en": "Context Window", "fr": "Fenêtre de Contexte"}, "aliases": ["context window", "context length", "fenêtre de contexte", "longueur de contexte", "context"], "desc": {"en": "The maximum number of tokens a model can process in a single interaction — both the input (prompt + history) and the out", "fr": "Le nombre maximum de tokens qu'un modèle peut traiter en une seule interaction — entrée (prompt + historique) et sortie "}, "url": "glossary.html#context_window"}, {"type": "glossary", "id": "rlhf", "label": {"en": "RLHF", "fr": "RLHF"}, "aliases": ["RLHF", "Reinforcement Learning from Human Feedback", "reinforcement learning from human feedback"], "desc": {"en": "Reinforcement Learning from Human Feedback. A training technique used to align LLMs with human preferences after the ini", "fr": "Apprentissage par renforcement à partir des retours humains. Une technique d'entraînement utilisée pour aligner les LLM "}, "url": "glossary.html#rlhf"}, {"type": "glossary", "id": "hallucination", "label": {"en": "Hallucination", "fr": "Hallucination"}, "aliases": ["hallucination", "hallucinations", "hallucinate", "halluciner"], "desc": {"en": "When a model generates text that is factually incorrect, fabricated, or inconsistent with reality — stated with apparent", "fr": "Quand un modèle génère du texte factuellement incorrect, inventé, ou incohérent avec la réalité — affirmé avec une appar"}, "url": "glossary.html#hallucination"}, {"type": "glossary", "id": "rag", "label": {"en": "RAG", "fr": "RAG"}, "aliases": ["RAG", "Retrieval-Augmented Generation", "retrieval augmented generation", "retrieval-augmented generation"], "desc": {"en": "Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and hallucination problems by injecting real-", "fr": "Retrieval-Augmented Generation (génération augmentée par récupération). Un pattern qui résout les problèmes de date limi"}, "url": "glossary.html#rag"}, {"type": "glossary", "id": "agentic", "label": {"en": "Agentic AI", "fr": "IA Agentique"}, "aliases": ["agentic", "agent IA", "AI agent", "AI agents", "agents IA", "agentic AI", "agentic system", "système agentique"], "desc": {"en": "A mode of operation where an AI model acts autonomously over multiple steps to complete a goal, rather than simply answe", "fr": "Un mode de fonctionnement où un modèle d'IA agit de façon autonome sur plusieurs étapes pour accomplir un objectif, plut"}, "url": "glossary.html#agentic"}, {"type": "glossary", "id": "mcp", "label": {"en": "MCP", "fr": "MCP"}, "aliases": ["MCP", "Model Context Protocol", "model context protocol"], "desc": {"en": "Model Context Protocol. An open standard (governed by the Linux Foundation) that defines how AI applications connect to ", "fr": "Model Context Protocol. Un standard ouvert (gouverné par la Linux Foundation) qui définit comment les applications IA se"}, "url": "glossary.html#mcp"}, {"type": "glossary", "id": "hipaa", "label": {"en": "HIPAA", "fr": "HIPAA"}, "aliases": ["HIPAA", "Health Insurance Portability and Accountability Act"], "desc": {"en": "Health Insurance Portability and Accountability Act. A US federal law (1996) that sets strict rules on how health inform", "fr": "Health Insurance Portability and Accountability Act. Loi fédérale américaine (1996) qui fixe des règles strictes sur la "}, "url": "glossary.html#hipaa"}, {"type": "glossary", "id": "soc2", "label": {"en": "SOC 2", "fr": "SOC 2"}, "aliases": ["SOC 2", "SOC2", "SOC 2 Type II", "SOC 2 Type I", "System and Organization Controls"], "desc": {"en": "Service Organization Control 2. An auditing framework created by the AICPA (American Institute of CPAs) that evaluates h", "fr": "Service Organization Control 2. Un cadre d'audit créé par l'AICPA (Institut américain des CPA) qui évalue comment un fou"}, "url": "glossary.html#soc2"}, {"type": "glossary", "id": "fedramp", "label": {"en": "FedRAMP", "fr": "FedRAMP"}, "aliases": ["FedRAMP", "Federal Risk and Authorization Management Program"], "desc": {"en": "Federal Risk and Authorization Management Program. A US government program that standardizes security assessment and aut", "fr": "Federal Risk and Authorization Management Program. Un programme du gouvernement américain qui standardise l'évaluation e"}, "url": "glossary.html#fedramp"}, {"type": "glossary", "id": "transformer", "label": {"en": "Transformer", "fr": "Transformer"}, "aliases": ["Transformer", "transformer", "transformers", "attention mechanism", "mécanisme d'attention", "self-attention"], "desc": {"en": "The neural network architecture that underpins virtually all modern LLMs. Introduced in the 2017 paper \"Attention Is All", "fr": "L'architecture de réseau de neurones qui sous-tend pratiquement tous les LLM modernes. Introduite dans le papier \"Attent"}, "url": "glossary.html#transformer"}, {"type": "glossary", "id": "temperature", "label": {"en": "Temperature", "fr": "Température"}, "aliases": ["temperature", "température", "temp", "sampling temperature"], "desc": {"en": "A parameter (typically between 0 and 2) that controls how random or deterministic a model's outputs are. Technically: it", "fr": "Un paramètre (typiquement entre 0 et 2) qui contrôle le degré de hasard ou de déterminisme dans les sorties du modèle. T"}, "url": "glossary.html#temperature"}, {"type": "glossary", "id": "machine_learning", "label": {"en": "Machine Learning", "fr": "Machine Learning"}, "aliases": ["ML", "machine learning", "apprentissage automatique"], "desc": {"en": "A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without bein", "fr": "Un sous-domaine de l'intelligence artificielle où les systèmes apprennent à partir de données pour améliorer leurs perfo"}, "url": "glossary.html#machine_learning"}, {"type": "node", "id": "language_model", "label": {"en": "Language Model", "fr": "Modèle de Langage"}, "aliases": [], "desc": {"en": "A model trained on massive text datasets to understand and generate human language. The foundation of the entire ecosyst", "fr": "Un modèle entraîné sur d'immenses corpus textuels pour comprendre et générer du langage humain. La brique de base de tou"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "token_context", "label": {"en": "Token & Context", "fr": "Token & Contexte"}, "aliases": [], "desc": {"en": "A token is the smallest unit of text a model processes (~0.75 words). The context window is the maximum number of tokens", "fr": "Un token est la plus petite unité de texte traitée par un modèle (~0,75 mot). La fenêtre de contexte est le nombre maxim"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "embedding_vectors", "label": {"en": "Embedding & Vectors", "fr": "Embedding & Vecteurs"}, "aliases": [], "desc": {"en": "An embedding is a list of numbers (a vector) that represents the meaning of a text. Similar texts produce similar vector", "fr": "Un embedding est une liste de nombres (un vecteur) représentant le sens d'un texte. Des textes similaires produisent des"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "training_alignment", "label": {"en": "Training & Alignment", "fr": "Entraînement & Alignement"}, "aliases": [], "desc": {"en": "Training: teaching a model by exposing it to vast amounts of data. Alignment: shaping the model's behavior to be helpful", "fr": "Entraînement : apprendre à un modèle en le exposant à d'immenses quantités de données. Alignement : façonner son comport"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "inference", "label": {"en": "Inference", "fr": "Inférence"}, "aliases": [], "desc": {"en": "Running a trained model to generate a response from an input. Every API call, every chat message is an inference. Opposi", "fr": "Faire tourner un modèle entraîné pour générer une réponse à partir d'une entrée. Chaque appel API, chaque message de cha"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "reasoning_models", "label": {"en": "Reasoning", "fr": "Raisonnement"}, "aliases": [], "desc": {"en": "A paradigm shift in how models respond: instead of answering immediately,\nthe model thinks step-by-step before giving it", "fr": "Un changement de paradigme dans la façon dont les modèles répondent : au lieu de répondre immédiatement,\nle modèle réflé"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "multimodality", "label": {"en": "Multimodality", "fr": "Multimodalité"}, "aliases": [], "desc": {"en": "The ability of a model to process and generate multiple types of data:\ntext,\nimages,\naudio,\nvideo,\ncode.\nModern frontier", "fr": "La capacité d'un modèle à traiter et générer plusieurs types de données :\ntexte,\nimages,\naudio,\nvidéo,\ncode.\nLes modèles"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "frontier_models", "label": {"en": "Proprietary Models", "fr": "Modèles Propriétaires"}, "aliases": [], "desc": {"en": "Models whose weights are PRIVATE, never downloadable.\nAccessible only via API.\nDeveloped by well-funded labs (OpenAI, An", "fr": "Modèles dont les poids sont PRIVES, jamais téléchargeables.\nAccessibles uniquement via API.\nDéveloppés par des laboratoi"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "open_weights", "label": {"en": "Open Source / Weights Models", "fr": "Open Source / Weights Models"}, "aliases": [], "desc": {"en": "Weights are publicly downloadable — you can run, fine-tune and deploy the model yourself.\nCommonly called \"open source\",", "fr": "Les poids sont téléchargeables publiquement — vous pouvez exécuter, fine-tuner et déployer le modèle vous-même.\nSouvent "}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "embedding_models", "label": {"en": "Embedding Models", "fr": "Modèles d'Embedding"}, "aliases": [], "desc": {"en": "Specialized models that convert text into vectors (not text generators). Essential building block for semantic search an", "fr": "Modèles spécialisés qui convertissent du texte en vecteurs (pas des générateurs de texte). Brique indispensable pour la "}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "public_api", "label": {"en": "Public API", "fr": "API Publique"}, "aliases": [], "desc": {"en": "Send an HTTP request to a provider's endpoint, get a response. The simplest way to use a model. Pay per token. No infras", "fr": "Envoyer une requête HTTP à l'endpoint d'un fournisseur, recevoir une réponse. La façon la plus simple d'utiliser un modè"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "cloud_managed", "label": {"en": "Cloud Managed", "fr": "Cloud Managé"}, "aliases": [], "desc": {"en": "Access models through a major cloud provider (AWS, GCP, Azure). Benefits: enterprise compliance, data privacy, multi-mod", "fr": "Accès aux modèles via un grand fournisseur cloud (AWS, GCP, Azure). Avantages : conformité entreprise, confidentialité d"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "self_hosted", "label": {"en": "Self-hosted", "fr": "Auto-hébergé"}, "aliases": [], "desc": {"en": "Deploy the model on your own GPU servers (on-premise or cloud VMs). Full control over data and costs at scale. Requires ", "fr": "Déployer le modèle sur ses propres serveurs GPU (on-premise ou VMs cloud). Contrôle total sur les données et les coûts à"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "local_edge", "label": {"en": "Local / Edge", "fr": "Local / Edge"}, "aliases": [], "desc": {"en": "Run a model on a laptop, phone, or edge device. No internet required. Maximum privacy. Enabled by smaller, efficient mod", "fr": "Faire tourner un modèle sur un laptop, téléphone ou dispositif edge. Sans internet. Confidentialité maximale. Rendu poss"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "rag_pattern", "label": {"en": "RAG", "fr": "RAG"}, "aliases": [], "desc": {"en": "Retrieval-Augmented Generation. At query time, retrieve relevant documents from a knowledge base and inject them into th", "fr": "Retrieval-Augmented Generation. Au moment de la requête, récupérer les documents pertinents depuis une base de connaissa"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "agents_pattern", "label": {"en": "AI Agents", "fr": "Agents IA"}, "aliases": [], "desc": {"en": "Systems where an LLM autonomously plans, calls tools, and iterates until a goal is achieved. Shift from \"Q&A\" to \"autono", "fr": "Systèmes où un LLM planifie de façon autonome, appelle des outils et itère jusqu'à atteindre un objectif. Passage du \"qu"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "tool_use_pattern", "label": {"en": "Tool Use", "fr": "Utilisation d'Outils"}, "aliases": [], "desc": {"en": "The ability for a model to call external functions during generation.\nHow it works: (1) the model decides it needs a too", "fr": "La capacité d'un modèle à appeler des fonctions externes pendant la génération.\nFonctionnement : (1) le modèle décide qu"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "finetuning_pattern", "label": {"en": "Fine-tuning", "fr": "Fine-tuning"}, "aliases": [], "desc": {"en": "Adapt a pre-trained model to a specific domain or behavior by training it further on curated data. Only possible with op", "fr": "Adapter un modèle pré-entraîné à un domaine ou comportement spécifique en le ré-entraînant sur des données ciblées. Uniq"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "prompt_eng", "label": {"en": "Prompt Engineering", "fr": "Prompt Engineering"}, "aliases": [], "desc": {"en": "The practice of crafting inputs to reliably get the desired output from a model.\nA prompt is the input text sent to the ", "fr": "L'art de formuler les entrées pour obtenir de façon fiable la sortie souhaitée d'un modèle.\nLe prompt est le texte d'ent"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "structured_gen", "label": {"en": "Structured Generation", "fr": "Génération Structurée"}, "aliases": [], "desc": {"en": "Force the model to respond in a defined format (e.g. JSON schema). Makes LLM outputs reliable and directly usable by cod", "fr": "Forcer le modèle à répondre dans un format défini (ex : schéma JSON). Rend les sorties LLM fiables et directement exploi"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "orch_frameworks", "label": {"en": "Orchestration\nFrameworks", "fr": "Frameworks\nd'Orchestration"}, "aliases": [], "desc": {"en": "Libraries that help chain LLM calls, manage memory, and build complex pipelines. Handle the plumbing so developers focus", "fr": "Bibliothèques qui permettent d'enchaîner les appels LLM, gérer la mémoire et construire des pipelines complexes. Gèrent "}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "ai_coding", "label": {"en": "AI Coding\nAssistants", "fr": "Assistants de Code IA"}, "aliases": [], "desc": {"en": "Tools that integrate LLMs directly into the development workflow. Generate, explain, refactor code. Dramatically boost d", "fr": "Outils qui intègrent les LLM directement dans le workflow de développement. Génèrent, expliquent, refactorisent du code."}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "vector_dbs_tool", "label": {"en": "Vector Databases", "fr": "Bases Vectorielles"}, "aliases": [], "desc": {"en": "Databases optimized to store and query embeddings by semantic similarity. The storage backbone of RAG pipelines. Example", "fr": "Bases de données optimisées pour stocker et interroger des embeddings par similarité sémantique. L'épine dorsale du stoc"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "eval_obs", "label": {"en": "Eval &\nObservability", "fr": "Éval &\nObservabilité"}, "aliases": [], "desc": {"en": "Tools to monitor, trace, evaluate and debug LLM applications in production. Answer: \"Is my app actually working well?\" E", "fr": "Outils pour monitorer, tracer, évaluer et déboguer les applications LLM en production. Répondent à la question : \"Mon ap"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "model_hubs", "label": {"en": "Model Hubs", "fr": "Hubs de Modèles"}, "aliases": [], "desc": {"en": "Platforms to discover, download, share and run open models. The \"GitHub of AI models\". Central to the open-weights ecosy", "fr": "Plateformes pour découvrir, télécharger, partager et faire tourner des modèles ouverts. Le \"GitHub des modèles IA\". Cent"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "transformer", "label": "Transformer", "aliases": [], "desc": {"en": "Neural network architecture behind all modern LLMs. Introduced in \"Attention Is All You Need\" (Google, 2017). Uses self-"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "token", "label": "Token", "aliases": [], "desc": {"en": "The basic unit of text processed by an LLM. 1 token ≈ 0.75 words in English. Models are billed and limited by token coun"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "context_window", "label": "Context Window", "aliases": [], "desc": {"en": "Maximum number of tokens a model can process at once (input + output). GPT-4: 128K. Claude 3.7: 200K. Gemini 2.0: 1M. La"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "embedding", "label": "Embedding", "aliases": [], "desc": {"en": "Numerical vector (list of floats) representing text in semantic space. Similar meaning → similar vectors. Used for searc"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "prompt", "label": "Prompt", "aliases": [], "desc": {"en": "The input text sent to a model to elicit a response. Quality of the prompt directly determines quality of the output.\n"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "temperature", "label": "Temperature", "aliases": [], "desc": {"en": "Parameter controlling output randomness. 0 = deterministic (same input → same output). 1+ = creative and varied. Tune ba"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "training", "label": "Pre-training", "aliases": [], "desc": {"en": "Initial phase where a model learns from massive text datasets (terabytes). Builds general language understanding. Very e"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "fine_tuning", "label": "Fine-tuning", "aliases": [], "desc": {"en": "Additional training on a specific dataset to specialize model behavior. Cheaper than pre-training. Used to adapt a base "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "rlhf", "label": "RLHF", "aliases": [], "desc": {"en": "Reinforcement Learning from Human Feedback. Technique to align LLM outputs with human preferences. Used in ChatGPT, Clau"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_openai", "label": "OpenAI", "aliases": [], "desc": {"en": "American AI company, founded 2015. Originally non-profit, now capped-profit. Creator of GPT and o-series models. Behind "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_anthropic", "label": "Anthropic", "aliases": [], "desc": {"en": "AI safety company founded by ex-OpenAI researchers (Dario & Daniela Amodei). Creator of Claude. Focus on safe and interp"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_google", "label": "Google DeepMind", "aliases": [], "desc": {"en": "Merger of Google Brain and DeepMind (2023). Creator of Gemini (proprietary) and Gemma (open weights). Integrated into Go"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_xai", "label": "xAI", "aliases": [], "desc": {"en": "AI company founded by Elon Musk in 2023. Creator of the Grok model family. Integrated with the X (Twitter) platform.\n"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_meta", "label": "Meta", "aliases": [], "desc": {"en": "Meta AI (Facebook parent). Creator of the Llama open-weights model family. Strong open-source commitment: models freely "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_mistral_ai", "label": "Mistral AI", "aliases": [], "desc": {"en": "French AI startup founded in 2023 by ex-Google and ex-Meta researchers. Known for efficient open-weights models and a Eu"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_deepseek", "label": "DeepSeek AI", "aliases": [], "desc": {"en": "Chinese AI research lab. Released powerful open-weights models at very low cost. DeepSeek-R1 disrupted the market in Jan"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_alibaba", "label": "Alibaba", "aliases": [], "desc": {"en": "Chinese tech giant. Creator of the Qwen open-weights model family via DAMO Academy. Models available on HuggingFace and "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_microsoft", "label": "Microsoft", "aliases": [], "desc": {"en": "Creator of the Phi small model family. Major OpenAI investor and partner. Deploys OpenAI models via Azure OpenAI Service"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "gpt4o", "label": "GPT-4o", "aliases": [], "desc": {"en": "OpenAI's flagship multimodal model. Processes text, images and audio natively. \"o\" = omni. Powers ChatGPT. Available via"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "o3", "label": "o3 / o4-mini", "aliases": [], "desc": {"en": "OpenAI's reasoning-focused model family. Thinks step-by-step internally before answering (chain-of-thought). Best for co"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "claude", "label": "Claude 3.5 / 3.7", "aliases": [], "desc": {"en": "Anthropic's model family. Known for instruction-following and safety. Claude 3.7 Sonnet introduces extended thinking (vi"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "gemini", "label": "Gemini 2.0", "aliases": [], "desc": {"en": "Google's multimodal model family. Native tool use, code execution. Gemini 2.0 Flash: 1M token context window. Strong at "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "grok", "label": "Grok 3", "aliases": [], "desc": {"en": "xAI's flagship model. Trained on X (Twitter) data. Grok 3 features a \"Think\" reasoning mode similar to o3 and DeepSeek-R"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "llama", "label": "Llama 3.x", "aliases": [], "desc": {"en": "Meta's open-weights model family. Free to download, run and fine-tune. Available in multiple sizes (8B, 70B, 405B parame"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "mistral", "label": "Mistral / Mixtral", "aliases": [], "desc": {"en": "Efficient open-weights models from Mistral AI. Mixtral uses MoE (Mixture of Experts) architecture for better performance"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "deepseek", "label": "DeepSeek V3 / R1", "aliases": [], "desc": {"en": "Chinese open-weights models rivaling proprietary models at low cost. DeepSeek-R1 is a reasoning model (like o3) but full"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "qwen", "label": "Qwen 2.5", "aliases": [], "desc": {"en": "Alibaba's open-weights model family. Strong multilingual and coding performance. Qwen2.5-Coder is specialized for code g"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "gemma", "label": "Gemma 2", "aliases": [], "desc": {"en": "Google's open-weights model family. Lightweight (2B, 9B, 27B parameters). Optimized to run locally on laptops and phones"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "phi", "label": "Phi-4", "aliases": [], "desc": {"en": "Microsoft's small but powerful open-weights model (14B parameters). Outperforms much larger models on reasoning tasks. G"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "embed_oai", "label": "text-embedding-3", "aliases": [], "desc": {"en": "OpenAI's embedding model family. Converts text to dense vectors. text-embedding-3-small (fast/cheap) and text-embedding-"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "embed_voyage", "label": "Voyage-3", "aliases": [], "desc": {"en": "Voyage AI's embedding model. Best-in-class retrieval performance. Specialized versions: voyage-code-3 (code), voyage-fin"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "embed_nomic", "label": "nomic-embed", "aliases": [], "desc": {"en": "Open-source embedding model by Nomic AI. Can run locally via Ollama. Good balance of performance and privacy (no data se"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "llm_api", "label": "LLM API", "aliases": [], "desc": {"en": "Standard HTTP/REST interface to interact with a model. Send a prompt in the request, get a completion in the response. C"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "aws_bedrock", "label": "AWS Bedrock", "aliases": [], "desc": {"en": "AWS managed service to access multiple LLMs (Claude, Llama, Mistral...) via a unified API. No GPU management. Pay per to"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "vertex_ai", "label": "Google Vertex AI", "aliases": [], "desc": {"en": "Google Cloud managed platform for AI model deployment and serving. Hosts Gemini natively. Also supports fine-tuning and "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "azure_openai", "label": "Azure OpenAI", "aliases": [], "desc": {"en": "Microsoft Azure's managed deployment of OpenAI models. Preferred for enterprise: data privacy, compliance (SOC2, HIPAA),"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "huggingface", "label": "HuggingFace", "aliases": [], "desc": {"en": "The central hub for open-source models, datasets and ML tooling. Hosts 500K+ models. Provides Inference API and Spaces f"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "ollama", "label": "Ollama", "aliases": [], "desc": {"en": "Run LLMs locally on your own machine. Simple CLI and REST API. Supports Llama, Mistral, DeepSeek, Qwen and many more. No"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "rag", "label": "RAG", "aliases": [], "desc": {"en": "Retrieval-Augmented Generation. Augments LLM responses with relevant external documents fetched at runtime. Solves the k"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "vector_db", "label": "Vector Database", "aliases": [], "desc": {"en": "Database optimized for storing and querying embeddings by semantic similarity. Examples: Pinecone, Weaviate, Chroma, pgv"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "agent", "label": "Agent", "aliases": [], "desc": {"en": "An LLM that can take actions autonomously: call tools, browse the web, write and run code, make decisions in a loop. Key"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "tool_use", "label": "Tool Use / Function Calling", "aliases": [], "desc": {"en": "Allows an LLM to call external functions or APIs during generation. Example: search the web, query a DB, send an email. "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "structured_output", "label": "Structured Output", "aliases": [], "desc": {"en": "Forces the model to respond in a defined format (JSON schema). Essential for reliable integration in applications. Elimi"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "system_prompt", "label": "System Prompt", "aliases": [], "desc": {"en": "Instructions given to the model before the conversation starts. Defines persona, rules, tone, constraints and context. H"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "memory", "label": "Memory", "aliases": [], "desc": {"en": "Mechanisms to persist information across conversations or steps. Short-term: conversation history in context window. Lon"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "mcp", "label": "MCP", "aliases": [], "desc": {"en": "Model Context Protocol. Open standard by Anthropic (Nov 2024). Standardizes how LLMs connect to external tools and data "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "langchain", "label": "LangChain", "aliases": [], "desc": {"en": "Most popular framework for building LLM applications. Provides chains, retrievers, memory and agent primitives. Large ec"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "langgraph", "label": "LangGraph", "aliases": [], "desc": {"en": "Graph-based orchestration for multi-agent and stateful LLM workflows. Built on LangChain. Nodes = steps, Edges = transit"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "llamaindex", "label": "LlamaIndex", "aliases": [], "desc": {"en": "Framework focused on data ingestion and RAG pipelines. Great for document Q&A applications. Simpler than LangChain for p"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "cursor", "label": "Cursor", "aliases": [], "desc": {"en": "AI-first code editor (fork of VS Code). Deep LLM integration: code generation, explanation, refactoring, codebase Q&A. U"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "github_copilot", "label": "GitHub Copilot", "aliases": [], "desc": {"en": "AI pair programmer by GitHub/Microsoft. Integrates in VS Code, JetBrains, Neovim and more. Suggests code completions and"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "claude_code", "label": "Claude Code", "aliases": [], "desc": {"en": "Anthropic's agentic CLI tool. Runs in the terminal. Can read, write, and execute code across an entire codebase autonomo"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "topic", "id": "mcp-explained", "label": {"en": "MCP: The Standard for Connecting AI to Everything", "fr": "MCP : Le Standard pour Connecter l'IA à Tout"}, "aliases": ["mcp", "agents", "tools", "protocol", "integration"], "desc": {"en": "What MCP is, how it works architecturally, and why it matters for AI agent development.", "fr": "Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA."}, "url": "topics/mcp-explained.html"}, {"type": "topic", "id": "rag-deep-dive", "label": {"en": "RAG: Retrieval-Augmented Generation", "fr": "RAG : Génération Augmentée par Récupération"}, "aliases": ["rag", "retrieval", "embeddings", "vector-db"], "desc": {"en": "How RAG works, when to use it, and trade-offs vs fine-tuning.", "fr": "Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning."}, "url": "topics/rag-deep-dive.html"}];
-
+const SEARCH_INDEX = [{"type": "glossary", "id": "llm", "label": {"en": "Large Language Model", "fr": "Grand Modèle de Langage"}, "aliases": ["LLM", "LLMs", "Large Language Model", "Large Language Models", "grand modèle de langage", "grands modèles de langage"], "desc": {"en": "A language model trained on massive text datasets with billions of parameters. The \"large\" refers to both the size of th", "fr": "Un modèle de langage entraîné sur d'immenses corpus textuels avec des milliards de paramètres. Le \"grand\" fait référence"}, "url": "glossary.html#llm"}, {"type": "glossary", "id": "weights", "label": {"en": "Weights", "fr": "Poids"}, "aliases": ["weights", "weight", "model weights", "poids", "poids du modèle", "open weights"], "desc": {"en": "The numerical parameters learned by a neural network during training. Weights encode everything the model has \"learned\" ", "fr": "Les paramètres numériques appris par un réseau de neurones pendant l'entraînement. Les poids encodent tout ce que le mod"}, "url": "glossary.html#weights"}, {"type": "glossary", "id": "dense_model", "label": {"en": "Dense Model", "fr": "Modèle Dense"}, "aliases": ["dense model", "dense models", "modèle dense", "modèles denses"], "desc": {"en": "A neural network architecture where every parameter is activated for every input. All weights participate in every forwa", "fr": "Une architecture de réseau de neurones où chaque paramètre est activé pour chaque entrée. Tous les poids participent à c"}, "url": "glossary.html#dense_model"}, {"type": "glossary", "id": "moe_model", "label": {"en": "Mixture of Experts", "fr": "Mélange d'Experts"}, "aliases": ["MoE", "Mixture of Experts", "mixture of experts", "mélange d'experts", "Mélange d'Experts"], "desc": {"en": "An architecture where the model is divided into many specialized sub-networks (\"experts\"). For each token, a routing mec", "fr": "Une architecture où le modèle est divisé en nombreux sous-réseaux spécialisés (« experts »). Pour chaque token, un mécan"}, "url": "glossary.html#moe_model"}, {"type": "glossary", "id": "token", "label": {"en": "Token", "fr": "Token"}, "aliases": ["token", "tokens", "tokenization", "tokenisation"], "desc": {"en": "The smallest unit of text a language model processes. A token is roughly 0.75 words in English — \"tokenization\" is typic", "fr": "La plus petite unité de texte traitée par un modèle de langage. Un token correspond environ à 0,75 mot en anglais — « to"}, "url": "glossary.html#token"}, {"type": "glossary", "id": "context_window", "label": {"en": "Context Window", "fr": "Fenêtre de Contexte"}, "aliases": ["context window", "context length", "fenêtre de contexte", "longueur de contexte", "context"], "desc": {"en": "The maximum number of tokens a model can process in a single interaction — both the input (prompt + history) and the out", "fr": "Le nombre maximum de tokens qu'un modèle peut traiter en une seule interaction — entrée (prompt + historique) et sortie "}, "url": "glossary.html#context_window"}, {"type": "glossary", "id": "rlhf", "label": {"en": "RLHF", "fr": "RLHF"}, "aliases": ["RLHF", "Reinforcement Learning from Human Feedback", "reinforcement learning from human feedback"], "desc": {"en": "Reinforcement Learning from Human Feedback. A training technique used to align LLMs with human preferences after the ini", "fr": "Apprentissage par renforcement à partir des retours humains. Une technique d'entraînement utilisée pour aligner les LLM "}, "url": "glossary.html#rlhf"}, {"type": "glossary", "id": "hallucination", "label": {"en": "Hallucination", "fr": "Hallucination"}, "aliases": ["hallucination", "hallucinations", "hallucinate", "halluciner"], "desc": {"en": "When a model generates text that is factually incorrect, fabricated, or inconsistent with reality — stated with apparent", "fr": "Quand un modèle génère du texte factuellement incorrect, inventé, ou incohérent avec la réalité — affirmé avec une appar"}, "url": "glossary.html#hallucination"}, {"type": "glossary", "id": "rag", "label": {"en": "RAG", "fr": "RAG"}, "aliases": ["RAG", "Retrieval-Augmented Generation", "retrieval augmented generation", "retrieval-augmented generation"], "desc": {"en": "Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and hallucination problems by injecting real-", "fr": "Retrieval-Augmented Generation (génération augmentée par récupération). Un pattern qui résout les problèmes de date limi"}, "url": "glossary.html#rag"}, {"type": "glossary", "id": "agentic", "label": {"en": "Agentic AI", "fr": "IA Agentique"}, "aliases": ["agentic", "agent IA", "AI agent", "AI agents", "agents IA", "agentic AI", "agentic system", "système agentique"], "desc": {"en": "A mode of operation where an AI model acts autonomously over multiple steps to complete a goal, rather than simply answe", "fr": "Un mode de fonctionnement où un modèle d'IA agit de façon autonome sur plusieurs étapes pour accomplir un objectif, plut"}, "url": "glossary.html#agentic"}, {"type": "glossary", "id": "mcp", "label": {"en": "MCP", "fr": "MCP"}, "aliases": ["MCP", "Model Context Protocol", "model context protocol"], "desc": {"en": "Model Context Protocol. An open standard (governed by the Linux Foundation) that defines how AI applications connect to ", "fr": "Model Context Protocol. Un standard ouvert (gouverné par la Linux Foundation) qui définit comment les applications IA se"}, "url": "glossary.html#mcp"}, {"type": "glossary", "id": "hipaa", "label": {"en": "HIPAA", "fr": "HIPAA"}, "aliases": ["HIPAA", "Health Insurance Portability and Accountability Act"], "desc": {"en": "Health Insurance Portability and Accountability Act. A US federal law (1996) that sets strict rules on how health inform", "fr": "Health Insurance Portability and Accountability Act. Loi fédérale américaine (1996) qui fixe des règles strictes sur la "}, "url": "glossary.html#hipaa"}, {"type": "glossary", "id": "soc2", "label": {"en": "SOC 2", "fr": "SOC 2"}, "aliases": ["SOC 2", "SOC2", "SOC 2 Type II", "SOC 2 Type I", "System and Organization Controls"], "desc": {"en": "Service Organization Control 2. An auditing framework created by the AICPA (American Institute of CPAs) that evaluates h", "fr": "Service Organization Control 2. Un cadre d'audit créé par l'AICPA (Institut américain des CPA) qui évalue comment un fou"}, "url": "glossary.html#soc2"}, {"type": "glossary", "id": "fedramp", "label": {"en": "FedRAMP", "fr": "FedRAMP"}, "aliases": ["FedRAMP", "Federal Risk and Authorization Management Program"], "desc": {"en": "Federal Risk and Authorization Management Program. A US government program that standardizes security assessment and aut", "fr": "Federal Risk and Authorization Management Program. Un programme du gouvernement américain qui standardise l'évaluation e"}, "url": "glossary.html#fedramp"}, {"type": "glossary", "id": "transformer", "label": {"en": "Transformer", "fr": "Transformer"}, "aliases": ["Transformer", "transformer", "transformers", "attention mechanism", "mécanisme d'attention", "self-attention"], "desc": {"en": "The neural network architecture that underpins virtually all modern LLMs. Introduced in the 2017 paper \"Attention Is All", "fr": "L'architecture de réseau de neurones qui sous-tend pratiquement tous les LLM modernes. Introduite dans le papier \"Attent"}, "url": "glossary.html#transformer"}, {"type": "glossary", "id": "temperature", "label": {"en": "Temperature", "fr": "Température"}, "aliases": ["temperature", "température", "temp", "sampling temperature"], "desc": {"en": "A parameter (typically between 0 and 2) that controls how random or deterministic a model's outputs are. Technically: it", "fr": "Un paramètre (typiquement entre 0 et 2) qui contrôle le degré de hasard ou de déterminisme dans les sorties du modèle. T"}, "url": "glossary.html#temperature"}, {"type": "glossary", "id": "machine_learning", "label": {"en": "Machine Learning", "fr": "Machine Learning"}, "aliases": ["ML", "machine learning", "apprentissage automatique"], "desc": {"en": "A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without bein", "fr": "Un sous-domaine de l'intelligence artificielle où les systèmes apprennent à partir de données pour améliorer leurs perfo"}, "url": "glossary.html#machine_learning"}, {"type": "node", "id": "language_model", "label": {"en": "Language Model", "fr": "Modèle de Langage"}, "aliases": [], "desc": {"en": "A model trained on massive text datasets to understand and generate human language. The foundation of the entire ecosyst", "fr": "Un modèle entraîné sur d'immenses corpus textuels pour comprendre et générer du langage humain. La brique de base de tou"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "token_context", "label": {"en": "Token & Context", "fr": "Token & Contexte"}, "aliases": [], "desc": {"en": "A token is the smallest unit of text a model processes (~0.75 words). The context window is the maximum number of tokens", "fr": "Un token est la plus petite unité de texte traitée par un modèle (~0,75 mot). La fenêtre de contexte est le nombre maxim"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "embedding_vectors", "label": {"en": "Embedding & Vectors", "fr": "Embedding & Vecteurs"}, "aliases": [], "desc": {"en": "An embedding is a list of numbers (a vector) that represents the meaning of a text. Similar texts produce similar vector", "fr": "Un embedding est une liste de nombres (un vecteur) représentant le sens d'un texte. Des textes similaires produisent des"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "training_alignment", "label": {"en": "Training & Alignment", "fr": "Entraînement & Alignement"}, "aliases": [], "desc": {"en": "Training: teaching a model by exposing it to vast amounts of data. Alignment: shaping the model's behavior to be helpful", "fr": "Entraînement : apprendre à un modèle en le exposant à d'immenses quantités de données. Alignement : façonner son comport"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "inference", "label": {"en": "Inference", "fr": "Inférence"}, "aliases": [], "desc": {"en": "Running a trained model to generate a response from an input. Every API call, every chat message is an inference. Opposi", "fr": "Faire tourner un modèle entraîné pour générer une réponse à partir d'une entrée. Chaque appel API, chaque message de cha"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "reasoning_models", "label": {"en": "Reasoning", "fr": "Raisonnement"}, "aliases": [], "desc": {"en": "A paradigm shift in how models respond: instead of answering immediately,\nthe model thinks step-by-step before giving it", "fr": "Un changement de paradigme dans la façon dont les modèles répondent : au lieu de répondre immédiatement,\nle modèle réflé"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "transformer", "label": {"en": "Transformer", "fr": "Transformer"}, "aliases": [], "desc": {"en": "The neural network architecture behind every modern LLM.\nIntroduced in \"Attention Is All You Need\" (Google, 2017).\nKey i", "fr": "L'architecture de réseau de neurones derrière tous les LLM modernes.\nIntroduite dans \"Attention Is All You Need\" (Google"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "multimodality", "label": {"en": "Multimodality", "fr": "Multimodalité"}, "aliases": [], "desc": {"en": "The ability of a model to process and generate multiple types of data:\ntext,\nimages,\naudio,\nvideo,\ncode.\nModern frontier", "fr": "La capacité d'un modèle à traiter et générer plusieurs types de données :\ntexte,\nimages,\naudio,\nvidéo,\ncode.\nLes modèles"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "frontier_models", "label": {"en": "Proprietary Models", "fr": "Modèles Propriétaires"}, "aliases": [], "desc": {"en": "Models whose weights are PRIVATE, never downloadable.\nAccessible only via API.\nDeveloped by well-funded labs (OpenAI, An", "fr": "Modèles dont les poids sont PRIVES, jamais téléchargeables.\nAccessibles uniquement via API.\nDéveloppés par des laboratoi"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "open_weights", "label": {"en": "Open Source / Weights Models", "fr": "Open Source / Weights Models"}, "aliases": [], "desc": {"en": "Weights are publicly downloadable — you can run, fine-tune and deploy the model yourself.\nCommonly called \"open source\",", "fr": "Les poids sont téléchargeables publiquement — vous pouvez exécuter, fine-tuner et déployer le modèle vous-même.\nSouvent "}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "embedding_models", "label": {"en": "Embedding Models", "fr": "Modèles d'Embedding"}, "aliases": [], "desc": {"en": "Specialized models that convert text into vectors (not text generators). Essential building block for semantic search an", "fr": "Modèles spécialisés qui convertissent du texte en vecteurs (pas des générateurs de texte). Brique indispensable pour la "}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "public_api", "label": {"en": "Public API", "fr": "API Publique"}, "aliases": [], "desc": {"en": "Send an HTTP request to a provider's endpoint, get a response. The simplest way to use a model. Pay per token. No infras", "fr": "Envoyer une requête HTTP à l'endpoint d'un fournisseur, recevoir une réponse. La façon la plus simple d'utiliser un modè"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "cloud_managed", "label": {"en": "Cloud Managed", "fr": "Cloud Managé"}, "aliases": [], "desc": {"en": "Access models through a major cloud provider (AWS, GCP, Azure). Benefits: enterprise compliance, data privacy, multi-mod", "fr": "Accès aux modèles via un grand fournisseur cloud (AWS, GCP, Azure). Avantages : conformité entreprise, confidentialité d"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "self_hosted", "label": {"en": "Self-hosted", "fr": "Auto-hébergé"}, "aliases": [], "desc": {"en": "Deploy the model on your own GPU servers (on-premise or cloud VMs). Full control over data and costs at scale. Requires ", "fr": "Déployer le modèle sur ses propres serveurs GPU (on-premise ou VMs cloud). Contrôle total sur les données et les coûts à"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "local_edge", "label": {"en": "Local / Edge", "fr": "Local / Edge"}, "aliases": [], "desc": {"en": "Run a model on a laptop, phone, or edge device. No internet required. Maximum privacy. Enabled by smaller, efficient mod", "fr": "Faire tourner un modèle sur un laptop, téléphone ou dispositif edge. Sans internet. Confidentialité maximale. Rendu poss"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "rag_pattern", "label": {"en": "RAG", "fr": "RAG"}, "aliases": [], "desc": {"en": "Retrieval-Augmented Generation. At query time, retrieve relevant documents from a knowledge base and inject them into th", "fr": "Retrieval-Augmented Generation. Au moment de la requête, récupérer les documents pertinents depuis une base de connaissa"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "agents_pattern", "label": {"en": "AI Agents", "fr": "Agents IA"}, "aliases": [], "desc": {"en": "Systems where an LLM autonomously plans, calls tools, and iterates until a goal is achieved. Shift from \"Q&A\" to \"autono", "fr": "Systèmes où un LLM planifie de façon autonome, appelle des outils et itère jusqu'à atteindre un objectif. Passage du \"qu"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "tool_use_pattern", "label": {"en": "Tool Use", "fr": "Utilisation d'Outils"}, "aliases": [], "desc": {"en": "The ability for a model to call external functions during generation.\nHow it works: (1) the model decides it needs a too", "fr": "La capacité d'un modèle à appeler des fonctions externes pendant la génération.\nFonctionnement : (1) le modèle décide qu"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "mcp_pattern", "label": {"en": "MCP", "fr": "MCP"}, "aliases": [], "desc": {"en": "Model Context Protocol. An open standard that defines how AI applications\nconnect to external tools and data sources.\nBe", "fr": "Model Context Protocol. Un standard ouvert qui définit comment les applications IA\nse connectent à des outils et sources"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "finetuning_pattern", "label": {"en": "Fine-tuning", "fr": "Fine-tuning"}, "aliases": [], "desc": {"en": "Adapt a pre-trained model to a specific domain or behavior by training it further on curated data. Only possible with op", "fr": "Adapter un modèle pré-entraîné à un domaine ou comportement spécifique en le ré-entraînant sur des données ciblées. Uniq"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "prompt_eng", "label": {"en": "Prompt Engineering", "fr": "Prompt Engineering"}, "aliases": [], "desc": {"en": "The practice of crafting inputs to reliably get the desired output from a model.\nA prompt is the input text sent to the ", "fr": "L'art de formuler les entrées pour obtenir de façon fiable la sortie souhaitée d'un modèle.\nLe prompt est le texte d'ent"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "structured_gen", "label": {"en": "Structured Generation", "fr": "Génération Structurée"}, "aliases": [], "desc": {"en": "Force the model to respond in a defined format (e.g. JSON schema). Makes LLM outputs reliable and directly usable by cod", "fr": "Forcer le modèle à répondre dans un format défini (ex : schéma JSON). Rend les sorties LLM fiables et directement exploi"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "orch_frameworks", "label": {"en": "Orchestration\nFrameworks", "fr": "Frameworks\nd'Orchestration"}, "aliases": [], "desc": {"en": "Libraries that help chain LLM calls, manage memory, and build complex pipelines. Handle the plumbing so developers focus", "fr": "Bibliothèques qui permettent d'enchaîner les appels LLM, gérer la mémoire et construire des pipelines complexes. Gèrent "}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "ai_coding", "label": {"en": "AI Coding\nAssistants", "fr": "Assistants de Code IA"}, "aliases": [], "desc": {"en": "Tools that integrate LLMs directly into the development workflow. Generate, explain, refactor code. Dramatically boost d", "fr": "Outils qui intègrent les LLM directement dans le workflow de développement. Génèrent, expliquent, refactorisent du code."}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "vector_dbs_tool", "label": {"en": "Vector Databases", "fr": "Bases Vectorielles"}, "aliases": [], "desc": {"en": "Databases optimized to store and query embeddings by semantic similarity. The storage backbone of RAG pipelines. Example", "fr": "Bases de données optimisées pour stocker et interroger des embeddings par similarité sémantique. L'épine dorsale du stoc"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "eval_obs", "label": {"en": "Eval &\nObservability", "fr": "Éval &\nObservabilité"}, "aliases": [], "desc": {"en": "Tools to monitor, trace, evaluate and debug LLM applications in production. Answer: \"Is my app actually working well?\" E", "fr": "Outils pour monitorer, tracer, évaluer et déboguer les applications LLM en production. Répondent à la question : \"Mon ap"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "model_hubs", "label": {"en": "Model Hubs", "fr": "Hubs de Modèles"}, "aliases": [], "desc": {"en": "Platforms to discover, download, share and run open models. The \"GitHub of AI models\". Central to the open-weights ecosy", "fr": "Plateformes pour découvrir, télécharger, partager et faire tourner des modèles ouverts. Le \"GitHub des modèles IA\". Cent"}, "url": "macro.html", "map": {"en": "Big Picture", "fr": "Vue d'Ensemble"}}, {"type": "node", "id": "token", "label": "Token", "aliases": [], "desc": {"en": "The basic unit of text processed by an LLM. 1 token ≈ 0.75 words in English. Models are billed and limited by token coun"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "context_window", "label": "Context Window", "aliases": [], "desc": {"en": "Maximum number of tokens a model can process at once (input + output). GPT-4: 128K. Claude 3.7: 200K. Gemini 2.0: 1M. La"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "embedding", "label": "Embedding", "aliases": [], "desc": {"en": "Numerical vector (list of floats) representing text in semantic space. Similar meaning → similar vectors. Used for searc"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "prompt", "label": "Prompt", "aliases": [], "desc": {"en": "The input text sent to a model to elicit a response. Quality of the prompt directly determines quality of the output.\n"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "temperature", "label": "Temperature", "aliases": [], "desc": {"en": "Parameter controlling output randomness. 0 = deterministic (same input → same output). 1+ = creative and varied. Tune ba"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "training", "label": "Pre-training", "aliases": [], "desc": {"en": "Initial phase where a model learns from massive text datasets (terabytes). Builds general language understanding. Very e"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "fine_tuning", "label": "Fine-tuning", "aliases": [], "desc": {"en": "Additional training on a specific dataset to specialize model behavior. Cheaper than pre-training. Used to adapt a base "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "rlhf", "label": "RLHF", "aliases": [], "desc": {"en": "Reinforcement Learning from Human Feedback. Technique to align LLM outputs with human preferences. Used in ChatGPT, Clau"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_openai", "label": "OpenAI", "aliases": [], "desc": {"en": "American AI company, founded 2015. Originally non-profit, now capped-profit. Creator of GPT and o-series models. Behind "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_anthropic", "label": "Anthropic", "aliases": [], "desc": {"en": "AI safety company founded by ex-OpenAI researchers (Dario & Daniela Amodei). Creator of Claude. Focus on safe and interp"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_google", "label": "Google DeepMind", "aliases": [], "desc": {"en": "Merger of Google Brain and DeepMind (2023). Creator of Gemini (proprietary) and Gemma (open weights). Integrated into Go"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_xai", "label": "xAI", "aliases": [], "desc": {"en": "AI company founded by Elon Musk in 2023. Creator of the Grok model family. Integrated with the X (Twitter) platform.\n"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_meta", "label": "Meta", "aliases": [], "desc": {"en": "Meta AI (Facebook parent). Creator of the Llama open-weights model family. Strong open-source commitment: models freely "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_mistral_ai", "label": "Mistral AI", "aliases": [], "desc": {"en": "French AI startup founded in 2023 by ex-Google and ex-Meta researchers. Known for efficient open-weights models and a Eu"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_deepseek", "label": "DeepSeek AI", "aliases": [], "desc": {"en": "Chinese AI research lab. Released powerful open-weights models at very low cost. DeepSeek-R1 disrupted the market in Jan"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_alibaba", "label": "Alibaba", "aliases": [], "desc": {"en": "Chinese tech giant. Creator of the Qwen open-weights model family via DAMO Academy. Models available on HuggingFace and "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "p_microsoft", "label": "Microsoft", "aliases": [], "desc": {"en": "Creator of the Phi small model family. Major OpenAI investor and partner. Deploys OpenAI models via Azure OpenAI Service"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "gpt4o", "label": "GPT-4o", "aliases": [], "desc": {"en": "OpenAI's flagship multimodal model. Processes text, images and audio natively. \"o\" = omni. Powers ChatGPT. Available via"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "o3", "label": "o3 / o4-mini", "aliases": [], "desc": {"en": "OpenAI's reasoning-focused model family. Thinks step-by-step internally before answering (chain-of-thought). Best for co"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "claude", "label": "Claude 3.5 / 3.7", "aliases": [], "desc": {"en": "Anthropic's model family. Known for instruction-following and safety. Claude 3.7 Sonnet introduces extended thinking (vi"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "gemini", "label": "Gemini 2.0", "aliases": [], "desc": {"en": "Google's multimodal model family. Native tool use, code execution. Gemini 2.0 Flash: 1M token context window. Strong at "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "grok", "label": "Grok 3", "aliases": [], "desc": {"en": "xAI's flagship model. Trained on X (Twitter) data. Grok 3 features a \"Think\" reasoning mode similar to o3 and DeepSeek-R"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "llama", "label": "Llama 3.x", "aliases": [], "desc": {"en": "Meta's open-weights model family. Free to download, run and fine-tune. Available in multiple sizes (8B, 70B, 405B parame"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "mistral", "label": "Mistral / Mixtral", "aliases": [], "desc": {"en": "Efficient open-weights models from Mistral AI. Mixtral uses MoE (Mixture of Experts) architecture for better performance"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "deepseek", "label": "DeepSeek V3 / R1", "aliases": [], "desc": {"en": "Chinese open-weights models rivaling proprietary models at low cost. DeepSeek-R1 is a reasoning model (like o3) but full"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "qwen", "label": "Qwen 2.5", "aliases": [], "desc": {"en": "Alibaba's open-weights model family. Strong multilingual and coding performance. Qwen2.5-Coder is specialized for code g"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "gemma", "label": "Gemma 2", "aliases": [], "desc": {"en": "Google's open-weights model family. Lightweight (2B, 9B, 27B parameters). Optimized to run locally on laptops and phones"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "phi", "label": "Phi-4", "aliases": [], "desc": {"en": "Microsoft's small but powerful open-weights model (14B parameters). Outperforms much larger models on reasoning tasks. G"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "embed_oai", "label": "text-embedding-3", "aliases": [], "desc": {"en": "OpenAI's embedding model family. Converts text to dense vectors. text-embedding-3-small (fast/cheap) and text-embedding-"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "embed_voyage", "label": "Voyage-3", "aliases": [], "desc": {"en": "Voyage AI's embedding model. Best-in-class retrieval performance. Specialized versions: voyage-code-3 (code), voyage-fin"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "embed_nomic", "label": "nomic-embed", "aliases": [], "desc": {"en": "Open-source embedding model by Nomic AI. Can run locally via Ollama. Good balance of performance and privacy (no data se"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "llm_api", "label": "LLM API", "aliases": [], "desc": {"en": "Standard HTTP/REST interface to interact with a model. Send a prompt in the request, get a completion in the response. C"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "aws_bedrock", "label": "AWS Bedrock", "aliases": [], "desc": {"en": "AWS managed service to access multiple LLMs (Claude, Llama, Mistral...) via a unified API. No GPU management. Pay per to"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "vertex_ai", "label": "Google Vertex AI", "aliases": [], "desc": {"en": "Google Cloud managed platform for AI model deployment and serving. Hosts Gemini natively. Also supports fine-tuning and "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "azure_openai", "label": "Azure OpenAI", "aliases": [], "desc": {"en": "Microsoft Azure's managed deployment of OpenAI models. Preferred for enterprise: data privacy, compliance (SOC2, HIPAA),"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "huggingface", "label": "HuggingFace", "aliases": [], "desc": {"en": "The central hub for open-source models, datasets and ML tooling. Hosts 500K+ models. Provides Inference API and Spaces f"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "ollama", "label": "Ollama", "aliases": [], "desc": {"en": "Run LLMs locally on your own machine. Simple CLI and REST API. Supports Llama, Mistral, DeepSeek, Qwen and many more. No"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "rag", "label": "RAG", "aliases": [], "desc": {"en": "Retrieval-Augmented Generation. Augments LLM responses with relevant external documents fetched at runtime. Solves the k"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "vector_db", "label": "Vector Database", "aliases": [], "desc": {"en": "Database optimized for storing and querying embeddings by semantic similarity. Examples: Pinecone, Weaviate, Chroma, pgv"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "agent", "label": "Agent", "aliases": [], "desc": {"en": "An LLM that can take actions autonomously: call tools, browse the web, write and run code, make decisions in a loop. Key"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "tool_use", "label": "Tool Use / Function Calling", "aliases": [], "desc": {"en": "Allows an LLM to call external functions or APIs during generation. Example: search the web, query a DB, send an email. "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "structured_output", "label": "Structured Output", "aliases": [], "desc": {"en": "Forces the model to respond in a defined format (JSON schema). Essential for reliable integration in applications. Elimi"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "system_prompt", "label": "System Prompt", "aliases": [], "desc": {"en": "Instructions given to the model before the conversation starts. Defines persona, rules, tone, constraints and context. H"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "memory", "label": "Memory", "aliases": [], "desc": {"en": "Mechanisms to persist information across conversations or steps. Short-term: conversation history in context window. Lon"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "mcp", "label": "MCP", "aliases": [], "desc": {"en": "Model Context Protocol. Open standard by Anthropic (Nov 2024). Standardizes how LLMs connect to external tools and data "}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "langchain", "label": "LangChain", "aliases": [], "desc": {"en": "Most popular framework for building LLM applications. Provides chains, retrievers, memory and agent primitives. Large ec"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "langgraph", "label": "LangGraph", "aliases": [], "desc": {"en": "Graph-based orchestration for multi-agent and stateful LLM workflows. Built on LangChain. Nodes = steps, Edges = transit"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "llamaindex", "label": "LlamaIndex", "aliases": [], "desc": {"en": "Framework focused on data ingestion and RAG pipelines. Great for document Q&A applications. Simpler than LangChain for p"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "cursor", "label": "Cursor", "aliases": [], "desc": {"en": "AI-first code editor (fork of VS Code). Deep LLM integration: code generation, explanation, refactoring, codebase Q&A. U"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "github_copilot", "label": "GitHub Copilot", "aliases": [], "desc": {"en": "AI pair programmer by GitHub/Microsoft. Integrates in VS Code, JetBrains, Neovim and more. Suggests code completions and"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "node", "id": "claude_code", "label": "Claude Code", "aliases": [], "desc": {"en": "Anthropic's agentic CLI tool. Runs in the terminal. Can read, write, and execute code across an entire codebase autonomo"}, "url": "ecosystem.html", "map": {"en": "Full Ecosystem", "fr": "Écosystème Complet"}}, {"type": "topic", "id": "mcp-explained", "label": {"en": "MCP: The Standard for Connecting AI to Everything", "fr": "MCP : Le Standard pour Connecter l'IA à Tout"}, "aliases": ["mcp", "agents", "tools", "protocol", "integration"], "desc": {"en": "What MCP is, how it works architecturally, and why it matters for AI agent development.", "fr": "Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA."}, "url": "topics/mcp-explained.html"}, {"type": "topic", "id": "rag-deep-dive", "label": {"en": "RAG: Retrieval-Augmented Generation", "fr": "RAG : Génération Augmentée par Récupération"}, "aliases": ["rag", "retrieval", "embeddings", "vector-db"], "desc": {"en": "How RAG works, when to use it, and trade-offs vs fine-tuning.", "fr": "Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning."}, "url": "topics/rag-deep-dive.html"}];
 function normalize(s) {
   return (s || '').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
 }
-
 function doSearch(query) {
   const q = normalize(query);
   if (q.length < 2) return [];
@@ -469,30 +548,22 @@ function doSearch(query) {
     const desc  = item.desc[currentLang]  || item.desc.en  || '';
     const aliases = (item.aliases || []).join(' ');
     const mapLabel = item.map ? (item.map[currentLang] || item.map.en || '') : '';
-
-    let matchText = null;
-    let score = 0;
-    const nLabel   = normalize(label);
-    const nAliases = normalize(aliases);
-    const nDesc    = normalize(desc);
-
-    if (nLabel.startsWith(q))         { score = 3; }
-    else if (nLabel.includes(q))      { score = 2; }
-    else if (nAliases.includes(q))    { score = 1; matchText = aliases.split(',').find(a => normalize(a).includes(q))?.trim(); }
-    else if (nDesc.includes(q))       { score = 0.5; const i = nDesc.indexOf(q); matchText = '…' + desc.slice(Math.max(0,i-20), i+40).trim() + '…'; }
-
+    let matchText = null, score = 0;
+    const nLabel = normalize(label), nAliases = normalize(aliases), nDesc = normalize(desc);
+    if (nLabel.startsWith(q))      { score = 3; }
+    else if (nLabel.includes(q))   { score = 2; }
+    else if (nAliases.includes(q)) { score = 1; matchText = aliases.split(',').find(a => normalize(a).includes(q))?.trim(); }
+    else if (nDesc.includes(q))    { score = 0.5; const i = nDesc.indexOf(q); matchText = '…' + desc.slice(Math.max(0,i-20), i+40).trim() + '…'; }
     if (score > 0) results.push({ item, label, desc, mapLabel, matchText, score });
   }
   results.sort((a, b) => b.score - a.score);
   return results.slice(0, 8);
 }
-
 function renderResults(results) {
   const dd = document.getElementById('search-dropdown');
   if (!results.length) {
     dd.innerHTML = `<div class="search-empty">${currentLang === 'fr' ? 'Aucun résultat' : 'No results'}</div>`;
-    dd.classList.add('open');
-    return;
+    dd.classList.add('open'); return;
   }
   dd.innerHTML = results.map(r => {
     const { item, label, desc, mapLabel, matchText } = r;
@@ -505,48 +576,34 @@ function renderResults(results) {
       ? `<div class="search-item-match">${matchText}</div>`
       : (desc ? `<div class="search-item-sub">${desc.slice(0,80)}…</div>` : '');
     return `<a class="search-item" href="${item.url}">
-      <div class="search-item-top">${badge}<span class="search-item-label">${label}</span></div>
-      ${sub}
-    </a>`;
+      <div class="search-item-top">${badge}<span class="search-item-label">${label}</span></div>${sub}</a>`;
   }).join('');
   dd.classList.add('open');
 }
-
 function clearSearch() {
   const inp = document.getElementById('search-input');
-  inp.value = '';
-  inp.focus();
+  inp.value = ''; inp.focus();
   document.getElementById('search-dropdown').classList.remove('open');
   document.getElementById('search-clear').style.display = 'none';
 }
-
 document.addEventListener('DOMContentLoaded', () => {
   const inp = document.getElementById('search-input');
   const dd  = document.getElementById('search-dropdown');
   const clr = document.getElementById('search-clear');
-
   inp.addEventListener('input', () => {
     const q = inp.value.trim();
     clr.style.display = q ? 'block' : 'none';
     if (q.length >= 2) renderResults(doSearch(q));
     else dd.classList.remove('open');
   });
-
   inp.addEventListener('keydown', e => {
     if (e.key === 'Escape') clearSearch();
-    if (e.key === 'Enter') {
-      const first = dd.querySelector('.search-item');
-      if (first) window.location.href = first.href;
-    }
+    if (e.key === 'Enter') { const first = dd.querySelector('.search-item'); if (first) window.location.href = first.href; }
   });
-
   document.addEventListener('click', e => {
     if (!inp.closest('.search-wrapper').contains(e.target)) dd.classList.remove('open');
   });
-
-  inp.addEventListener('focus', () => {
-    if (inp.value.trim().length >= 2) dd.classList.add('open');
-  });
+  inp.addEventListener('focus', () => { if (inp.value.trim().length >= 2) dd.classList.add('open'); });
 });
 </script>
 </body>
