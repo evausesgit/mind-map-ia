@@ -924,7 +924,7 @@ def generate_html(data, elements, maps=None, current_output=""):
       <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
     </div>
   </div>
-  <div class="meta" id="hint-text">Click a node to explore · Scroll to zoom · Drag to pan</div>
+  <div class="meta" id="hint-text">Click a node · Double-click to explore · Scroll to zoom · Drag to pan</div>
 </header>
 
 <div class="main">
