@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Logo Test</title>
+<style>
+  body { background: #0F0F1A; color: white; font-family: sans-serif; padding: 40px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; }
+  .option { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .label { font-size: 13px; color: #7F8C8D; text-align: center; max-width: 160px; }
+  .box {
+    background: #1A1A2E;
+    border: 1px solid #2C3E6E;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  h1 { margin-bottom: 40px; font-size: 18px; color: #E74C3C; }
+  /* small preview */
+  .small { font-size: 11px; color: #555; margin-top: 8px; }
+</style>
+</head>
+<body>
+<h1>Logo candidates — brain / neural network</h1>
+<div class="grid">
+
+  <!-- Option 1 : Deux lobes, nœuds internes, forme ovale -->
+  <div class="option">
+    <div class="box">
+      <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+        <!-- lobe gauche connections -->
+        <line x1="20" y1="45" x2="38" y2="28" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="20" y1="45" x2="38" y2="55" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="38" y1="28" x2="55" y2="22" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="38" y1="28" x2="55" y2="38" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="38" y1="55" x2="55" y2="52" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="38" y1="55" x2="55" y2="68" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="55" y1="22" x2="55" y2="38" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="55" y1="38" x2="55" y2="52" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.4"/>
+        <!-- corpus callosum -->
+        <line x1="55" y1="38" x2="65" y2="38" stroke="#E74C3C" stroke-width="1.6"/>
+        <line x1="55" y1="52" x2="65" y2="52" stroke="#E74C3C" stroke-width="1.6"/>
+        <!-- lobe droit connections -->
+        <line x1="65" y1="22" x2="65" y2="38" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="65" y1="38" x2="65" y2="52" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="65" y1="22" x2="82" y2="28" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="65" y1="38" x2="82" y2="28" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="65" y1="52" x2="82" y2="55" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="65" y1="68" x2="82" y2="55" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="82" y1="28" x2="100" y2="45" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="82" y1="55" x2="100" y2="45" stroke="#E74C3C" stroke-width="1.4"/>
+        <!-- cross lobe -->
+        <line x1="38" y1="28" x2="65" y2="52" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.2"/>
+        <line x1="38" y1="55" x2="65" y2="22" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.2"/>
+        <!-- nodes lobe G -->
+        <circle cx="20" cy="45" r="5.5" fill="white"/>
+        <circle cx="38" cy="28" r="4.5" fill="white"/>
+        <circle cx="38" cy="55" r="4.5" fill="white"/>
+        <circle cx="55" cy="22" r="4"   fill="white"/>
+        <circle cx="55" cy="38" r="4"   fill="white"/>
+        <circle cx="55" cy="52" r="4"   fill="white"/>
+        <circle cx="55" cy="68" r="3.5" fill="#E74C3C"/>
+        <!-- nodes lobe D -->
+        <circle cx="65" cy="22" r="4"   fill="white"/>
+        <circle cx="65" cy="38" r="4"   fill="white"/>
+        <circle cx="65" cy="52" r="4"   fill="white"/>
+        <circle cx="65" cy="68" r="3.5" fill="#E74C3C"/>
+        <circle cx="82" cy="28" r="4.5" fill="white"/>
+        <circle cx="82" cy="55" r="4.5" fill="white"/>
+        <circle cx="100" cy="45" r="5.5" fill="white"/>
+      </svg>
+    </div>
+    <div class="label">Option 1<br>2 lobes symétriques<br>corpus callosum central</div>
+  </div>
+
+  <!-- Option 2 : Forme cerveau silhouette + nœuds sparse -->
+  <div class="option">
+    <div class="box">
+      <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+        <!-- silhouette cerveau (path approximé) -->
+        <path d="M30 55 Q15 48 18 33 Q21 18 35 16 Q42 10 52 14 Q57 8 63 8 Q72 8 76 16 Q88 14 95 25 Q104 36 98 50 Q94 62 82 66 Q76 76 65 74 Q60 80 55 74 Q44 76 38 68 Z"
+              stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.3" fill="none"/>
+        <!-- sillon central -->
+        <line x1="60" y1="12" x2="60" y2="72" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.25" stroke-dasharray="3,3"/>
+        <!-- connexions internes -->
+        <line x1="35" y1="35" x2="50" y2="28" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="35" y1="35" x2="45" y2="50" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="50" y1="28" x2="60" y2="32" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="45" y1="50" x2="60" y2="55" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="60" y1="32" x2="75" y2="28" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="60" y1="55" x2="75" y2="50" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="75" y1="28" x2="85" y2="35" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="75" y1="50" x2="85" y2="35" stroke="#E74C3C" stroke-width="1.5"/>
+        <!-- cross -->
+        <line x1="50" y1="28" x2="75" y2="50" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
+        <line x1="45" y1="50" x2="75" y2="28" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
+        <!-- nodes -->
+        <circle cx="35" cy="35" r="5"   fill="white"/>
+        <circle cx="50" cy="28" r="4.5" fill="white"/>
+        <circle cx="45" cy="50" r="4.5" fill="white"/>
+        <circle cx="60" cy="32" r="5"   fill="#E74C3C"/>
+        <circle cx="60" cy="55" r="5"   fill="#E74C3C"/>
+        <circle cx="75" cy="28" r="4.5" fill="white"/>
+        <circle cx="75" cy="50" r="4.5" fill="white"/>
+        <circle cx="85" cy="35" r="5"   fill="white"/>
+      </svg>
+    </div>
+    <div class="label">Option 2<br>Silhouette cerveau<br>+ sillon central pointillé</div>
+  </div>
+
+  <!-- Option 3 : Cluster dense, forme organique -->
+  <div class="option">
+    <div class="box">
+      <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+        <!-- connexions denses -->
+        <line x1="25" y1="45" x2="42" y2="30" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="25" y1="45" x2="42" y2="58" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="42" y1="30" x2="58" y2="22" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="42" y1="30" x2="60" y2="38" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="42" y1="58" x2="60" y2="52" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="42" y1="58" x2="58" y2="68" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="58" y1="22" x2="78" y2="22" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="58" y1="22" x2="60" y2="38" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.5"/>
+        <line x1="60" y1="38" x2="60" y2="52" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="60" y1="38" x2="78" y2="30" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="60" y1="52" x2="78" y2="60" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="58" y1="68" x2="78" y2="68" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="78" y1="22" x2="90" y2="32" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="78" y1="30" x2="90" y2="32" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="78" y1="60" x2="90" y2="58" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="78" y1="68" x2="90" y2="58" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="90" y1="32" x2="95" y2="45" stroke="#E74C3C" stroke-width="1.4"/>
+        <line x1="90" y1="58" x2="95" y2="45" stroke="#E74C3C" stroke-width="1.4"/>
+        <!-- cross connections -->
+        <line x1="42" y1="30" x2="60" y2="52" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
+        <line x1="42" y1="58" x2="60" y2="38" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
+        <line x1="60" y1="38" x2="78" y2="60" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
+        <line x1="60" y1="52" x2="78" y2="30" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.3"/>
+        <!-- nodes -->
+        <circle cx="25" cy="45" r="5.5" fill="white"/>
+        <circle cx="42" cy="30" r="4.5" fill="white"/>
+        <circle cx="42" cy="58" r="4.5" fill="white"/>
+        <circle cx="58" cy="22" r="4"   fill="white"/>
+        <circle cx="60" cy="38" r="5"   fill="#E74C3C"/>
+        <circle cx="60" cy="52" r="5"   fill="#E74C3C"/>
+        <circle cx="58" cy="68" r="4"   fill="white"/>
+        <circle cx="78" cy="22" r="4"   fill="white"/>
+        <circle cx="78" cy="30" r="4"   fill="white"/>
+        <circle cx="78" cy="60" r="4"   fill="white"/>
+        <circle cx="78" cy="68" r="4"   fill="white"/>
+        <circle cx="90" cy="32" r="4.5" fill="white"/>
+        <circle cx="90" cy="58" r="4.5" fill="white"/>
+        <circle cx="95" cy="45" r="5.5" fill="white"/>
+      </svg>
+    </div>
+    <div class="label">Option 3<br>Réseau dense organique<br>2 nœuds centraux rouges</div>
+  </div>
+
+  <!-- Option 4 : Minimaliste 7 nœuds, forme cerveau épurée -->
+  <div class="option">
+    <div class="box">
+      <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+        <!-- connections -->
+        <line x1="22" y1="45" x2="45" y2="25" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="22" y1="45" x2="45" y2="65" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="45" y1="25" x2="60" y2="18" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="45" y1="25" x2="60" y2="45" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="45" y1="65" x2="60" y2="45" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="45" y1="65" x2="60" y2="72" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="60" y1="18" x2="80" y2="25" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="60" y1="45" x2="80" y2="25" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="60" y1="45" x2="80" y2="65" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="60" y1="72" x2="80" y2="65" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="80" y1="25" x2="98" y2="45" stroke="#E74C3C" stroke-width="1.8"/>
+        <line x1="80" y1="65" x2="98" y2="45" stroke="#E74C3C" stroke-width="1.8"/>
+        <!-- cross diag -->
+        <line x1="45" y1="25" x2="60" y2="72" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.25"/>
+        <line x1="45" y1="65" x2="60" y2="18" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.25"/>
+        <line x1="60" y1="18" x2="80" y2="65" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.25"/>
+        <line x1="60" y1="72" x2="80" y2="25" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.25"/>
+        <!-- nodes -->
+        <circle cx="22" cy="45" r="6"   fill="white"/>
+        <circle cx="45" cy="25" r="5"   fill="white"/>
+        <circle cx="45" cy="65" r="5"   fill="white"/>
+        <circle cx="60" cy="18" r="4.5" fill="#E74C3C"/>
+        <circle cx="60" cy="45" r="6.5" fill="#E74C3C"/>
+        <circle cx="60" cy="72" r="4.5" fill="#E74C3C"/>
+        <circle cx="80" cy="25" r="5"   fill="white"/>
+        <circle cx="80" cy="65" r="5"   fill="white"/>
+        <circle cx="98" cy="45" r="6"   fill="white"/>
+      </svg>
+    </div>
+    <div class="label">Option 4<br>Épuré, traits épais<br>axe central rouge</div>
+  </div>
+
+  <!-- Option 5 : Hémisphères marqués, sillon visible -->
+  <div class="option">
+    <div class="box">
+      <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+        <!-- hémisphère G -->
+        <line x1="18" y1="45" x2="34" y2="28" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="18" y1="45" x2="34" y2="62" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="34" y1="28" x2="52" y2="20" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="34" y1="28" x2="52" y2="38" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="34" y1="62" x2="52" y2="52" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="34" y1="62" x2="52" y2="70" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="52" y1="20" x2="52" y2="38" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="52" y1="52" x2="52" y2="70" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.4"/>
+        <!-- sillon central -->
+        <line x1="60" y1="15" x2="60" y2="75" stroke="#E74C3C" stroke-width="2" stroke-opacity="0.6"/>
+        <!-- hémisphère D -->
+        <line x1="68" y1="20" x2="68" y2="38" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="68" y1="52" x2="68" y2="70" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="68" y1="20" x2="86" y2="28" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="68" y1="38" x2="86" y2="28" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="68" y1="52" x2="86" y2="62" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="68" y1="70" x2="86" y2="62" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="86" y1="28" x2="102" y2="45" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="86" y1="62" x2="102" y2="45" stroke="#E74C3C" stroke-width="1.5"/>
+        <!-- cross lobe -->
+        <line x1="52" y1="38" x2="68" y2="52" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="52" y1="52" x2="68" y2="38" stroke="#E74C3C" stroke-width="1.5" stroke-opacity="0.5"/>
+        <!-- nodes G -->
+        <circle cx="18" cy="45" r="5.5" fill="white"/>
+        <circle cx="34" cy="28" r="4.5" fill="white"/>
+        <circle cx="34" cy="62" r="4.5" fill="white"/>
+        <circle cx="52" cy="20" r="4"   fill="white"/>
+        <circle cx="52" cy="38" r="4"   fill="white"/>
+        <circle cx="52" cy="52" r="4"   fill="white"/>
+        <circle cx="52" cy="70" r="4"   fill="white"/>
+        <!-- sillon node -->
+        <circle cx="60" cy="45" r="3"   fill="#E74C3C"/>
+        <!-- nodes D -->
+        <circle cx="68" cy="20" r="4"   fill="white"/>
+        <circle cx="68" cy="38" r="4"   fill="white"/>
+        <circle cx="68" cy="52" r="4"   fill="white"/>
+        <circle cx="68" cy="70" r="4"   fill="white"/>
+        <circle cx="86" cy="28" r="4.5" fill="white"/>
+        <circle cx="86" cy="62" r="4.5" fill="white"/>
+        <circle cx="102" cy="45" r="5.5" fill="white"/>
+      </svg>
+    </div>
+    <div class="label">Option 5<br>2 hémisphères avec sillon<br>connexions croisées</div>
+  </div>
+
+</div>
+
+<p style="margin-top:48px; color:#555; font-size:12px;">Ouvre cette page dans le browser pour voir les options.</p>
+</body>
+</html>
