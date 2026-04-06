@@ -1143,6 +1143,34 @@ const elements = [
   },
   {
     "data": {
+      "id": "mcp_pattern",
+      "label": "MCP",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "emerging",
+      "since": "2024",
+      "link": "https://modelcontextprotocol.io",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "APPLICATION PATTERNS",
+      "label_en": "MCP",
+      "description_en": "Model Context Protocol. An open standard that defines how AI applications\nconnect to external tools and data sources.\nBefore MCP: every app needed custom integrations for every tool.\nAfter MCP: any compliant client talks to any compliant server \u2014 like USB-C for AI.\nBacked by Anthropic, adopted by OpenAI, Google, Microsoft and hundreds of community servers.",
+      "layerLabel_en": "APPLICATION PATTERNS",
+      "label_fr": "MCP",
+      "description_fr": "Model Context Protocol. Un standard ouvert qui d\u00e9finit comment les applications IA\nse connectent \u00e0 des outils et sources de donn\u00e9es externes.\nAvant MCP : chaque app n\u00e9cessitait des int\u00e9grations sur mesure pour chaque outil.\nApr\u00e8s MCP : tout client compatible parle \u00e0 tout serveur compatible \u2014 comme l'USB-C pour l'IA.\nPort\u00e9 par Anthropic, adopt\u00e9 par OpenAI, Google, Microsoft et des centaines de serveurs communautaires.",
+      "layerLabel_fr": "PATTERNS APPLICATIFS"
+    },
+    "position": {
+      "x": -700,
+      "y": 0.0
+    },
+    "classes": "status-emerging"
+  },
+  {
+    "data": {
       "id": "finetuning_pattern",
       "label": "Fine-tuning",
       "category": "patterns",
@@ -1569,6 +1597,24 @@ const elements = [
       "source": "prompt_eng",
       "target": "agents_pattern",
       "label": "improves",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "mcp_pattern__tool_use_pattern",
+      "source": "mcp_pattern",
+      "target": "tool_use_pattern",
+      "label": "standardizes",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "mcp_pattern__agents_pattern",
+      "source": "mcp_pattern",
+      "target": "agents_pattern",
+      "label": "enables",
       "etype": "enables"
     }
   },

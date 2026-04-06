@@ -473,6 +473,29 @@ nodes:
         sont déclarés et appelés entre modèles et applications.
         Le pont entre "le modèle réfléchit" et "le modèle agit" — capacité centrale des Agents IA.
 
+  - id: mcp_pattern
+    label:
+      en: "MCP"
+      fr: "MCP"
+    layer: 4
+    category: patterns
+    status: emerging
+    since: "2024"
+    link: "https://modelcontextprotocol.io"
+    description:
+      en: |
+        Model Context Protocol. An open standard that defines how AI applications
+        connect to external tools and data sources.
+        Before MCP: every app needed custom integrations for every tool.
+        After MCP: any compliant client talks to any compliant server — like USB-C for AI.
+        Backed by Anthropic, adopted by OpenAI, Google, Microsoft and hundreds of community servers.
+      fr: |
+        Model Context Protocol. Un standard ouvert qui définit comment les applications IA
+        se connectent à des outils et sources de données externes.
+        Avant MCP : chaque app nécessitait des intégrations sur mesure pour chaque outil.
+        Après MCP : tout client compatible parle à tout serveur compatible — comme l'USB-C pour l'IA.
+        Porté par Anthropic, adopté par OpenAI, Google, Microsoft et des centaines de serveurs communautaires.
+
   - id: finetuning_pattern
     label:
       en: "Fine-tuning"
@@ -729,6 +752,15 @@ edges:
     to: agents_pattern
     label: "improves"
     type: enables
+  - from: mcp_pattern
+    to: tool_use_pattern
+    label: "standardizes"
+    type: part_of
+  - from: mcp_pattern
+    to: agents_pattern
+    label: "enables"
+    type: enables
+
   - from: structured_gen
     to: tool_use_pattern
     label: "combined with"
