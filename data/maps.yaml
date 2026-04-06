@@ -2,8 +2,8 @@ maps:
   - id: macro
     icon: "🗺️"
     title:
-      en: "Big Picture"
-      fr: "Vue d'Ensemble"
+      en: "LLM & AI Ecosystem"
+      fr: "LLM & AI Ecosystem"
     description:
       en: "Concepts and categories — the best place to start"
       fr: "Concepts et catégories — le meilleur point de départ"

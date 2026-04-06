@@ -421,31 +421,12 @@ def main():
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 48px 40px 64px;
+    padding: 32px 40px 64px;
     max-width: 960px;
     margin: 0 auto;
     width: 100%;
   }}
-  .hero {{ text-align: center; margin-bottom: 40px; }}
-  .hero h1 {{
-    font-size: clamp(26px, 4vw, 44px);
-    font-weight: 800;
-    line-height: 1.15;
-    margin-bottom: 14px;
-    background: linear-gradient(135deg, #fff 40%, #C39BD3);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }}
-  .hero p {{
-    font-size: 15px;
-    color: #7F8C8D;
-    max-width: 500px;
-    line-height: 1.6;
-    margin: 0 auto;
-  }}
-
-  /* ── Featured card (Big Picture) ── */
+  /* ── Featured card ── */
   .card-featured {{
     width: 100%;
     background: linear-gradient(135deg, #16213E 60%, #1A2847);
@@ -600,11 +581,6 @@ def main():
 </header>
 
 <main>
-  <div class="hero">
-    <h1 id="hero-title">LLM & AI Ecosystem<br>Mind Maps</h1>
-    <p id="hero-desc">Interactive pedagogical maps to understand the AI landscape — models, tools, concepts and how they connect.</p>
-  </div>
-
   {featured_html}
 
   <div class="section-sep">
@@ -634,28 +610,16 @@ def main():
 </footer>
 
 <script>
-const heroTexts = {{
-  en: {{
-    title: "LLM & AI Ecosystem<br>Mind Maps",
-    desc: "Interactive pedagogical maps to understand the AI landscape — models, tools, concepts and how they connect.",
-    footer: "Open source · Built to learn and share · ",
-    searchPlaceholder: "Search concepts, models, tools…"
-  }},
-  fr: {{
-    title: "Cartes Mentales de<br>l'Écosystème LLM & IA",
-    desc: "Des cartes pédagogiques interactives pour comprendre le paysage de l'IA — modèles, outils, concepts et leurs connexions.",
-    footer: "Open source · Construit pour apprendre et partager · ",
-    searchPlaceholder: "Rechercher concepts, modèles, outils…"
-  }}
+const uiTexts = {{
+  en: {{ footer: "Open source · Built to learn and share · ", searchPlaceholder: "Search concepts, models, tools…" }},
+  fr: {{ footer: "Open source · Construit pour apprendre et partager · ", searchPlaceholder: "Rechercher concepts, modèles, outils…" }}
 }};
 let currentLang = 'en';
 function setLang(lang) {{
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
-  document.getElementById('hero-title').innerHTML = heroTexts[lang].title;
-  document.getElementById('hero-desc').textContent = heroTexts[lang].desc;
-  document.getElementById('footer-text').textContent = heroTexts[lang].footer;
-  document.getElementById('search-input').placeholder = heroTexts[lang].searchPlaceholder;
+  document.getElementById('footer-text').textContent = uiTexts[lang].footer;
+  document.getElementById('search-input').placeholder = uiTexts[lang].searchPlaceholder;
   document.querySelectorAll('[data-en]').forEach(el => {{
     el.textContent = lang === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
   }});
