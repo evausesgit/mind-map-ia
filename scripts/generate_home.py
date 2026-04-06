@@ -10,7 +10,6 @@ ROOT = Path(__file__).parent.parent
 MAPS_FILE = ROOT / "data" / "maps.yaml"
 GLOSSARY_FILE = ROOT / "data" / "glossary.yaml"
 MACRO_FILE = ROOT / "data" / "ecosystem-macro.yaml"
-ECOSYSTEM_FILE = ROOT / "data" / "ecosystem.yaml"
 TOPICS_DIR = ROOT / "data" / "topics"
 OUTPUT = ROOT / "web" / "index.html"
 
@@ -116,7 +115,6 @@ def build_search_index():
     # Map nodes
     map_sources = [
         (MACRO_FILE, "macro.html", {"en": "Big Picture", "fr": "Vue d'Ensemble"}),
-        (ECOSYSTEM_FILE, "ecosystem.html", {"en": "Full Ecosystem", "fr": "Écosystème Complet"}),
     ]
     seen_ids = set()
     for yaml_path, page_url, map_label in map_sources:

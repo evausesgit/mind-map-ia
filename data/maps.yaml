@@ -11,17 +11,6 @@ maps:
     output: macro.html
     data: data/ecosystem-macro.yaml
 
-  - id: ecosystem
-    icon: "🔬"
-    title:
-      en: "Full Ecosystem"
-      fr: "Écosystème Complet"
-    description:
-      en: "Providers, models, infrastructure and developer tools"
-      fr: "Fournisseurs, modèles, infrastructure et outils développeurs"
-    nodes: 53
-    output: ecosystem.html
-    data: data/ecosystem.yaml
 
   - id: rag-pattern
     icon: "🔍"
