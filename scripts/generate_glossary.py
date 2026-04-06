@@ -71,6 +71,7 @@ def format_desc(text, entries):
 
     def inline(s):
         linked = link_terms(s, entries)
+        linked = re.sub(r'\[(.+?)\]\((https?://[^\)]+)\)', r'<a href="\2" target="_blank" rel="noopener">\1</a>', linked)
         return re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', linked)
 
     for line in lines:

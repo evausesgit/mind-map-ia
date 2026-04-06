@@ -832,6 +832,34 @@ const elements = [
   },
   {
     "data": {
+      "id": "kv_cache",
+      "label": "KV Cache",
+      "category": "concepts",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 1,
+      "status": "stable",
+      "since": "2017",
+      "link": "",
+      "ref": "",
+      "drilldown": "",
+      "color": "#F4D03F",
+      "layerLabel": "CORE CONCEPTS",
+      "label_en": "KV Cache",
+      "description_en": "Key-Value Cache: the optimization that makes LLM inference fast.\nTransformers generate text token by token. At each step, attention needs\nthe Key (K) and Value (V) matrices for all previous tokens.\nWithout cache: recomputed every step \u2192 quadratic cost O(n\u00b2).\nWith cache: stored and reused \u2192 linear cost O(n) per new token.\nThe trade-off: KV cache consumes significant VRAM (often more than model weights for long contexts).\nManaged by serving engines like vLLM (paged attention) and llama.cpp.\nRelated optimizations: GQA/MQA (reduce cache size 4\u20138\u00d7), prefix caching (reuse system prompt cache).",
+      "layerLabel_en": "CORE CONCEPTS",
+      "label_fr": "Cache KV",
+      "description_fr": "Cache cl\u00e9-valeur : l'optimisation qui rend l'inf\u00e9rence des LLM rapide.\nLes transformers g\u00e9n\u00e8rent du texte token par token. \u00c0 chaque \u00e9tape, l'attention a besoin\ndes matrices Key (K) et Value (V) de tous les tokens pr\u00e9c\u00e9dents.\nSans cache : recalcul\u00e9 \u00e0 chaque \u00e9tape \u2192 co\u00fbt quadratique O(n\u00b2).\nAvec cache : stock\u00e9 et r\u00e9utilis\u00e9 \u2192 co\u00fbt lin\u00e9aire O(n) par nouveau token.\nLa contrepartie : le cache KV consomme beaucoup de VRAM (souvent plus que les poids du mod\u00e8le pour les longs contextes).\nG\u00e9r\u00e9 par les moteurs de serving comme vLLM (paged attention) et llama.cpp.\nOptimisations associ\u00e9es : GQA/MQA (r\u00e9duisent la taille du cache de 4 \u00e0 8\u00d7), prefix caching (r\u00e9utilise le cache du system prompt).",
+      "layerLabel_fr": "CONCEPTS FONDAMENTAUX"
+    },
+    "position": {
+      "x": 1100,
+      "y": 140.0
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
       "id": "transformer",
       "label": "Transformer",
       "category": "concepts",
@@ -1417,6 +1445,24 @@ const elements = [
       "y": 206
     },
     "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "transformer__kv_cache",
+      "source": "transformer",
+      "target": "kv_cache",
+      "label": "enables",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "inference__kv_cache",
+      "source": "inference",
+      "target": "kv_cache",
+      "label": "optimized by",
+      "etype": "uses"
+    }
   },
   {
     "data": {

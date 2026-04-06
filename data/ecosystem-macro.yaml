@@ -198,6 +198,34 @@ nodes:
         Pas un type de modèle à part — une capacité qui s'applique aux modèles propriétaires ou open source.
         Exemples : o3, DeepSeek-R1, Claude 3.7 extended thinking.
 
+  - id: kv_cache
+    label:
+      en: "KV Cache"
+      fr: "Cache KV"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2017"
+    description:
+      en: |
+        Key-Value Cache: the optimization that makes LLM inference fast.
+        Transformers generate text token by token. At each step, attention needs
+        the Key (K) and Value (V) matrices for all previous tokens.
+        Without cache: recomputed every step → quadratic cost O(n²).
+        With cache: stored and reused → linear cost O(n) per new token.
+        The trade-off: KV cache consumes significant VRAM (often more than model weights for long contexts).
+        Managed by serving engines like vLLM (paged attention) and llama.cpp.
+        Related optimizations: GQA/MQA (reduce cache size 4–8×), prefix caching (reuse system prompt cache).
+      fr: |
+        Cache clé-valeur : l'optimisation qui rend l'inférence des LLM rapide.
+        Les transformers génèrent du texte token par token. À chaque étape, l'attention a besoin
+        des matrices Key (K) et Value (V) de tous les tokens précédents.
+        Sans cache : recalculé à chaque étape → coût quadratique O(n²).
+        Avec cache : stocké et réutilisé → coût linéaire O(n) par nouveau token.
+        La contrepartie : le cache KV consomme beaucoup de VRAM (souvent plus que les poids du modèle pour les longs contextes).
+        Géré par les moteurs de serving comme vLLM (paged attention) et llama.cpp.
+        Optimisations associées : GQA/MQA (réduisent la taille du cache de 4 à 8×), prefix caching (réutilise le cache du system prompt).
+
   - id: transformer
     label:
       en: "Transformer"
@@ -659,6 +687,15 @@ nodes:
         Exemples : HuggingFace, Ollama, Replicate.
 
 edges:
+  - from: transformer
+    to: kv_cache
+    label: "enables"
+    type: enables
+  - from: inference
+    to: kv_cache
+    label: "optimized by"
+    type: uses
+
   - from: transformer
     to: language_model
     label: "architecture of"

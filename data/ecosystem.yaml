@@ -156,6 +156,21 @@ nodes:
       The process of running a trained model to generate output from an input.
       Opposite of training. Happens every time you query a model.
 
+  - id: kv_cache
+    label: "KV Cache"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2017"
+    description: >
+      Key-Value Cache: optimization that stores intermediate attention computations
+      (Key and Value matrices) during token generation so they don't need to be
+      recomputed for every new token.
+      Without it: cost grows quadratically with sequence length.
+      With it: each new token only requires computing attention for itself.
+      Critical for inference latency and throughput — but consumes significant VRAM.
+      Managed by serving engines like vLLM (paged attention) and llama.cpp.
+
   - id: temperature
     label: "Temperature"
     layer: 1
@@ -770,6 +785,16 @@ edges:
     to: phi
     label: "develops"
     type: develops
+
+  # Foundations → KV Cache
+  - from: transformer
+    to: kv_cache
+    label: "enables"
+    type: enables
+  - from: inference
+    to: kv_cache
+    label: "optimized by"
+    type: uses
 
   # Foundations → Models
   - from: transformer

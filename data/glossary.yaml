@@ -338,7 +338,7 @@ terms:
     description:
       en: >
         The neural network architecture that underpins virtually all modern LLMs.
-        Introduced in the 2017 paper "Attention Is All You Need" (Vaswani et al., Google).
+        Introduced in the 2017 paper ["Attention Is All You Need"](https://arxiv.org/abs/1706.03762) (Vaswani et al., Google).
         Key innovation: the **self-attention mechanism**, which lets the model weigh the relevance
         of every word against every other word in the input simultaneously — instead of processing
         tokens one by one like older RNNs.
@@ -348,7 +348,7 @@ terms:
         Every LLM you use today — GPT-4, Claude, Gemini, Llama — is a Transformer.
       fr: >
         L'architecture de réseau de neurones qui sous-tend pratiquement tous les LLM modernes.
-        Introduite dans le papier "Attention Is All You Need" (2017, Vaswani et al., Google).
+        Introduite dans le papier ["Attention Is All You Need"](https://arxiv.org/abs/1706.03762) (2017, Vaswani et al., Google).
         Innovation clé : le **mécanisme d'auto-attention**, qui permet au modèle de pondérer la pertinence
         de chaque mot par rapport à tous les autres simultanément — au lieu de traiter les tokens
         un par un comme les anciens RNN.
@@ -356,6 +356,61 @@ terms:
         Deux variantes principales : **Encoder** (BERT — compréhension/classification),
         **Decoder** (GPT, Claude, Llama — génération), et **Encoder-Decoder** (T5, traduction).
         Chaque LLM que vous utilisez aujourd'hui — GPT-4, Claude, Gemini, Llama — est un Transformer.
+
+  - id: kv_cache
+    label:
+      en: "KV Cache"
+      fr: "Cache KV"
+    aliases: ["KV cache", "kv cache", "key-value cache", "key value cache", "cache clé-valeur", "cache KV", "KV Cache"]
+    description:
+      en: >
+        Short for **Key-Value Cache**. A memory optimization used during LLM inference (text generation).
+
+        **How transformers generate text:** they produce tokens one at a time.
+        For each new token, the attention mechanism needs the Key (K) and Value (V) matrices
+        for *all previous tokens* — to understand what came before.
+        Without a cache, those matrices are recomputed from scratch at every step: cost grows
+        quadratically with context length.
+
+        **What the KV cache does:** after computing K and V for each token, it stores them.
+        When generating the next token, only the new token's K/V are computed — all previous ones
+        are read from cache. This reduces per-token cost from O(n²) to O(n).
+
+        **The trade-off:** the cache lives in GPU/CPU memory. For a 70B model with a 128K context,
+        the KV cache can consume tens of gigabytes of VRAM — often more than the model weights themselves.
+
+        **Key related concepts:**
+        - **GQA / MQA** (Grouped/Multi-Query Attention): architectural variants (Llama 3, Gemma, Mistral)
+          that share K/V heads across query heads, shrinking cache size 4–8×.
+        - **Paged Attention** (vLLM): manages the cache like OS virtual memory to avoid fragmentation
+          and maximize GPU utilization in multi-user serving.
+        - **Prefix caching**: reuses the cached K/V of a repeated system prompt across requests —
+          saving latency and cost (supported by Anthropic, OpenAI, Google APIs).
+      fr: >
+        Abréviation de **cache clé-valeur** (Key-Value Cache). Une optimisation mémoire utilisée
+        lors de l'inférence (génération de texte) d'un LLM.
+
+        **Comment les transformers génèrent du texte :** token par token.
+        À chaque nouveau token, le mécanisme d'attention a besoin des matrices Key (K) et Value (V)
+        de *tous les tokens précédents* — pour comprendre le contexte antérieur.
+        Sans cache, ces matrices sont recalculées à chaque étape : le coût croît de façon quadratique
+        avec la longueur du contexte.
+
+        **Ce que fait le cache KV :** après avoir calculé K et V pour chaque token, il les stocke.
+        Lors de la génération du token suivant, seules les matrices K/V du nouveau token sont calculées —
+        toutes les précédentes sont lues depuis le cache. Le coût par token passe de O(n²) à O(n).
+
+        **La contrepartie :** le cache réside en mémoire GPU/CPU. Pour un modèle 70B avec un contexte
+        de 128K tokens, le cache KV peut consommer des dizaines de gigaoctets de VRAM —
+        souvent davantage que les poids du modèle eux-mêmes.
+
+        **Concepts associés :**
+        - **GQA / MQA** (Grouped/Multi-Query Attention) : variantes architecturales (Llama 3, Gemma, Mistral)
+          qui partagent les têtes K/V entre les têtes de requête, réduisant la taille du cache de 4 à 8×.
+        - **Paged Attention** (vLLM) : gère le cache comme la mémoire virtuelle d'un OS pour éviter
+          la fragmentation et maximiser l'utilisation GPU en serving multi-utilisateurs.
+        - **Prefix caching** : réutilise le cache K/V d'un system prompt répété entre les requêtes —
+          économisant latence et coût (supporté par les APIs Anthropic, OpenAI, Google).
 
   - id: temperature
     label:
