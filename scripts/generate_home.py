@@ -278,10 +278,14 @@ def main():
   }}
   .header-left {{ display: flex; align-items: center; gap: 8px; }}
   .logo {{
-    font-size: 20px;
+    display: flex;
+    align-items: center;
     text-decoration: none;
     margin-right: 4px;
+    opacity: 0.9;
+    transition: opacity 0.15s;
   }}
+  .logo:hover {{ opacity: 1; }}
   .header-right {{ display: flex; align-items: center; gap: 8px; }}
 
   /* ── Nav dropdowns ── */
@@ -569,7 +573,23 @@ def main():
 
 <header>
   <div class="header-left">
-    <a href="index.html" class="logo" title="Home">🧠</a>
+    <a href="index.html" class="logo" title="Home">
+      <svg width="32" height="22" viewBox="0 0 40 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="4" y1="14" x2="16" y2="6"  stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="4" y1="14" x2="16" y2="22" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="16" y1="6"  x2="28" y2="2"  stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="16" y1="6"  x2="28" y2="10" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="16" y1="22" x2="28" y2="18" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="16" y1="22" x2="28" y2="26" stroke="#E74C3C" stroke-width="1.5"/>
+        <circle cx="4"  cy="14" r="2.8" fill="white"/>
+        <circle cx="16" cy="6"  r="2.2" fill="white"/>
+        <circle cx="16" cy="22" r="2.2" fill="white"/>
+        <circle cx="28" cy="2"  r="1.8" fill="#E74C3C"/>
+        <circle cx="28" cy="10" r="1.8" fill="#E74C3C"/>
+        <circle cx="28" cy="18" r="1.8" fill="#E74C3C"/>
+        <circle cx="28" cy="26" r="1.8" fill="#E74C3C"/>
+      </svg>
+    </a>
     {nav_html}
   </div>
   <div class="header-right">
