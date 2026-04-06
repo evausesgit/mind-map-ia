@@ -574,20 +574,30 @@ def main():
 <header>
   <div class="header-left">
     <a href="index.html" class="logo" title="Home">
-      <svg width="32" height="22" viewBox="0 0 40 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="4" y1="14" x2="16" y2="6"  stroke="#E74C3C" stroke-width="1.5"/>
-        <line x1="4" y1="14" x2="16" y2="22" stroke="#E74C3C" stroke-width="1.5"/>
-        <line x1="16" y1="6"  x2="28" y2="2"  stroke="#E74C3C" stroke-width="1.5"/>
-        <line x1="16" y1="6"  x2="28" y2="10" stroke="#E74C3C" stroke-width="1.5"/>
-        <line x1="16" y1="22" x2="28" y2="18" stroke="#E74C3C" stroke-width="1.5"/>
-        <line x1="16" y1="22" x2="28" y2="26" stroke="#E74C3C" stroke-width="1.5"/>
-        <circle cx="4"  cy="14" r="2.8" fill="white"/>
-        <circle cx="16" cy="6"  r="2.2" fill="white"/>
-        <circle cx="16" cy="22" r="2.2" fill="white"/>
-        <circle cx="28" cy="2"  r="1.8" fill="#E74C3C"/>
-        <circle cx="28" cy="10" r="1.8" fill="#E74C3C"/>
-        <circle cx="28" cy="18" r="1.8" fill="#E74C3C"/>
-        <circle cx="28" cy="26" r="1.8" fill="#E74C3C"/>
+      <svg width="44" height="26" viewBox="0 0 56 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="5" y1="16" x2="17" y2="8"  stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="5" y1="16" x2="17" y2="24" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="17" y1="8"  x2="30" y2="4"  stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="17" y1="8"  x2="30" y2="13" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="17" y1="24" x2="30" y2="19" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="17" y1="24" x2="30" y2="28" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="30" y1="4"  x2="45" y2="8"  stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="30" y1="13" x2="45" y2="8"  stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="30" y1="19" x2="45" y2="24" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="30" y1="28" x2="45" y2="24" stroke="#E74C3C" stroke-width="1.5"/>
+        <line x1="17" y1="8"  x2="30" y2="19" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.35"/>
+        <line x1="17" y1="24" x2="30" y2="13" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.35"/>
+        <line x1="30" y1="4"  x2="45" y2="24" stroke="#E74C3C" stroke-width="1" stroke-opacity="0.25"/>
+        <line x1="30" y1="28" x2="45" y2="8"  stroke="#E74C3C" stroke-width="1" stroke-opacity="0.25"/>
+        <circle cx="5"  cy="16" r="4"   fill="white"/>
+        <circle cx="17" cy="8"  r="3.2" fill="white"/>
+        <circle cx="17" cy="24" r="3.2" fill="white"/>
+        <circle cx="30" cy="4"  r="2.8" fill="white"/>
+        <circle cx="30" cy="13" r="2.8" fill="white"/>
+        <circle cx="30" cy="19" r="2.8" fill="white"/>
+        <circle cx="30" cy="28" r="2.8" fill="white"/>
+        <circle cx="45" cy="8"  r="2.5" fill="#E74C3C"/>
+        <circle cx="45" cy="24" r="2.5" fill="#E74C3C"/>
       </svg>
     </a>
     {nav_html}
