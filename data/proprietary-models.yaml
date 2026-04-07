@@ -148,10 +148,12 @@ nodes:
       en: |
         OpenAI's main line of general-purpose chat and API models.
         GPT-3 (2020) proved scale, GPT-4 (2023) set the multimodal standard.
+        GPT-5.4 (2026) is the current frontier, with mini and nano variants for speed and cost.
         Used by millions of developers as the default API for text generation tasks.
       fr: |
         La principale gamme de modèles de chat et API d'OpenAI.
         GPT-3 (2020) a prouvé la scalabilité, GPT-4 (2023) a établi le standard multimodal.
+        GPT-5.4 (2026) est le frontier actuel, avec des variantes mini et nano pour la vitesse et le coût.
         Utilisés par des millions de développeurs comme API par défaut.
 
   - id: o_family
@@ -282,6 +284,69 @@ nodes:
         Le modèle polyvalent le plus puissant d'OpenAI. Excellent en écriture nuancée, raisonnement
         complexe et suivi d'instructions subtiles. Coût élevé — à réserver pour les tâches difficiles
         où la qualité de sortie prime.
+
+  - id: gpt54
+    label:
+      en: "GPT-5.4"
+      fr: "GPT-5.4"
+    layer: 3
+    category: model
+    status: evolving
+    since: "2026"
+    link: "https://platform.openai.com/docs/models"
+    description:
+      en: |
+        OpenAI's flagship general-purpose model as of 2026. Strong across coding, reasoning,
+        multimodal understanding and computer use.
+        SWE-Bench Pro: 57.7%. GPQA Diamond: 93%. OSWorld: 75%.
+        Parent model of the GPT-5.4 mini and nano series.
+      fr: |
+        Le modèle polyvalent phare d'OpenAI en 2026. Solide en code, raisonnement,
+        compréhension multimodale et utilisation d'ordinateur.
+        SWE-Bench Pro : 57,7%. GPQA Diamond : 93%. OSWorld : 75%.
+        Modèle parent de la série GPT-5.4 mini et nano.
+
+  - id: gpt54_mini
+    label:
+      en: "GPT-5.4 mini"
+      fr: "GPT-5.4 mini"
+    layer: 3
+    category: model
+    status: evolving
+    since: "2026"
+    link: "https://platform.openai.com/docs/models"
+    description:
+      en: |
+        Fast, efficient model optimised for coding and sub-agents. 2x faster than GPT-5 mini.
+        Approaches GPT-5.4 performance on SWE-Bench Pro (54.4%) and OSWorld (72.1%).
+        400K context window. Multimodal: text + image. Supports tools, web search, file search, computer use.
+        $0.75 / $4.50 per M tokens (in/out). Available in API, Codex and ChatGPT.
+      fr: |
+        Modèle rapide et efficace optimisé pour le code et les sous-agents. 2× plus rapide que GPT-5 mini.
+        Se rapproche des performances de GPT-5.4 sur SWE-Bench Pro (54,4%) et OSWorld (72,1%).
+        Fenêtre de contexte 400K. Multimodal : texte + image. Supporte outils, recherche web, fichiers, ordinateur.
+        0,75 $ / 4,50 $ par M tokens (entrée/sortie). Disponible dans l'API, Codex et ChatGPT.
+
+  - id: gpt54_nano
+    label:
+      en: "GPT-5.4 nano"
+      fr: "GPT-5.4 nano"
+    layer: 3
+    category: model
+    status: evolving
+    since: "2026"
+    link: "https://platform.openai.com/docs/models"
+    description:
+      en: |
+        Smallest and cheapest GPT-5.4 variant. API only.
+        Recommended for: classification, data extraction, ranking, and coding sub-agents handling simpler tasks.
+        SWE-Bench Pro: 52.4%. GPQA Diamond: 82.8%.
+        $0.20 / $1.25 per M tokens (in/out) — lowest cost in the GPT-5.4 family.
+      fr: |
+        Variante la plus petite et moins chère de GPT-5.4. API uniquement.
+        Recommandé pour : classification, extraction de données, classement, et sous-agents de code simples.
+        SWE-Bench Pro : 52,4%. GPQA Diamond : 82,8%.
+        0,20 $ / 1,25 $ par M tokens (entrée/sortie) — coût le plus bas de la famille GPT-5.4.
 
   - id: o3
     label:
@@ -433,6 +498,18 @@ edges:
     type: part_of
   - from: gpt_family
     to: gpt45
+    label: ""
+    type: part_of
+  - from: gpt_family
+    to: gpt54
+    label: ""
+    type: part_of
+  - from: gpt_family
+    to: gpt54_mini
+    label: ""
+    type: part_of
+  - from: gpt_family
+    to: gpt54_nano
     label: ""
     type: part_of
   - from: o_family
