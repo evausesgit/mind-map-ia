@@ -145,8 +145,8 @@ nodes:
 
   - id: uc-chat-qa
     label:
-      en: "Q&A Chat"
-      fr: "Chat Q&R"
+      en: "Chat LLM"
+      fr: "Chat LLM"
     layer: 2
     category: usecase
     status: stable
