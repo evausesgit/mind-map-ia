@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Case: Agentic Coding</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    color: #1A1A2E;
+    min-height: 100vh;
+  }
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-menu { position: relative; }
+  .nav-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 260px;
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1E2D4E;
+    text-decoration: none;
+    color: #BDC3C7;
+    font-size: 13px;
+    transition: background 0.1s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home { color: #BDC3C7 !important; font-size: 13px !important; border-bottom: 1px solid #1E2D4E; }
+  .nav-home:hover { color: #FF6B6B !important; }
+  .lang-toggle { display: flex; gap: 6px; }
+  .lang-btn {
+    background: none;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+
+  .page-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .page-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  .article-header { margin-bottom: 32px; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #7F8C8D22;
+    color: #7F8C8D;
+    border: 1px solid #7F8C8D44;
+  }
+  .date { font-size: 12px; color: #95A5A6; }
+  .article-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1A1A2E;
+    margin-bottom: 12px;
+  }
+  .article-summary {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #E8EAF6;
+    color: #3F51B5;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .article-body { line-height: 1.75; color: #2C3E50; }
+  .article-body h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #E8EAED;
+  }
+  .article-body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 24px 0 8px;
+  }
+  .article-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7F8C8D;
+    margin: 20px 0 6px;
+  }
+  .article-body p { margin-bottom: 14px; font-size: 15px; }
+  .article-body ul, .article-body ol {
+    margin: 8px 0 14px 20px;
+    font-size: 15px;
+  }
+  .article-body li { margin-bottom: 4px; }
+  .article-body strong { font-weight: 700; color: #1A1A2E; }
+  .article-body em { color: #555; }
+  .article-body code {
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 13px;
+    background: #EEF0F3;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #C0392B;
+  }
+  .article-body pre {
+    background: #1A1A2E;
+    color: #E8EAF6;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .article-body pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .article-body th {
+    background: #1A1A2E;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .article-body td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #E8EAED;
+  }
+  .article-body tr:nth-child(even) td { background: #F8F9FA; }
+  .article-body blockquote {
+    border-left: 3px solid #1A1A2E;
+    padding: 8px 16px;
+    margin: 12px 0;
+    color: #555;
+    background: #F0F0F5;
+    border-radius: 0 4px 4px 0;
+  }
+  .article-body hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 28px 0;
+  }
+  .article-body a { color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }
+  .article-body a:hover { color: #3498DB; }
+
+  /* Sidebar */
+  .sidebar { position: sticky; top: 80px; }
+  .toc { display: flex; flex-direction: column; gap: 4px; }
+  .toc-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #95A5A6;
+    margin-bottom: 8px;
+  }
+  .toc a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    padding: 3px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    line-height: 1.4;
+    transition: all 0.1s;
+  }
+  .toc a.toc-h3 {
+    padding-left: 20px;
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+  .toc a:hover { color: #1A1A2E; border-left-color: #1A1A2E; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="nav-menu">  <button class="nav-btn">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="../index.html" class="nav-home">← Home</a>   <a href="../macro.html">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="../rag-pattern.html">  <span class="nav-icon">🔍</span>  <span class="nav-info">    <span class="nav-title" data-en="RAG" data-fr="RAG">RAG</span>    <span class="nav-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span>  </span></a><a href="../cloud-managed.html">  <span class="nav-icon">☁️</span>  <span class="nav-info">    <span class="nav-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span>    <span class="nav-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span>  </span></a><a href="../ai-agents.html">  <span class="nav-icon">🤖</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span>    <span class="nav-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span>  </span></a><a href="../ai-coding-assistants.html">  <span class="nav-icon">💻</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span>    <span class="nav-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span>  </span></a><a href="../open-weights-models.html">  <span class="nav-icon">🔓</span>  <span class="nav-info">    <span class="nav-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span>    <span class="nav-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span>  </span></a><a href="../proprietary-models.html">  <span class="nav-icon">🏢</span>  <span class="nav-info">    <span class="nav-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span>    <span class="nav-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span>  </span></a><a href="../use-cases.html">  <span class="nav-icon">🎯</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Use Cases" data-fr="Cas d'Usage IA">AI Use Cases</span>    <span class="nav-desc" data-en="4 user personas, their scenarios, AI patterns, and key stack components" data-fr="4 personas utilisateur, leurs scénarios, patterns IA, et composants clés">4 user personas, their scenarios, AI patterns, and key stack components</span>  </span></a><a href="../dense-vs-moe.html">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="../glossary.html">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <main>
+    <div class="article-header">
+      <div class="article-meta">
+        <span class="status-badge">evolving</span>
+        <span class="date">2026-04-06</span>
+      </div>
+      <h1 class="article-title" data-en="Use Case: Agentic Coding" data-fr="Cas d'Usage : Coding Agentique">Use Case: Agentic Coding</h1>
+      <p class="article-summary" data-en="How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously." data-fr="Comment un agent IA assiste un développeur au-delà de l'autocomplétion — planification, édition, exécution de tests, et itération autonome.">How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously.</p>
+      <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">ide</span><span class="tag">mcp</span><span class="tag">tool-use</span><span class="tag">developer</span></div>
+    </div>
+
+    <div class="article-body" id="article-body">
+      <h2 id="the-scenario">The scenario</h2>
+<p>A developer describes a task in natural language — "add pagination to the user list endpoint, with tests" — and an AI agent reads the relevant files, writes the code changes, runs the tests, reads the failure output, fixes the issue, and stops when the tests pass.</p>
+<p>No copy-paste from ChatGPT. No manual application of suggestions. The agent is in the loop.</p>
+<p>This is <strong>agentic coding</strong>: the AI operates as a collaborator with file access, tool use, and iterative execution — not just a text completion engine.</p>
+<h2 id="how-it-works">How it works</h2>
+<p>The agent runs a loop:</p>
+<pre><code>Task description (from developer)
+    ↓
+[LLM: Plan]  →  steps to accomplish the task
+    ↓
+[LLM: Act]   →  tool call (read file / write file / run command / search docs)
+    ↓
+[Tool execution]  →  result (file content / test output / error message)
+    ↓
+[LLM: Observe]  →  interpret result, decide next action
+    ↓
+... repeat until done or human approval needed</code></pre>
+<p>The LLM is not just generating text — it is <strong>reasoning about state</strong> and <strong>making decisions</strong>. The tools give it hands.</p>
+<h2 id="tools-an-agentic-coding-assistant-uses">Tools an agentic coding assistant uses</h2>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody><tr><td><code>read_file</code></td><td>Read any file in the repo</td></tr><tr><td><code>write_file</code></td><td>Create or overwrite a file</td></tr><tr><td><code>edit_file</code></td><td>Make targeted edits (diff-style)</td></tr><tr><td><code>run_command</code></td><td>Execute shell commands (tests, builds, linters)</td></tr><tr><td><code>search_codebase</code></td><td>Semantic or keyword search across files</td></tr><tr><td><code>web_search</code></td><td>Look up documentation, Stack Overflow, GitHub issues</td></tr><tr><td><code>list_directory</code></td><td>Explore the file tree</td></tr></tbody></table>
+<p>MCP (Model Context Protocol) is the emerging standard for defining and connecting these tools — allowing the same agent to work across different editors and environments.</p>
+<h2 id="what-changes-compared-to-autocomplete">What changes compared to autocomplete</h2>
+<p>Autocomplete is <strong>reactive</strong>: the dev types, the model suggests the next tokens.</p>
+<p>Agentic coding is <strong>proactive</strong>: the dev describes intent, the agent figures out what to do, does it, verifies it, and iterates.</p>
+<table><thead><tr><td>Trigger</td><td>Dev types</td><td>Dev describes task</td></tr></thead><tbody><tr><td>Scope</td><td>Current file, cursor position</td><td>Entire codebase</td></tr><tr><td>Execution</td><td>Suggestion only</td><td>Runs code, tests, commands</td></tr><tr><td>Iteration</td><td>One-shot</td><td>Multiple steps</td></tr><tr><td>Human in loop</td><td>Every suggestion</td><td>At approval checkpoints</td></tr><tr><td>Error handling</td><td>None</td><td>Reads errors, tries to fix</td></tr></tbody></table>
+<h2 id="the-trust-and-control-problem">The trust and control problem</h2>
+<p>Agentic coding introduces a new challenge: <strong>the agent takes actions that are hard to reverse</strong>.</p>
+<p>Deleting a file is easy. Undoing it after 5 more agent steps is painful. Letting an agent push to <code>main</code> without review is dangerous.</p>
+<p>Good agentic systems address this with:</p>
+<p><strong>1. Checkpoints.</strong> The agent pauses before destructive actions (file deletion, git push, running migrations) and asks for approval.</p>
+<p><strong>2. Diff review.</strong> All file edits are shown as diffs before being applied. The dev sees exactly what changed.</p>
+<p><strong>3. Sandbox execution.</strong> Shell commands run in a sandboxed environment — the agent can't accidentally affect production.</p>
+<p><strong>4. Scope constraints.</strong> The agent is told which directories it's allowed to modify. It cannot wander outside the task boundary.</p>
+<p><strong>5. Git as a safety net.</strong> Every significant checkpoint creates a commit. If the agent goes off-track, <code>git reset</code> brings you back.</p>
+<h2 id="context-window-management">Context window management</h2>
+<p>An agentic session over a large codebase quickly exhausts the context window. The agent needs to be smart about what it loads:</p>
+<ul><li><strong>Don't load the entire repo</strong> — only files relevant to the task</li><li><strong>Summarize read results</strong> — instead of including the full file, extract only the relevant functions</li><li><strong>Use search first, read second</strong> — search to find the right file, then read only that file</li></ul>
+<p>KV cache is critical for performance: large shared context (the task description, coding conventions, architecture overview) is cached and not re-sent on every iteration.</p>
+<h2 id="practical-example-add-pagination-to-users-endpoint">Practical example: "Add pagination to /users endpoint"</h2>
+<pre><code>Step 1  → search_codebase("users endpoint") 
+        → finds src/routes/users.py
+
+Step 2  → read_file("src/routes/users.py")
+        → sees: def list_users(): return all_users
+
+Step 3  → read_file("tests/test_users.py")
+        → sees: existing tests for list_users
+
+Step 4  → edit_file("src/routes/users.py")
+        → adds: page, page_size params + slicing logic
+
+Step 5  → edit_file("tests/test_users.py")
+        → adds: tests for pagination edge cases
+
+Step 6  → run_command("pytest tests/test_users.py")
+        → output: FAILED – TypeError: unsupported operand
+
+Step 7  → [LLM reads error, identifies off-by-one in slicing]
+        → edit_file("src/routes/users.py") — fixes the bug
+
+Step 8  → run_command("pytest tests/test_users.py")
+        → output: 4 passed
+
+Done. → presents diff to developer for review</code></pre>
+<h2 id="leading-tools-in-2026">Leading tools in 2026</h2>
+<table><thead><tr><th>Tool</th><th>Type</th><th>Key feature</th></tr></thead><tbody><tr><td>Claude Code</td><td>CLI agent</td><td>Deep file/shell access, MCP</td></tr><tr><td>Cursor</td><td>Agentic IDE</td><td>Codebase-wide context, inline agent</td></tr><tr><td>GitHub Copilot Workspace</td><td>Cloud agent</td><td>PR-level tasks, GitHub integration</td></tr><tr><td>Devin</td><td>Autonomous agent</td><td>Full-session autonomy, web browsing</td></tr><tr><td>Windsurf (Codeium)</td><td>Agentic IDE</td><td>Flow-based agent, fast iteration</td></tr></tbody></table>
+<h2 id="when-agentic-coding-shines-and-when-it-doesnt">When agentic coding shines — and when it doesn't</h2>
+<p><strong>Good fit:</strong></p>
+<ul><li>Repetitive, well-defined tasks (add CRUD endpoints, write tests for existing code, migrate a library)</li><li>Debugging with a clear error message and isolated scope</li><li>Exploring an unfamiliar codebase to understand structure</li></ul>
+<p><strong>Poor fit:</strong></p>
+<ul><li>Architectural decisions that require deep business context</li><li>Tasks requiring access to systems the agent can't reach (production DBs, customer data)</li><li>Long-horizon tasks where the goal keeps changing — the agent needs stable objectives</li></ul>
+    </div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="toc-label" data-en="On this page" data-fr="Sur cette page">On this page</div>
+    <nav class="toc" id="toc-nav">
+      <nav class="toc"><a href="#the-scenario" class="toc-h2">The scenario</a>
+<a href="#how-it-works" class="toc-h2">How it works</a>
+<a href="#tools-an-agentic-coding-assistant-uses" class="toc-h2">Tools an agentic coding assistant uses</a>
+<a href="#what-changes-compared-to-autocomplete" class="toc-h2">What changes compared to autocomplete</a>
+<a href="#the-trust-and-control-problem" class="toc-h2">The trust and control problem</a>
+<a href="#context-window-management" class="toc-h2">Context window management</a>
+<a href="#practical-example-add-pagination-to-users-endpoint" class="toc-h2">Practical example: "Add pagination to /users endpoint"</a>
+<a href="#leading-tools-in-2026" class="toc-h2">Leading tools in 2026</a>
+<a href="#when-agentic-coding-shines-and-when-it-doesnt" class="toc-h2">When agentic coding shines — and when it doesn't</a></nav>
+    </nav>
+  </aside>
+</div>
+
+<script>
+const CONTENT = {
+  en: '<h2 id="the-scenario">The scenario</h2>\n<p>A developer describes a task in natural language — "add pagination to the user list endpoint, with tests" — and an AI agent reads the relevant files, writes the code changes, runs the tests, reads the failure output, fixes the issue, and stops when the tests pass.</p>\n<p>No copy-paste from ChatGPT. No manual application of suggestions. The agent is in the loop.</p>\n<p>This is <strong>agentic coding</strong>: the AI operates as a collaborator with file access, tool use, and iterative execution — not just a text completion engine.</p>\n<h2 id="how-it-works">How it works</h2>\n<p>The agent runs a loop:</p>\n<pre><code>Task description (from developer)\n    ↓\n[LLM: Plan]  →  steps to accomplish the task\n    ↓\n[LLM: Act]   →  tool call (read file / write file / run command / search docs)\n    ↓\n[Tool execution]  →  result (file content / test output / error message)\n    ↓\n[LLM: Observe]  →  interpret result, decide next action\n    ↓\n... repeat until done or human approval needed</code></pre>\n<p>The LLM is not just generating text — it is <strong>reasoning about state</strong> and <strong>making decisions</strong>. The tools give it hands.</p>\n<h2 id="tools-an-agentic-coding-assistant-uses">Tools an agentic coding assistant uses</h2>\n<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody><tr><td><code>read_file</code></td><td>Read any file in the repo</td></tr><tr><td><code>write_file</code></td><td>Create or overwrite a file</td></tr><tr><td><code>edit_file</code></td><td>Make targeted edits (diff-style)</td></tr><tr><td><code>run_command</code></td><td>Execute shell commands (tests, builds, linters)</td></tr><tr><td><code>search_codebase</code></td><td>Semantic or keyword search across files</td></tr><tr><td><code>web_search</code></td><td>Look up documentation, Stack Overflow, GitHub issues</td></tr><tr><td><code>list_directory</code></td><td>Explore the file tree</td></tr></tbody></table>\n<p>MCP (Model Context Protocol) is the emerging standard for defining and connecting these tools — allowing the same agent to work across different editors and environments.</p>\n<h2 id="what-changes-compared-to-autocomplete">What changes compared to autocomplete</h2>\n<p>Autocomplete is <strong>reactive</strong>: the dev types, the model suggests the next tokens.</p>\n<p>Agentic coding is <strong>proactive</strong>: the dev describes intent, the agent figures out what to do, does it, verifies it, and iterates.</p>\n<table><thead><tr><td>Trigger</td><td>Dev types</td><td>Dev describes task</td></tr></thead><tbody><tr><td>Scope</td><td>Current file, cursor position</td><td>Entire codebase</td></tr><tr><td>Execution</td><td>Suggestion only</td><td>Runs code, tests, commands</td></tr><tr><td>Iteration</td><td>One-shot</td><td>Multiple steps</td></tr><tr><td>Human in loop</td><td>Every suggestion</td><td>At approval checkpoints</td></tr><tr><td>Error handling</td><td>None</td><td>Reads errors, tries to fix</td></tr></tbody></table>\n<h2 id="the-trust-and-control-problem">The trust and control problem</h2>\n<p>Agentic coding introduces a new challenge: <strong>the agent takes actions that are hard to reverse</strong>.</p>\n<p>Deleting a file is easy. Undoing it after 5 more agent steps is painful. Letting an agent push to <code>main</code> without review is dangerous.</p>\n<p>Good agentic systems address this with:</p>\n<p><strong>1. Checkpoints.</strong> The agent pauses before destructive actions (file deletion, git push, running migrations) and asks for approval.</p>\n<p><strong>2. Diff review.</strong> All file edits are shown as diffs before being applied. The dev sees exactly what changed.</p>\n<p><strong>3. Sandbox execution.</strong> Shell commands run in a sandboxed environment — the agent can\'t accidentally affect production.</p>\n<p><strong>4. Scope constraints.</strong> The agent is told which directories it\'s allowed to modify. It cannot wander outside the task boundary.</p>\n<p><strong>5. Git as a safety net.</strong> Every significant checkpoint creates a commit. If the agent goes off-track, <code>git reset</code> brings you back.</p>\n<h2 id="context-window-management">Context window management</h2>\n<p>An agentic session over a large codebase quickly exhausts the context window. The agent needs to be smart about what it loads:</p>\n<ul><li><strong>Don\'t load the entire repo</strong> — only files relevant to the task</li><li><strong>Summarize read results</strong> — instead of including the full file, extract only the relevant functions</li><li><strong>Use search first, read second</strong> — search to find the right file, then read only that file</li></ul>\n<p>KV cache is critical for performance: large shared context (the task description, coding conventions, architecture overview) is cached and not re-sent on every iteration.</p>\n<h2 id="practical-example-add-pagination-to-users-endpoint">Practical example: "Add pagination to /users endpoint"</h2>\n<pre><code>Step 1  → search_codebase("users endpoint") \n        → finds src/routes/users.py\n\nStep 2  → read_file("src/routes/users.py")\n        → sees: def list_users(): return all_users\n\nStep 3  → read_file("tests/test_users.py")\n        → sees: existing tests for list_users\n\nStep 4  → edit_file("src/routes/users.py")\n        → adds: page, page_size params + slicing logic\n\nStep 5  → edit_file("tests/test_users.py")\n        → adds: tests for pagination edge cases\n\nStep 6  → run_command("pytest tests/test_users.py")\n        → output: FAILED – TypeError: unsupported operand\n\nStep 7  → [LLM reads error, identifies off-by-one in slicing]\n        → edit_file("src/routes/users.py") — fixes the bug\n\nStep 8  → run_command("pytest tests/test_users.py")\n        → output: 4 passed\n\nDone. → presents diff to developer for review</code></pre>\n<h2 id="leading-tools-in-2026">Leading tools in 2026</h2>\n<table><thead><tr><th>Tool</th><th>Type</th><th>Key feature</th></tr></thead><tbody><tr><td>Claude Code</td><td>CLI agent</td><td>Deep file/shell access, MCP</td></tr><tr><td>Cursor</td><td>Agentic IDE</td><td>Codebase-wide context, inline agent</td></tr><tr><td>GitHub Copilot Workspace</td><td>Cloud agent</td><td>PR-level tasks, GitHub integration</td></tr><tr><td>Devin</td><td>Autonomous agent</td><td>Full-session autonomy, web browsing</td></tr><tr><td>Windsurf (Codeium)</td><td>Agentic IDE</td><td>Flow-based agent, fast iteration</td></tr></tbody></table>\n<h2 id="when-agentic-coding-shines-and-when-it-doesnt">When agentic coding shines — and when it doesn\'t</h2>\n<p><strong>Good fit:</strong></p>\n<ul><li>Repetitive, well-defined tasks (add CRUD endpoints, write tests for existing code, migrate a library)</li><li>Debugging with a clear error message and isolated scope</li><li>Exploring an unfamiliar codebase to understand structure</li></ul>\n<p><strong>Poor fit:</strong></p>\n<ul><li>Architectural decisions that require deep business context</li><li>Tasks requiring access to systems the agent can\'t reach (production DBs, customer data)</li><li>Long-horizon tasks where the goal keeps changing — the agent needs stable objectives</li></ul>',
+  fr: '<h2 id="le-scénario">Le scénario</h2>\n<p>Un développeur décrit une tâche en langage naturel — "ajouter la pagination à l\'endpoint liste utilisateurs, avec des tests" — et un agent IA lit les fichiers pertinents, écrit les modifications de code, exécute les tests, lit la sortie d\'échec, corrige le problème, et s\'arrête quand les tests passent.</p>\n<p>Pas de copier-coller depuis ChatGPT. Pas d\'application manuelle des suggestions. L\'agent est dans la boucle.</p>\n<p>C\'est le <strong>coding agentique</strong> : l\'IA opère comme un collaborateur avec accès aux fichiers, utilisation d\'outils, et exécution itérative — pas juste un moteur de complétion de texte.</p>\n<h2 id="comment-ça-fonctionne">Comment ça fonctionne</h2>\n<p>L\'agent exécute une boucle :</p>\n<pre><code>Description de la tâche (du développeur)\n    ↓\n[LLM : Planifier]  →  étapes pour accomplir la tâche\n    ↓\n[LLM : Agir]       →  appel d\'outil (lire fichier / écrire fichier / exécuter commande / chercher docs)\n    ↓\n[Exécution outil]  →  résultat (contenu fichier / sortie tests / message d\'erreur)\n    ↓\n[LLM : Observer]   →  interpréter le résultat, décider l\'action suivante\n    ↓\n... répéter jusqu\'à ce que ce soit terminé ou qu\'une approbation humaine soit nécessaire</code></pre>\n<p>Le LLM ne génère pas juste du texte — il <strong>raisonne sur l\'état</strong> et <strong>prend des décisions</strong>. Les outils lui donnent des mains.</p>\n<h2 id="outils-quun-assistant-de-coding-agentique-utilise">Outils qu\'un assistant de coding agentique utilise</h2>\n<table><thead><tr><th>Outil</th><th>Ce qu\'il fait</th></tr></thead><tbody><tr><td><code>read_file</code></td><td>Lire n\'importe quel fichier du dépôt</td></tr><tr><td><code>write_file</code></td><td>Créer ou écraser un fichier</td></tr><tr><td><code>edit_file</code></td><td>Effectuer des modifications ciblées (style diff)</td></tr><tr><td><code>run_command</code></td><td>Exécuter des commandes shell (tests, builds, linters)</td></tr><tr><td><code>search_codebase</code></td><td>Recherche sémantique ou par mots-clés dans les fichiers</td></tr><tr><td><code>web_search</code></td><td>Consulter la documentation, Stack Overflow, les issues GitHub</td></tr><tr><td><code>list_directory</code></td><td>Explorer l\'arborescence des fichiers</td></tr></tbody></table>\n<p>MCP (Model Context Protocol) est le standard émergent pour définir et connecter ces outils — permettant au même agent de fonctionner dans différents éditeurs et environnements.</p>\n<h2 id="ce-qui-change-par-rapport-à-lautocomplétion">Ce qui change par rapport à l\'autocomplétion</h2>\n<p>L\'autocomplétion est <strong>réactive</strong> : le dev tape, le modèle suggère les tokens suivants.</p>\n<p>Le coding agentique est <strong>proactif</strong> : le dev décrit l\'intention, l\'agent détermine quoi faire, le fait, le vérifie, et itère.</p>\n<table><thead><tr><td>Déclencheur</td><td>Le dev tape</td><td>Le dev décrit la tâche</td></tr></thead><tbody><tr><td>Périmètre</td><td>Fichier courant, position curseur</td><td>Toute la codebase</td></tr><tr><td>Exécution</td><td>Suggestion seulement</td><td>Exécute code, tests, commandes</td></tr><tr><td>Itération</td><td>Passage unique</td><td>Plusieurs étapes</td></tr><tr><td>Humain dans la boucle</td><td>Chaque suggestion</td><td>Aux points d\'approbation</td></tr><tr><td>Gestion des erreurs</td><td>Aucune</td><td>Lit les erreurs, essaie de corriger</td></tr></tbody></table>\n<h2 id="le-problème-de-confiance-et-de-contrôle">Le problème de confiance et de contrôle</h2>\n<p>Le coding agentique introduit un nouveau défi : <strong>l\'agent prend des actions difficiles à annuler</strong>.</p>\n<p>Supprimer un fichier est facile. L\'annuler après 5 autres étapes de l\'agent est pénible. Laisser un agent pousser sur <code>main</code> sans relecture est dangereux.</p>\n<p>Les bons systèmes agentiques adressent cela avec :</p>\n<p><strong>1. Les checkpoints.</strong> L\'agent fait une pause avant les actions destructrices (suppression de fichier, git push, exécution de migrations) et demande une approbation.</p>\n<p><strong>2. La revue de diff.</strong> Toutes les modifications de fichiers sont montrées comme des diffs avant d\'être appliquées. Le dev voit exactement ce qui a changé.</p>\n<p><strong>3. L\'exécution en sandbox.</strong> Les commandes shell s\'exécutent dans un environnement sandboxé — l\'agent ne peut pas accidentellement affecter la production.</p>\n<p><strong>4. Les contraintes de périmètre.</strong> L\'agent sait quels répertoires il est autorisé à modifier. Il ne peut pas s\'égarer hors du périmètre de la tâche.</p>\n<p><strong>5. Git comme filet de sécurité.</strong> Chaque checkpoint significatif crée un commit. Si l\'agent déraille, <code>git reset</code> ramène en arrière.</p>\n<h2 id="gestion-de-la-fenêtre-de-contexte">Gestion de la fenêtre de contexte</h2>\n<p>Une session agentique sur une grande codebase épuise rapidement la fenêtre de contexte. L\'agent doit être intelligent sur ce qu\'il charge :</p>\n<ul><li><strong>Ne pas charger tout le dépôt</strong> — seulement les fichiers pertinents pour la tâche</li><li><strong>Résumer les résultats de lecture</strong> — au lieu d\'inclure le fichier entier, extraire seulement les fonctions pertinentes</li><li><strong>Chercher d\'abord, lire ensuite</strong> — rechercher pour trouver le bon fichier, puis lire seulement ce fichier</li></ul>\n<p>Le KV cache est critique pour la performance : le contexte partagé large (description de la tâche, conventions de code, vue d\'architecture) est mis en cache et non renvoyé à chaque itération.</p>\n<h2 id="exemple-pratique-ajouter-la-pagination-à-lendpoint-users">Exemple pratique : "Ajouter la pagination à l\'endpoint /users"</h2>\n<pre><code>Étape 1  → search_codebase("users endpoint") \n         → trouve src/routes/users.py\n\nÉtape 2  → read_file("src/routes/users.py")\n         → voit : def list_users(): return all_users\n\nÉtape 3  → read_file("tests/test_users.py")\n         → voit : tests existants pour list_users\n\nÉtape 4  → edit_file("src/routes/users.py")\n         → ajoute : params page, page_size + logique de slicing\n\nÉtape 5  → edit_file("tests/test_users.py")\n         → ajoute : tests pour les cas limites de pagination\n\nÉtape 6  → run_command("pytest tests/test_users.py")\n         → sortie : FAILED – TypeError: unsupported operand\n\nÉtape 7  → [LLM lit l\'erreur, identifie un off-by-one dans le slicing]\n         → edit_file("src/routes/users.py") — corrige le bug\n\nÉtape 8  → run_command("pytest tests/test_users.py")\n         → sortie : 4 passed\n\nTerminé. → présente le diff au développeur pour revue</code></pre>\n<h2 id="outils-leaders-en-2026">Outils leaders en 2026</h2>\n<table><thead><tr><th>Outil</th><th>Type</th><th>Caractéristique clé</th></tr></thead><tbody><tr><td>Claude Code</td><td>Agent CLI</td><td>Accès profond fichiers/shell, MCP</td></tr><tr><td>Cursor</td><td>IDE agentique</td><td>Contexte à l\'échelle de la codebase, agent inline</td></tr><tr><td>GitHub Copilot Workspace</td><td>Agent cloud</td><td>Tâches niveau PR, intégration GitHub</td></tr><tr><td>Devin</td><td>Agent autonome</td><td>Autonomie session complète, navigation web</td></tr><tr><td>Windsurf (Codeium)</td><td>IDE agentique</td><td>Agent basé sur les flux, itération rapide</td></tr></tbody></table>\n<h2 id="quand-le-coding-agentique-brille-et-quand-il-ne-brille-pas">Quand le coding agentique brille — et quand il ne brille pas</h2>\n<p><strong>Bon fit :</strong></p>\n<ul><li>Tâches répétitives et bien définies (ajouter des endpoints CRUD, écrire des tests pour du code existant, migrer une librairie)</li><li>Débogage avec un message d\'erreur clair et un périmètre isolé</li><li>Explorer une codebase inconnue pour comprendre la structure</li></ul>\n<p><strong>Mauvais fit :</strong></p>\n<ul><li>Décisions architecturales nécessitant un contexte métier profond</li><li>Tâches nécessitant l\'accès à des systèmes que l\'agent ne peut pas atteindre (BDD production, données clients)</li><li>Tâches à long horizon où le but change constamment — l\'agent a besoin d\'objectifs stables</li></ul>',
+};
+const TOC = {
+  en: '<nav class="toc"><a href="#the-scenario" class="toc-h2">The scenario</a>\n<a href="#how-it-works" class="toc-h2">How it works</a>\n<a href="#tools-an-agentic-coding-assistant-uses" class="toc-h2">Tools an agentic coding assistant uses</a>\n<a href="#what-changes-compared-to-autocomplete" class="toc-h2">What changes compared to autocomplete</a>\n<a href="#the-trust-and-control-problem" class="toc-h2">The trust and control problem</a>\n<a href="#context-window-management" class="toc-h2">Context window management</a>\n<a href="#practical-example-add-pagination-to-users-endpoint" class="toc-h2">Practical example: "Add pagination to /users endpoint"</a>\n<a href="#leading-tools-in-2026" class="toc-h2">Leading tools in 2026</a>\n<a href="#when-agentic-coding-shines-and-when-it-doesnt" class="toc-h2">When agentic coding shines — and when it doesn\'t</a></nav>',
+  fr: '<nav class="toc"><a href="#le-scénario" class="toc-h2">Le scénario</a>\n<a href="#comment-ça-fonctionne" class="toc-h2">Comment ça fonctionne</a>\n<a href="#outils-quun-assistant-de-coding-agentique-utilise" class="toc-h2">Outils qu\'un assistant de coding agentique utilise</a>\n<a href="#ce-qui-change-par-rapport-à-lautocomplétion" class="toc-h2">Ce qui change par rapport à l\'autocomplétion</a>\n<a href="#le-problème-de-confiance-et-de-contrôle" class="toc-h2">Le problème de confiance et de contrôle</a>\n<a href="#gestion-de-la-fenêtre-de-contexte" class="toc-h2">Gestion de la fenêtre de contexte</a>\n<a href="#exemple-pratique-ajouter-la-pagination-à-lendpoint-users" class="toc-h2">Exemple pratique : "Ajouter la pagination à l\'endpoint /users"</a>\n<a href="#outils-leaders-en-2026" class="toc-h2">Outils leaders en 2026</a>\n<a href="#quand-le-coding-agentique-brille-et-quand-il-ne-brille-pas" class="toc-h2">Quand le coding agentique brille — et quand il ne brille pas</a></nav>',
+};
+let lang = 'en';
+
+function setLang(newLang) {
+  lang = newLang;
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  document.getElementById('toc-nav').innerHTML = TOC[lang] || TOC.en;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.en;
+  });
+}
+</script>
+</body>
+</html>

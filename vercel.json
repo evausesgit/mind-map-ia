@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "buildCommand": "pip install pyyaml && python scripts/generate_home.py && python scripts/generate.py data/ecosystem-macro.yaml web/macro.html && python scripts/generate.py data/ecosystem.yaml web/ecosystem.html && python scripts/generate_mermaid.py data/dense-vs-moe.yaml web/dense-vs-moe.html && python scripts/generate_glossary.py",
+  "outputDirectory": "web",
+  "installCommand": "pip install pyyaml"
+}

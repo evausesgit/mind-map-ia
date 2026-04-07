@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Case: Q&A Chat</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    color: #1A1A2E;
+    min-height: 100vh;
+  }
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-menu { position: relative; }
+  .nav-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 260px;
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1E2D4E;
+    text-decoration: none;
+    color: #BDC3C7;
+    font-size: 13px;
+    transition: background 0.1s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home { color: #BDC3C7 !important; font-size: 13px !important; border-bottom: 1px solid #1E2D4E; }
+  .nav-home:hover { color: #FF6B6B !important; }
+  .lang-toggle { display: flex; gap: 6px; }
+  .lang-btn {
+    background: none;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+
+  .page-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .page-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  .article-header { margin-bottom: 32px; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #27AE6022;
+    color: #27AE60;
+    border: 1px solid #27AE6044;
+  }
+  .date { font-size: 12px; color: #95A5A6; }
+  .article-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1A1A2E;
+    margin-bottom: 12px;
+  }
+  .article-summary {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #E8EAF6;
+    color: #3F51B5;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .article-body { line-height: 1.75; color: #2C3E50; }
+  .article-body h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #E8EAED;
+  }
+  .article-body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 24px 0 8px;
+  }
+  .article-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7F8C8D;
+    margin: 20px 0 6px;
+  }
+  .article-body p { margin-bottom: 14px; font-size: 15px; }
+  .article-body ul, .article-body ol {
+    margin: 8px 0 14px 20px;
+    font-size: 15px;
+  }
+  .article-body li { margin-bottom: 4px; }
+  .article-body strong { font-weight: 700; color: #1A1A2E; }
+  .article-body em { color: #555; }
+  .article-body code {
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 13px;
+    background: #EEF0F3;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #C0392B;
+  }
+  .article-body pre {
+    background: #1A1A2E;
+    color: #E8EAF6;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .article-body pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .article-body th {
+    background: #1A1A2E;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .article-body td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #E8EAED;
+  }
+  .article-body tr:nth-child(even) td { background: #F8F9FA; }
+  .article-body blockquote {
+    border-left: 3px solid #1A1A2E;
+    padding: 8px 16px;
+    margin: 12px 0;
+    color: #555;
+    background: #F0F0F5;
+    border-radius: 0 4px 4px 0;
+  }
+  .article-body hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 28px 0;
+  }
+  .article-body a { color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }
+  .article-body a:hover { color: #3498DB; }
+
+  /* Sidebar */
+  .sidebar { position: sticky; top: 80px; }
+  .toc { display: flex; flex-direction: column; gap: 4px; }
+  .toc-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #95A5A6;
+    margin-bottom: 8px;
+  }
+  .toc a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    padding: 3px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    line-height: 1.4;
+    transition: all 0.1s;
+  }
+  .toc a.toc-h3 {
+    padding-left: 20px;
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+  .toc a:hover { color: #1A1A2E; border-left-color: #1A1A2E; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="nav-menu">  <button class="nav-btn">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="../index.html" class="nav-home">← Home</a>   <a href="../macro.html">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="../rag-pattern.html">  <span class="nav-icon">🔍</span>  <span class="nav-info">    <span class="nav-title" data-en="RAG" data-fr="RAG">RAG</span>    <span class="nav-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span>  </span></a><a href="../cloud-managed.html">  <span class="nav-icon">☁️</span>  <span class="nav-info">    <span class="nav-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span>    <span class="nav-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span>  </span></a><a href="../ai-agents.html">  <span class="nav-icon">🤖</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span>    <span class="nav-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span>  </span></a><a href="../ai-coding-assistants.html">  <span class="nav-icon">💻</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span>    <span class="nav-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span>  </span></a><a href="../open-weights-models.html">  <span class="nav-icon">🔓</span>  <span class="nav-info">    <span class="nav-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span>    <span class="nav-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span>  </span></a><a href="../proprietary-models.html">  <span class="nav-icon">🏢</span>  <span class="nav-info">    <span class="nav-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span>    <span class="nav-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span>  </span></a><a href="../use-cases.html">  <span class="nav-icon">🎯</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Use Cases" data-fr="Cas d'Usage IA">AI Use Cases</span>    <span class="nav-desc" data-en="4 user personas, their scenarios, AI patterns, and key stack components" data-fr="4 personas utilisateur, leurs scénarios, patterns IA, et composants clés">4 user personas, their scenarios, AI patterns, and key stack components</span>  </span></a><a href="../dense-vs-moe.html">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="../glossary.html">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <main>
+    <div class="article-header">
+      <div class="article-meta">
+        <span class="status-badge">stable</span>
+        <span class="date">2026-04-06</span>
+      </div>
+      <h1 class="article-title" data-en="Use Case: Q&A Chat" data-fr="Cas d'Usage : Chat Q&R">Use Case: Q&A Chat</h1>
+      <p class="article-summary" data-en="How a non-technical user interacts with an AI over a knowledge base — architecture, UX trade-offs, and failure modes." data-fr="Comment un utilisateur non technique interagit avec une IA sur une base de connaissance — architecture, compromis UX, et modes d'échec.">How a non-technical user interacts with an AI over a knowledge base — architecture, UX trade-offs, and failure modes.</p>
+      <div class="tags"><span class="tag">rag</span><span class="tag">chat</span><span class="tag">qa</span><span class="tag">ux</span><span class="tag">knowledge-base</span></div>
+    </div>
+
+    <div class="article-body" id="article-body">
+      <h2 id="the-scenario">The scenario</h2>
+<p>An end user — a customer, an employee, a citizen — opens a chat interface and asks a question in plain language. The system finds the relevant answer within a corpus (product documentation, internal policies, legal contracts, support tickets) and responds in natural language with citations.</p>
+<p>No SQL. No boolean search operators. No reading of 50-page PDFs. Just: ask and receive.</p>
+<h2 id="architecture">Architecture</h2>
+<p>This use case is almost always powered by <strong>RAG</strong> (Retrieval-Augmented Generation). The flow at inference time:</p>
+<pre><code>User question
+    ↓
+[Embed question]  →  query vector
+    ↓
+[Vector DB search]  →  top-k relevant document chunks
+    ↓
+[Build prompt]  =  system instructions + chunks + question
+    ↓
+[LLM]  →  grounded answer + source references
+    ↓
+User sees: answer + citations</code></pre>
+<p>Two things happen offline, before any user ever types a question:</p>
+<ol><li><strong>Ingestion</strong>: documents are split into chunks, each chunk is embedded (converted to a vector), and stored in a vector database.</li><li><strong>Index maintenance</strong>: when documents change, the index must be updated. Stale chunks = stale answers.</li></ol>
+<h2 id="what-makes-a-good-qa-chat-ux">What makes a good Q&amp;A chat UX</h2>
+<p>From the user's perspective, the only thing that matters is <strong>trust</strong>. They will abandon the tool the moment they get one confident-sounding wrong answer with no way to verify it.</p>
+<p>Three things build trust:</p>
+<p><strong>1. Citations are mandatory.</strong> Every claim should reference a specific source: document title, section, page. Users should be able to click through and verify. "According to the HR Policy v2.3, Section 4.1..." is far more trustworthy than a bare answer.</p>
+<p><strong>2. "I don't know" is a feature.</strong> When no relevant context is retrieved, the system must say so — not hallucinate. Configuring a confidence threshold below which the system falls back to "I couldn't find relevant information" is non-negotiable.</p>
+<p><strong>3. The answer should be short.</strong> Users read the first two sentences and then decide whether to dig deeper. The LLM should be prompted to give the direct answer first, then optionally expand.</p>
+<h2 id="key-metrics">Key metrics</h2>
+<table><thead><tr><th>Metric</th><th>What it measures</th><th>Target</th></tr></thead><tbody><tr><td>Retrieval recall</td><td>Are relevant chunks actually retrieved?</td><td>&gt; 85%</td></tr><tr><td>Answer faithfulness</td><td>Does the answer match retrieved chunks?</td><td>&gt; 95%</td></tr><tr><td>Hallucination rate</td><td>Does the model invent facts not in context?</td><td>&lt; 2%</td></tr><tr><td>User satisfaction</td><td>Do users rate answers as helpful?</td><td>&gt; 4/5</td></tr><tr><td>Deflection rate</td><td>Does the chat reduce human agent load?</td><td>varies</td></tr></tbody></table>
+<p>Evaluate retrieval and generation <strong>separately</strong> — bad retrieval cannot be fixed by a better LLM.</p>
+<h2 id="failure-modes">Failure modes</h2>
+<p><strong>Retrieval misses.</strong> The right document exists but isn't retrieved. Usually caused by: poor chunking (breaking key sentences at chunk boundaries), embedding model mismatch (model wasn't trained on your domain), or sparse keyword coverage (the user's phrasing doesn't match the document's phrasing). Fix: hybrid search (dense vectors + BM25 keyword), reranker, query reformulation.</p>
+<p><strong>Context overflow.</strong> Retrieving too many chunks fills the context window and dilutes focus. The LLM starts averaging across chunks rather than answering the specific question. Fix: a reranker to keep only the top 3–5 truly relevant chunks.</p>
+<p><strong>Cross-chunk dependencies.</strong> The answer spans multiple sections of a document. No single chunk contains it. Fix: larger chunks with overlap, or recursive chunk expansion.</p>
+<p><strong>Stale knowledge base.</strong> Documents are updated but the index isn't. Users get outdated answers — worse than getting no answer, because they trust it. Fix: automated re-indexing on document update, TTL on chunks.</p>
+<p><strong>Prompt injection.</strong> A malicious user tries to override the system prompt via their question. Fix: input sanitization, a strict system prompt that doesn't allow instruction-following from user input.</p>
+<h2 id="typical-stack">Typical stack</h2>
+<table><thead><tr><th>Layer</th><th>Examples</th></tr></thead><tbody><tr><td>LLM</td><td>GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro</td></tr><tr><td>Embeddings</td><td>OpenAI text-embedding-3, Cohere Embed v3</td></tr><tr><td>Vector DB</td><td>Pinecone, Weaviate, Qdrant, pgvector</td></tr><tr><td>Reranker</td><td>Cohere Rerank, BGE Reranker, Jina Reranker</td></tr><tr><td>Orchestration</td><td>LangChain, LlamaIndex, custom</td></tr><tr><td>UI</td><td>Vercel AI SDK, Streamlit, custom React</td></tr></tbody></table>
+<h2 id="when-to-go-beyond-rag">When to go beyond RAG</h2>
+<p>RAG is not always enough:</p>
+<ul><li><strong>Multi-step reasoning</strong>: "Compare our Q3 revenue across all business units and identify the outlier" → agent loop with code execution</li><li><strong>Real-time data</strong>: RAG can't retrieve live database state — use tool-calling to query a live source</li><li><strong>Complex workflows</strong>: the user wants to <em>act</em>, not just <em>read</em> → agentic assistant</li></ul>
+    </div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="toc-label" data-en="On this page" data-fr="Sur cette page">On this page</div>
+    <nav class="toc" id="toc-nav">
+      <nav class="toc"><a href="#the-scenario" class="toc-h2">The scenario</a>
+<a href="#architecture" class="toc-h2">Architecture</a>
+<a href="#what-makes-a-good-qa-chat-ux" class="toc-h2">What makes a good Q&A chat UX</a>
+<a href="#key-metrics" class="toc-h2">Key metrics</a>
+<a href="#failure-modes" class="toc-h2">Failure modes</a>
+<a href="#typical-stack" class="toc-h2">Typical stack</a>
+<a href="#when-to-go-beyond-rag" class="toc-h2">When to go beyond RAG</a></nav>
+    </nav>
+  </aside>
+</div>
+
+<script>
+const CONTENT = {
+  en: '<h2 id="the-scenario">The scenario</h2>\n<p>An end user — a customer, an employee, a citizen — opens a chat interface and asks a question in plain language. The system finds the relevant answer within a corpus (product documentation, internal policies, legal contracts, support tickets) and responds in natural language with citations.</p>\n<p>No SQL. No boolean search operators. No reading of 50-page PDFs. Just: ask and receive.</p>\n<h2 id="architecture">Architecture</h2>\n<p>This use case is almost always powered by <strong>RAG</strong> (Retrieval-Augmented Generation). The flow at inference time:</p>\n<pre><code>User question\n    ↓\n[Embed question]  →  query vector\n    ↓\n[Vector DB search]  →  top-k relevant document chunks\n    ↓\n[Build prompt]  =  system instructions + chunks + question\n    ↓\n[LLM]  →  grounded answer + source references\n    ↓\nUser sees: answer + citations</code></pre>\n<p>Two things happen offline, before any user ever types a question:</p>\n<ol><li><strong>Ingestion</strong>: documents are split into chunks, each chunk is embedded (converted to a vector), and stored in a vector database.</li><li><strong>Index maintenance</strong>: when documents change, the index must be updated. Stale chunks = stale answers.</li></ol>\n<h2 id="what-makes-a-good-qa-chat-ux">What makes a good Q&amp;A chat UX</h2>\n<p>From the user\'s perspective, the only thing that matters is <strong>trust</strong>. They will abandon the tool the moment they get one confident-sounding wrong answer with no way to verify it.</p>\n<p>Three things build trust:</p>\n<p><strong>1. Citations are mandatory.</strong> Every claim should reference a specific source: document title, section, page. Users should be able to click through and verify. "According to the HR Policy v2.3, Section 4.1..." is far more trustworthy than a bare answer.</p>\n<p><strong>2. "I don\'t know" is a feature.</strong> When no relevant context is retrieved, the system must say so — not hallucinate. Configuring a confidence threshold below which the system falls back to "I couldn\'t find relevant information" is non-negotiable.</p>\n<p><strong>3. The answer should be short.</strong> Users read the first two sentences and then decide whether to dig deeper. The LLM should be prompted to give the direct answer first, then optionally expand.</p>\n<h2 id="key-metrics">Key metrics</h2>\n<table><thead><tr><th>Metric</th><th>What it measures</th><th>Target</th></tr></thead><tbody><tr><td>Retrieval recall</td><td>Are relevant chunks actually retrieved?</td><td>&gt; 85%</td></tr><tr><td>Answer faithfulness</td><td>Does the answer match retrieved chunks?</td><td>&gt; 95%</td></tr><tr><td>Hallucination rate</td><td>Does the model invent facts not in context?</td><td>&lt; 2%</td></tr><tr><td>User satisfaction</td><td>Do users rate answers as helpful?</td><td>&gt; 4/5</td></tr><tr><td>Deflection rate</td><td>Does the chat reduce human agent load?</td><td>varies</td></tr></tbody></table>\n<p>Evaluate retrieval and generation <strong>separately</strong> — bad retrieval cannot be fixed by a better LLM.</p>\n<h2 id="failure-modes">Failure modes</h2>\n<p><strong>Retrieval misses.</strong> The right document exists but isn\'t retrieved. Usually caused by: poor chunking (breaking key sentences at chunk boundaries), embedding model mismatch (model wasn\'t trained on your domain), or sparse keyword coverage (the user\'s phrasing doesn\'t match the document\'s phrasing). Fix: hybrid search (dense vectors + BM25 keyword), reranker, query reformulation.</p>\n<p><strong>Context overflow.</strong> Retrieving too many chunks fills the context window and dilutes focus. The LLM starts averaging across chunks rather than answering the specific question. Fix: a reranker to keep only the top 3–5 truly relevant chunks.</p>\n<p><strong>Cross-chunk dependencies.</strong> The answer spans multiple sections of a document. No single chunk contains it. Fix: larger chunks with overlap, or recursive chunk expansion.</p>\n<p><strong>Stale knowledge base.</strong> Documents are updated but the index isn\'t. Users get outdated answers — worse than getting no answer, because they trust it. Fix: automated re-indexing on document update, TTL on chunks.</p>\n<p><strong>Prompt injection.</strong> A malicious user tries to override the system prompt via their question. Fix: input sanitization, a strict system prompt that doesn\'t allow instruction-following from user input.</p>\n<h2 id="typical-stack">Typical stack</h2>\n<table><thead><tr><th>Layer</th><th>Examples</th></tr></thead><tbody><tr><td>LLM</td><td>GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro</td></tr><tr><td>Embeddings</td><td>OpenAI text-embedding-3, Cohere Embed v3</td></tr><tr><td>Vector DB</td><td>Pinecone, Weaviate, Qdrant, pgvector</td></tr><tr><td>Reranker</td><td>Cohere Rerank, BGE Reranker, Jina Reranker</td></tr><tr><td>Orchestration</td><td>LangChain, LlamaIndex, custom</td></tr><tr><td>UI</td><td>Vercel AI SDK, Streamlit, custom React</td></tr></tbody></table>\n<h2 id="when-to-go-beyond-rag">When to go beyond RAG</h2>\n<p>RAG is not always enough:</p>\n<ul><li><strong>Multi-step reasoning</strong>: "Compare our Q3 revenue across all business units and identify the outlier" → agent loop with code execution</li><li><strong>Real-time data</strong>: RAG can\'t retrieve live database state — use tool-calling to query a live source</li><li><strong>Complex workflows</strong>: the user wants to <em>act</em>, not just <em>read</em> → agentic assistant</li></ul>',
+  fr: '<h2 id="le-scénario">Le scénario</h2>\n<p>Un utilisateur final — un client, un employé, un citoyen — ouvre une interface de chat et pose une question en langage naturel. Le système trouve la réponse pertinente dans un corpus (documentation produit, politiques internes, contrats légaux, tickets support) et répond en langage naturel avec des citations.</p>\n<p>Pas de SQL. Pas d\'opérateurs de recherche booléenne. Pas de lecture de PDFs de 50 pages. Juste : demander et recevoir.</p>\n<h2 id="architecture">Architecture</h2>\n<p>Ce cas d\'usage est presque toujours alimenté par <strong>RAG</strong> (Retrieval-Augmented Generation). Le flux au moment de l\'inférence :</p>\n<pre><code>Question utilisateur\n    ↓\n[Embedder la question]  →  vecteur de requête\n    ↓\n[Recherche Vector DB]  →  top-k chunks de documents pertinents\n    ↓\n[Construire le prompt]  =  instructions système + chunks + question\n    ↓\n[LLM]  →  réponse ancrée + références sources\n    ↓\nL\'utilisateur voit : réponse + citations</code></pre>\n<p>Deux choses se passent offline, avant qu\'un utilisateur tape quoi que ce soit :</p>\n<ol><li><strong>Ingestion</strong> : les documents sont découpés en chunks, chaque chunk est embedé (converti en vecteur), et stocké dans une base vectorielle.</li><li><strong>Maintenance de l\'index</strong> : quand les documents changent, l\'index doit être mis à jour. Des chunks périmés = des réponses périmées.</li></ol>\n<h2 id="ce-qui-fait-un-bon-ux-de-chat-qr">Ce qui fait un bon UX de chat Q&amp;R</h2>\n<p>Du point de vue de l\'utilisateur, la seule chose qui compte est la <strong>confiance</strong>. Ils abandonneront l\'outil dès qu\'ils obtiendront une mauvaise réponse formulée avec assurance, sans moyen de la vérifier.</p>\n<p>Trois choses construisent la confiance :</p>\n<p><strong>1. Les citations sont obligatoires.</strong> Chaque affirmation doit référencer une source précise : titre du document, section, page. Les utilisateurs doivent pouvoir cliquer et vérifier. "Selon la Politique RH v2.3, Section 4.1..." est bien plus digne de confiance qu\'une réponse nue.</p>\n<p><strong>2. "Je ne sais pas" est une fonctionnalité.</strong> Quand aucun contexte pertinent n\'est récupéré, le système doit le dire — pas halluciner. Configurer un seuil de confiance en dessous duquel le système répond "Je n\'ai pas trouvé d\'information pertinente" est non négociable.</p>\n<p><strong>3. La réponse doit être courte.</strong> Les utilisateurs lisent les deux premières phrases puis décident de creuser. Le LLM doit être prompté pour donner la réponse directe d\'abord, puis éventuellement développer.</p>\n<h2 id="métriques-clés">Métriques clés</h2>\n<table><thead><tr><th>Métrique</th><th>Ce qu\'elle mesure</th><th>Cible</th></tr></thead><tbody><tr><td>Recall de récupération</td><td>Les chunks pertinents sont-ils récupérés ?</td><td>&gt; 85%</td></tr><tr><td>Fidélité des réponses</td><td>La réponse correspond-elle aux chunks récupérés ?</td><td>&gt; 95%</td></tr><tr><td>Taux d\'hallucination</td><td>Le modèle invente-t-il des faits absents du contexte ?</td><td>&lt; 2%</td></tr><tr><td>Satisfaction utilisateur</td><td>Les utilisateurs notent-ils les réponses utiles ?</td><td>&gt; 4/5</td></tr><tr><td>Taux de deflexion</td><td>Le chat réduit-il la charge sur les agents humains ?</td><td>variable</td></tr></tbody></table>\n<p>Évaluer la récupération et la génération <strong>séparément</strong> — une mauvaise récupération ne peut pas être corrigée par un meilleur LLM.</p>\n<h2 id="modes-déchec">Modes d\'échec</h2>\n<p><strong>Ratés de récupération.</strong> Le bon document existe mais n\'est pas récupéré. Causes : mauvais chunking (coupure des phrases clés aux frontières de chunks), inadéquation du modèle d\'embedding (le modèle n\'a pas été entraîné sur votre domaine), ou couverture de mots-clés insuffisante (la formulation de l\'utilisateur ne correspond pas à celle du document). Correction : recherche hybride (vecteurs denses + BM25), reranker, reformulation de requête.</p>\n<p><strong>Débordement de contexte.</strong> Récupérer trop de chunks remplit la fenêtre de contexte et dilue le focus. Le LLM commence à moyenner sur les chunks plutôt qu\'à répondre à la question spécifique. Correction : un reranker pour ne garder que les 3–5 chunks vraiment pertinents.</p>\n<p><strong>Dépendances inter-chunks.</strong> La réponse s\'étend sur plusieurs sections d\'un document. Aucun chunk ne la contient seul. Correction : chunks plus larges avec chevauchement, ou expansion récursive de chunks.</p>\n<p><strong>Base de connaissance périmée.</strong> Les documents sont mis à jour mais l\'index ne l\'est pas. Les utilisateurs obtiennent des réponses obsolètes — pire que pas de réponse, car ils lui font confiance. Correction : réindexation automatisée à la mise à jour des documents, TTL sur les chunks.</p>\n<p><strong>Injection de prompt.</strong> Un utilisateur malveillant tente de contourner le prompt système via sa question. Correction : sanitisation des entrées, prompt système strict qui ne permet pas de suivre des instructions depuis les entrées utilisateur.</p>\n<h2 id="stack-typique">Stack typique</h2>\n<table><thead><tr><th>Couche</th><th>Exemples</th></tr></thead><tbody><tr><td>LLM</td><td>GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro</td></tr><tr><td>Embeddings</td><td>OpenAI text-embedding-3, Cohere Embed v3</td></tr><tr><td>Vector DB</td><td>Pinecone, Weaviate, Qdrant, pgvector</td></tr><tr><td>Reranker</td><td>Cohere Rerank, BGE Reranker, Jina Reranker</td></tr><tr><td>Orchestration</td><td>LangChain, LlamaIndex, custom</td></tr><tr><td>UI</td><td>Vercel AI SDK, Streamlit, React custom</td></tr></tbody></table>\n<h2 id="quand-aller-au-delà-du-rag">Quand aller au-delà du RAG</h2>\n<p>RAG ne suffit pas toujours :</p>\n<ul><li><strong>Raisonnement multi-étapes</strong> : "Compare notre CA Q3 sur toutes les BUs et identifie l\'anomalie" → boucle agent avec exécution de code</li><li><strong>Données en temps réel</strong> : RAG ne peut pas récupérer l\'état d\'une base de données en direct — utiliser le tool-calling vers une source live</li><li><strong>Workflows complexes</strong> : l\'utilisateur veut <em>agir</em>, pas juste <em>lire</em> → assistant agentique</li></ul>',
+};
+const TOC = {
+  en: '<nav class="toc"><a href="#the-scenario" class="toc-h2">The scenario</a>\n<a href="#architecture" class="toc-h2">Architecture</a>\n<a href="#what-makes-a-good-qa-chat-ux" class="toc-h2">What makes a good Q&A chat UX</a>\n<a href="#key-metrics" class="toc-h2">Key metrics</a>\n<a href="#failure-modes" class="toc-h2">Failure modes</a>\n<a href="#typical-stack" class="toc-h2">Typical stack</a>\n<a href="#when-to-go-beyond-rag" class="toc-h2">When to go beyond RAG</a></nav>',
+  fr: '<nav class="toc"><a href="#le-scénario" class="toc-h2">Le scénario</a>\n<a href="#architecture" class="toc-h2">Architecture</a>\n<a href="#ce-qui-fait-un-bon-ux-de-chat-qr" class="toc-h2">Ce qui fait un bon UX de chat Q&R</a>\n<a href="#métriques-clés" class="toc-h2">Métriques clés</a>\n<a href="#modes-déchec" class="toc-h2">Modes d\'échec</a>\n<a href="#stack-typique" class="toc-h2">Stack typique</a>\n<a href="#quand-aller-au-delà-du-rag" class="toc-h2">Quand aller au-delà du RAG</a></nav>',
+};
+let lang = 'en';
+
+function setLang(newLang) {
+  lang = newLang;
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  document.getElementById('toc-nav').innerHTML = TOC[lang] || TOC.en;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.en;
+  });
+}
+</script>
+</body>
+</html>

@@ -80,6 +80,17 @@ maps:
     output: proprietary-models.html
     data: data/proprietary-models.yaml
 
+  - id: use-cases
+    icon: "🎯"
+    title:
+      en: "AI Use Cases"
+      fr: "Cas d'Usage IA"
+    description:
+      en: "4 user personas, their scenarios, AI patterns, and key stack components"
+      fr: "4 personas utilisateur, leurs scénarios, patterns IA, et composants clés"
+    output: use-cases.html
+    data: data/use-cases.yaml
+
   - id: dense-vs-moe
     icon: "⚡"
     title:

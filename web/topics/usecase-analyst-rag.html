@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Case: Knowledge Search for Analysts</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    color: #1A1A2E;
+    min-height: 100vh;
+  }
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-menu { position: relative; }
+  .nav-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 260px;
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1E2D4E;
+    text-decoration: none;
+    color: #BDC3C7;
+    font-size: 13px;
+    transition: background 0.1s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home { color: #BDC3C7 !important; font-size: 13px !important; border-bottom: 1px solid #1E2D4E; }
+  .nav-home:hover { color: #FF6B6B !important; }
+  .lang-toggle { display: flex; gap: 6px; }
+  .lang-btn {
+    background: none;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+
+  .page-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .page-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  .article-header { margin-bottom: 32px; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #27AE6022;
+    color: #27AE60;
+    border: 1px solid #27AE6044;
+  }
+  .date { font-size: 12px; color: #95A5A6; }
+  .article-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1A1A2E;
+    margin-bottom: 12px;
+  }
+  .article-summary {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #E8EAF6;
+    color: #3F51B5;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .article-body { line-height: 1.75; color: #2C3E50; }
+  .article-body h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #E8EAED;
+  }
+  .article-body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 24px 0 8px;
+  }
+  .article-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7F8C8D;
+    margin: 20px 0 6px;
+  }
+  .article-body p { margin-bottom: 14px; font-size: 15px; }
+  .article-body ul, .article-body ol {
+    margin: 8px 0 14px 20px;
+    font-size: 15px;
+  }
+  .article-body li { margin-bottom: 4px; }
+  .article-body strong { font-weight: 700; color: #1A1A2E; }
+  .article-body em { color: #555; }
+  .article-body code {
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 13px;
+    background: #EEF0F3;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #C0392B;
+  }
+  .article-body pre {
+    background: #1A1A2E;
+    color: #E8EAF6;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .article-body pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .article-body th {
+    background: #1A1A2E;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .article-body td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #E8EAED;
+  }
+  .article-body tr:nth-child(even) td { background: #F8F9FA; }
+  .article-body blockquote {
+    border-left: 3px solid #1A1A2E;
+    padding: 8px 16px;
+    margin: 12px 0;
+    color: #555;
+    background: #F0F0F5;
+    border-radius: 0 4px 4px 0;
+  }
+  .article-body hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 28px 0;
+  }
+  .article-body a { color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }
+  .article-body a:hover { color: #3498DB; }
+
+  /* Sidebar */
+  .sidebar { position: sticky; top: 80px; }
+  .toc { display: flex; flex-direction: column; gap: 4px; }
+  .toc-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #95A5A6;
+    margin-bottom: 8px;
+  }
+  .toc a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    padding: 3px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    line-height: 1.4;
+    transition: all 0.1s;
+  }
+  .toc a.toc-h3 {
+    padding-left: 20px;
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+  .toc a:hover { color: #1A1A2E; border-left-color: #1A1A2E; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="nav-menu">  <button class="nav-btn">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="../index.html" class="nav-home">← Home</a>   <a href="../macro.html">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="../rag-pattern.html">  <span class="nav-icon">🔍</span>  <span class="nav-info">    <span class="nav-title" data-en="RAG" data-fr="RAG">RAG</span>    <span class="nav-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span>  </span></a><a href="../cloud-managed.html">  <span class="nav-icon">☁️</span>  <span class="nav-info">    <span class="nav-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span>    <span class="nav-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span>  </span></a><a href="../ai-agents.html">  <span class="nav-icon">🤖</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span>    <span class="nav-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span>  </span></a><a href="../ai-coding-assistants.html">  <span class="nav-icon">💻</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span>    <span class="nav-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span>  </span></a><a href="../open-weights-models.html">  <span class="nav-icon">🔓</span>  <span class="nav-info">    <span class="nav-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span>    <span class="nav-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span>  </span></a><a href="../proprietary-models.html">  <span class="nav-icon">🏢</span>  <span class="nav-info">    <span class="nav-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span>    <span class="nav-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span>  </span></a><a href="../use-cases.html">  <span class="nav-icon">🎯</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Use Cases" data-fr="Cas d'Usage IA">AI Use Cases</span>    <span class="nav-desc" data-en="4 user personas, their scenarios, AI patterns, and key stack components" data-fr="4 personas utilisateur, leurs scénarios, patterns IA, et composants clés">4 user personas, their scenarios, AI patterns, and key stack components</span>  </span></a><a href="../dense-vs-moe.html">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="../glossary.html">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a>  </div></div>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <main>
+    <div class="article-header">
+      <div class="article-meta">
+        <span class="status-badge">stable</span>
+        <span class="date">2026-04-06</span>
+      </div>
+      <h1 class="article-title" data-en="Use Case: Knowledge Search for Analysts" data-fr="Cas d'Usage : Recherche dans la Connaissance pour Analystes">Use Case: Knowledge Search for Analysts</h1>
+      <p class="article-summary" data-en="How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs." data-fr="Comment un analyste métier interroge des corpus de documents privés avec l'IA — architecture, gouvernance, et compromis pratiques.">How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs.</p>
+      <div class="tags"><span class="tag">rag</span><span class="tag">analyst</span><span class="tag">enterprise</span><span class="tag">knowledge-base</span><span class="tag">governance</span><span class="tag">citations</span></div>
+    </div>
+
+    <div class="article-body" id="article-body">
+      <h2 id="the-scenario">The scenario</h2>
+<p>A business analyst at a bank, law firm, or large enterprise needs to answer a question like:</p>
+<ul><li>"What are our contractual obligations to client X regarding SLA response times?"</li><li>"Summarize the key risk factors mentioned in our last 5 annual reports."</li><li>"Which internal policies apply to cross-border data transfers to Brazil?"</li></ul>
+<p>Manually searching through SharePoint, email threads, and PDF archives takes hours. With a RAG-powered assistant over the right corpus, it takes seconds — with source citations.</p>
+<h2 id="why-this-use-case-is-different-from-consumer-qa">Why this use case is different from consumer Q&amp;A</h2>
+<p>Consumer chat products use public knowledge. Enterprise knowledge search is harder because:</p>
+<p><strong>1. Documents are private and heterogeneous.</strong> PDFs, Word docs, Excel sheets, PowerPoints, emails, ticketing systems — all in the same corpus, with different formatting, language, and quality.</p>
+<p><strong>2. Accuracy requirements are much higher.</strong> A wrong answer in a legal or compliance context isn't just embarrassing — it can be costly or illegal. Hallucination tolerance is near zero.</p>
+<p><strong>3. Access control is mandatory.</strong> An analyst in the trading desk shouldn't see HR documents. Document-level permissions must be enforced, not just document-level indexing.</p>
+<p><strong>4. Audit trail is required.</strong> In regulated industries, every answer must be traceable: which document, which version, retrieved on which date, by which user.</p>
+<h2 id="architecture">Architecture</h2>
+<p>Same RAG foundation as consumer Q&amp;A, with additional enterprise layers:</p>
+<pre><code>[Document sources]  →  ingestion pipeline  →  vector index (with ACL metadata)
+                                                       ↓
+User query  →  [Auth check]  →  [Filtered retrieval]  →  [LLM generation]
+                                    (only docs user can see)         ↓
+                                                         Answer + citations + source metadata</code></pre>
+<p>Key difference: <strong>retrieval must be ACL-aware</strong>. When storing chunks, metadata includes the document's access permissions. At query time, the search filters to only chunks the requesting user is authorized to see.</p>
+<h2 id="ingestion-challenges">Ingestion challenges</h2>
+<p>Getting enterprise documents into a searchable index is often the hardest part:</p>
+<p><strong>Format diversity.</strong> PDFs with scanned content need OCR. Excel tables need special handling (row-by-row vs. summary). PowerPoint decks need slide-by-slide chunking. Email threads need deduplication.</p>
+<p><strong>Metadata extraction.</strong> For good citations and filtering, you need document metadata: title, author, date, department, version, classification. Extracting this automatically is often imperfect.</p>
+<p><strong>Language heterogeneity.</strong> Multinational companies have documents in multiple languages. The embedding model and the LLM must handle all of them well.</p>
+<p><strong>Change management.</strong> Documents are revised regularly. Version control of the index is necessary — knowing that a chunk comes from v2.1 of a contract, not v2.0.</p>
+<h2 id="making-answers-trustworthy">Making answers trustworthy</h2>
+<p>In an enterprise context, the answer alone is not enough. The analyst needs to be able to defend the answer to a manager, a regulator, or a client.</p>
+<p><strong>Verbatim citations.</strong> Don't just say "according to document X" — quote the exact sentences from the source document and show the page/section reference.</p>
+<p><strong>Confidence signals.</strong> If retrieval similarity is low (the question is about something not well-covered in the corpus), say so explicitly.</p>
+<p><strong>Date-awareness.</strong> Include the document version and date in citations. "According to the Privacy Policy updated 2025-11-01..." prevents confusion when policies change.</p>
+<p><strong>Human-in-the-loop escalation.</strong> For high-stakes questions, the system should suggest: "This answer involves regulatory risk — you may want to verify with Legal."</p>
+<h2 id="typical-corpus-sizes-and-latency-expectations">Typical corpus sizes and latency expectations</h2>
+<table><thead><tr><th>Corpus size</th><th>Number of chunks</th><th>Retrieval latency</th><th>Comment</th></tr></thead><tbody><tr><td>Small (&lt; 500 docs)</td><td>&lt; 100K chunks</td><td>&lt; 200ms</td><td>pgvector is enough</td></tr><tr><td>Medium (500–5K docs)</td><td>100K–1M chunks</td><td>200–500ms</td><td>Dedicated vector DB needed</td></tr><tr><td>Large (&gt; 5K docs)</td><td>&gt; 1M chunks</td><td>500ms–2s</td><td>Sharding, approximate search</td></tr></tbody></table>
+<p>For most enterprise knowledge search deployments, medium scale is the norm.</p>
+<h2 id="failure-modes-specific-to-enterprise">Failure modes specific to enterprise</h2>
+<p><strong>Conflicting documents.</strong> Two policy documents say different things (the 2022 version and the 2024 version). The LLM synthesizes a blended answer that's wrong. Fix: surface both sources, let the user see the conflict explicitly.</p>
+<p><strong>Table and chart blindness.</strong> Key data is in a table or graph that the embedding model doesn't represent well as text. Fix: table-aware chunking, description of charts added by preprocessing.</p>
+<p><strong>Jargon and abbreviation mismatch.</strong> The user asks about "the MRO protocol" but the document calls it "Material Requirements Ordering Process." Fix: synonym expansion, ontology-based query enrichment.</p>
+<p><strong>Overconfident answers on edge cases.</strong> The model answers confidently on rare topics with sparse coverage. Fix: retrieval confidence threshold + explicit fallback message.</p>
+<h2 id="the-governance-checklist">The governance checklist</h2>
+<p>Before deploying a knowledge search tool in an enterprise:</p>
+<ul><li>[ ] Who owns the document corpus and approves indexing?</li><li>[ ] How is document-level access control enforced in the index?</li><li>[ ] What is the data retention policy for query logs?</li><li>[ ] Can the system see PII, confidential, or classified documents? Should it?</li><li>[ ] How are document updates reflected in the index (frequency, lag)?</li><li>[ ] What is the escalation path when the AI answer is wrong?</li><li>[ ] Is there a feedback loop so analysts can flag bad answers?</li></ul>
+<h2 id="typical-stack">Typical stack</h2>
+<table><thead><tr><th>Layer</th><th>Examples</th></tr></thead><tbody><tr><td>Ingestion</td><td>Unstructured.io, Azure Document Intelligence, Apache Tika</td></tr><tr><td>Embeddings</td><td>Cohere Embed v3, OpenAI text-embedding-3, private models</td></tr><tr><td>Vector DB</td><td>Weaviate (ACL-aware), Qdrant, Elasticsearch with kNN</td></tr><tr><td>LLM</td><td>GPT-4o, Claude 3.5/4, Azure OpenAI (data residency)</td></tr><tr><td>Orchestration</td><td>LangChain, LlamaIndex, custom</td></tr><tr><td>Access control</td><td>Integration with enterprise IAM (Azure AD, Okta)</td></tr></tbody></table>
+    </div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="toc-label" data-en="On this page" data-fr="Sur cette page">On this page</div>
+    <nav class="toc" id="toc-nav">
+      <nav class="toc"><a href="#the-scenario" class="toc-h2">The scenario</a>
+<a href="#why-this-use-case-is-different-from-consumer-qa" class="toc-h2">Why this use case is different from consumer Q&A</a>
+<a href="#architecture" class="toc-h2">Architecture</a>
+<a href="#ingestion-challenges" class="toc-h2">Ingestion challenges</a>
+<a href="#making-answers-trustworthy" class="toc-h2">Making answers trustworthy</a>
+<a href="#typical-corpus-sizes-and-latency-expectations" class="toc-h2">Typical corpus sizes and latency expectations</a>
+<a href="#failure-modes-specific-to-enterprise" class="toc-h2">Failure modes specific to enterprise</a>
+<a href="#the-governance-checklist" class="toc-h2">The governance checklist</a>
+<a href="#typical-stack" class="toc-h2">Typical stack</a></nav>
+    </nav>
+  </aside>
+</div>
+
+<script>
+const CONTENT = {
+  en: '<h2 id="the-scenario">The scenario</h2>\n<p>A business analyst at a bank, law firm, or large enterprise needs to answer a question like:</p>\n<ul><li>"What are our contractual obligations to client X regarding SLA response times?"</li><li>"Summarize the key risk factors mentioned in our last 5 annual reports."</li><li>"Which internal policies apply to cross-border data transfers to Brazil?"</li></ul>\n<p>Manually searching through SharePoint, email threads, and PDF archives takes hours. With a RAG-powered assistant over the right corpus, it takes seconds — with source citations.</p>\n<h2 id="why-this-use-case-is-different-from-consumer-qa">Why this use case is different from consumer Q&amp;A</h2>\n<p>Consumer chat products use public knowledge. Enterprise knowledge search is harder because:</p>\n<p><strong>1. Documents are private and heterogeneous.</strong> PDFs, Word docs, Excel sheets, PowerPoints, emails, ticketing systems — all in the same corpus, with different formatting, language, and quality.</p>\n<p><strong>2. Accuracy requirements are much higher.</strong> A wrong answer in a legal or compliance context isn\'t just embarrassing — it can be costly or illegal. Hallucination tolerance is near zero.</p>\n<p><strong>3. Access control is mandatory.</strong> An analyst in the trading desk shouldn\'t see HR documents. Document-level permissions must be enforced, not just document-level indexing.</p>\n<p><strong>4. Audit trail is required.</strong> In regulated industries, every answer must be traceable: which document, which version, retrieved on which date, by which user.</p>\n<h2 id="architecture">Architecture</h2>\n<p>Same RAG foundation as consumer Q&amp;A, with additional enterprise layers:</p>\n<pre><code>[Document sources]  →  ingestion pipeline  →  vector index (with ACL metadata)\n                                                       ↓\nUser query  →  [Auth check]  →  [Filtered retrieval]  →  [LLM generation]\n                                    (only docs user can see)         ↓\n                                                         Answer + citations + source metadata</code></pre>\n<p>Key difference: <strong>retrieval must be ACL-aware</strong>. When storing chunks, metadata includes the document\'s access permissions. At query time, the search filters to only chunks the requesting user is authorized to see.</p>\n<h2 id="ingestion-challenges">Ingestion challenges</h2>\n<p>Getting enterprise documents into a searchable index is often the hardest part:</p>\n<p><strong>Format diversity.</strong> PDFs with scanned content need OCR. Excel tables need special handling (row-by-row vs. summary). PowerPoint decks need slide-by-slide chunking. Email threads need deduplication.</p>\n<p><strong>Metadata extraction.</strong> For good citations and filtering, you need document metadata: title, author, date, department, version, classification. Extracting this automatically is often imperfect.</p>\n<p><strong>Language heterogeneity.</strong> Multinational companies have documents in multiple languages. The embedding model and the LLM must handle all of them well.</p>\n<p><strong>Change management.</strong> Documents are revised regularly. Version control of the index is necessary — knowing that a chunk comes from v2.1 of a contract, not v2.0.</p>\n<h2 id="making-answers-trustworthy">Making answers trustworthy</h2>\n<p>In an enterprise context, the answer alone is not enough. The analyst needs to be able to defend the answer to a manager, a regulator, or a client.</p>\n<p><strong>Verbatim citations.</strong> Don\'t just say "according to document X" — quote the exact sentences from the source document and show the page/section reference.</p>\n<p><strong>Confidence signals.</strong> If retrieval similarity is low (the question is about something not well-covered in the corpus), say so explicitly.</p>\n<p><strong>Date-awareness.</strong> Include the document version and date in citations. "According to the Privacy Policy updated 2025-11-01..." prevents confusion when policies change.</p>\n<p><strong>Human-in-the-loop escalation.</strong> For high-stakes questions, the system should suggest: "This answer involves regulatory risk — you may want to verify with Legal."</p>\n<h2 id="typical-corpus-sizes-and-latency-expectations">Typical corpus sizes and latency expectations</h2>\n<table><thead><tr><th>Corpus size</th><th>Number of chunks</th><th>Retrieval latency</th><th>Comment</th></tr></thead><tbody><tr><td>Small (&lt; 500 docs)</td><td>&lt; 100K chunks</td><td>&lt; 200ms</td><td>pgvector is enough</td></tr><tr><td>Medium (500–5K docs)</td><td>100K–1M chunks</td><td>200–500ms</td><td>Dedicated vector DB needed</td></tr><tr><td>Large (&gt; 5K docs)</td><td>&gt; 1M chunks</td><td>500ms–2s</td><td>Sharding, approximate search</td></tr></tbody></table>\n<p>For most enterprise knowledge search deployments, medium scale is the norm.</p>\n<h2 id="failure-modes-specific-to-enterprise">Failure modes specific to enterprise</h2>\n<p><strong>Conflicting documents.</strong> Two policy documents say different things (the 2022 version and the 2024 version). The LLM synthesizes a blended answer that\'s wrong. Fix: surface both sources, let the user see the conflict explicitly.</p>\n<p><strong>Table and chart blindness.</strong> Key data is in a table or graph that the embedding model doesn\'t represent well as text. Fix: table-aware chunking, description of charts added by preprocessing.</p>\n<p><strong>Jargon and abbreviation mismatch.</strong> The user asks about "the MRO protocol" but the document calls it "Material Requirements Ordering Process." Fix: synonym expansion, ontology-based query enrichment.</p>\n<p><strong>Overconfident answers on edge cases.</strong> The model answers confidently on rare topics with sparse coverage. Fix: retrieval confidence threshold + explicit fallback message.</p>\n<h2 id="the-governance-checklist">The governance checklist</h2>\n<p>Before deploying a knowledge search tool in an enterprise:</p>\n<ul><li>[ ] Who owns the document corpus and approves indexing?</li><li>[ ] How is document-level access control enforced in the index?</li><li>[ ] What is the data retention policy for query logs?</li><li>[ ] Can the system see PII, confidential, or classified documents? Should it?</li><li>[ ] How are document updates reflected in the index (frequency, lag)?</li><li>[ ] What is the escalation path when the AI answer is wrong?</li><li>[ ] Is there a feedback loop so analysts can flag bad answers?</li></ul>\n<h2 id="typical-stack">Typical stack</h2>\n<table><thead><tr><th>Layer</th><th>Examples</th></tr></thead><tbody><tr><td>Ingestion</td><td>Unstructured.io, Azure Document Intelligence, Apache Tika</td></tr><tr><td>Embeddings</td><td>Cohere Embed v3, OpenAI text-embedding-3, private models</td></tr><tr><td>Vector DB</td><td>Weaviate (ACL-aware), Qdrant, Elasticsearch with kNN</td></tr><tr><td>LLM</td><td>GPT-4o, Claude 3.5/4, Azure OpenAI (data residency)</td></tr><tr><td>Orchestration</td><td>LangChain, LlamaIndex, custom</td></tr><tr><td>Access control</td><td>Integration with enterprise IAM (Azure AD, Okta)</td></tr></tbody></table>',
+  fr: '<h2 id="le-scénario">Le scénario</h2>\n<p>Un analyste métier dans une banque, un cabinet juridique, ou une grande entreprise doit répondre à des questions comme :</p>\n<ul><li>"Quelles sont nos obligations contractuelles envers le client X concernant les délais de réponse SLA ?"</li><li>"Résume les facteurs de risque clés mentionnés dans nos 5 derniers rapports annuels."</li><li>"Quelles politiques internes s\'appliquent aux transferts de données transfrontaliers vers le Brésil ?"</li></ul>\n<p>Chercher manuellement dans SharePoint, des fils d\'emails, et des archives PDF prend des heures. Avec un assistant RAG sur le bon corpus, ça prend quelques secondes — avec des citations sources.</p>\n<h2 id="pourquoi-ce-cas-dusage-est-différent-du-qa-grand-public">Pourquoi ce cas d\'usage est différent du Q&amp;A grand public</h2>\n<p>Les produits de chat grand public utilisent des connaissances publiques. La recherche dans la connaissance entreprise est plus difficile car :</p>\n<p><strong>1. Les documents sont privés et hétérogènes.</strong> PDFs, documents Word, feuilles Excel, PowerPoints, emails, systèmes de ticketing — tout dans le même corpus, avec des formats, langages et qualités différents.</p>\n<p><strong>2. Les exigences de précision sont beaucoup plus élevées.</strong> Une mauvaise réponse dans un contexte légal ou conformité n\'est pas juste gênante — elle peut être coûteuse ou illégale. La tolérance aux hallucinations est quasi nulle.</p>\n<p><strong>3. Le contrôle d\'accès est obligatoire.</strong> Un analyste du bureau de trading ne devrait pas voir les documents RH. Les permissions au niveau document doivent être appliquées, pas seulement au niveau de l\'indexation.</p>\n<p><strong>4. La piste d\'audit est requise.</strong> Dans les industries régulées, chaque réponse doit être traçable : quel document, quelle version, récupéré à quelle date, par quel utilisateur.</p>\n<h2 id="architecture">Architecture</h2>\n<p>Même base RAG que le Q&amp;A grand public, avec des couches entreprise additionnelles :</p>\n<pre><code>[Sources documents]  →  pipeline d\'ingestion  →  index vectoriel (avec métadonnées ACL)\n                                                              ↓\nRequête utilisateur  →  [Vérification auth]  →  [Récupération filtrée]  →  [Génération LLM]\n                                                  (seulement docs visibles)           ↓\n                                                                       Réponse + citations + métadonnées source</code></pre>\n<p>Différence clé : <strong>la récupération doit être consciente des ACL</strong>. En stockant les chunks, les métadonnées incluent les permissions d\'accès du document. Au moment de la requête, la recherche filtre pour ne retourner que les chunks que l\'utilisateur demandeur est autorisé à voir.</p>\n<h2 id="défis-dingestion">Défis d\'ingestion</h2>\n<p>Mettre les documents entreprise dans un index cherchable est souvent la partie la plus difficile :</p>\n<p><strong>Diversité des formats.</strong> Les PDFs avec contenu scanné nécessitent l\'OCR. Les tableaux Excel nécessitent un traitement spécial (ligne par ligne vs. résumé). Les présentations PowerPoint nécessitent un chunking diapo par diapo. Les fils d\'emails nécessitent la déduplication.</p>\n<p><strong>Extraction des métadonnées.</strong> Pour de bonnes citations et du filtrage, vous avez besoin des métadonnées du document : titre, auteur, date, département, version, classification. L\'extraction automatique de celles-ci est souvent imparfaite.</p>\n<p><strong>Hétérogénéité linguistique.</strong> Les entreprises multinationales ont des documents en plusieurs langues. Le modèle d\'embedding et le LLM doivent tous deux bien les gérer.</p>\n<p><strong>Gestion des changements.</strong> Les documents sont régulièrement révisés. Le contrôle de version de l\'index est nécessaire — savoir qu\'un chunk provient de la v2.1 d\'un contrat, pas de la v2.0.</p>\n<h2 id="rendre-les-réponses-dignes-de-confiance">Rendre les réponses dignes de confiance</h2>\n<p>Dans un contexte entreprise, la réponse seule ne suffit pas. L\'analyste doit pouvoir défendre la réponse devant un manager, un régulateur, ou un client.</p>\n<p><strong>Citations verbatim.</strong> Ne pas juste dire "selon le document X" — citer les phrases exactes du document source et montrer la référence page/section.</p>\n<p><strong>Signaux de confiance.</strong> Si la similarité de récupération est faible (la question porte sur quelque chose peu couvert dans le corpus), le dire explicitement.</p>\n<p><strong>Conscience de la date.</strong> Inclure la version et la date du document dans les citations. "Selon la Politique de Confidentialité mise à jour le 2025-11-01..." évite la confusion quand les politiques changent.</p>\n<p><strong>Escalade humaine dans la boucle.</strong> Pour les questions à forts enjeux, le système devrait suggérer : "Cette réponse implique un risque réglementaire — vous pourriez vouloir vérifier avec le Juridique."</p>\n<h2 id="tailles-de-corpus-typiques-et-attentes-de-latence">Tailles de corpus typiques et attentes de latence</h2>\n<table><thead><tr><th>Taille corpus</th><th>Nombre de chunks</th><th>Latence récupération</th><th>Commentaire</th></tr></thead><tbody><tr><td>Petit (&lt; 500 docs)</td><td>&lt; 100K chunks</td><td>&lt; 200ms</td><td>pgvector suffit</td></tr><tr><td>Moyen (500–5K docs)</td><td>100K–1M chunks</td><td>200–500ms</td><td>Vector DB dédié nécessaire</td></tr><tr><td>Grand (&gt; 5K docs)</td><td>&gt; 1M chunks</td><td>500ms–2s</td><td>Sharding, recherche approximative</td></tr></tbody></table>\n<p>Pour la plupart des déploiements de recherche dans la connaissance entreprise, l\'échelle moyenne est la norme.</p>\n<h2 id="modes-déchec-spécifiques-à-lentreprise">Modes d\'échec spécifiques à l\'entreprise</h2>\n<p><strong>Documents conflictuels.</strong> Deux documents de politique disent des choses différentes (la version 2022 et la version 2024). Le LLM synthétise une réponse hybride qui est fausse. Correction : afficher les deux sources, laisser l\'utilisateur voir le conflit explicitement.</p>\n<p><strong>Cécité aux tableaux et graphiques.</strong> Les données clés sont dans un tableau ou graphique que le modèle d\'embedding ne représente pas bien en texte. Correction : chunking conscient des tableaux, description des graphiques ajoutée par prétraitement.</p>\n<p><strong>Inadéquation jargon et abréviations.</strong> L\'utilisateur demande "le protocole MRO" mais le document l\'appelle "Processus de Commande des Exigences Matérielles". Correction : expansion des synonymes, enrichissement de requête basé sur une ontologie.</p>\n<p><strong>Réponses trop confiantes sur les cas limites.</strong> Le modèle répond avec assurance sur des sujets rares avec une couverture sparse. Correction : seuil de confiance de récupération + message de fallback explicite.</p>\n<h2 id="la-checklist-de-gouvernance">La checklist de gouvernance</h2>\n<p>Avant de déployer un outil de recherche dans la connaissance en entreprise :</p>\n<ul><li>[ ] Qui possède le corpus de documents et approuve l\'indexation ?</li><li>[ ] Comment le contrôle d\'accès au niveau document est-il appliqué dans l\'index ?</li><li>[ ] Quelle est la politique de rétention des données pour les logs de requêtes ?</li><li>[ ] Le système peut-il voir des documents PII, confidentiels ou classifiés ? Devrait-il ?</li><li>[ ] Comment les mises à jour des documents se reflètent-elles dans l\'index (fréquence, délai) ?</li><li>[ ] Quel est le chemin d\'escalade quand la réponse IA est fausse ?</li><li>[ ] Y a-t-il une boucle de feedback pour que les analystes puissent signaler les mauvaises réponses ?</li></ul>\n<h2 id="stack-typique">Stack typique</h2>\n<table><thead><tr><th>Couche</th><th>Exemples</th></tr></thead><tbody><tr><td>Ingestion</td><td>Unstructured.io, Azure Document Intelligence, Apache Tika</td></tr><tr><td>Embeddings</td><td>Cohere Embed v3, OpenAI text-embedding-3, modèles privés</td></tr><tr><td>Vector DB</td><td>Weaviate (conscient des ACL), Qdrant, Elasticsearch avec kNN</td></tr><tr><td>LLM</td><td>GPT-4o, Claude 3.5/4, Azure OpenAI (résidence des données)</td></tr><tr><td>Orchestration</td><td>LangChain, LlamaIndex, custom</td></tr><tr><td>Contrôle d\'accès</td><td>Intégration avec IAM entreprise (Azure AD, Okta)</td></tr></tbody></table>',
+};
+const TOC = {
+  en: '<nav class="toc"><a href="#the-scenario" class="toc-h2">The scenario</a>\n<a href="#why-this-use-case-is-different-from-consumer-qa" class="toc-h2">Why this use case is different from consumer Q&A</a>\n<a href="#architecture" class="toc-h2">Architecture</a>\n<a href="#ingestion-challenges" class="toc-h2">Ingestion challenges</a>\n<a href="#making-answers-trustworthy" class="toc-h2">Making answers trustworthy</a>\n<a href="#typical-corpus-sizes-and-latency-expectations" class="toc-h2">Typical corpus sizes and latency expectations</a>\n<a href="#failure-modes-specific-to-enterprise" class="toc-h2">Failure modes specific to enterprise</a>\n<a href="#the-governance-checklist" class="toc-h2">The governance checklist</a>\n<a href="#typical-stack" class="toc-h2">Typical stack</a></nav>',
+  fr: '<nav class="toc"><a href="#le-scénario" class="toc-h2">Le scénario</a>\n<a href="#pourquoi-ce-cas-dusage-est-différent-du-qa-grand-public" class="toc-h2">Pourquoi ce cas d\'usage est différent du Q&A grand public</a>\n<a href="#architecture" class="toc-h2">Architecture</a>\n<a href="#défis-dingestion" class="toc-h2">Défis d\'ingestion</a>\n<a href="#rendre-les-réponses-dignes-de-confiance" class="toc-h2">Rendre les réponses dignes de confiance</a>\n<a href="#tailles-de-corpus-typiques-et-attentes-de-latence" class="toc-h2">Tailles de corpus typiques et attentes de latence</a>\n<a href="#modes-déchec-spécifiques-à-lentreprise" class="toc-h2">Modes d\'échec spécifiques à l\'entreprise</a>\n<a href="#la-checklist-de-gouvernance" class="toc-h2">La checklist de gouvernance</a>\n<a href="#stack-typique" class="toc-h2">Stack typique</a></nav>',
+};
+let lang = 'en';
+
+function setLang(newLang) {
+  lang = newLang;
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  document.getElementById('toc-nav').innerHTML = TOC[lang] || TOC.en;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.en;
+  });
+}
+</script>
+</body>
+</html>

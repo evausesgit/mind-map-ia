@@ -1,0 +1,551 @@
+meta:
+  title:
+    en: "AI Use Cases"
+    fr: "Cas d'Usage IA"
+  description:
+    en: "4 user personas, their scenarios, AI patterns, and key stack components"
+    fr: "4 personas utilisateur, leurs scénarios, patterns IA, et composants clés"
+  version: "2026-Q1"
+  date: "2026-04-06"
+  back_link: "macro.html"
+  layout_direction: ltr
+  column_scale: 0.45
+
+layers:
+  1:
+    en: "PERSONAS"
+    fr: "PERSONAS"
+  2:
+    en: "USE CASES"
+    fr: "CAS D'USAGE"
+  3:
+    en: "AI PATTERNS"
+    fr: "PATTERNS IA"
+  4:
+    en: "KEY STACK"
+    fr: "STACK CLÉ"
+
+categories:
+  - id: persona
+    label:
+      en: "Persona"
+      fr: "Persona"
+    color: "#9B59B6"
+    description:
+      en: "A type of user interacting with AI"
+      fr: "Un type d'utilisateur interagissant avec l'IA"
+
+  - id: usecase
+    label:
+      en: "Use Case"
+      fr: "Cas d'Usage"
+    color: "#1ABC9C"
+    description:
+      en: "A concrete scenario — click to read the full article"
+      fr: "Un scénario concret — cliquer pour lire l'article complet"
+
+  - id: pattern
+    label:
+      en: "AI Pattern"
+      fr: "Pattern IA"
+    color: "#E67E22"
+    description:
+      en: "An architectural pattern powering the use case"
+      fr: "Un pattern architectural qui alimente le cas d'usage"
+
+  - id: component
+    label:
+      en: "Stack Component"
+      fr: "Composant Stack"
+    color: "#3498DB"
+    description:
+      en: "A key technical building block"
+      fr: "Un bloc technique clé"
+
+nodes:
+  # ── LAYER 1 · PERSONAS ────────────────
+
+  - id: persona-enduser
+    label:
+      en: "End User"
+      fr: "Utilisateur Final"
+    layer: 1
+    category: persona
+    status: stable
+    since: "2023"
+    description:
+      en: |
+        A non-technical user interacting with an AI-powered product.
+        Typical contexts: customer support chat, internal helpdesk,
+        consumer apps (ChatGPT, Gemini, Claude.ai).
+        Goals: get answers fast, without learning any tooling.
+      fr: |
+        Un utilisateur non technique interagissant avec un produit IA.
+        Contextes typiques : chat support client, helpdesk interne,
+        apps grand public (ChatGPT, Gemini, Claude.ai).
+        Objectif : obtenir des réponses rapidement, sans apprendre d'outils.
+
+  - id: persona-dev
+    label:
+      en: "Developer"
+      fr: "Développeur"
+    layer: 1
+    category: persona
+    status: stable
+    since: "2023"
+    description:
+      en: |
+        A software engineer using AI to write, debug, review, and ship code faster.
+        Typical contexts: VS Code + Copilot, Cursor, Claude Code, JetBrains AI Assistant.
+        Goals: reduce boilerplate, catch bugs earlier, offload context-switching.
+      fr: |
+        Un ingénieur logiciel utilisant l'IA pour coder, déboguer, relire et livrer plus vite.
+        Contextes typiques : VS Code + Copilot, Cursor, Claude Code, JetBrains AI Assistant.
+        Objectif : réduire le boilerplate, détecter les bugs plus tôt, réduire les interruptions.
+
+  - id: persona-analyst
+    label:
+      en: "Business Analyst"
+      fr: "Analyste Métier"
+    layer: 1
+    category: persona
+    status: stable
+    since: "2023"
+    description:
+      en: |
+        A knowledge worker querying internal documents, policies, or data to produce insights.
+        Typical contexts: enterprise knowledge bases, legal/compliance review, financial research.
+        Goals: find the right answer in a large corpus without reading everything manually.
+      fr: |
+        Un travailleur du savoir interrogeant des documents internes, politiques ou données pour produire des insights.
+        Contextes typiques : bases de connaissance entreprise, revue légale/conformité, recherche financière.
+        Objectif : trouver la bonne réponse dans un grand corpus sans tout lire manuellement.
+
+  - id: persona-ops
+    label:
+      en: "Ops / SRE"
+      fr: "Ops / SRE"
+    layer: 1
+    category: persona
+    status: evolving
+    since: "2023"
+    description:
+      en: |
+        An operations engineer automating workflows, monitoring infrastructure,
+        or orchestrating multi-step processes with autonomous agents.
+        Typical contexts: CI/CD pipelines, incident response, data pipelines, reporting automation.
+        Goals: reduce manual toil, trigger the right action at the right time.
+      fr: |
+        Un ingénieur ops automatisant des workflows, surveillant l'infrastructure,
+        ou orchestrant des processus multi-étapes avec des agents autonomes.
+        Contextes typiques : pipelines CI/CD, réponse aux incidents, pipelines data, automatisation de rapports.
+        Objectif : réduire les tâches manuelles, déclencher la bonne action au bon moment.
+
+  # ── LAYER 2 · USE CASES ────────────────
+
+  - id: uc-chat-qa
+    label:
+      en: "Q&A Chat"
+      fr: "Chat Q&R"
+    layer: 2
+    category: usecase
+    status: stable
+    since: "2023"
+    link: "topics/usecase-chat-qa.html"
+    description:
+      en: |
+        A user asks questions in natural language; the system retrieves relevant context
+        from a knowledge base and generates a grounded answer.
+        Examples: customer support bot, internal FAQ assistant, product documentation search.
+        → Click to read full article.
+      fr: |
+        Un utilisateur pose des questions en langage naturel ; le système récupère le contexte
+        pertinent depuis une base de connaissance et génère une réponse ancrée.
+        Exemples : bot support client, assistant FAQ interne, recherche dans la documentation produit.
+        → Cliquer pour lire l'article complet.
+
+  - id: uc-chatbot
+    label:
+      en: "Conversational Assistant"
+      fr: "Assistant Conversationnel"
+    layer: 2
+    category: usecase
+    status: stable
+    since: "2023"
+    description:
+      en: |
+        A multi-turn dialogue system that maintains conversation history and persona.
+        Unlike pure Q&A, it can handle ambiguous intent, ask clarifying questions,
+        and maintain context across sessions via memory.
+        Examples: sales assistant, onboarding guide, personal productivity agent.
+      fr: |
+        Un système de dialogue multi-tours qui maintient l'historique et la persona.
+        Contrairement au Q&A pur, il gère l'intention ambiguë, pose des questions de clarification,
+        et maintient le contexte entre sessions via la mémoire.
+        Exemples : assistant commercial, guide d'onboarding, agent de productivité personnelle.
+
+  - id: uc-dev-completion
+    label:
+      en: "Code Completion"
+      fr: "Complétion de Code"
+    layer: 2
+    category: usecase
+    status: stable
+    since: "2023"
+    description:
+      en: |
+        Inline code suggestions as the developer types, powered by the surrounding file context.
+        Ranges from single-line autocomplete to full function generation.
+        Examples: GitHub Copilot inline suggestions, JetBrains AI completions, Tabnine.
+        Key metric: acceptance rate (% of suggestions accepted by the dev).
+      fr: |
+        Suggestions de code inline pendant que le développeur tape, alimentées par le contexte du fichier.
+        Va de l'autocomplétion ligne par ligne à la génération de fonctions entières.
+        Exemples : suggestions inline GitHub Copilot, complétions JetBrains AI, Tabnine.
+        Métrique clé : taux d'acceptation (% de suggestions acceptées par le dev).
+
+  - id: uc-dev-agent
+    label:
+      en: "Agentic Coding"
+      fr: "Coding Agentique"
+    layer: 2
+    category: usecase
+    status: evolving
+    since: "2023"
+    link: "topics/usecase-dev-agentic.html"
+    description:
+      en: |
+        An AI agent that can read files, run tests, search docs, and make multi-step code changes
+        with minimal human intervention. Goes beyond autocomplete — the agent plans and executes.
+        Examples: Cursor Agent, Claude Code, Devin, GitHub Copilot Workspace.
+        → Click to read full article.
+      fr: |
+        Un agent IA capable de lire des fichiers, exécuter des tests, chercher dans les docs,
+        et effectuer des modifications de code multi-étapes avec peu d'intervention humaine.
+        Va bien au-delà de l'autocomplétion — l'agent planifie et exécute.
+        Exemples : Cursor Agent, Claude Code, Devin, GitHub Copilot Workspace.
+        → Cliquer pour lire l'article complet.
+
+  - id: uc-analyst-search
+    label:
+      en: "Knowledge Search"
+      fr: "Recherche dans la Connaissance"
+    layer: 2
+    category: usecase
+    status: stable
+    since: "2023"
+    link: "topics/usecase-analyst-rag.html"
+    description:
+      en: |
+        An analyst queries a private corpus (internal reports, contracts, emails, wikis)
+        in natural language and gets cited, traceable answers — not just search results.
+        Examples: legal contract review, compliance Q&A, financial research assistant.
+        → Click to read full article.
+      fr: |
+        Un analyste interroge un corpus privé (rapports internes, contrats, emails, wikis)
+        en langage naturel et obtient des réponses citées et traçables — pas juste des résultats de recherche.
+        Exemples : revue de contrats légaux, Q&A conformité, assistant de recherche financière.
+        → Cliquer pour lire l'article complet.
+
+  - id: uc-analyst-report
+    label:
+      en: "Report Generation"
+      fr: "Génération de Rapports"
+    layer: 2
+    category: usecase
+    status: evolving
+    since: "2023"
+    description:
+      en: |
+        The AI gathers data from multiple sources (databases, APIs, documents), synthesizes it,
+        and drafts a structured report. Can include charts via code execution.
+        Examples: weekly business review, competitive intelligence digest, financial summary.
+        Key challenge: ensuring factual accuracy across multiple heterogeneous sources.
+      fr: |
+        L'IA collecte des données depuis plusieurs sources (bases de données, APIs, documents),
+        les synthétise et rédige un rapport structuré. Peut inclure des graphiques via exécution de code.
+        Exemples : revue métier hebdomadaire, digest de veille concurrentielle, synthèse financière.
+        Défi clé : assurer la précision factuelle sur des sources hétérogènes multiples.
+
+  - id: uc-ops-workflow
+    label:
+      en: "Workflow Automation"
+      fr: "Automatisation de Workflows"
+    layer: 2
+    category: usecase
+    status: evolving
+    since: "2023"
+    link: "topics/usecase-ops-automation.html"
+    description:
+      en: |
+        An agent orchestrates a multi-step process end-to-end: reads triggers, calls APIs,
+        makes decisions, handles exceptions, and notifies stakeholders.
+        Examples: automated PR review pipeline, incident triage, data pipeline orchestration.
+        → Click to read full article.
+      fr: |
+        Un agent orchestre un processus multi-étapes de bout en bout : lit les déclencheurs,
+        appelle des APIs, prend des décisions, gère les exceptions, notifie les parties prenantes.
+        Exemples : pipeline de revue PR automatisée, triage d'incidents, orchestration de pipeline data.
+        → Cliquer pour lire l'article complet.
+
+  - id: uc-ops-monitoring
+    label:
+      en: "Anomaly Detection"
+      fr: "Détection d'Anomalies"
+    layer: 2
+    category: usecase
+    status: emerging
+    since: "2023"
+    description:
+      en: |
+        The AI continuously monitors logs, metrics, or streams and surfaces anomalies
+        in natural language, with root cause hypothesis and suggested remediation.
+        Examples: log analysis, security threat detection, performance regression alerts.
+        Key challenge: low false-positive rate — alert fatigue kills adoption.
+      fr: |
+        L'IA surveille en continu des logs, métriques ou flux et remonte les anomalies
+        en langage naturel, avec hypothèse de cause racine et remédiation suggérée.
+        Exemples : analyse de logs, détection de menaces sécurité, alertes de régression perf.
+        Défi clé : faible taux de faux positifs — la fatigue aux alertes tue l'adoption.
+
+  # ── LAYER 3 · AI PATTERNS ────────────────
+
+  - id: pattern-rag
+    label:
+      en: "RAG"
+      fr: "RAG"
+    layer: 3
+    category: pattern
+    status: stable
+    since: "2023"
+    link: "rag-pattern.html"
+    description:
+      en: |
+        Retrieval-Augmented Generation: retrieve relevant chunks from a knowledge base
+        and inject them into the LLM's context window before generation.
+        Grounds the answer in verifiable source documents.
+        → See the RAG pattern map for full detail.
+      fr: |
+        Retrieval-Augmented Generation : récupérer les chunks pertinents d'une base de connaissance
+        et les injecter dans la fenêtre de contexte du LLM avant la génération.
+        Ancre la réponse dans des documents sources vérifiables.
+        → Voir la carte du pattern RAG pour le détail complet.
+
+  - id: pattern-completion
+    label:
+      en: "Completion / Inline"
+      fr: "Complétion / Inline"
+    layer: 3
+    category: pattern
+    status: stable
+    since: "2023"
+    description:
+      en: |
+        The simplest pattern: send a prompt (file context, cursor position, instructions)
+        to an LLM and return the generated text directly as a suggestion.
+        No retrieval, no tools — pure next-token prediction in a rich context.
+        Latency is the key constraint: must feel instantaneous to the developer.
+      fr: |
+        Le pattern le plus simple : envoyer un prompt (contexte du fichier, position du curseur,
+        instructions) au LLM et retourner le texte généré directement comme suggestion.
+        Pas de récupération, pas d'outils — prédiction de token pur dans un contexte riche.
+        La latence est la contrainte clé : doit sembler instantané pour le développeur.
+
+  - id: pattern-agent-loop
+    label:
+      en: "Agent Loop"
+      fr: "Boucle Agent"
+    layer: 3
+    category: pattern
+    status: evolving
+    since: "2023"
+    link: "ai-agents.html"
+    description:
+      en: |
+        The LLM is the brain of a loop: observe → think → act → observe.
+        Each iteration the model reasons about its state, decides on a tool call,
+        receives the result, and decides the next step — until the goal is reached.
+        → See the AI Agents map for full detail.
+      fr: |
+        Le LLM est le cerveau d'une boucle : observer → réfléchir → agir → observer.
+        À chaque itération, le modèle raisonne sur son état, décide d'un appel d'outil,
+        reçoit le résultat, et décide l'étape suivante — jusqu'à atteindre le but.
+        → Voir la carte AI Agents pour le détail complet.
+
+  - id: pattern-multiagent
+    label:
+      en: "Multi-Agent"
+      fr: "Multi-Agent"
+    layer: 3
+    category: pattern
+    status: emerging
+    since: "2023"
+    link: "ai-agents.html"
+    description:
+      en: |
+        Multiple specialized agents collaborate: an orchestrator decomposes a task
+        and dispatches subtasks to worker agents, then aggregates results.
+        Enables parallelism, specialization, and fault isolation.
+        Key challenge: coordination overhead and error propagation between agents.
+      fr: |
+        Plusieurs agents spécialisés collaborent : un orchestrateur décompose une tâche
+        et dispatche les sous-tâches à des agents travailleurs, puis agrège les résultats.
+        Permet le parallélisme, la spécialisation et l'isolation des erreurs.
+        Défi clé : overhead de coordination et propagation des erreurs entre agents.
+
+  # ── LAYER 4 · KEY STACK ────────────────
+
+  - id: stack-llm
+    label:
+      en: "LLM"
+      fr: "LLM"
+    layer: 4
+    category: component
+    status: stable
+    since: "2023"
+    link: "proprietary-models.html"
+    description:
+      en: |
+        The large language model at the core of every use case.
+        Choice depends on latency, cost, capability, and data privacy requirements.
+        Examples: GPT-4o, Claude 3.5/4, Gemini 2.0, Llama 3.3 (self-hosted).
+      fr: |
+        Le grand modèle de langage au cœur de chaque cas d'usage.
+        Le choix dépend de la latence, du coût, de la capacité et des exigences de confidentialité.
+        Exemples : GPT-4o, Claude 3.5/4, Gemini 2.0, Llama 3.3 (auto-hébergé).
+
+  - id: stack-vector-db
+    label:
+      en: "Vector DB"
+      fr: "Vector DB"
+    layer: 4
+    category: component
+    status: stable
+    since: "2023"
+    description:
+      en: |
+        Stores and indexes document embeddings for fast semantic search.
+        Returns top-k most similar chunks for a given query vector.
+        Examples: Pinecone, Weaviate, Qdrant, pgvector, ChromaDB.
+      fr: |
+        Stocke et indexe les embeddings de documents pour la recherche sémantique rapide.
+        Retourne les top-k chunks les plus similaires pour un vecteur de requête donné.
+        Exemples : Pinecone, Weaviate, Qdrant, pgvector, ChromaDB.
+
+  - id: stack-tools
+    label:
+      en: "Tools / MCP"
+      fr: "Outils / MCP"
+    layer: 4
+    category: component
+    status: evolving
+    since: "2023"
+    link: "topics/mcp-explained.html"
+    description:
+      en: |
+        Executable functions the LLM can call: APIs, file system, databases, code runner.
+        MCP (Model Context Protocol) is the emerging standard for tool connectivity.
+        The agent loop depends on tools to take real-world actions.
+      fr: |
+        Fonctions exécutables que le LLM peut appeler : APIs, système de fichiers, BDD, exécuteur de code.
+        MCP (Model Context Protocol) est le standard émergent pour la connectivité des outils.
+        La boucle agent dépend des outils pour effectuer des actions dans le monde réel.
+
+  - id: stack-memory
+    label:
+      en: "Memory / State"
+      fr: "Mémoire / État"
+    layer: 4
+    category: component
+    status: evolving
+    since: "2023"
+    description:
+      en: |
+        Persistence layer for conversation history, user preferences, and intermediate agent state.
+        Types: in-context (in the prompt), external (DB/vector store), cached (KV cache).
+        Critical for multi-turn conversations and long-running agent tasks.
+      fr: |
+        Couche de persistance pour l'historique de conversation, les préférences utilisateur et l'état intermédiaire de l'agent.
+        Types : en contexte (dans le prompt), externe (BDD/vector store), caché (KV cache).
+        Critique pour les conversations multi-tours et les tâches d'agents longues.
+
+  - id: stack-orchestrator
+    label:
+      en: "Orchestrator"
+      fr: "Orchestrateur"
+    layer: 4
+    category: component
+    status: evolving
+    since: "2023"
+    description:
+      en: |
+        The coordination layer that routes tasks between agents, manages retry logic,
+        tracks state, and enforces guardrails in a multi-agent system.
+        Examples: LangGraph, CrewAI, AutoGen, custom state machines.
+      fr: |
+        La couche de coordination qui route les tâches entre agents, gère la logique de retry,
+        suit l'état et applique les guardrails dans un système multi-agent.
+        Exemples : LangGraph, CrewAI, AutoGen, machines à états personnalisées.
+
+edges:
+  # Personas → Use Cases
+  - from: persona-enduser
+    to: uc-chat-qa
+  - from: persona-enduser
+    to: uc-chatbot
+  - from: persona-dev
+    to: uc-dev-completion
+  - from: persona-dev
+    to: uc-dev-agent
+  - from: persona-analyst
+    to: uc-analyst-search
+  - from: persona-analyst
+    to: uc-analyst-report
+  - from: persona-ops
+    to: uc-ops-workflow
+  - from: persona-ops
+    to: uc-ops-monitoring
+
+  # Use Cases → AI Patterns
+  - from: uc-chat-qa
+    to: pattern-rag
+  - from: uc-chatbot
+    to: pattern-rag
+  - from: uc-chatbot
+    to: pattern-agent-loop
+  - from: uc-dev-completion
+    to: pattern-completion
+  - from: uc-dev-agent
+    to: pattern-agent-loop
+  - from: uc-analyst-search
+    to: pattern-rag
+  - from: uc-analyst-report
+    to: pattern-rag
+  - from: uc-analyst-report
+    to: pattern-agent-loop
+  - from: uc-ops-workflow
+    to: pattern-agent-loop
+  - from: uc-ops-workflow
+    to: pattern-multiagent
+  - from: uc-ops-monitoring
+    to: pattern-agent-loop
+
+  # AI Patterns → Key Stack
+  - from: pattern-rag
+    to: stack-llm
+  - from: pattern-rag
+    to: stack-vector-db
+  - from: pattern-completion
+    to: stack-llm
+  - from: pattern-agent-loop
+    to: stack-llm
+  - from: pattern-agent-loop
+    to: stack-tools
+  - from: pattern-agent-loop
+    to: stack-memory
+  - from: pattern-multiagent
+    to: stack-llm
+  - from: pattern-multiagent
+    to: stack-orchestrator
+  - from: pattern-multiagent
+    to: stack-tools

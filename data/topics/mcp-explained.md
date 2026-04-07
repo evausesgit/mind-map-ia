@@ -8,7 +8,7 @@ summary:
   fr: "Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA."
 tags: [mcp, agents, tools, protocol, integration]
 related_terms: [tool_use, agent, context_window]
-related_nodes: [tool_use, agent_frameworks, mcp]
+related_nodes: [tool_use_pattern, agents_pattern, mcp_pattern]
 status: stable
 date: 2026-04-04
 sources:
