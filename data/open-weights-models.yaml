@@ -281,12 +281,14 @@ nodes:
         Alibaba's open-weights model family. Available in sizes from 0.5B to 72B+.
         Exceptionally strong in Chinese and English, with solid multilingual coverage.
         Qwen2.5 set new benchmarks for open-weights models in late 2024.
+        Qwen3 (April 2025) introduced hybrid thinking mode and reaches near-frontier performance.
         Qwen2.5-Coder is one of the top open-weights models for code generation.
         Used extensively in production at scale across Asia and increasingly globally.
       fr: |
         La famille de modèles open weights d'Alibaba. Disponible en tailles de 0,5B à 72B+.
         Exceptionnellement fort en chinois et anglais, avec une bonne couverture multilingue.
         Qwen2.5 a établi de nouveaux benchmarks pour les modèles open weights fin 2024.
+        Qwen3 (avril 2025) a introduit le mode de réflexion hybride et atteint des performances quasi-frontier.
         Qwen2.5-Coder est l'un des meilleurs modèles open weights pour la génération de code.
         Utilisé intensivement en production à grande échelle en Asie et de plus en plus dans le monde.
 
@@ -435,6 +437,31 @@ nodes:
         La variante 27B surpasse Llama 3.3 70B sur plusieurs benchmarks malgré une taille 2,5x inférieure.
         Optimisé pour les TPU de Google et le matériel grand public.
 
+  - id: qwen3
+    label:
+      en: "Qwen3"
+      fr: "Qwen3"
+    layer: 3
+    category: model
+    status: emerging
+    since: "2025"
+    link: "https://huggingface.co/collections/Qwen/qwen3-67dd247413edd7b5e8c4b8e7"
+    description:
+      en: |
+        Alibaba's latest flagship open-weights release (April 2025).
+        Key innovation: hybrid thinking mode — the model can switch between a slow "thinking" mode
+        (extended chain-of-thought reasoning) and a fast "non-thinking" mode in the same context.
+        Flagship: Qwen3-235B-A22B (MoE, 22B active params), competing with GPT-4o and Claude 3.7.
+        Dense variants: 32B, 14B, 8B, 4B — all strong on reasoning, math and code.
+        128K context window. Trained on 36T tokens across 119 languages. Apache 2.0 license.
+      fr: |
+        La dernière publication open weights phare d'Alibaba (avril 2025).
+        Innovation clé : mode de réflexion hybride — le modèle peut alterner entre un mode "thinking" lent
+        (raisonnement étendu chaîne-de-pensée) et un mode "non-thinking" rapide dans le même contexte.
+        Flagship : Qwen3-235B-A22B (MoE, 22B paramètres actifs), rivalisant avec GPT-4o et Claude 3.7.
+        Variantes denses : 32B, 14B, 8B, 4B — toutes solides en raisonnement, maths et code.
+        Fenêtre de contexte 128K. Entraîné sur 36T tokens dans 119 langues. Licence Apache 2.0.
+
   - id: qwen25_72b
     label:
       en: "Qwen2.5-72B"
@@ -552,6 +579,10 @@ edges:
     type: part_of
   - from: phi_family
     to: phi4
+    label: ""
+    type: part_of
+  - from: qwen_family
+    to: qwen3
     label: ""
     type: part_of
   - from: qwen_family
