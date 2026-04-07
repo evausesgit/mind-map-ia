@@ -38,10 +38,13 @@ def md_to_html(text):
             while i < len(lines) and not lines[i].startswith("```"):
                 code_lines.append(lines[i])
                 i += 1
-            code = "\n".join(code_lines)
-            code = code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            lang_class = f' class="language-{lang}"' if lang else ""
-            html_parts.append(f'<pre><code{lang_class}>{code}</code></pre>')
+            raw_code = "\n".join(code_lines)
+            if lang == "mermaid":
+                html_parts.append(f'<div class="mermaid">{raw_code}</div>')
+            else:
+                code = raw_code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+                lang_class = f' class="language-{lang}"' if lang else ""
+                html_parts.append(f'<pre><code{lang_class}>{code}</code></pre>')
             i += 1
             continue
 
@@ -561,7 +564,10 @@ def generate_html(topic, maps):
   </aside>
 </div>
 
+<script src="../mermaid.min.js"></script>
 <script>
+mermaid.initialize({{ startOnLoad: false, theme: 'default', securityLevel: 'loose' }});
+
 const CONTENT = {{
   en: {repr(content_en_html)},
   fr: {repr(content_fr_html)},
@@ -571,6 +577,10 @@ const TOC = {{
   fr: {repr(toc_fr)},
 }};
 let lang = 'en';
+
+function renderMermaid() {{
+  mermaid.run({{ querySelector: '.mermaid' }});
+}}
 
 function setLang(newLang) {{
   lang = newLang;
@@ -582,7 +592,10 @@ function setLang(newLang) {{
   document.querySelectorAll('[data-en]').forEach(el => {{
     el.textContent = el.dataset[lang] || el.dataset.en;
   }});
+  renderMermaid();
 }}
+
+document.addEventListener('DOMContentLoaded', renderMermaid);
 </script>
 </body>
 </html>"""
