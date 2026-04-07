@@ -1,5 +1,4 @@
 {
-  "buildCommand": "npm run build",
   "outputDirectory": "web",
-  "installCommand": "echo 'no install'"
+  "buildCommand": "echo 'static site, no build needed'"
 }
