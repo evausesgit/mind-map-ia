@@ -1,4 +1,15 @@
 maps:
+  - id: glossary
+    icon: "📖"
+    title:
+      en: "Glossary"
+      fr: "Glossaire"
+    description:
+      en: "Key terms and concepts of the LLM & AI ecosystem"
+      fr: "Termes et concepts clés de l'écosystème LLM & IA"
+    terms: 10
+    output: glossary.html
+
   - id: macro
     icon: "🗺️"
     title:
@@ -11,28 +22,16 @@ maps:
     output: macro.html
     data: data/ecosystem-macro.yaml
 
-
-  - id: rag-pattern
-    icon: "🔍"
+  - id: use-cases
+    icon: "🎯"
     title:
-      en: "RAG"
-      fr: "RAG"
+      en: "AI Use Cases"
+      fr: "Cas d'Usage IA"
     description:
-      en: "Pipeline stages, components and tools for Retrieval-Augmented Generation"
-      fr: "Étapes, composants et outils pour la génération augmentée par récupération"
-    output: rag-pattern.html
-    data: data/rag-pattern.yaml
-
-  - id: cloud-managed
-    icon: "☁️"
-    title:
-      en: "Cloud Managed AI"
-      fr: "IA Cloud Managée"
-    description:
-      en: "AWS, Google Cloud, Azure and Cloudflare AI platforms compared"
-      fr: "Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées"
-    output: cloud-managed.html
-    data: data/cloud-managed.yaml
+      en: "4 user personas, their scenarios, AI patterns, and key stack components"
+      fr: "4 personas utilisateur, leurs scénarios, patterns IA, et composants clés"
+    output: use-cases.html
+    data: data/use-cases.yaml
 
   - id: ai-agents
     icon: "🤖"
@@ -56,18 +55,6 @@ maps:
     output: ai-coding-assistants.html
     data: data/ai-coding-assistants.yaml
 
-  - id: open-weights-models
-    icon: "🔓"
-    title:
-      en: "Open Source / Weights Models"
-      fr: "Modèles Open Source / Weights"
-    description:
-      en: "Organizations releasing open-weights models and their flagship releases"
-      fr: "Labos publiant des modèles open weights et leurs sorties phares"
-    nodes: 17
-    output: open-weights-models.html
-    data: data/open-weights-models.yaml
-
   - id: proprietary-models
     icon: "🏢"
     title:
@@ -80,16 +67,28 @@ maps:
     output: proprietary-models.html
     data: data/proprietary-models.yaml
 
-  - id: use-cases
-    icon: "🎯"
+  - id: open-weights-models
+    icon: "🔓"
     title:
-      en: "AI Use Cases"
-      fr: "Cas d'Usage IA"
+      en: "Open Source / Weights Models"
+      fr: "Modèles Open Source / Weights"
     description:
-      en: "4 user personas, their scenarios, AI patterns, and key stack components"
-      fr: "4 personas utilisateur, leurs scénarios, patterns IA, et composants clés"
-    output: use-cases.html
-    data: data/use-cases.yaml
+      en: "Organizations releasing open-weights models and their flagship releases"
+      fr: "Labos publiant des modèles open weights et leurs sorties phares"
+    nodes: 17
+    output: open-weights-models.html
+    data: data/open-weights-models.yaml
+
+  - id: cloud-managed
+    icon: "☁️"
+    title:
+      en: "Cloud Managed AI"
+      fr: "IA Cloud Managée"
+    description:
+      en: "AWS, Google Cloud, Azure and Cloudflare AI platforms compared"
+      fr: "Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées"
+    output: cloud-managed.html
+    data: data/cloud-managed.yaml
 
   - id: dense-vs-moe
     icon: "⚡"
@@ -102,13 +101,13 @@ maps:
     output: dense-vs-moe.html
     data: data/dense-vs-moe.yaml
 
-  - id: glossary
-    icon: "📖"
+  - id: rag-pattern
+    icon: "🔍"
     title:
-      en: "Glossary"
-      fr: "Glossaire"
+      en: "RAG"
+      fr: "RAG"
     description:
-      en: "Key terms and concepts of the LLM & AI ecosystem"
-      fr: "Termes et concepts clés de l'écosystème LLM & IA"
-    terms: 10
-    output: glossary.html
+      en: "Pipeline stages, components and tools for Retrieval-Augmented Generation"
+      fr: "Étapes, composants et outils pour la génération augmentée par récupération"
+    output: rag-pattern.html
+    data: data/rag-pattern.yaml

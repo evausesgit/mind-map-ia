@@ -11,6 +11,9 @@ Usage:
 import re
 import yaml
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).parent))
+from global_search import widget_html as gs_widget
 
 ROOT = Path(__file__).parent.parent
 TOPICS_DIR = ROOT / "data" / "topics"
@@ -533,6 +536,7 @@ def generate_html(topic, maps):
   <div style="display:flex;align-items:center;gap:16px;">
     {nav_html}
   </div>
+  {gs_widget('../search-index.json')}
   <div class="lang-toggle">
     <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
     <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>

@@ -5,6 +5,9 @@ import re
 import yaml
 import json
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).parent))
+from global_search import widget_html as gs_widget
 
 ROOT = Path(__file__).parent.parent
 GLOSSARY_FILE = ROOT / "data" / "glossary.yaml"
@@ -433,6 +436,7 @@ def generate_html(data, maps):
              placeholder="Search..." autocomplete="off" />
       <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
     </div>
+    {gs_widget('search-index.json')}
     <div class="lang-toggle">
       <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
       <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
