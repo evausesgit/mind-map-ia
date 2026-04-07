@@ -145,8 +145,8 @@ nodes:
 
   - id: uc-chat-qa
     label:
-      en: "Chat LLM"
-      fr: "Chat LLM"
+      en: "Chat LLM (ChatGPT-like)"
+      fr: "Chat LLM (type ChatGPT)"
     layer: 2
     category: usecase
     status: stable
