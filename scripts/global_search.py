@@ -12,16 +12,17 @@ def widget_html(index_path: str) -> str:
 <!-- ── Global Search Widget ── -->
 <style>
 #gs-trigger {{
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px; border-radius: 8px;
-  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
-  color: #ccc; font-size: 13px; cursor: pointer;
-  transition: background 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 8px; min-width: 180px;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+  color: #aaa; font-size: 13px; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
 }}
-#gs-trigger:hover {{ background: rgba(255,255,255,0.15); color: #fff; }}
+#gs-trigger:hover {{ background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.3); color: #fff; }}
+#gs-trigger .gs-placeholder {{ flex: 1; text-align: left; }}
 #gs-trigger .gs-kbd {{
-  font-size: 11px; opacity: 0.6;
-  background: rgba(255,255,255,0.1); padding: 1px 5px; border-radius: 4px;
+  font-size: 11px; opacity: 0.5;
+  background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
 }}
 #gs-overlay {{
   display: none; position: fixed; inset: 0; z-index: 9999;
@@ -83,7 +84,7 @@ def widget_html(index_path: str) -> str:
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
   </svg>
-  Search
+  <span class="gs-placeholder">Search everywhere…</span>
   <span class="gs-kbd">⌘K</span>
 </button>
 

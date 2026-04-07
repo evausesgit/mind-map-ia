@@ -215,8 +215,6 @@ def main():
         config = yaml.safe_load(f)
     maps = config.get("maps", [])
     topics = load_topics()
-    search_index_json = json.dumps(build_search_index(), ensure_ascii=False)
-
     # Split: featured (Big Picture) vs rest
     macro_map   = next((m for m in maps if m.get("id") == "macro"), None)
     other_maps  = [m for m in maps if m.get("id") not in ("macro", "glossary")]
@@ -418,57 +416,6 @@ def main():
   .lang-btn.active {{ background: #E74C3C; border-color: #E74C3C; color: white; }}
   .lang-btn:hover:not(.active) {{ border-color: #aaa; color: white; }}
 
-  /* ── Search ── */
-  .search-wrapper {{ position: relative; width: 220px; }}
-  .search-icon {{
-    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
-    font-size: 13px; pointer-events: none; color: #555;
-  }}
-  .search-input {{
-    width: 100%;
-    background: #0F0F1A;
-    border: 1.5px solid #1E2D4E;
-    border-radius: 8px;
-    color: white;
-    font-size: 13px;
-    padding: 6px 26px 6px 30px;
-    outline: none;
-    transition: border-color 0.15s;
-  }}
-  .search-input::placeholder {{ color: #444; }}
-  .search-input:focus {{ border-color: #E74C3C; }}
-  .search-clear {{
-    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-    background: none; border: none; color: #555; font-size: 14px;
-    cursor: pointer; display: none; line-height: 1; padding: 0;
-  }}
-  .search-clear:hover {{ color: white; }}
-  .search-dropdown {{
-    position: absolute; top: calc(100% + 6px); left: 0; right: 0;
-    background: #16213E; border: 1px solid #1E2D4E; border-radius: 10px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5); z-index: 200;
-    max-height: 360px; overflow-y: auto; display: none;
-  }}
-  .search-dropdown.open {{ display: block; }}
-  .search-item {{
-    display: flex; flex-direction: column; gap: 2px;
-    padding: 10px 14px; border-bottom: 1px solid #1E2D4E;
-    text-decoration: none; color: inherit; transition: background 0.1s;
-  }}
-  .search-item:last-child {{ border-bottom: none; }}
-  .search-item:hover {{ background: #1E2D4E; }}
-  .search-item-top {{ display: flex; align-items: center; gap: 8px; }}
-  .search-item-badge {{
-    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
-    text-transform: uppercase; padding: 1px 6px; border-radius: 4px; flex-shrink: 0;
-  }}
-  .badge-glossary {{ background: #2C3E6E; color: #BDC3C7; }}
-  .badge-node    {{ background: #1E3A2E; color: #82C8A0; }}
-  .badge-topic   {{ background: #3B1F4E; color: #C39BD3; }}
-  .search-item-label {{ font-size: 13px; font-weight: 600; color: white; }}
-  .search-item-sub   {{ font-size: 11px; color: #7F8C8D; }}
-  .search-item-match {{ font-size: 11px; color: #E74C3C; font-style: italic; }}
-  .search-empty {{ padding: 16px; text-align: center; color: #555; font-size: 13px; }}
 
   /* ── Main layout ── */
   main {{
@@ -649,13 +596,6 @@ def main():
     {nav_html}
   </div>
   <div class="header-right">
-    <div class="search-wrapper">
-      <span class="search-icon">🔍</span>
-      <input class="search-input" id="search-input" type="text"
-             placeholder="Search…" autocomplete="off" spellcheck="false">
-      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
-      <div class="search-dropdown" id="search-dropdown"></div>
-    </div>
     <a href="glossary.html" class="glossary-btn">
       <span data-en="📖 Glossary" data-fr="📖 Glossaire">📖 Glossary</span>
     </a>
@@ -720,85 +660,12 @@ function setLang(lang) {{
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
   document.getElementById('footer-text').textContent = uiTexts[lang].footer;
-  document.getElementById('search-input').placeholder = uiTexts[lang].searchPlaceholder;
   document.getElementById('site-intro').innerHTML = uiTexts[lang].intro;
   document.querySelectorAll('[data-en]').forEach(el => {{
     el.textContent = lang === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
   }});
-  const q = document.getElementById('search-input').value.trim();
-  if (q) renderResults(doSearch(q));
 }}
 
-const SEARCH_INDEX = {search_index_json};
-function normalize(s) {{
-  return (s || '').toLowerCase().normalize('NFD').replace(/\\p{{Diacritic}}/gu, '');
-}}
-function doSearch(query) {{
-  const q = normalize(query);
-  if (q.length < 2) return [];
-  const results = [];
-  for (const item of SEARCH_INDEX) {{
-    const label = item.label[currentLang] || item.label.en || '';
-    const desc  = item.desc[currentLang]  || item.desc.en  || '';
-    const aliases = (item.aliases || []).join(' ');
-    const mapLabel = item.map ? (item.map[currentLang] || item.map.en || '') : '';
-    let matchText = null, score = 0;
-    const nLabel = normalize(label), nAliases = normalize(aliases), nDesc = normalize(desc);
-    if (nLabel.startsWith(q))      {{ score = 3; }}
-    else if (nLabel.includes(q))   {{ score = 2; }}
-    else if (nAliases.includes(q)) {{ score = 1; matchText = aliases.split(',').find(a => normalize(a).includes(q))?.trim(); }}
-    else if (nDesc.includes(q))    {{ score = 0.5; const i = nDesc.indexOf(q); matchText = '…' + desc.slice(Math.max(0,i-20), i+40).trim() + '…'; }}
-    if (score > 0) results.push({{ item, label, desc, mapLabel, matchText, score }});
-  }}
-  results.sort((a, b) => b.score - a.score);
-  return results.slice(0, 8);
-}}
-function renderResults(results) {{
-  const dd = document.getElementById('search-dropdown');
-  if (!results.length) {{
-    dd.innerHTML = `<div class="search-empty">${{currentLang === 'fr' ? 'Aucun résultat' : 'No results'}}</div>`;
-    dd.classList.add('open'); return;
-  }}
-  dd.innerHTML = results.map(r => {{
-    const {{ item, label, desc, mapLabel, matchText }} = r;
-    const badge = item.type === 'glossary'
-      ? `<span class="search-item-badge badge-glossary">${{currentLang === 'fr' ? 'Glossaire' : 'Glossary'}}</span>`
-      : item.type === 'topic'
-      ? `<span class="search-item-badge badge-topic">${{currentLang === 'fr' ? 'Article' : 'Deep Dive'}}</span>`
-      : `<span class="search-item-badge badge-node">${{mapLabel}}</span>`;
-    const sub = matchText
-      ? `<div class="search-item-match">${{matchText}}</div>`
-      : (desc ? `<div class="search-item-sub">${{desc.slice(0,80)}}…</div>` : '');
-    return `<a class="search-item" href="${{item.url}}">
-      <div class="search-item-top">${{badge}}<span class="search-item-label">${{label}}</span></div>${{sub}}</a>`;
-  }}).join('');
-  dd.classList.add('open');
-}}
-function clearSearch() {{
-  const inp = document.getElementById('search-input');
-  inp.value = ''; inp.focus();
-  document.getElementById('search-dropdown').classList.remove('open');
-  document.getElementById('search-clear').style.display = 'none';
-}}
-document.addEventListener('DOMContentLoaded', () => {{
-  const inp = document.getElementById('search-input');
-  const dd  = document.getElementById('search-dropdown');
-  const clr = document.getElementById('search-clear');
-  inp.addEventListener('input', () => {{
-    const q = inp.value.trim();
-    clr.style.display = q ? 'block' : 'none';
-    if (q.length >= 2) renderResults(doSearch(q));
-    else dd.classList.remove('open');
-  }});
-  inp.addEventListener('keydown', e => {{
-    if (e.key === 'Escape') clearSearch();
-    if (e.key === 'Enter') {{ const first = dd.querySelector('.search-item'); if (first) window.location.href = first.href; }}
-  }});
-  document.addEventListener('click', e => {{
-    if (!inp.closest('.search-wrapper').contains(e.target)) dd.classList.remove('open');
-  }});
-  inp.addEventListener('focus', () => {{ if (inp.value.trim().length >= 2) dd.classList.add('open'); }});
-}});
 </script>
 </body>
 </html>"""
