@@ -243,7 +243,25 @@ def widget_html(index_path: str) -> str:
   }};
 
   window.gsGo = function(el) {{
-    window.location.href = el.dataset.url;
+    const url = el.dataset.url;
+    const hashIdx = url.indexOf('#');
+    // If navigating to a hash on the same page, force hashchange even if hash is identical
+    if (hashIdx !== -1) {{
+      const page = url.slice(0, hashIdx) || location.pathname;
+      const samePage = location.pathname.endsWith(page) || page === location.pathname;
+      if (samePage) {{
+        const newHash = url.slice(hashIdx);
+        if (location.hash === newHash) {{
+          // Same hash — dispatch manually since browser won't fire hashchange
+          window.dispatchEvent(new HashChangeEvent('hashchange'));
+        }} else {{
+          location.hash = newHash;
+        }}
+        gsClose();
+        return;
+      }}
+    }}
+    window.location.href = url;
     gsClose();
   }};
 

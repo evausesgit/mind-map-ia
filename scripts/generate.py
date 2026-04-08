@@ -1787,20 +1787,22 @@ cy.ready(() => {{
   }});
   drawCategoryBoxes();
 
-  // Open node from URL hash (shareable links)
-  const hash = window.location.hash.slice(1);
-  if (hash) {{
+  // Open node from URL hash (shareable links & global search)
+  function navigateToHash() {{
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
     const node = cy.getElementById(hash);
-    if (!node.empty()) {{
-      cy.animate({{ center: {{ eles: node }}, zoom: 1.4 }}, {{ duration: 400 }});
-      showPanel(node);
-      cy.elements().addClass('dimmed');
-      node.removeClass('dimmed');
-      node.connectedEdges().removeClass('dimmed').addClass('highlighted');
-      node.connectedEdges().connectedNodes().removeClass('dimmed');
-      node.addClass('highlighted');
-    }}
+    if (node.empty()) return;
+    cy.animate({{ center: {{ eles: node }}, zoom: 1.4 }}, {{ duration: 400 }});
+    showPanel(node);
+    cy.elements().addClass('dimmed');
+    node.removeClass('dimmed');
+    node.connectedEdges().removeClass('dimmed').addClass('highlighted');
+    node.connectedEdges().connectedNodes().removeClass('dimmed');
+    node.addClass('highlighted');
   }}
+  navigateToHash();
+  window.addEventListener('hashchange', navigateToHash);
 }});
 
 cy.on('viewport position dragfree', drawCategoryBoxes);
