@@ -142,10 +142,12 @@ def build_news_item(entry):
     end_tag = '</a>' if link else '</div>'
     return f"""
     {tag}
-      <div class="news-date">{date}</div>
       <div class="news-icon">{icon}</div>
       <div class="news-body">
-        <div class="news-type" data-en="{label_en}" data-fr="{label_fr}">{label_en}</div>
+        <div class="news-meta">
+          <span class="news-type" data-en="{label_en}" data-fr="{label_fr}">{label_en}</span>
+          <span class="news-date">{date}</span>
+        </div>
         <div class="news-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</div>
         <div class="news-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</div>
       </div>
@@ -485,9 +487,41 @@ def main():
     flex-direction: column;
     align-items: center;
     padding: 32px 40px 64px;
-    max-width: 960px;
+    max-width: 1280px;
     margin: 0 auto;
     width: 100%;
+  }}
+  .main-layout {{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    width: 100%;
+  }}
+  .news-sidebar {{
+    position: sticky;
+    top: 80px;
+    align-self: start;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #1E2D4E transparent;
+  }}
+  .main-content {{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+  }}
+  @media (max-width: 860px) {{
+    .main-layout {{
+      grid-template-columns: 1fr;
+    }}
+    .news-sidebar {{
+      position: static;
+      max-height: none;
+      order: 1;
+    }}
+    .main-content {{ order: 0; }}
   }}
   .site-intro {{
     width: 100%;
@@ -623,10 +657,10 @@ def main():
   .news-feed {{ display: flex; flex-direction: column; gap: 0; width: 100%; }}
   .news-item {{
     display: grid;
-    grid-template-columns: 80px 32px 1fr auto;
+    grid-template-columns: 24px 1fr auto;
     align-items: start;
-    gap: 12px;
-    padding: 16px 18px;
+    gap: 10px;
+    padding: 14px 14px;
     border-left: 2px solid #1E2D4E;
     text-decoration: none;
     color: inherit;
@@ -636,8 +670,8 @@ def main():
   }}
   .news-share {{
     background: none; border: none; cursor: pointer;
-    font-size: 14px; opacity: 0; transition: opacity 0.15s;
-    padding: 4px 6px; border-radius: 4px; align-self: center;
+    font-size: 13px; opacity: 0; transition: opacity 0.15s;
+    padding: 3px 5px; border-radius: 4px; align-self: center;
   }}
   .news-item:hover .news-share {{ opacity: 0.6; }}
   .news-share:hover {{ opacity: 1 !important; background: #1E2D4E; }}
@@ -645,35 +679,40 @@ def main():
     background: #16213E;
     border-left-color: #E74C3C;
   }}
-  .news-date {{
-    font-size: 11px;
-    color: #555;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
+  .news-icon {{
+    font-size: 16px;
+    text-align: center;
     padding-top: 2px;
   }}
-  .news-icon {{
-    font-size: 18px;
-    text-align: center;
-    padding-top: 1px;
-  }}
   .news-body {{ min-width: 0; }}
+  .news-meta {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }}
   .news-type {{
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #E74C3C;
-    margin-bottom: 3px;
+  }}
+  .news-date {{
+    font-size: 10px;
+    color: #555;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }}
   .news-title {{
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: white;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
+    line-height: 1.4;
   }}
   .news-desc {{
-    font-size: 12px;
+    font-size: 11px;
     color: #7F8C8D;
     line-height: 1.5;
   }}
@@ -736,33 +775,39 @@ def main():
 
   {featured_html}
 
-  <div class="section-sep">
-    <div class="section-sep-line"></div>
-    <span class="section-sep-label" data-en="ALL MAPS" data-fr="TOUTES LES CARTES">ALL MAPS</span>
-    <div class="section-sep-line"></div>
-  </div>
+  <div class="main-layout">
+    <aside class="news-sidebar">
+      <div id="news" class="section-sep">
+        <div class="section-sep-line"></div>
+        <span class="section-sep-label" data-en="WHAT'S NEW" data-fr="NOUVEAUTÉS">WHAT'S NEW</span>
+        <div class="section-sep-line"></div>
+      </div>
+      <div class="news-feed">
+        {news_html}
+      </div>
+    </aside>
 
-  <div class="cards">
-    {other_cards_html}
-    {glossary_card_html}
-  </div>
+    <div class="main-content">
+      <div class="section-sep">
+        <div class="section-sep-line"></div>
+        <span class="section-sep-label" data-en="ALL MAPS" data-fr="TOUTES LES CARTES">ALL MAPS</span>
+        <div class="section-sep-line"></div>
+      </div>
 
-  <div class="section-sep" style="margin-top:40px;">
-    <div class="section-sep-line"></div>
-    <span class="section-sep-label" data-en="DEEP DIVES" data-fr="ARTICLES DE FOND">DEEP DIVES</span>
-    <div class="section-sep-line"></div>
-  </div>
-  <div class="cards" style="grid-template-columns:1fr">
-    {topics_html}
-  </div>
+      <div class="cards">
+        {other_cards_html}
+        {glossary_card_html}
+      </div>
 
-  <div id="news" class="section-sep" style="margin-top:40px;">
-    <div class="section-sep-line"></div>
-    <span class="section-sep-label" data-en="WHAT'S NEW" data-fr="NOUVEAUTÉS">WHAT'S NEW</span>
-    <div class="section-sep-line"></div>
-  </div>
-  <div class="news-feed">
-    {news_html}
+      <div class="section-sep" style="margin-top:40px;">
+        <div class="section-sep-line"></div>
+        <span class="section-sep-label" data-en="DEEP DIVES" data-fr="ARTICLES DE FOND">DEEP DIVES</span>
+        <div class="section-sep-line"></div>
+      </div>
+      <div class="cards" style="grid-template-columns:1fr">
+        {topics_html}
+      </div>
+    </div>
   </div>
 </main>
 
