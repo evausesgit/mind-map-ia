@@ -247,6 +247,9 @@ def build_nav_html(maps, topics):
         f'  </button>'
         f'  <div class="nav-dropdown">{dive_items}</div>'
         f'</div>'
+        f'<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
+        f'  <span data-en="News" data-fr="Nouveautés">News</span>'
+        f'</a>'
     )
 
 
@@ -729,7 +732,7 @@ def main():
     {topics_html}
   </div>
 
-  <div class="section-sep" style="margin-top:40px;">
+  <div id="news" class="section-sep" style="margin-top:40px;">
     <div class="section-sep-line"></div>
     <span class="section-sep-label" data-en="WHAT'S NEW" data-fr="NOUVEAUTÉS">WHAT'S NEW</span>
     <div class="section-sep-line"></div>

@@ -46,6 +46,9 @@ def build_nav(maps, current_output):
         f"   {items}"
         "  </div>"
         "</div>"
+        '<a href="index.html#news" class="nav-btn" style="text-decoration:none;padding:5px 11px;border:1.5px solid #333;border-radius:6px;color:#BDC3C7;font-size:13px;font-weight:600;">'
+        '  <span data-en="News" data-fr="Nouveautés">News</span>'
+        '</a>'
     )
 
 
