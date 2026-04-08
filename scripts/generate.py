@@ -430,6 +430,7 @@ def generate_html(data, elements, maps=None, current_output=""):
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title_en}</title>
 <script src="cytoscape.min.js"></script>
@@ -2109,6 +2110,7 @@ def generate_slides_html(data):
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title_en} — Slides</title>
 <style>
