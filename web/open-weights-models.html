@@ -1138,10 +1138,10 @@ const elements = [
       "color": "#A9CCE3",
       "layerLabel": "MODEL FAMILIES",
       "label_en": "Mistral / Mixtral",
-      "description_en": "Two lines from Mistral AI: dense models (Mistral 7B, Mistral Small) and\nMixture-of-Experts models (Mixtral 8x7B, Mixtral 8x22B).\nMoE architecture activates only a subset of parameters per token,\ngiving GPT-4 class quality at inference costs of much smaller models.",
+      "description_en": "Open-weights models from Mistral AI, released under Apache 2.0.\nDense models (Mistral 7B, Mistral Small) and MoE models (Mixtral 8x7B, Mixtral 8x22B).\nPart of Mistral's hybrid strategy: these open models attract the developer community,\nwhile proprietary models (Mistral Large, Medium) are monetized via API.\nMoE architecture activates only a subset of parameters per token for efficient inference.",
       "layerLabel_en": "MODEL FAMILIES",
       "label_fr": "Mistral / Mixtral",
-      "description_fr": "Deux lignes chez Mistral AI : mod\u00e8les denses (Mistral 7B, Mistral Small) et\nmod\u00e8les Mixture-of-Experts (Mixtral 8x7B, Mixtral 8x22B).\nL'architecture MoE n'active qu'un sous-ensemble de param\u00e8tres par token,\noffrant une qualit\u00e9 comparable \u00e0 GPT-4 au co\u00fbt d'inf\u00e9rence de mod\u00e8les bien plus petits.",
+      "description_fr": "Les mod\u00e8les open weights de Mistral AI, publi\u00e9s sous licence Apache 2.0.\nMod\u00e8les denses (Mistral 7B, Mistral Small) et mod\u00e8les MoE (Mixtral 8x7B, Mixtral 8x22B).\nPartie de la strat\u00e9gie hybride de Mistral : ces mod\u00e8les ouverts attirent la communaut\u00e9 dev,\ntandis que les mod\u00e8les propri\u00e9taires (Mistral Large, Medium) sont mon\u00e9tis\u00e9s via API.\nL'architecture MoE n'active qu'un sous-ensemble de param\u00e8tres par token pour une inf\u00e9rence efficace.",
       "layerLabel_fr": "FAMILLES DE MOD\u00c8LES"
     },
     "position": {
@@ -1286,7 +1286,7 @@ const elements = [
     },
     "position": {
       "x": 90,
-      "y": -157.5
+      "y": -192.5
     },
     "classes": "status-stable"
   },
@@ -1314,7 +1314,7 @@ const elements = [
     },
     "position": {
       "x": 90,
-      "y": -122.5
+      "y": -157.5
     },
     "classes": "status-emerging"
   },
@@ -1342,9 +1342,65 @@ const elements = [
     },
     "position": {
       "x": 90,
+      "y": -122.5
+    },
+    "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "mistral_small",
+      "label": "Mistral Small",
+      "category": "model",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 3,
+      "status": "stable",
+      "since": "2024",
+      "link": "https://huggingface.co/mistralai/Mistral-Small-24B-Instruct-2501",
+      "ref": "",
+      "drilldown": "",
+      "color": "#D5F5E3",
+      "layerLabel": "CURRENT MODELS",
+      "label_en": "Mistral Small",
+      "description_en": "Mistral's lightweight dense model. 24B parameters, Apache 2.0 license.\nStrong at instruction following, coding and multilingual tasks for its size.\nDesigned for local deployment and cost-sensitive production workloads.\nOne of the key open-weights models in Mistral's hybrid strategy.",
+      "layerLabel_en": "CURRENT MODELS",
+      "label_fr": "Mistral Small",
+      "description_fr": "Le mod\u00e8le dense l\u00e9ger de Mistral. 24B param\u00e8tres, licence Apache 2.0.\nSolide en suivi d'instructions, code et t\u00e2ches multilingues pour sa taille.\nCon\u00e7u pour le d\u00e9ploiement local et les workloads de production sensibles au co\u00fbt.\nUn des mod\u00e8les open weights cl\u00e9s dans la strat\u00e9gie hybride de Mistral.",
+      "layerLabel_fr": "MOD\u00c8LES ACTUELS"
+    },
+    "position": {
+      "x": 90,
       "y": -87.5
     },
     "classes": "status-stable"
+  },
+  {
+    "data": {
+      "id": "magistral_small",
+      "label": "Magistral Small",
+      "category": "model",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 3,
+      "status": "emerging",
+      "since": "2025",
+      "link": "https://mistral.ai/news/magistral",
+      "ref": "",
+      "drilldown": "",
+      "color": "#D5F5E3",
+      "layerLabel": "CURRENT MODELS",
+      "label_en": "Magistral Small",
+      "description_en": "Mistral's open-weights reasoning model. Apache 2.0 license.\nUses extended chain-of-thought reasoning similar to o3 and DeepSeek-R1.\nMarks Mistral's entry into the reasoning model space while keeping the open-weights approach.\nStrong at math, coding and complex multi-step problem solving.",
+      "layerLabel_en": "CURRENT MODELS",
+      "label_fr": "Magistral Small",
+      "description_fr": "Le mod\u00e8le de raisonnement open weights de Mistral. Licence Apache 2.0.\nUtilise un raisonnement cha\u00eene-de-pens\u00e9e \u00e9tendu similaire \u00e0 o3 et DeepSeek-R1.\nMarque l'entr\u00e9e de Mistral dans les mod\u00e8les de raisonnement tout en gardant l'approche open weights.\nSolide en maths, code et r\u00e9solution de probl\u00e8mes multi-\u00e9tapes complexes.",
+      "layerLabel_fr": "MOD\u00c8LES ACTUELS"
+    },
+    "position": {
+      "x": 90,
+      "y": -52.5
+    },
+    "classes": "status-emerging"
   },
   {
     "data": {
@@ -1370,7 +1426,7 @@ const elements = [
     },
     "position": {
       "x": 90,
-      "y": -52.5
+      "y": -17.5
     },
     "classes": "status-stable"
   },
@@ -1398,7 +1454,7 @@ const elements = [
     },
     "position": {
       "x": 90,
-      "y": -17.5
+      "y": 17.5
     },
     "classes": "status-emerging"
   },
@@ -1426,7 +1482,7 @@ const elements = [
     },
     "position": {
       "x": 90,
-      "y": 17.5
+      "y": 52.5
     },
     "classes": "status-evolving"
   },
@@ -1454,7 +1510,7 @@ const elements = [
     },
     "position": {
       "x": 90,
-      "y": 52.5
+      "y": 87.5
     },
     "classes": "status-emerging"
   },
@@ -1482,7 +1538,7 @@ const elements = [
     },
     "position": {
       "x": 90,
-      "y": 87.5
+      "y": 122.5
     },
     "classes": "status-stable"
   },
@@ -1510,7 +1566,7 @@ const elements = [
     },
     "position": {
       "x": 90,
-      "y": 122.5
+      "y": 157.5
     },
     "classes": "status-stable"
   },
@@ -1538,7 +1594,7 @@ const elements = [
     },
     "position": {
       "x": 90,
-      "y": 157.5
+      "y": 192.5
     },
     "classes": "status-stable"
   },
@@ -1619,6 +1675,24 @@ const elements = [
       "id": "mistral_family__mixtral8x22b",
       "source": "mistral_family",
       "target": "mixtral8x22b",
+      "label": "",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "mistral_family__mistral_small",
+      "source": "mistral_family",
+      "target": "mistral_small",
+      "label": "",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "mistral_family__magistral_small",
+      "source": "mistral_family",
+      "target": "magistral_small",
       "label": "",
       "etype": "part_of"
     }

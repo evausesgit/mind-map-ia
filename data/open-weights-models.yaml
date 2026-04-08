@@ -217,15 +217,17 @@ nodes:
     link: "https://mistral.ai/technology/"
     description:
       en: |
-        Two lines from Mistral AI: dense models (Mistral 7B, Mistral Small) and
-        Mixture-of-Experts models (Mixtral 8x7B, Mixtral 8x22B).
-        MoE architecture activates only a subset of parameters per token,
-        giving GPT-4 class quality at inference costs of much smaller models.
+        Open-weights models from Mistral AI, released under Apache 2.0.
+        Dense models (Mistral 7B, Mistral Small) and MoE models (Mixtral 8x7B, Mixtral 8x22B).
+        Part of Mistral's hybrid strategy: these open models attract the developer community,
+        while proprietary models (Mistral Large, Medium) are monetized via API.
+        MoE architecture activates only a subset of parameters per token for efficient inference.
       fr: |
-        Deux lignes chez Mistral AI : modèles denses (Mistral 7B, Mistral Small) et
-        modèles Mixture-of-Experts (Mixtral 8x7B, Mixtral 8x22B).
-        L'architecture MoE n'active qu'un sous-ensemble de paramètres par token,
-        offrant une qualité comparable à GPT-4 au coût d'inférence de modèles bien plus petits.
+        Les modèles open weights de Mistral AI, publiés sous licence Apache 2.0.
+        Modèles denses (Mistral 7B, Mistral Small) et modèles MoE (Mixtral 8x7B, Mixtral 8x22B).
+        Partie de la stratégie hybride de Mistral : ces modèles ouverts attirent la communauté dev,
+        tandis que les modèles propriétaires (Mistral Large, Medium) sont monétisés via API.
+        L'architecture MoE n'active qu'un sous-ensemble de paramètres par token pour une inférence efficace.
 
   - id: deepseek_family
     label:
@@ -373,6 +375,48 @@ nodes:
         141B au total mais seulement 39B actifs par token.
         Solides capacités multilingues (EN, FR, DE, ES, IT).
         Meilleur modèle open weights pour le suivi d'instructions et le code avant DeepSeek-V3.
+
+  - id: mistral_small
+    label:
+      en: "Mistral Small"
+      fr: "Mistral Small"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://huggingface.co/mistralai/Mistral-Small-24B-Instruct-2501"
+    description:
+      en: |
+        Mistral's lightweight dense model. 24B parameters, Apache 2.0 license.
+        Strong at instruction following, coding and multilingual tasks for its size.
+        Designed for local deployment and cost-sensitive production workloads.
+        One of the key open-weights models in Mistral's hybrid strategy.
+      fr: |
+        Le modèle dense léger de Mistral. 24B paramètres, licence Apache 2.0.
+        Solide en suivi d'instructions, code et tâches multilingues pour sa taille.
+        Conçu pour le déploiement local et les workloads de production sensibles au coût.
+        Un des modèles open weights clés dans la stratégie hybride de Mistral.
+
+  - id: magistral_small
+    label:
+      en: "Magistral Small"
+      fr: "Magistral Small"
+    layer: 3
+    category: model
+    status: emerging
+    since: "2025"
+    link: "https://mistral.ai/news/magistral"
+    description:
+      en: |
+        Mistral's open-weights reasoning model. Apache 2.0 license.
+        Uses extended chain-of-thought reasoning similar to o3 and DeepSeek-R1.
+        Marks Mistral's entry into the reasoning model space while keeping the open-weights approach.
+        Strong at math, coding and complex multi-step problem solving.
+      fr: |
+        Le modèle de raisonnement open weights de Mistral. Licence Apache 2.0.
+        Utilise un raisonnement chaîne-de-pensée étendu similaire à o3 et DeepSeek-R1.
+        Marque l'entrée de Mistral dans les modèles de raisonnement tout en gardant l'approche open weights.
+        Solide en maths, code et résolution de problèmes multi-étapes complexes.
 
   - id: deepseek_v3
     label:
@@ -563,6 +607,14 @@ edges:
     type: part_of
   - from: mistral_family
     to: mixtral8x22b
+    label: ""
+    type: part_of
+  - from: mistral_family
+    to: mistral_small
+    label: ""
+    type: part_of
+  - from: mistral_family
+    to: magistral_small
     label: ""
     type: part_of
   - from: deepseek_family

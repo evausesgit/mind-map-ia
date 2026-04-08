@@ -133,6 +133,28 @@ nodes:
         Profondément intégrée à X (Twitter), donnant à Grok un accès aux données sociales en temps réel.
         A mis en open source les poids de Grok-1 (314 milliards de paramètres).
 
+  - id: mistral_ai
+    label:
+      en: "Mistral AI"
+      fr: "Mistral AI"
+    layer: 1
+    category: lab
+    node_type: provider
+    status: stable
+    since: "2023"
+    link: "https://mistral.ai"
+    description:
+      en: |
+        French AI startup founded in 2023 by former DeepMind and Meta researchers.
+        Hybrid strategy: open-weights models to attract developers (Mistral 7B, Mistral Small)
+        and proprietary models for monetization via API (Mistral Large, Mistral Medium).
+        One of the few European AI companies competing at the frontier.
+      fr: |
+        Startup IA française fondée en 2023 par d'anciens chercheurs de DeepMind et Meta.
+        Stratégie hybride : modèles open weights pour attirer les développeurs (Mistral 7B, Mistral Small)
+        et modèles propriétaires pour monétiser via API (Mistral Large, Mistral Medium).
+        L'une des rares entreprises IA européennes compétitives au niveau frontier.
+
   # ── LAYER 2 · MODEL FAMILIES ─────────────────
 
   - id: gpt_family
@@ -225,6 +247,25 @@ nodes:
       fr: |
         La famille de modèles de xAI. Différenciateur unique : accès en temps réel aux données X (Twitter).
         Grok 3 a introduit le "think mode" — une couche de raisonnement similaire à la série o d'OpenAI.
+
+  - id: mistral_prop_family
+    label:
+      en: "Mistral (proprietary)"
+      fr: "Mistral (propriétaire)"
+    layer: 2
+    category: model_family
+    status: evolving
+    since: "2024"
+    link: "https://docs.mistral.ai/getting-started/models/models_overview/"
+    description:
+      en: |
+        Mistral AI's proprietary model line, accessible only via API (La Plateforme) or cloud partners.
+        Higher capability than their open-weights models, targeting enterprise and production use cases.
+        Part of Mistral's hybrid strategy: open models attract developers, proprietary models generate revenue.
+      fr: |
+        La gamme de modèles propriétaires de Mistral AI, accessible uniquement via API (La Plateforme) ou partenaires cloud.
+        Capacités supérieures aux modèles open weights, ciblant les cas d'usage entreprise et production.
+        Partie de la stratégie hybride de Mistral : les modèles ouverts attirent les devs, les propriétaires génèrent du revenu.
 
   # ── LAYER 3 · CURRENT MODELS ─────────────────
 
@@ -464,6 +505,46 @@ nodes:
         Introduit le "think mode" — raisonnement étendu avant de répondre.
         Disponible via l'API xAI et l'abonnement X Premium.
 
+  - id: mistral_large
+    label:
+      en: "Mistral Large"
+      fr: "Mistral Large"
+    layer: 3
+    category: model
+    status: evolving
+    since: "2024"
+    link: "https://docs.mistral.ai/getting-started/models/models_overview/"
+    description:
+      en: |
+        Mistral AI's most capable proprietary model. API-only, not open-weights.
+        Competitive with GPT-4o and Claude 3.5 Sonnet on reasoning and multilingual tasks.
+        Strong multilingual capabilities (EN, FR, DE, ES, IT).
+        Available via La Plateforme API and cloud partners (Azure, AWS, GCP).
+      fr: |
+        Le modèle propriétaire le plus puissant de Mistral AI. API uniquement, pas open weights.
+        Compétitif avec GPT-4o et Claude 3.5 Sonnet en raisonnement et tâches multilingues.
+        Fortes capacités multilingues (EN, FR, DE, ES, IT).
+        Disponible via l'API La Plateforme et partenaires cloud (Azure, AWS, GCP).
+
+  - id: mistral_medium
+    label:
+      en: "Mistral Medium"
+      fr: "Mistral Medium"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://docs.mistral.ai/getting-started/models/models_overview/"
+    description:
+      en: |
+        Mid-tier proprietary model from Mistral AI. Good balance of cost and performance.
+        API-only. Positioned between the open-weights Mistral Small and the proprietary Mistral Large.
+        Popular for enterprise production workloads where open weights aren't required.
+      fr: |
+        Modèle propriétaire de milieu de gamme de Mistral AI. Bon équilibre coût/performance.
+        API uniquement. Positionné entre le Mistral Small open weights et le Mistral Large propriétaire.
+        Populaire pour les workloads de production en entreprise où l'open weights n'est pas requis.
+
 edges:
   # Labs → Families
   - from: openai
@@ -484,6 +565,10 @@ edges:
     type: part_of
   - from: xai
     to: grok_family
+    label: "develops"
+    type: part_of
+  - from: mistral_ai
+    to: mistral_prop_family
     label: "develops"
     type: part_of
 
@@ -534,5 +619,13 @@ edges:
     type: part_of
   - from: grok_family
     to: grok3
+    label: ""
+    type: part_of
+  - from: mistral_prop_family
+    to: mistral_large
+    label: ""
+    type: part_of
+  - from: mistral_prop_family
+    to: mistral_medium
     label: ""
     type: part_of
