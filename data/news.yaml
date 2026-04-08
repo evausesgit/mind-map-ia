@@ -1,5 +1,15 @@
 news:
   - date: 2026-04-08
+    type: new-feature
+    title:
+      en: "Anthropic launches Claude Managed Agents (public beta)"
+      fr: "Anthropic lance Claude Managed Agents (bêta publique)"
+    description:
+      en: "A new suite of composable APIs to build and deploy cloud-hosted AI agents at scale. Features sandboxed execution, checkpointing, multi-agent orchestration, and scoped permissions. Deploy via Console, Claude Code, or CLI."
+      fr: "Une nouvelle suite d'API composables pour créer et déployer des agents IA hébergés dans le cloud à grande échelle. Exécution sandboxée, checkpointing, orchestration multi-agents et permissions scopées. Déploiement via Console, Claude Code ou CLI."
+    link: https://www.anthropic.com/research/managed-agents
+
+  - date: 2026-04-08
     type: update
     title:
       en: "Meta launches Muse Spark — first model from Superintelligence Labs"
