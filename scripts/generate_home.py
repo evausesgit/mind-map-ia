@@ -109,6 +109,20 @@ def load_news(max_items=8):
     return entries[:max_items]
 
 
+def _slugify(text):
+    """Turn a title into a URL-friendly slug."""
+    import re
+    text = text.lower().strip()
+    text = re.sub(r'[àáâãäå]', 'a', text)
+    text = re.sub(r'[èéêë]', 'e', text)
+    text = re.sub(r'[ìíîï]', 'i', text)
+    text = re.sub(r'[òóôõö]', 'o', text)
+    text = re.sub(r'[ùúûü]', 'u', text)
+    text = re.sub(r'[ç]', 'c', text)
+    text = re.sub(r'[^a-z0-9]+', '-', text)
+    return text.strip('-')[:60]
+
+
 def build_news_item(entry):
     date = str(entry.get("date", ""))
     ntype = entry.get("type", "update")
@@ -123,7 +137,8 @@ def build_news_item(entry):
     icon = type_icons.get(ntype, "📢")
     label_en = type_labels_en.get(ntype, "News")
     label_fr = type_labels_fr.get(ntype, "News")
-    tag = f'<a href="{link}" class="news-item">' if link else '<div class="news-item">'
+    anchor = f"news-{date}-{_slugify(title_en)}"
+    tag = f'<a href="{link}" id="{anchor}" class="news-item">' if link else f'<div id="{anchor}" class="news-item">'
     end_tag = '</a>' if link else '</div>'
     return f"""
     {tag}
@@ -134,6 +149,7 @@ def build_news_item(entry):
         <div class="news-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</div>
         <div class="news-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</div>
       </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#{anchor}');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
     {end_tag}"""
 
 
@@ -607,7 +623,7 @@ def main():
   .news-feed {{ display: flex; flex-direction: column; gap: 0; width: 100%; }}
   .news-item {{
     display: grid;
-    grid-template-columns: 80px 32px 1fr;
+    grid-template-columns: 80px 32px 1fr auto;
     align-items: start;
     gap: 12px;
     padding: 16px 18px;
@@ -616,7 +632,15 @@ def main():
     color: inherit;
     transition: all 0.15s;
     position: relative;
+    scroll-margin-top: 80px;
   }}
+  .news-share {{
+    background: none; border: none; cursor: pointer;
+    font-size: 14px; opacity: 0; transition: opacity 0.15s;
+    padding: 4px 6px; border-radius: 4px; align-self: center;
+  }}
+  .news-item:hover .news-share {{ opacity: 0.6; }}
+  .news-share:hover {{ opacity: 1 !important; background: #1E2D4E; }}
   a.news-item:hover {{
     background: #16213E;
     border-left-color: #E74C3C;
@@ -769,6 +793,17 @@ function setLang(lang) {{
   document.querySelectorAll('[data-en]').forEach(el => {{
     el.textContent = lang === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
   }});
+}}
+
+// Highlight news item if URL has a news anchor
+if (location.hash.startsWith('#news-')) {{
+  const el = document.getElementById(location.hash.slice(1));
+  if (el) {{
+    el.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
+    el.style.borderLeftColor = '#E74C3C';
+    el.style.background = '#16213E';
+    setTimeout(() => {{ el.style.borderLeftColor = ''; el.style.background = ''; }}, 3000);
+  }}
 }}
 
 </script>
