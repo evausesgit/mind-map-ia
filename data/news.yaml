@@ -1,5 +1,25 @@
 news:
   - date: 2026-04-08
+    type: update
+    title:
+      en: "Meta launches Muse Spark — first model from Superintelligence Labs"
+      fr: "Meta lance Muse Spark — premier modèle de Superintelligence Labs"
+    description:
+      en: "Meta debuts Muse Spark, a proprietary multimodal reasoning model led by Alexandr Wang. Features thought compression (10× less compute than Llama 4 Maverick), multi-agent orchestration, and three reasoning modes. A major pivot away from Meta's open-source Llama strategy."
+      fr: "Meta dévoile Muse Spark, un modèle de raisonnement multimodal propriétaire dirigé par Alexandr Wang. Compression de pensée (10× moins de calcul que Llama 4 Maverick), orchestration multi-agents et trois modes de raisonnement. Un virage majeur par rapport à la stratégie open-source Llama."
+    link: https://ai.meta.com/blog/introducing-muse-spark-msl/
+
+  - date: 2026-04-08
+    type: new-content
+    title:
+      en: "New article: Anthropic Leaks — Claude Mythos & Claude Code Source Exposed"
+      fr: "Nouvel article : Fuites Anthropic — Claude Mythos & code source de Claude Code exposés"
+    description:
+      en: "Two back-to-back leaks in five days: a draft announcement of the frontier model Claude Mythos and 512K lines of Claude Code source via npm."
+      fr: "Deux fuites coup sur coup en cinq jours : un brouillon d'annonce du modèle frontier Claude Mythos et 512K lignes du code source de Claude Code via npm."
+    link: topics/anthropic-leaks-mythos.html
+
+  - date: 2026-04-08
     type: new-content
     title:
       en: "New article: Co-Intelligence by Ethan Mollick"
