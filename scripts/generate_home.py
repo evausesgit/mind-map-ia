@@ -219,8 +219,35 @@ def build_search_index():
     return items
 
 
+def _build_topic_nav_items(topics, prefix=""):
+    """Build nav dropdown items for a list of topics."""
+    items = ""
+    for topic in topics:
+        tid = topic.get("id", "")
+        title_en = t(topic.get("title",   ""), "en")
+        title_fr = t(topic.get("title",   ""), "fr") or title_en
+        summ_en  = t(topic.get("summary", ""), "en")
+        summ_fr  = t(topic.get("summary", ""), "fr") or summ_en
+        items += (
+            f'<a href="{prefix}topics/{tid}.html" class="nav-item">'
+            f'<span class="nav-item-icon">📝</span>'
+            f'<span class="nav-item-info">'
+            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
+            f'</span></a>'
+        )
+    return items
+
+
+def split_topics_by_category(topics):
+    """Split topics into (deep_dives, reflexions) based on category field."""
+    deep_dives = [t for t in topics if t.get("category") != "reflexion"]
+    reflexions = [t for t in topics if t.get("category") == "reflexion"]
+    return deep_dives, reflexions
+
+
 def build_nav_html(maps, topics):
-    """Build the site-wide nav: Mind Maps dropdown + Deep Dives dropdown + Glossary link."""
+    """Build the site-wide nav: Mind Maps dropdown + Deep Dives dropdown + Réflexion dropdown + Glossary link."""
     map_items = ""
     for m in maps:
         if m.get("id") == "glossary":
@@ -237,22 +264,11 @@ def build_nav_html(maps, topics):
             f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
             f'</span></a>'
         )
-    dive_items = ""
-    for topic in topics:
-        tid = topic.get("id", "")
-        title_en = t(topic.get("title",   ""), "en")
-        title_fr = t(topic.get("title",   ""), "fr") or title_en
-        summ_en  = t(topic.get("summary", ""), "en")
-        summ_fr  = t(topic.get("summary", ""), "fr") or summ_en
-        dive_items += (
-            f'<a href="topics/{tid}.html" class="nav-item">'
-            f'<span class="nav-item-icon">📝</span>'
-            f'<span class="nav-item-info">'
-            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
-            f'</span></a>'
-        )
-    return (
+    deep_dives, reflexions = split_topics_by_category(topics)
+    dive_items = _build_topic_nav_items(deep_dives)
+    reflexion_items = _build_topic_nav_items(reflexions)
+
+    nav = (
         f'<div class="nav-group">'
         f'  <button class="nav-btn">'
         f'    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾'
@@ -265,10 +281,22 @@ def build_nav_html(maps, topics):
         f'  </button>'
         f'  <div class="nav-dropdown">{dive_items}</div>'
         f'</div>'
+    )
+    if reflexion_items:
+        nav += (
+            f'<div class="nav-group">'
+            f'  <button class="nav-btn">'
+            f'    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾'
+            f'  </button>'
+            f'  <div class="nav-dropdown">{reflexion_items}</div>'
+            f'</div>'
+        )
+    nav += (
         f'<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
         f'  <span data-en="News" data-fr="Nouveautés">News</span>'
         f'</a>'
     )
+    return nav
 
 
 def main():
@@ -357,7 +385,9 @@ def main():
     featured_html = build_featured_card(macro_map) if macro_map else ""
     other_cards_html = "\n".join(build_card(m) for m in other_maps)
     glossary_card_html = build_card(glossary_map) if glossary_map else ""
-    topics_html = "\n".join(build_topic_card(topic) for topic in topics)
+    deep_dives, reflexions = split_topics_by_category(topics)
+    topics_html = "\n".join(build_topic_card(topic) for topic in deep_dives)
+    reflexions_html = "\n".join(build_topic_card(topic) for topic in reflexions)
     news_html = "\n".join(build_news_item(n) for n in news)
     nav_html = build_nav_html(maps, topics)
 
@@ -769,8 +799,9 @@ def main():
 
 <main>
   <p class="site-intro" id="site-intro">
-    Three ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem,
+    Four ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem,
     <strong>Deep Dives</strong> for in-depth articles,
+    <strong>Reflection</strong> for essays &amp; perspectives on AI,
     <strong>Glossary</strong> to understand the terminology.
   </p>
 
@@ -808,6 +839,15 @@ def main():
       <div class="cards" style="grid-template-columns:1fr">
         {topics_html}
       </div>
+
+      <div class="section-sep" style="margin-top:40px;">
+        <div class="section-sep-line"></div>
+        <span class="section-sep-label" data-en="REFLECTION" data-fr="RÉFLEXION">REFLECTION</span>
+        <div class="section-sep-line"></div>
+      </div>
+      <div class="cards" style="grid-template-columns:1fr">
+        {reflexions_html}
+      </div>
     </div>
   </div>
 </main>
@@ -822,12 +862,12 @@ const uiTexts = {{
   en: {{
     footer: "Open source · Built to learn and share · ",
     searchPlaceholder: "Search concepts, models, tools…",
-    intro: "Three ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem, <strong>Deep Dives</strong> for in-depth articles, <strong>Glossary</strong> to understand the terminology."
+    intro: "Four ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem, <strong>Deep Dives</strong> for in-depth articles, <strong>Reflection</strong> for essays &amp; perspectives on AI, <strong>Glossary</strong> to understand the terminology."
   }},
   fr: {{
     footer: "Open source · Construit pour apprendre et partager · ",
     searchPlaceholder: "Rechercher concepts, modèles, outils…",
-    intro: "Trois façons d'apprendre : <strong>Mind Maps</strong> pour visualiser l'écosystème, <strong>Deep Dives</strong> pour des articles approfondis, <strong>Glossaire</strong> pour comprendre la terminologie."
+    intro: "Quatre façons d'apprendre : <strong>Mind Maps</strong> pour visualiser l'écosystème, <strong>Deep Dives</strong> pour des articles approfondis, <strong>Réflexion</strong> pour des essais et perspectives sur l'IA, <strong>Glossaire</strong> pour comprendre la terminologie."
   }}
 }};
 let currentLang = 'en';

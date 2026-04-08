@@ -253,24 +253,32 @@ def build_nav(maps, current_output, topics=None):
             f'</span></a>'
         )
 
-    # ── Deep Dives dropdown ─────────────────────────────────────
-    dive_items = ""
-    for topic in (topics or []):
-        tid = topic.get("id", "")
-        title_en  = t(topic.get("title",   ""), "en")
-        title_fr  = t(topic.get("title",   ""), "fr") or title_en
-        summ_en   = t(topic.get("summary", ""), "en")
-        summ_fr   = t(topic.get("summary", ""), "fr") or summ_en
-        is_active = current_name == f"{tid}.html"
-        active_cls = " active" if is_active else ""
-        dive_items += (
-            f'<a href="topics/{tid}.html" class="nav-item{active_cls}">'
-            f'<span class="nav-item-icon">📝</span>'
-            f'<span class="nav-item-info">'
-            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
-            f'</span></a>'
-        )
+    # ── Deep Dives / Réflexion dropdowns ──────────────────────────
+    deep_dives = [tp for tp in (topics or []) if tp.get("category") != "reflexion"]
+    reflexions = [tp for tp in (topics or []) if tp.get("category") == "reflexion"]
+
+    def _topic_items(topic_list):
+        items = ""
+        for topic in topic_list:
+            tid = topic.get("id", "")
+            title_en  = t(topic.get("title",   ""), "en")
+            title_fr  = t(topic.get("title",   ""), "fr") or title_en
+            summ_en   = t(topic.get("summary", ""), "en")
+            summ_fr   = t(topic.get("summary", ""), "fr") or summ_en
+            is_active = current_name == f"{tid}.html"
+            active_cls = " active" if is_active else ""
+            items += (
+                f'<a href="topics/{tid}.html" class="nav-item{active_cls}">'
+                f'<span class="nav-item-icon">📝</span>'
+                f'<span class="nav-item-info">'
+                f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+                f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
+                f'</span></a>'
+            )
+        return items
+
+    dive_items = _topic_items(deep_dives)
+    reflexion_items = _topic_items(reflexions)
 
     glossary_active = " active" if current_name == "glossary.html" else ""
 
@@ -309,6 +317,15 @@ def build_nav(maps, current_output, topics=None):
         f'  </button>'
         f'  <div class="nav-dropdown">{dive_items}</div>'
         f'</div>'
+        + (
+            f'<div class="nav-group">'
+            f'  <button class="nav-btn">'
+            f'    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾'
+            f'  </button>'
+            f'  <div class="nav-dropdown">{reflexion_items}</div>'
+            f'</div>'
+            if reflexion_items else ""
+        ) +
         f'<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
         f'  <span data-en="News" data-fr="Nouveautés">News</span>'
         f'</a>'

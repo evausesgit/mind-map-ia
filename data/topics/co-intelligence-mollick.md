@@ -6,6 +6,7 @@ title:
 summary:
   en: "Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education."
   fr: "Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation."
+category: reflexion
 tags: [co-intelligence, mollick, ai-strategy, education, creativity, productivity]
 related_terms: [llm, prompt_engineering, agent, hallucination, rlhf]
 related_nodes: [agents_pattern, tool_use_pattern]

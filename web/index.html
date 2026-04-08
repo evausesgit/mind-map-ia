@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LLM & AI Mind Maps</title>
 <style>
@@ -124,9 +125,41 @@
     flex-direction: column;
     align-items: center;
     padding: 32px 40px 64px;
-    max-width: 960px;
+    max-width: 1280px;
     margin: 0 auto;
     width: 100%;
+  }
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    width: 100%;
+  }
+  .news-sidebar {
+    position: sticky;
+    top: 80px;
+    align-self: start;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #1E2D4E transparent;
+  }
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+  }
+  @media (max-width: 860px) {
+    .main-layout {
+      grid-template-columns: 1fr;
+    }
+    .news-sidebar {
+      position: static;
+      max-height: none;
+      order: 1;
+    }
+    .main-content { order: 0; }
   }
   .site-intro {
     width: 100%;
@@ -262,49 +295,62 @@
   .news-feed { display: flex; flex-direction: column; gap: 0; width: 100%; }
   .news-item {
     display: grid;
-    grid-template-columns: 80px 32px 1fr;
+    grid-template-columns: 24px 1fr auto;
     align-items: start;
-    gap: 12px;
-    padding: 16px 18px;
+    gap: 10px;
+    padding: 14px 14px;
     border-left: 2px solid #1E2D4E;
     text-decoration: none;
     color: inherit;
     transition: all 0.15s;
     position: relative;
+    scroll-margin-top: 80px;
   }
+  .news-share {
+    background: none; border: none; cursor: pointer;
+    font-size: 13px; opacity: 0; transition: opacity 0.15s;
+    padding: 3px 5px; border-radius: 4px; align-self: center;
+  }
+  .news-item:hover .news-share { opacity: 0.6; }
+  .news-share:hover { opacity: 1 !important; background: #1E2D4E; }
   a.news-item:hover {
     background: #16213E;
     border-left-color: #E74C3C;
   }
-  .news-date {
-    font-size: 11px;
-    color: #555;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
+  .news-icon {
+    font-size: 16px;
+    text-align: center;
     padding-top: 2px;
   }
-  .news-icon {
-    font-size: 18px;
-    text-align: center;
-    padding-top: 1px;
-  }
   .news-body { min-width: 0; }
+  .news-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
   .news-type {
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #E74C3C;
-    margin-bottom: 3px;
+  }
+  .news-date {
+    font-size: 10px;
+    color: #555;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }
   .news-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: white;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
+    line-height: 1.4;
   }
   .news-desc {
-    font-size: 12px;
+    font-size: 11px;
     color: #7F8C8D;
     line-height: 1.5;
   }
@@ -344,7 +390,7 @@
         <circle cx="108" cy="60" r="3.5" fill="white"/>
       </svg>
     </a>
-    <div class="nav-group">  <button class="nav-btn">    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾  </button>  <div class="nav-dropdown"><a href="macro.html" class="nav-item"><span class="nav-item-icon">🗺️</span><span class="nav-item-info"><span class="nav-item-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span><span class="nav-item-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span></span></a><a href="use-cases.html" class="nav-item"><span class="nav-item-icon">🎯</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Use Cases" data-fr="Cas d'Usage IA">AI Use Cases</span><span class="nav-item-desc" data-en="4 user personas, their scenarios, AI patterns, and key stack components" data-fr="4 personas utilisateur, leurs scénarios, patterns IA, et composants clés">4 user personas, their scenarios, AI patterns, and key stack components</span></span></a><a href="ai-agents.html" class="nav-item"><span class="nav-item-icon">🤖</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span><span class="nav-item-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span></span></a><a href="ai-coding-assistants.html" class="nav-item"><span class="nav-item-icon">💻</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span><span class="nav-item-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span></span></a><a href="proprietary-models.html" class="nav-item"><span class="nav-item-icon">🏢</span><span class="nav-item-info"><span class="nav-item-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span><span class="nav-item-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span></span></a><a href="open-weights-models.html" class="nav-item"><span class="nav-item-icon">🔓</span><span class="nav-item-info"><span class="nav-item-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span><span class="nav-item-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span></span></a><a href="cloud-managed.html" class="nav-item"><span class="nav-item-icon">☁️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span><span class="nav-item-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span></span></a><a href="dense-vs-moe.html" class="nav-item"><span class="nav-item-icon">⚡</span><span class="nav-item-info"><span class="nav-item-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span><span class="nav-item-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span></span></a><a href="rag-pattern.html" class="nav-item"><span class="nav-item-icon">🔍</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG" data-fr="RAG">RAG</span><span class="nav-item-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾  </button>  <div class="nav-dropdown"><a href="topics/co-intelligence-mollick.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</span><span class="nav-item-desc" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</span></span></a><a href="topics/usecase-chat-qa.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case — Chat LLM (ChatGPT-like)" data-fr="Cas d'Usage — Chat LLM (type ChatGPT)">Use Case — Chat LLM (ChatGPT-like)</span><span class="nav-item-desc" data-en="How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes." data-fr="Comment un Chat LLM fonctionne de bout en bout : construction du prompt, RAG optionnel, inférence, génération de tokens, et les bons modèles mentaux pour éviter les erreurs courantes.">How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes.</span></span></a><a href="topics/usecase-analyst-rag.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Knowledge Search for Analysts" data-fr="Cas d'Usage : Recherche dans la Connaissance pour Analystes">Use Case: Knowledge Search for Analysts</span><span class="nav-item-desc" data-en="How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs." data-fr="Comment un analyste métier interroge des corpus de documents privés avec l'IA — architecture, gouvernance, et compromis pratiques.">How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs.</span></span></a><a href="topics/usecase-dev-agentic.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Agentic Coding" data-fr="Cas d'Usage : Coding Agentique">Use Case: Agentic Coding</span><span class="nav-item-desc" data-en="How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously." data-fr="Comment un agent IA assiste un développeur au-delà de l'autocomplétion — planification, édition, exécution de tests, et itération autonome.">How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously.</span></span></a><a href="topics/usecase-ops-automation.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Ops Workflow Automation" data-fr="Cas d'Usage : Automatisation de Workflows Ops">Use Case: Ops Workflow Automation</span><span class="nav-item-desc" data-en="How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model." data-fr="Comment des agents autonomes gèrent des processus opérationnels multi-étapes — triage d'incidents, orchestration de pipelines, et le modèle humain dans la boucle.">How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model.</span></span></a><a href="topics/mcp-explained.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</span><span class="nav-item-desc" data-en="What MCP is, how it works architecturally, and why it matters for AI agent development." data-fr="Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA.">What MCP is, how it works architecturally, and why it matters for AI agent development.</span></span></a><a href="topics/rag-deep-dive.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</span><span class="nav-item-desc" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</span></span></a></div></div><a href="index.html#news" class="nav-btn" style="text-decoration:none;">  <span data-en="News" data-fr="Nouveautés">News</span></a>
+    <div class="nav-group">  <button class="nav-btn">    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾  </button>  <div class="nav-dropdown"><a href="macro.html" class="nav-item"><span class="nav-item-icon">🗺️</span><span class="nav-item-info"><span class="nav-item-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span><span class="nav-item-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span></span></a><a href="use-cases.html" class="nav-item"><span class="nav-item-icon">🎯</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Use Cases" data-fr="Cas d'Usage IA">AI Use Cases</span><span class="nav-item-desc" data-en="4 user personas, their scenarios, AI patterns, and key stack components" data-fr="4 personas utilisateur, leurs scénarios, patterns IA, et composants clés">4 user personas, their scenarios, AI patterns, and key stack components</span></span></a><a href="ai-agents.html" class="nav-item"><span class="nav-item-icon">🤖</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span><span class="nav-item-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span></span></a><a href="ai-coding-assistants.html" class="nav-item"><span class="nav-item-icon">💻</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span><span class="nav-item-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span></span></a><a href="proprietary-models.html" class="nav-item"><span class="nav-item-icon">🏢</span><span class="nav-item-info"><span class="nav-item-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span><span class="nav-item-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span></span></a><a href="open-weights-models.html" class="nav-item"><span class="nav-item-icon">🔓</span><span class="nav-item-info"><span class="nav-item-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span><span class="nav-item-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span></span></a><a href="cloud-managed.html" class="nav-item"><span class="nav-item-icon">☁️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span><span class="nav-item-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span></span></a><a href="dense-vs-moe.html" class="nav-item"><span class="nav-item-icon">⚡</span><span class="nav-item-info"><span class="nav-item-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span><span class="nav-item-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span></span></a><a href="rag-pattern.html" class="nav-item"><span class="nav-item-icon">🔍</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG" data-fr="RAG">RAG</span><span class="nav-item-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾  </button>  <div class="nav-dropdown"><a href="topics/anthropic-leaks-mythos.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Anthropic Leaks: Claude Mythos & Claude Code Source Exposed" data-fr="Fuites Anthropic : Claude Mythos & code source de Claude Code exposés">Anthropic Leaks: Claude Mythos & Claude Code Source Exposed</span><span class="nav-item-desc" data-en="In late March 2026, Anthropic suffered two back-to-back leaks — a draft announcement of its next frontier model Claude Mythos and the full source code of Claude Code via npm." data-fr="Fin mars 2026, Anthropic a subi deux fuites coup sur coup — un brouillon d'annonce de son prochain modèle frontier Claude Mythos et le code source complet de Claude Code via npm.">In late March 2026, Anthropic suffered two back-to-back leaks — a draft announcement of its next frontier model Claude Mythos and the full source code of Claude Code via npm.</span></span></a><a href="topics/usecase-chat-qa.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case — Chat LLM (ChatGPT-like)" data-fr="Cas d'Usage — Chat LLM (type ChatGPT)">Use Case — Chat LLM (ChatGPT-like)</span><span class="nav-item-desc" data-en="How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes." data-fr="Comment un Chat LLM fonctionne de bout en bout : construction du prompt, RAG optionnel, inférence, génération de tokens, et les bons modèles mentaux pour éviter les erreurs courantes.">How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes.</span></span></a><a href="topics/usecase-analyst-rag.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Knowledge Search for Analysts" data-fr="Cas d'Usage : Recherche dans la Connaissance pour Analystes">Use Case: Knowledge Search for Analysts</span><span class="nav-item-desc" data-en="How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs." data-fr="Comment un analyste métier interroge des corpus de documents privés avec l'IA — architecture, gouvernance, et compromis pratiques.">How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs.</span></span></a><a href="topics/usecase-dev-agentic.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Agentic Coding" data-fr="Cas d'Usage : Coding Agentique">Use Case: Agentic Coding</span><span class="nav-item-desc" data-en="How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously." data-fr="Comment un agent IA assiste un développeur au-delà de l'autocomplétion — planification, édition, exécution de tests, et itération autonome.">How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously.</span></span></a><a href="topics/usecase-ops-automation.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Ops Workflow Automation" data-fr="Cas d'Usage : Automatisation de Workflows Ops">Use Case: Ops Workflow Automation</span><span class="nav-item-desc" data-en="How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model." data-fr="Comment des agents autonomes gèrent des processus opérationnels multi-étapes — triage d'incidents, orchestration de pipelines, et le modèle humain dans la boucle.">How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model.</span></span></a><a href="topics/mcp-explained.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</span><span class="nav-item-desc" data-en="What MCP is, how it works architecturally, and why it matters for AI agent development." data-fr="Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA.">What MCP is, how it works architecturally, and why it matters for AI agent development.</span></span></a><a href="topics/rag-deep-dive.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</span><span class="nav-item-desc" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾  </button>  <div class="nav-dropdown"><a href="topics/laurent-alexandre-assemblee-ia.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en=""Stop the Denial" — Laurent Alexandre on AI at the French National Assembly" data-fr=""Sortir du déni" — Laurent Alexandre sur l'IA à l'Assemblée nationale">"Stop the Denial" — Laurent Alexandre on AI at the French National Assembly</span><span class="nav-item-desc" data-en="Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake." data-fr="Laurent Alexandre soutient devant l'Assemblée nationale que l'IA dépasse déjà des experts sur des tâches cognitives — et que minimiser ce fait est une erreur stratégique.">Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake.</span></span></a><a href="topics/co-intelligence-mollick.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</span><span class="nav-item-desc" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</span></span></a></div></div><a href="index.html#news" class="nav-btn" style="text-decoration:none;">  <span data-en="News" data-fr="Nouveautés">News</span></a>
   </div>
   <div class="header-right">
     <a href="glossary.html" class="glossary-btn">
@@ -585,7 +631,25 @@
   };
 
   window.gsGo = function(el) {
-    window.location.href = el.dataset.url;
+    const url = el.dataset.url;
+    const hashIdx = url.indexOf('#');
+    // If navigating to a hash on the same page, force hashchange even if hash is identical
+    if (hashIdx !== -1) {
+      const page = url.slice(0, hashIdx) || location.pathname;
+      const samePage = location.pathname.endsWith(page) || page === location.pathname;
+      if (samePage) {
+        const newHash = url.slice(hashIdx);
+        if (location.hash === newHash) {
+          // Same hash — dispatch manually since browser won't fire hashchange
+          window.dispatchEvent(new HashChangeEvent('hashchange'));
+        } else {
+          location.hash = newHash;
+        }
+        gsClose();
+        return;
+      }
+    }
+    window.location.href = url;
     gsClose();
   };
 
@@ -623,8 +687,9 @@
 
 <main>
   <p class="site-intro" id="site-intro">
-    Three ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem,
+    Four ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem,
     <strong>Deep Dives</strong> for in-depth articles,
+    <strong>Reflection</strong> for essays &amp; perspectives on AI,
     <strong>Glossary</strong> to understand the terminology.
   </p>
 
@@ -689,14 +754,130 @@
       </div>
     </a>
 
-  <div class="section-sep">
-    <div class="section-sep-line"></div>
-    <span class="section-sep-label" data-en="ALL MAPS" data-fr="TOUTES LES CARTES">ALL MAPS</span>
-    <div class="section-sep-line"></div>
-  </div>
+  <div class="main-layout">
+    <aside class="news-sidebar">
+      <div id="news" class="section-sep">
+        <div class="section-sep-line"></div>
+        <span class="section-sep-label" data-en="WHAT'S NEW" data-fr="NOUVEAUTÉS">WHAT'S NEW</span>
+        <div class="section-sep-line"></div>
+      </div>
+      <div class="news-feed">
+        
+    <a href="https://www.anthropic.com/research/managed-agents" id="news-2026-04-08-anthropic-launches-claude-managed-agents-public-beta" class="news-item">
+      <div class="news-icon">✨</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="New feature" data-fr="Nouveauté">New feature</span>
+          <span class="news-date">2026-04-08</span>
+        </div>
+        <div class="news-title" data-en="Anthropic launches Claude Managed Agents (public beta)" data-fr="Anthropic lance Claude Managed Agents (bêta publique)">Anthropic launches Claude Managed Agents (public beta)</div>
+        <div class="news-desc" data-en="A new suite of composable APIs to build and deploy cloud-hosted AI agents at scale. Features sandboxed execution, checkpointing, multi-agent orchestration, and scoped permissions. Deploy via Console, Claude Code, or CLI." data-fr="Une nouvelle suite d'API composables pour créer et déployer des agents IA hébergés dans le cloud à grande échelle. Exécution sandboxée, checkpointing, orchestration multi-agents et permissions scopées. Déploiement via Console, Claude Code ou CLI.">A new suite of composable APIs to build and deploy cloud-hosted AI agents at scale. Features sandboxed execution, checkpointing, multi-agent orchestration, and scoped permissions. Deploy via Console, Claude Code, or CLI.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-08-anthropic-launches-claude-managed-agents-public-beta');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
 
-  <div class="cards">
-    
+    <a href="https://ai.meta.com/blog/introducing-muse-spark-msl/" id="news-2026-04-08-meta-launches-muse-spark-first-model-from-superintelligence-" class="news-item">
+      <div class="news-icon">🔄</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="Update" data-fr="Mise à jour">Update</span>
+          <span class="news-date">2026-04-08</span>
+        </div>
+        <div class="news-title" data-en="Meta launches Muse Spark — first model from Superintelligence Labs" data-fr="Meta lance Muse Spark — premier modèle de Superintelligence Labs">Meta launches Muse Spark — first model from Superintelligence Labs</div>
+        <div class="news-desc" data-en="Meta debuts Muse Spark, a proprietary multimodal reasoning model led by Alexandr Wang. Features thought compression (10× less compute than Llama 4 Maverick), multi-agent orchestration, and three reasoning modes. A major pivot away from Meta's open-source Llama strategy." data-fr="Meta dévoile Muse Spark, un modèle de raisonnement multimodal propriétaire dirigé par Alexandr Wang. Compression de pensée (10× moins de calcul que Llama 4 Maverick), orchestration multi-agents et trois modes de raisonnement. Un virage majeur par rapport à la stratégie open-source Llama.">Meta debuts Muse Spark, a proprietary multimodal reasoning model led by Alexandr Wang. Features thought compression (10× less compute than Llama 4 Maverick), multi-agent orchestration, and three reasoning modes. A major pivot away from Meta's open-source Llama strategy.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-08-meta-launches-muse-spark-first-model-from-superintelligence-');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <a href="topics/anthropic-leaks-mythos.html" id="news-2026-04-08-new-article-anthropic-leaks-claude-mythos-claude-code-source" class="news-item">
+      <div class="news-icon">📝</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="New content" data-fr="Nouveau contenu">New content</span>
+          <span class="news-date">2026-04-08</span>
+        </div>
+        <div class="news-title" data-en="New article: Anthropic Leaks — Claude Mythos & Claude Code Source Exposed" data-fr="Nouvel article : Fuites Anthropic — Claude Mythos & code source de Claude Code exposés">New article: Anthropic Leaks — Claude Mythos & Claude Code Source Exposed</div>
+        <div class="news-desc" data-en="Two back-to-back leaks in five days: a draft announcement of the frontier model Claude Mythos and 512K lines of Claude Code source via npm." data-fr="Deux fuites coup sur coup en cinq jours : un brouillon d'annonce du modèle frontier Claude Mythos et 512K lignes du code source de Claude Code via npm.">Two back-to-back leaks in five days: a draft announcement of the frontier model Claude Mythos and 512K lines of Claude Code source via npm.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-08-new-article-anthropic-leaks-claude-mythos-claude-code-source');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <a href="topics/co-intelligence-mollick.html" id="news-2026-04-08-new-article-co-intelligence-by-ethan-mollick" class="news-item">
+      <div class="news-icon">📝</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="New content" data-fr="Nouveau contenu">New content</span>
+          <span class="news-date">2026-04-08</span>
+        </div>
+        <div class="news-title" data-en="New article: Co-Intelligence by Ethan Mollick" data-fr="Nouvel article : Co-Intelligence d'Ethan Mollick">New article: Co-Intelligence by Ethan Mollick</div>
+        <div class="news-desc" data-en="Book analysis — AI as a collaborative partner, the 4 rules of co-intelligence, and practical frameworks for work, creativity and education." data-fr="Analyse du livre — L'IA comme partenaire collaboratif, les 4 règles de la co-intelligence, et des cadres pratiques pour le travail, la créativité et l'éducation.">Book analysis — AI as a collaborative partner, the 4 rules of co-intelligence, and practical frameworks for work, creativity and education.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-08-new-article-co-intelligence-by-ethan-mollick');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <a href="proprietary-models.html" id="news-2026-04-07-mistral-ai-hybrid-strategy-added-to-model-maps" class="news-item">
+      <div class="news-icon">🔄</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="Update" data-fr="Mise à jour">Update</span>
+          <span class="news-date">2026-04-07</span>
+        </div>
+        <div class="news-title" data-en="Mistral AI hybrid strategy added to model maps" data-fr="Stratégie hybride Mistral AI ajoutée aux cartes modèles">Mistral AI hybrid strategy added to model maps</div>
+        <div class="news-desc" data-en="Proprietary and open-weights maps updated with Mistral's dual-licensing approach." data-fr="Cartes modèles propriétaires et open-weights mises à jour avec l'approche double licence de Mistral.">Proprietary and open-weights maps updated with Mistral's dual-licensing approach.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-07-mistral-ai-hybrid-strategy-added-to-model-maps');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <div id="news-2026-04-06-global-search-across-all-maps" class="news-item">
+      <div class="news-icon">✨</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="New feature" data-fr="Nouveauté">New feature</span>
+          <span class="news-date">2026-04-06</span>
+        </div>
+        <div class="news-title" data-en="Global search across all maps" data-fr="Recherche globale sur toutes les cartes">Global search across all maps</div>
+        <div class="news-desc" data-en="Press Cmd+K anywhere to search concepts, models and tools across every map, the glossary and articles." data-fr="Appuyez sur Cmd+K n'importe où pour chercher concepts, modèles et outils dans toutes les cartes, le glossaire et les articles.">Press Cmd+K anywhere to search concepts, models and tools across every map, the glossary and articles.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-06-global-search-across-all-maps');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </div>
+
+    <a href="proprietary-models.html" id="news-2026-04-05-gpt-5-4-family-added-to-proprietary-models" class="news-item">
+      <div class="news-icon">🔄</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="Update" data-fr="Mise à jour">Update</span>
+          <span class="news-date">2026-04-05</span>
+        </div>
+        <div class="news-title" data-en="GPT-5.4 family added to proprietary models" data-fr="Famille GPT-5.4 ajoutée aux modèles propriétaires">GPT-5.4 family added to proprietary models</div>
+        <div class="news-desc" data-en="GPT-5.4, GPT-5.4 mini and GPT-5.4 nano added to the proprietary models map." data-fr="GPT-5.4, GPT-5.4 mini et GPT-5.4 nano ajoutés à la carte des modèles propriétaires.">GPT-5.4, GPT-5.4 mini and GPT-5.4 nano added to the proprietary models map.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-05-gpt-5-4-family-added-to-proprietary-models');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <a href="topics/mcp-explained.html" id="news-2026-04-04-new-articles-mcp-explained-rag-deep-dive" class="news-item">
+      <div class="news-icon">📝</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="New content" data-fr="Nouveau contenu">New content</span>
+          <span class="news-date">2026-04-04</span>
+        </div>
+        <div class="news-title" data-en="New articles: MCP explained & RAG deep dive" data-fr="Nouveaux articles : MCP expliqué & RAG en profondeur">New articles: MCP explained & RAG deep dive</div>
+        <div class="news-desc" data-en="Two new deep dives covering Model Context Protocol architecture and RAG pipeline design." data-fr="Deux nouveaux articles de fond sur l'architecture MCP et la conception de pipelines RAG.">Two new deep dives covering Model Context Protocol architecture and RAG pipeline design.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-04-new-articles-mcp-explained-rag-deep-dive');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <div class="section-sep">
+        <div class="section-sep-line"></div>
+        <span class="section-sep-label" data-en="ALL MAPS" data-fr="TOUTES LES CARTES">ALL MAPS</span>
+        <div class="section-sep-line"></div>
+      </div>
+
+      <div class="cards">
+        
     <a href="use-cases.html" class="card">
       <div class="card-icon">🎯</div>
       <div class="card-body">
@@ -776,7 +957,7 @@
       </div>
       <div class="card-arrow">→</div>
     </a>
-    
+        
     <a href="glossary.html" class="card">
       <div class="card-icon">📖</div>
       <div class="card-body">
@@ -786,21 +967,21 @@
       </div>
       <div class="card-arrow">→</div>
     </a>
-  </div>
+      </div>
 
-  <div class="section-sep" style="margin-top:40px;">
-    <div class="section-sep-line"></div>
-    <span class="section-sep-label" data-en="DEEP DIVES" data-fr="ARTICLES DE FOND">DEEP DIVES</span>
-    <div class="section-sep-line"></div>
-  </div>
-  <div class="cards" style="grid-template-columns:1fr">
-    
-    <a href="topics/co-intelligence-mollick.html" class="topic-card">
+      <div class="section-sep" style="margin-top:40px;">
+        <div class="section-sep-line"></div>
+        <span class="section-sep-label" data-en="DEEP DIVES" data-fr="ARTICLES DE FOND">DEEP DIVES</span>
+        <div class="section-sep-line"></div>
+      </div>
+      <div class="cards" style="grid-template-columns:1fr">
+        
+    <a href="topics/anthropic-leaks-mythos.html" class="topic-card">
       <div class="topic-card-body">
-        <div class="topic-card-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</div>
-        <div class="topic-card-desc" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</div>
+        <div class="topic-card-title" data-en="Anthropic Leaks: Claude Mythos & Claude Code Source Exposed" data-fr="Fuites Anthropic : Claude Mythos & code source de Claude Code exposés">Anthropic Leaks: Claude Mythos & Claude Code Source Exposed</div>
+        <div class="topic-card-desc" data-en="In late March 2026, Anthropic suffered two back-to-back leaks — a draft announcement of its next frontier model Claude Mythos and the full source code of Claude Code via npm." data-fr="Fin mars 2026, Anthropic a subi deux fuites coup sur coup — un brouillon d'annonce de son prochain modèle frontier Claude Mythos et le code source complet de Claude Code via npm.">In late March 2026, Anthropic suffered two back-to-back leaks — a draft announcement of its next frontier model Claude Mythos and the full source code of Claude Code via npm.</div>
         <div class="topic-card-footer">
-          <div class="topic-tags"><span class="topic-tag">co-intelligence</span><span class="topic-tag">mollick</span><span class="topic-tag">ai-strategy</span><span class="topic-tag">education</span></div>
+          <div class="topic-tags"><span class="topic-tag">anthropic</span><span class="topic-tag">claude</span><span class="topic-tag">mythos</span><span class="topic-tag">claude-code</span></div>
           <span class="topic-status" style="color:#27AE60">stable</span>
         </div>
       </div>
@@ -878,64 +1059,40 @@
       </div>
       <div class="card-arrow">→</div>
     </a>
-  </div>
-
-  <div id="news" class="section-sep" style="margin-top:40px;">
-    <div class="section-sep-line"></div>
-    <span class="section-sep-label" data-en="WHAT'S NEW" data-fr="NOUVEAUTÉS">WHAT'S NEW</span>
-    <div class="section-sep-line"></div>
-  </div>
-  <div class="news-feed">
-    
-    <a href="topics/co-intelligence-mollick.html" class="news-item">
-      <div class="news-date">2026-04-08</div>
-      <div class="news-icon">📝</div>
-      <div class="news-body">
-        <div class="news-type" data-en="New content" data-fr="Nouveau contenu">New content</div>
-        <div class="news-title" data-en="New article: Co-Intelligence by Ethan Mollick" data-fr="Nouvel article : Co-Intelligence d'Ethan Mollick">New article: Co-Intelligence by Ethan Mollick</div>
-        <div class="news-desc" data-en="Book analysis — AI as a collaborative partner, the 4 rules of co-intelligence, and practical frameworks for work, creativity and education." data-fr="Analyse du livre — L'IA comme partenaire collaboratif, les 4 règles de la co-intelligence, et des cadres pratiques pour le travail, la créativité et l'éducation.">Book analysis — AI as a collaborative partner, the 4 rules of co-intelligence, and practical frameworks for work, creativity and education.</div>
       </div>
+
+      <div class="section-sep" style="margin-top:40px;">
+        <div class="section-sep-line"></div>
+        <span class="section-sep-label" data-en="REFLECTION" data-fr="RÉFLEXION">REFLECTION</span>
+        <div class="section-sep-line"></div>
+      </div>
+      <div class="cards" style="grid-template-columns:1fr">
+        
+    <a href="topics/laurent-alexandre-assemblee-ia.html" class="topic-card">
+      <div class="topic-card-body">
+        <div class="topic-card-title" data-en=""Stop the Denial" — Laurent Alexandre on AI at the French National Assembly" data-fr=""Sortir du déni" — Laurent Alexandre sur l'IA à l'Assemblée nationale">"Stop the Denial" — Laurent Alexandre on AI at the French National Assembly</div>
+        <div class="topic-card-desc" data-en="Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake." data-fr="Laurent Alexandre soutient devant l'Assemblée nationale que l'IA dépasse déjà des experts sur des tâches cognitives — et que minimiser ce fait est une erreur stratégique.">Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake.</div>
+        <div class="topic-card-footer">
+          <div class="topic-tags"><span class="topic-tag">laurent-alexandre</span><span class="topic-tag">assemblee-nationale</span><span class="topic-tag">ia-debat</span><span class="topic-tag">luc-julia</span></div>
+          <span class="topic-status" style="color:#27AE60">stable</span>
+        </div>
+      </div>
+      <div class="card-arrow">→</div>
     </a>
 
-    <a href="proprietary-models.html" class="news-item">
-      <div class="news-date">2026-04-07</div>
-      <div class="news-icon">🔄</div>
-      <div class="news-body">
-        <div class="news-type" data-en="Update" data-fr="Mise à jour">Update</div>
-        <div class="news-title" data-en="Mistral AI hybrid strategy added to model maps" data-fr="Stratégie hybride Mistral AI ajoutée aux cartes modèles">Mistral AI hybrid strategy added to model maps</div>
-        <div class="news-desc" data-en="Proprietary and open-weights maps updated with Mistral's dual-licensing approach." data-fr="Cartes modèles propriétaires et open-weights mises à jour avec l'approche double licence de Mistral.">Proprietary and open-weights maps updated with Mistral's dual-licensing approach.</div>
+    <a href="topics/co-intelligence-mollick.html" class="topic-card">
+      <div class="topic-card-body">
+        <div class="topic-card-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</div>
+        <div class="topic-card-desc" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</div>
+        <div class="topic-card-footer">
+          <div class="topic-tags"><span class="topic-tag">co-intelligence</span><span class="topic-tag">mollick</span><span class="topic-tag">ai-strategy</span><span class="topic-tag">education</span></div>
+          <span class="topic-status" style="color:#27AE60">stable</span>
+        </div>
       </div>
+      <div class="card-arrow">→</div>
     </a>
-
-    <div class="news-item">
-      <div class="news-date">2026-04-06</div>
-      <div class="news-icon">✨</div>
-      <div class="news-body">
-        <div class="news-type" data-en="New feature" data-fr="Nouveauté">New feature</div>
-        <div class="news-title" data-en="Global search across all maps" data-fr="Recherche globale sur toutes les cartes">Global search across all maps</div>
-        <div class="news-desc" data-en="Press Cmd+K anywhere to search concepts, models and tools across every map, the glossary and articles." data-fr="Appuyez sur Cmd+K n'importe où pour chercher concepts, modèles et outils dans toutes les cartes, le glossaire et les articles.">Press Cmd+K anywhere to search concepts, models and tools across every map, the glossary and articles.</div>
       </div>
     </div>
-
-    <a href="proprietary-models.html" class="news-item">
-      <div class="news-date">2026-04-05</div>
-      <div class="news-icon">🔄</div>
-      <div class="news-body">
-        <div class="news-type" data-en="Update" data-fr="Mise à jour">Update</div>
-        <div class="news-title" data-en="GPT-5.4 family added to proprietary models" data-fr="Famille GPT-5.4 ajoutée aux modèles propriétaires">GPT-5.4 family added to proprietary models</div>
-        <div class="news-desc" data-en="GPT-5.4, GPT-5.4 mini and GPT-5.4 nano added to the proprietary models map." data-fr="GPT-5.4, GPT-5.4 mini et GPT-5.4 nano ajoutés à la carte des modèles propriétaires.">GPT-5.4, GPT-5.4 mini and GPT-5.4 nano added to the proprietary models map.</div>
-      </div>
-    </a>
-
-    <a href="topics/mcp-explained.html" class="news-item">
-      <div class="news-date">2026-04-04</div>
-      <div class="news-icon">📝</div>
-      <div class="news-body">
-        <div class="news-type" data-en="New content" data-fr="Nouveau contenu">New content</div>
-        <div class="news-title" data-en="New articles: MCP explained & RAG deep dive" data-fr="Nouveaux articles : MCP expliqué & RAG en profondeur">New articles: MCP explained & RAG deep dive</div>
-        <div class="news-desc" data-en="Two new deep dives covering Model Context Protocol architecture and RAG pipeline design." data-fr="Deux nouveaux articles de fond sur l'architecture MCP et la conception de pipelines RAG.">Two new deep dives covering Model Context Protocol architecture and RAG pipeline design.</div>
-      </div>
-    </a>
   </div>
 </main>
 
@@ -949,12 +1106,12 @@ const uiTexts = {
   en: {
     footer: "Open source · Built to learn and share · ",
     searchPlaceholder: "Search concepts, models, tools…",
-    intro: "Three ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem, <strong>Deep Dives</strong> for in-depth articles, <strong>Glossary</strong> to understand the terminology."
+    intro: "Four ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem, <strong>Deep Dives</strong> for in-depth articles, <strong>Reflection</strong> for essays &amp; perspectives on AI, <strong>Glossary</strong> to understand the terminology."
   },
   fr: {
     footer: "Open source · Construit pour apprendre et partager · ",
     searchPlaceholder: "Rechercher concepts, modèles, outils…",
-    intro: "Trois façons d'apprendre : <strong>Mind Maps</strong> pour visualiser l'écosystème, <strong>Deep Dives</strong> pour des articles approfondis, <strong>Glossaire</strong> pour comprendre la terminologie."
+    intro: "Quatre façons d'apprendre : <strong>Mind Maps</strong> pour visualiser l'écosystème, <strong>Deep Dives</strong> pour des articles approfondis, <strong>Réflexion</strong> pour des essais et perspectives sur l'IA, <strong>Glossaire</strong> pour comprendre la terminologie."
   }
 };
 let currentLang = 'en';
@@ -966,6 +1123,17 @@ function setLang(lang) {
   document.querySelectorAll('[data-en]').forEach(el => {
     el.textContent = lang === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
   });
+}
+
+// Highlight news item if URL has a news anchor
+if (location.hash.startsWith('#news-')) {
+  const el = document.getElementById(location.hash.slice(1));
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.style.borderLeftColor = '#E74C3C';
+    el.style.background = '#16213E';
+    setTimeout(() => { el.style.borderLeftColor = ''; el.style.background = ''; }, 3000);
+  }
 }
 
 </script>
