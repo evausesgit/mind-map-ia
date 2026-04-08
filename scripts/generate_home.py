@@ -14,6 +14,7 @@ MAPS_FILE = ROOT / "data" / "maps.yaml"
 GLOSSARY_FILE = ROOT / "data" / "glossary.yaml"
 MACRO_FILE = ROOT / "data" / "ecosystem-macro.yaml"
 TOPICS_DIR = ROOT / "data" / "topics"
+NEWS_FILE = ROOT / "data" / "news.yaml"
 OUTPUT = ROOT / "web" / "index.html"
 
 
@@ -95,6 +96,45 @@ def build_topic_card(topic):
       </div>
       <div class="card-arrow">→</div>
     </a>"""
+
+
+def load_news(max_items=8):
+    """Load news entries from data/news.yaml, sorted by date desc."""
+    if not NEWS_FILE.exists():
+        return []
+    with open(NEWS_FILE) as f:
+        data = yaml.safe_load(f)
+    entries = data.get("news", [])
+    entries.sort(key=lambda x: str(x.get("date", "")), reverse=True)
+    return entries[:max_items]
+
+
+def build_news_item(entry):
+    date = str(entry.get("date", ""))
+    ntype = entry.get("type", "update")
+    title_en = t(entry.get("title", ""), "en")
+    title_fr = t(entry.get("title", ""), "fr") or title_en
+    desc_en = t(entry.get("description", ""), "en")
+    desc_fr = t(entry.get("description", ""), "fr") or desc_en
+    link = entry.get("link", "")
+    type_icons = {"new-content": "📝", "update": "🔄", "new-feature": "✨"}
+    type_labels_en = {"new-content": "New content", "update": "Update", "new-feature": "New feature"}
+    type_labels_fr = {"new-content": "Nouveau contenu", "update": "Mise à jour", "new-feature": "Nouveauté"}
+    icon = type_icons.get(ntype, "📢")
+    label_en = type_labels_en.get(ntype, "News")
+    label_fr = type_labels_fr.get(ntype, "News")
+    tag = f'<a href="{link}" class="news-item">' if link else '<div class="news-item">'
+    end_tag = '</a>' if link else '</div>'
+    return f"""
+    {tag}
+      <div class="news-date">{date}</div>
+      <div class="news-icon">{icon}</div>
+      <div class="news-body">
+        <div class="news-type" data-en="{label_en}" data-fr="{label_fr}">{label_en}</div>
+        <div class="news-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</div>
+        <div class="news-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</div>
+      </div>
+    {end_tag}"""
 
 
 def build_search_index():
@@ -215,6 +255,7 @@ def main():
         config = yaml.safe_load(f)
     maps = config.get("maps", [])
     topics = load_topics()
+    news = load_news()
     # Split: featured (Big Picture) vs rest
     macro_map   = next((m for m in maps if m.get("id") == "macro"), None)
     other_maps  = [m for m in maps if m.get("id") not in ("macro", "glossary")]
@@ -296,6 +337,7 @@ def main():
     other_cards_html = "\n".join(build_card(m) for m in other_maps)
     glossary_card_html = build_card(glossary_map) if glossary_map else ""
     topics_html = "\n".join(build_topic_card(topic) for topic in topics)
+    news_html = "\n".join(build_news_item(n) for n in news)
     nav_html = build_nav_html(maps, topics)
 
     html = f"""<!DOCTYPE html>
@@ -558,6 +600,57 @@ def main():
     text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
   }}
 
+  /* ── News feed ── */
+  .news-feed {{ display: flex; flex-direction: column; gap: 0; width: 100%; }}
+  .news-item {{
+    display: grid;
+    grid-template-columns: 80px 32px 1fr;
+    align-items: start;
+    gap: 12px;
+    padding: 16px 18px;
+    border-left: 2px solid #1E2D4E;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.15s;
+    position: relative;
+  }}
+  a.news-item:hover {{
+    background: #16213E;
+    border-left-color: #E74C3C;
+  }}
+  .news-date {{
+    font-size: 11px;
+    color: #555;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }}
+  .news-icon {{
+    font-size: 18px;
+    text-align: center;
+    padding-top: 1px;
+  }}
+  .news-body {{ min-width: 0; }}
+  .news-type {{
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #E74C3C;
+    margin-bottom: 3px;
+  }}
+  .news-title {{
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 4px;
+  }}
+  .news-desc {{
+    font-size: 12px;
+    color: #7F8C8D;
+    line-height: 1.5;
+  }}
+
   footer {{
     text-align: center;
     padding: 24px;
@@ -634,6 +727,15 @@ def main():
   </div>
   <div class="cards" style="grid-template-columns:1fr">
     {topics_html}
+  </div>
+
+  <div class="section-sep" style="margin-top:40px;">
+    <div class="section-sep-line"></div>
+    <span class="section-sep-label" data-en="WHAT'S NEW" data-fr="NOUVEAUTÉS">WHAT'S NEW</span>
+    <div class="section-sep-line"></div>
+  </div>
+  <div class="news-feed">
+    {news_html}
   </div>
 </main>
 

@@ -1,0 +1,49 @@
+news:
+  - date: 2026-04-08
+    type: new-content
+    title:
+      en: "New article: Co-Intelligence by Ethan Mollick"
+      fr: "Nouvel article : Co-Intelligence d'Ethan Mollick"
+    description:
+      en: "Book analysis — AI as a collaborative partner, the 4 rules of co-intelligence, and practical frameworks for work, creativity and education."
+      fr: "Analyse du livre — L'IA comme partenaire collaboratif, les 4 règles de la co-intelligence, et des cadres pratiques pour le travail, la créativité et l'éducation."
+    link: topics/co-intelligence-mollick.html
+
+  - date: 2026-04-07
+    type: update
+    title:
+      en: "Mistral AI hybrid strategy added to model maps"
+      fr: "Stratégie hybride Mistral AI ajoutée aux cartes modèles"
+    description:
+      en: "Proprietary and open-weights maps updated with Mistral's dual-licensing approach."
+      fr: "Cartes modèles propriétaires et open-weights mises à jour avec l'approche double licence de Mistral."
+    link: proprietary-models.html
+
+  - date: 2026-04-06
+    type: new-feature
+    title:
+      en: "Global search across all maps"
+      fr: "Recherche globale sur toutes les cartes"
+    description:
+      en: "Press Cmd+K anywhere to search concepts, models and tools across every map, the glossary and articles."
+      fr: "Appuyez sur Cmd+K n'importe où pour chercher concepts, modèles et outils dans toutes les cartes, le glossaire et les articles."
+
+  - date: 2026-04-05
+    type: update
+    title:
+      en: "GPT-5.4 family added to proprietary models"
+      fr: "Famille GPT-5.4 ajoutée aux modèles propriétaires"
+    description:
+      en: "GPT-5.4, GPT-5.4 mini and GPT-5.4 nano added to the proprietary models map."
+      fr: "GPT-5.4, GPT-5.4 mini et GPT-5.4 nano ajoutés à la carte des modèles propriétaires."
+    link: proprietary-models.html
+
+  - date: 2026-04-04
+    type: new-content
+    title:
+      en: "New articles: MCP explained & RAG deep dive"
+      fr: "Nouveaux articles : MCP expliqué & RAG en profondeur"
+    description:
+      en: "Two new deep dives covering Model Context Protocol architecture and RAG pipeline design."
+      fr: "Deux nouveaux articles de fond sur l'architecture MCP et la conception de pipelines RAG."
+    link: topics/mcp-explained.html

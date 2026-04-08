@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co-Intelligence: Living and Working with AI</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    color: #1A1A2E;
+    min-height: 100vh;
+  }
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-menu { position: relative; }
+  .nav-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 260px;
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1E2D4E;
+    text-decoration: none;
+    color: #BDC3C7;
+    font-size: 13px;
+    transition: background 0.1s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home { color: #BDC3C7 !important; font-size: 13px !important; border-bottom: 1px solid #1E2D4E; }
+  .nav-home:hover { color: #FF6B6B !important; }
+  .lang-toggle { display: flex; gap: 6px; }
+  .lang-btn {
+    background: none;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+
+  .page-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .page-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  .article-header { margin-bottom: 32px; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #27AE6022;
+    color: #27AE60;
+    border: 1px solid #27AE6044;
+  }
+  .date { font-size: 12px; color: #95A5A6; }
+  .article-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1A1A2E;
+    margin-bottom: 12px;
+  }
+  .article-summary {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #E8EAF6;
+    color: #3F51B5;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .article-body { line-height: 1.75; color: #2C3E50; }
+  .article-body h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #E8EAED;
+  }
+  .article-body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 24px 0 8px;
+  }
+  .article-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7F8C8D;
+    margin: 20px 0 6px;
+  }
+  .article-body p { margin-bottom: 14px; font-size: 15px; }
+  .article-body ul, .article-body ol {
+    margin: 8px 0 14px 20px;
+    font-size: 15px;
+  }
+  .article-body li { margin-bottom: 4px; }
+  .article-body strong { font-weight: 700; color: #1A1A2E; }
+  .article-body em { color: #555; }
+  .article-body code {
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 13px;
+    background: #EEF0F3;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #C0392B;
+  }
+  .article-body pre {
+    background: #1A1A2E;
+    color: #E8EAF6;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .article-body pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .article-body th {
+    background: #1A1A2E;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .article-body td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #E8EAED;
+  }
+  .article-body tr:nth-child(even) td { background: #F8F9FA; }
+  .article-body blockquote {
+    border-left: 3px solid #1A1A2E;
+    padding: 8px 16px;
+    margin: 12px 0;
+    color: #555;
+    background: #F0F0F5;
+    border-radius: 0 4px 4px 0;
+  }
+  .article-body hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 28px 0;
+  }
+  .article-body a { color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }
+  .article-body a:hover { color: #3498DB; }
+
+  /* Sidebar */
+  .sidebar { position: sticky; top: 80px; }
+  .toc { display: flex; flex-direction: column; gap: 4px; }
+  .toc-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #95A5A6;
+    margin-bottom: 8px;
+  }
+  .toc a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    padding: 3px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    line-height: 1.4;
+    transition: all 0.1s;
+  }
+  .toc a.toc-h3 {
+    padding-left: 20px;
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+  .toc a:hover { color: #1A1A2E; border-left-color: #1A1A2E; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="nav-menu">  <button class="nav-btn">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="../index.html" class="nav-home">← Home</a>   <a href="../glossary.html">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a><a href="../macro.html">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="../use-cases.html">  <span class="nav-icon">🎯</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Use Cases" data-fr="Cas d'Usage IA">AI Use Cases</span>    <span class="nav-desc" data-en="4 user personas, their scenarios, AI patterns, and key stack components" data-fr="4 personas utilisateur, leurs scénarios, patterns IA, et composants clés">4 user personas, their scenarios, AI patterns, and key stack components</span>  </span></a><a href="../ai-agents.html">  <span class="nav-icon">🤖</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span>    <span class="nav-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span>  </span></a><a href="../ai-coding-assistants.html">  <span class="nav-icon">💻</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span>    <span class="nav-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span>  </span></a><a href="../proprietary-models.html">  <span class="nav-icon">🏢</span>  <span class="nav-info">    <span class="nav-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span>    <span class="nav-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span>  </span></a><a href="../open-weights-models.html">  <span class="nav-icon">🔓</span>  <span class="nav-info">    <span class="nav-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span>    <span class="nav-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span>  </span></a><a href="../cloud-managed.html">  <span class="nav-icon">☁️</span>  <span class="nav-info">    <span class="nav-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span>    <span class="nav-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span>  </span></a><a href="../dense-vs-moe.html">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="../rag-pattern.html">  <span class="nav-icon">🔍</span>  <span class="nav-info">    <span class="nav-title" data-en="RAG" data-fr="RAG">RAG</span>    <span class="nav-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span>  </span></a>  </div></div>
+  </div>
+  
+<!-- ── Global Search Widget ── -->
+<style>
+#gs-trigger {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 8px; min-width: 180px;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+  color: #aaa; font-size: 13px; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+#gs-trigger:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.3); color: #fff; }
+#gs-trigger .gs-placeholder { flex: 1; text-align: left; }
+#gs-trigger .gs-kbd {
+  font-size: 11px; opacity: 0.5;
+  background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+}
+#gs-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(10,10,20,0.7); backdrop-filter: blur(4px);
+  align-items: flex-start; justify-content: center; padding-top: 80px;
+}
+#gs-overlay.open { display: flex; }
+#gs-modal {
+  width: 100%; max-width: 640px; background: #1e2030;
+  border: 1px solid #3a3f5c; border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6); overflow: hidden;
+}
+#gs-input-wrap {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px; border-bottom: 1px solid #2e3350;
+}
+#gs-input-wrap svg { flex-shrink: 0; opacity: 0.5; }
+#gs-input {
+  flex: 1; background: none; border: none; outline: none;
+  color: #f0f0f0; font-size: 16px;
+}
+#gs-input::placeholder { color: #555; }
+#gs-esc {
+  font-size: 11px; color: #555; background: rgba(255,255,255,0.07);
+  border: 1px solid #333; padding: 2px 7px; border-radius: 5px; cursor: pointer;
+  white-space: nowrap;
+}
+#gs-results {
+  max-height: 440px; overflow-y: auto; padding: 8px 0;
+}
+#gs-results:empty::after {
+  content: ''; display: block;
+}
+.gs-empty { padding: 20px; text-align: center; color: #555; font-size: 14px; }
+.gs-section { padding: 6px 18px 2px; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; color: #4a5080; text-transform: uppercase; }
+.gs-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 18px; cursor: pointer; transition: background 0.1s;
+}
+.gs-item:hover, .gs-item.active { background: rgba(255,255,255,0.06); }
+.gs-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+}
+.gs-body { flex: 1; min-width: 0; }
+.gs-label { font-size: 14px; font-weight: 600; color: #e8eaf0; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+.gs-meta { font-size: 11px; color: #5a6080; margin-top: 1px; }
+.gs-excerpt { font-size: 12px; color: #6a7090; margin-top: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-badge {
+  font-size: 10px; padding: 1px 7px; border-radius: 10px;
+  background: rgba(255,255,255,0.07); color: #8090b0; white-space: nowrap;
+  align-self: center; flex-shrink: 0;
+}
+</style>
+
+<button id="gs-trigger" onclick="gsOpen()" title="Global search (⌘K)">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </svg>
+  <span class="gs-placeholder">Search everywhere…</span>
+  <span class="gs-kbd">⌘K</span>
+</button>
+
+<div id="gs-overlay" onclick="gsOverlayClick(event)">
+  <div id="gs-modal">
+    <div id="gs-input-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="gs-input" placeholder="Search all maps, glossary, articles…"
+             oninput="gsSearch(this.value)" autocomplete="off" spellcheck="false">
+      <span id="gs-esc" onclick="gsClose()">Esc</span>
+    </div>
+    <div id="gs-results"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const INDEX_PATH = '../search-index.json';
+  let gsData = null, gsActive = -1, gsItems = [];
+
+  async function gsLoad() {
+    if (gsData) return;
+    try {
+      const r = await fetch(INDEX_PATH);
+      gsData = await r.json();
+    } catch(e) {
+      console.warn('Global search: could not load index', e);
+      gsData = { nodes: [], glossary: [], terms: [], topics: [] };
+    }
+  }
+
+  window.gsOpen = function() {
+    document.getElementById('gs-overlay').classList.add('open');
+    document.getElementById('gs-input').focus();
+    gsLoad();
+  };
+
+  window.gsClose = function() {
+    document.getElementById('gs-overlay').classList.remove('open');
+    gsActive = -1;
+  };
+
+  window.gsOverlayClick = function(e) {
+    if (e.target === document.getElementById('gs-overlay')) gsClose();
+  };
+
+  function currentLang() {
+    return (typeof lang !== 'undefined' ? lang : null) ||
+           document.querySelector('.lang-btn.active')?.dataset?.lang || 'en';
+  }
+
+  function excerpt(text, q) {
+    if (!text) return '';
+    const i = text.toLowerCase().indexOf(q.toLowerCase());
+    if (i === -1) return text.slice(0, 80) + (text.length > 80 ? '…' : '');
+    const s = Math.max(0, i - 20), e = Math.min(text.length, i + q.length + 50);
+    return (s > 0 ? '…' : '') + text.slice(s, e) + (e < text.length ? '…' : '');
+  }
+
+  function matches(fields, q) {
+    return fields.some(f => f && f.toLowerCase().includes(q));
+  }
+
+  window.gsSearch = async function(raw) {
+    await gsLoad();
+    const q = raw.toLowerCase().trim();
+    const el = document.getElementById('gs-results');
+    gsActive = -1; gsItems = [];
+    if (!q) { el.innerHTML = ''; return; }
+    const l = currentLang();
+
+    const nodeHits = gsData.nodes.filter(n =>
+      matches([n.label_en, n.label_fr, n.description_en, n.description_fr, n.category], q)
+    ).slice(0, 6);
+
+    const glossHits = gsData.glossary.filter(g =>
+      matches([g.label_en, g.label_fr, g.description_en, g.description_fr, ...(g.aliases||[])], q)
+    ).slice(0, 4);
+
+    const topicHits = gsData.topics.filter(t =>
+      matches([t.title_en, t.title_fr, t.summary_en, t.summary_fr, ...(t.tags||[])], q)
+    ).slice(0, 4);
+
+    if (!nodeHits.length && !glossHits.length && !topicHits.length) {
+      el.innerHTML = `<div class="gs-empty">${l === 'fr' ? 'Aucun résultat' : 'No results'}</div>`;
+      return;
+    }
+
+    let html = '';
+    const CAT_COLORS = {
+      org:'#58D68D', provider:'#58D68D', model:'#D5F5E3', model_family:'#A9CCE3',
+      persona:'#9B59B6', usecase:'#1ABC9C', pattern:'#E67E22', component:'#3498DB',
+      stage:'#58D68D', tool:'#85C1E9', block:'#F4D03F', framework:'#85C1E9',
+      default:'#7f8c8d'
+    };
+
+    function color(cat) { return CAT_COLORS[cat] || CAT_COLORS.default; }
+
+    if (nodeHits.length) {
+      html += `<div class="gs-section">${l==='fr'?'Cartes':'Maps'}</div>`;
+      nodeHits.forEach(n => {
+        const label = (l==='fr'?n.label_fr:n.label_en) || n.label_en;
+        const desc  = (l==='fr'?n.description_fr:n.description_en) || n.description_en;
+        const map   = (l==='fr'?n.map_title_fr:n.map_title_en) || n.map_id;
+        gsItems.push({ url: n.map_url + '#' + n.id, label });
+        html += `<div class="gs-item" data-url="${n.map_url}#${n.id}" onclick="gsGo(this)">
+          <div class="gs-dot" style="background:${color(n.category)}"></div>
+          <div class="gs-body">
+            <div class="gs-label">${label}</div>
+            <div class="gs-excerpt">${excerpt(desc, raw)}</div>
+          </div>
+          <span class="gs-badge">${map}</span>
+        </div>`;
+      });
+    }
+
+    if (glossHits.length) {
+      html += `<div class="gs-section">${l==='fr'?'Glossaire':'Glossary'}</div>`;
+      glossHits.forEach(g => {
+        const label = (l==='fr'?g.label_fr:g.label_en) || g.label_en;
+        const desc  = (l==='fr'?g.description_fr:g.description_en) || g.description_en;
+        const glossUrl = INDEX_PATH.replace('search-index.json','') + 'glossary.html#' + g.id;
+        gsItems.push({ url: glossUrl, label });
+        html += `<div class="gs-item" data-url="${glossUrl}" onclick="gsGo(this)">
+          <div class="gs-dot" style="background:#95A5A6"></div>
+          <div class="gs-body">
+            <div class="gs-label">${label}</div>
+            <div class="gs-excerpt">${excerpt(desc, raw)}</div>
+          </div>
+          <span class="gs-badge">Glossary</span>
+        </div>`;
+      });
+    }
+
+    if (topicHits.length) {
+      html += `<div class="gs-section">${l==='fr'?'Articles':'Articles'}</div>`;
+      topicHits.forEach(tp => {
+        const label = (l==='fr'?tp.title_fr:tp.title_en) || tp.title_en;
+        const desc  = (l==='fr'?tp.summary_fr:tp.summary_en) || tp.summary_en;
+        const tUrl  = INDEX_PATH.replace('search-index.json','') + tp.url;
+        gsItems.push({ url: tUrl, label });
+        html += `<div class="gs-item" data-url="${tUrl}" onclick="gsGo(this)">
+          <div class="gs-dot" style="background:#E74C3C"></div>
+          <div class="gs-body">
+            <div class="gs-label">${label}</div>
+            <div class="gs-excerpt">${excerpt(desc, raw)}</div>
+          </div>
+          <span class="gs-badge">Article</span>
+        </div>`;
+      });
+    }
+
+    el.innerHTML = html;
+  };
+
+  window.gsGo = function(el) {
+    window.location.href = el.dataset.url;
+    gsClose();
+  };
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault(); gsOpen(); return;
+    }
+    if (!document.getElementById('gs-overlay').classList.contains('open')) return;
+    if (e.key === 'Escape') { gsClose(); return; }
+    const items = document.querySelectorAll('.gs-item');
+    if (!items.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      gsActive = Math.min(gsActive + 1, items.length - 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      gsActive = Math.max(gsActive - 1, 0);
+    } else if (e.key === 'Enter' && gsActive >= 0) {
+      e.preventDefault();
+      items[gsActive].click(); return;
+    }
+    items.forEach((el, i) => el.classList.toggle('active', i === gsActive));
+    if (gsActive >= 0) items[gsActive].scrollIntoView({block:'nearest'});
+  });
+})();
+</script>
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <main>
+    <div class="article-header">
+      <div class="article-meta">
+        <span class="status-badge">stable</span>
+        <span class="date">2026-04-08</span>
+      </div>
+      <h1 class="article-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</h1>
+      <p class="article-summary" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</p>
+      <div class="tags"><span class="tag">co-intelligence</span><span class="tag">mollick</span><span class="tag">ai-strategy</span><span class="tag">education</span><span class="tag">creativity</span><span class="tag">productivity</span></div>
+    </div>
+
+    <div class="article-body" id="article-body">
+      <h2 id="summary">Summary</h2>
+<p><strong>Co-Intelligence</strong> (2024) by Ethan Mollick, professor at Wharton, is one of the most influential books on how to practically work with AI. His central thesis: AI is not just a tool — it's a <strong>co-intelligence</strong>, a collaborative entity that augments human thinking in ways no previous technology has done.</p>
+<p>Mollick argues that AI is a General Purpose Technology (GPT — the acronym predates the model) on the scale of steam power or the internet, but with two critical differences:</p>
+<ol><li><strong>Speed of adoption</strong>: ChatGPT reached 100 million users faster than any product in history. Previous GPTs took decades to permeate society.</li><li><strong>Cognitive impact</strong>: Where steam replaced muscle and computers automated calculation, AI augments <em>thinking itself</em>. Early studies show 20–80% productivity gains across diverse job types.</li></ol>
+<p>The book is split into two parts: <strong>understanding</strong> what AI is and how to think about it (Part I), then <strong>applying</strong> it in specific roles — as a creative partner, coworker, tutor, and coach (Part II).</p>
+<hr>
+<h2 id="part-i-understanding-ai">Part I — Understanding AI</h2>
+<h3 id="chapter-1-creating-alien-minds">Chapter 1: Creating Alien Minds</h3>
+<p>Mollick walks through the history of AI — from the Mechanical Turk hoax (1770) to Claude Shannon's maze-solving mouse (1950) to modern LLMs. The key insight: <strong>LLMs are not traditional software</strong>. They don't follow explicit rules. They are trained on vast amounts of text and develop emergent capabilities that even their creators don't fully understand.</p>
+<p>What to remember:</p>
+<ul><li>LLMs are <strong>stochastic parrots with surprising depth</strong> — they predict the next token, but the result often looks like genuine reasoning</li><li>No one fully understands <em>why</em> these models can pass the bar exam, ace creativity tests, and write working code</li><li>AI capability is growing faster than any previous technology — by an order of magnitude per year</li></ul>
+<h3 id="chapter-2-aligning-the-alien">Chapter 2: Aligning the Alien</h3>
+<p>This chapter tackles the alignment problem: how do we make AI systems do what we actually want? Mollick explains RLHF (Reinforcement Learning from Human Feedback) and the constant tension between making AI useful and making it safe.</p>
+<p>What to remember:</p>
+<ul><li>AI systems are <strong>aligned through human feedback</strong>, not hard rules — which means alignment is imperfect and evolving</li><li>The "sycophancy problem": AI tends to tell you what you want to hear rather than what's true</li><li>Guardrails can be both too loose (AI helps with harmful tasks) and too tight (AI refuses legitimate requests)</li><li>Alignment is a <strong>moving target</strong> — each new model generation requires new approaches</li></ul>
+<h3 id="chapter-3-four-rules-for-co-intelligence">Chapter 3: Four Rules for Co-Intelligence</h3>
+<p>This is the strategic core of the book. Mollick proposes four principles for working with AI:</p>
+<p><strong>Rule 1: Always invite AI to the table</strong> Don't decide in advance where AI can or can't help. Try it on everything. You'll be surprised where it adds value and where it doesn't. The cost of trying is low; the cost of missing an opportunity is high.</p>
+<p><strong>Rule 2: Be the human in the loop</strong> AI outputs need human judgment. You are responsible for checking facts, catching hallucinations, applying ethical reasoning, and making final decisions. AI is a first draft machine, not an oracle.</p>
+<p><strong>Rule 3: Treat AI like a person (but tell it what kind of person)</strong> The most effective way to use AI is to give it a role, a persona, a context. "You are an expert negotiation coach" works better than "help me negotiate." This isn't anthropomorphism — it's a practical prompting technique that activates relevant patterns in the model.</p>
+<p><strong>Rule 4: Assume this is the worst AI you will ever use</strong> Today's AI is the least capable AI you'll encounter going forward. Build habits and workflows now, because the tools will only get better. What seems clunky today will be seamless tomorrow.</p>
+<hr>
+<h2 id="part-ii-ai-in-practice">Part II — AI in Practice</h2>
+<h3 id="chapter-4-ai-as-a-person">Chapter 4: AI as a Person</h3>
+<p>Mollick explores the uncanny human-like qualities of AI. LLMs pass the Turing Test and the Lovelace Test (creative evaluation). They display what looks like personality, humor, and emotional intelligence — without being sentient.</p>
+<p>What to remember:</p>
+<ul><li>People naturally anthropomorphize AI — this is both a strength (intuitive interaction) and a danger (misplaced trust)</li><li>AI personas are powerful: giving AI a specific character/expertise dramatically improves output quality</li><li>The "jagged frontier": AI is brilliant at some things and terrible at others, and the boundary is unpredictable</li></ul>
+<h3 id="chapter-5-ai-as-a-creative">Chapter 5: AI as a Creative</h3>
+<p>One of the book's strongest chapters. Mollick shows that AI doesn't just assist creativity — it can <strong>change how we think about creative work</strong>.</p>
+<p>What to remember:</p>
+<ul><li>AI scores in the <strong>top 1%</strong> on standardized creativity tests (Torrance Tests)</li><li>The best results come from <strong>human-AI collaboration</strong>, not pure AI generation — humans provide direction, taste, and judgment</li><li>AI lowers the cost of exploration: you can generate 50 ideas in minutes, then curate the best ones</li><li>The risk is <strong>homogenization</strong> — if everyone uses the same AI, outputs converge. Originality comes from the human steering</li></ul>
+<h3 id="chapter-6-ai-as-a-coworker">Chapter 6: AI as a Coworker</h3>
+<p>Mollick presents research on AI's impact on professional work. This chapter is data-heavy and practical.</p>
+<p>What to remember:</p>
+<ul><li>A Boston Consulting Group study found consultants using AI completed <strong>12% more tasks, 25% faster, with 40% higher quality</strong></li><li>But: AI helps the <em>least skilled</em> workers the most — it's an "equalizer" that compresses the performance gap</li><li>The "Centaur" model: humans and AI split tasks by comparative advantage. Humans handle judgment, AI handles generation and analysis</li><li>The "Cyborg" model: human and AI work interleaved on the same task, sentence by sentence, step by step</li><li>Organizations that succeed with AI will <strong>redesign workflows</strong>, not just add AI to existing ones</li></ul>
+<h3 id="chapter-7-ai-as-a-tutor">Chapter 7: AI as a Tutor</h3>
+<p>Mollick draws on his education research to argue that AI could finally deliver the "2 sigma" dream — personalized tutoring at scale.</p>
+<p>What to remember:</p>
+<ul><li>Benjamin Bloom's "2 sigma problem" (1984): students with personal tutors perform 2 standard deviations better than classroom students. AI could be that tutor.</li><li>AI tutors work best when they <strong>ask questions</strong> rather than give answers — Socratic method, not lecture mode</li><li>The danger: students using AI to <em>avoid</em> learning instead of <em>enhance</em> learning</li><li>Effective AI tutoring requires careful prompt design — the AI needs to be told to challenge, not just help</li></ul>
+<h3 id="chapter-8-ai-as-a-coach">Chapter 8: AI as a Coach</h3>
+<p>AI can provide something rare and valuable: honest, judgment-free feedback on soft skills like leadership, communication, and decision-making.</p>
+<p>What to remember:</p>
+<ul><li>Most people get <strong>almost no feedback</strong> on their interpersonal skills — AI can fill this gap</li><li>AI coaching works for practice scenarios: negotiations, difficult conversations, presentations</li><li>The key prompt pattern: tell the AI to be a tough coach, not a supportive friend</li><li>AI coaches won't replace human coaches, but they make coaching <strong>accessible to everyone</strong></li></ul>
+<h3 id="chapter-9-ai-as-our-future">Chapter 9: AI as Our Future</h3>
+<p>Mollick looks ahead at the societal implications. He's cautiously optimistic but clear-eyed about the risks.</p>
+<p>What to remember:</p>
+<ul><li><strong>Job displacement is real</strong> but not uniform — creative, strategic, and interpersonal roles will change rather than disappear</li><li>The biggest risk isn't unemployment, it's <strong>inequality</strong> — those who learn to work with AI will pull ahead</li><li>Education systems must adapt now or become irrelevant</li><li>The pace of change means <strong>no one can predict the details</strong> — adaptability is the key skill</li></ul>
+<hr>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ol><li><strong>AI is a co-intelligence, not a tool.</strong> Treat it as a thinking partner, not a search engine or calculator.</li></ol>
+<ol><li><strong>Try AI on everything.</strong> You can't predict where it'll add value. The only way to find out is to experiment constantly.</li></ol>
+<ol><li><strong>Stay in the loop.</strong> AI hallucinates, sycophants, and confidently produces wrong answers. Your judgment is the quality filter.</li></ol>
+<ol><li><strong>Give AI a persona.</strong> "You are an expert X" is the single most effective prompting technique.</li></ol>
+<ol><li><strong>Today's AI is the worst you'll ever use.</strong> Build the habits now. The tools will improve faster than you expect.</li></ol>
+<ol><li><strong>Humans + AI &gt; AI alone.</strong> The Centaur/Cyborg models consistently outperform pure AI. Your value is direction, taste, and judgment.</li></ol>
+<ol><li><strong>AI is an equalizer.</strong> It helps weaker performers more than strong ones. Organizations will flatten.</li></ol>
+<ol><li><strong>Redesign workflows, don't just add AI.</strong> Bolting AI onto existing processes captures a fraction of the value.</li></ol>
+<ol><li><strong>Use AI to practice, not just produce.</strong> Negotiation, writing, coaching, teaching — AI is an infinite practice partner.</li></ol>
+<ol><li><strong>Adaptability is the meta-skill.</strong> In a world where AI capabilities shift quarterly, the ability to learn and adjust matters more than any specific expertise.</li></ol>
+    </div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="toc-label" data-en="On this page" data-fr="Sur cette page">On this page</div>
+    <nav class="toc" id="toc-nav">
+      <nav class="toc"><a href="#summary" class="toc-h2">Summary</a>
+<a href="#part-i-understanding-ai" class="toc-h2">Part I — Understanding AI</a>
+<a href="#chapter-1-creating-alien-minds" class="toc-h3">Chapter 1: Creating Alien Minds</a>
+<a href="#chapter-2-aligning-the-alien" class="toc-h3">Chapter 2: Aligning the Alien</a>
+<a href="#chapter-3-four-rules-for-co-intelligence" class="toc-h3">Chapter 3: Four Rules for Co-Intelligence</a>
+<a href="#part-ii-ai-in-practice" class="toc-h2">Part II — AI in Practice</a>
+<a href="#chapter-4-ai-as-a-person" class="toc-h3">Chapter 4: AI as a Person</a>
+<a href="#chapter-5-ai-as-a-creative" class="toc-h3">Chapter 5: AI as a Creative</a>
+<a href="#chapter-6-ai-as-a-coworker" class="toc-h3">Chapter 6: AI as a Coworker</a>
+<a href="#chapter-7-ai-as-a-tutor" class="toc-h3">Chapter 7: AI as a Tutor</a>
+<a href="#chapter-8-ai-as-a-coach" class="toc-h3">Chapter 8: AI as a Coach</a>
+<a href="#chapter-9-ai-as-our-future" class="toc-h3">Chapter 9: AI as Our Future</a>
+<a href="#key-takeaways" class="toc-h2">Key Takeaways</a></nav>
+    </nav>
+  </aside>
+</div>
+
+<script src="../mermaid.min.js"></script>
+<script>
+mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+
+const CONTENT = {
+  en: '<h2 id="summary">Summary</h2>\n<p><strong>Co-Intelligence</strong> (2024) by Ethan Mollick, professor at Wharton, is one of the most influential books on how to practically work with AI. His central thesis: AI is not just a tool — it\'s a <strong>co-intelligence</strong>, a collaborative entity that augments human thinking in ways no previous technology has done.</p>\n<p>Mollick argues that AI is a General Purpose Technology (GPT — the acronym predates the model) on the scale of steam power or the internet, but with two critical differences:</p>\n<ol><li><strong>Speed of adoption</strong>: ChatGPT reached 100 million users faster than any product in history. Previous GPTs took decades to permeate society.</li><li><strong>Cognitive impact</strong>: Where steam replaced muscle and computers automated calculation, AI augments <em>thinking itself</em>. Early studies show 20–80% productivity gains across diverse job types.</li></ol>\n<p>The book is split into two parts: <strong>understanding</strong> what AI is and how to think about it (Part I), then <strong>applying</strong> it in specific roles — as a creative partner, coworker, tutor, and coach (Part II).</p>\n<hr>\n<h2 id="part-i-understanding-ai">Part I — Understanding AI</h2>\n<h3 id="chapter-1-creating-alien-minds">Chapter 1: Creating Alien Minds</h3>\n<p>Mollick walks through the history of AI — from the Mechanical Turk hoax (1770) to Claude Shannon\'s maze-solving mouse (1950) to modern LLMs. The key insight: <strong>LLMs are not traditional software</strong>. They don\'t follow explicit rules. They are trained on vast amounts of text and develop emergent capabilities that even their creators don\'t fully understand.</p>\n<p>What to remember:</p>\n<ul><li>LLMs are <strong>stochastic parrots with surprising depth</strong> — they predict the next token, but the result often looks like genuine reasoning</li><li>No one fully understands <em>why</em> these models can pass the bar exam, ace creativity tests, and write working code</li><li>AI capability is growing faster than any previous technology — by an order of magnitude per year</li></ul>\n<h3 id="chapter-2-aligning-the-alien">Chapter 2: Aligning the Alien</h3>\n<p>This chapter tackles the alignment problem: how do we make AI systems do what we actually want? Mollick explains RLHF (Reinforcement Learning from Human Feedback) and the constant tension between making AI useful and making it safe.</p>\n<p>What to remember:</p>\n<ul><li>AI systems are <strong>aligned through human feedback</strong>, not hard rules — which means alignment is imperfect and evolving</li><li>The "sycophancy problem": AI tends to tell you what you want to hear rather than what\'s true</li><li>Guardrails can be both too loose (AI helps with harmful tasks) and too tight (AI refuses legitimate requests)</li><li>Alignment is a <strong>moving target</strong> — each new model generation requires new approaches</li></ul>\n<h3 id="chapter-3-four-rules-for-co-intelligence">Chapter 3: Four Rules for Co-Intelligence</h3>\n<p>This is the strategic core of the book. Mollick proposes four principles for working with AI:</p>\n<p><strong>Rule 1: Always invite AI to the table</strong> Don\'t decide in advance where AI can or can\'t help. Try it on everything. You\'ll be surprised where it adds value and where it doesn\'t. The cost of trying is low; the cost of missing an opportunity is high.</p>\n<p><strong>Rule 2: Be the human in the loop</strong> AI outputs need human judgment. You are responsible for checking facts, catching hallucinations, applying ethical reasoning, and making final decisions. AI is a first draft machine, not an oracle.</p>\n<p><strong>Rule 3: Treat AI like a person (but tell it what kind of person)</strong> The most effective way to use AI is to give it a role, a persona, a context. "You are an expert negotiation coach" works better than "help me negotiate." This isn\'t anthropomorphism — it\'s a practical prompting technique that activates relevant patterns in the model.</p>\n<p><strong>Rule 4: Assume this is the worst AI you will ever use</strong> Today\'s AI is the least capable AI you\'ll encounter going forward. Build habits and workflows now, because the tools will only get better. What seems clunky today will be seamless tomorrow.</p>\n<hr>\n<h2 id="part-ii-ai-in-practice">Part II — AI in Practice</h2>\n<h3 id="chapter-4-ai-as-a-person">Chapter 4: AI as a Person</h3>\n<p>Mollick explores the uncanny human-like qualities of AI. LLMs pass the Turing Test and the Lovelace Test (creative evaluation). They display what looks like personality, humor, and emotional intelligence — without being sentient.</p>\n<p>What to remember:</p>\n<ul><li>People naturally anthropomorphize AI — this is both a strength (intuitive interaction) and a danger (misplaced trust)</li><li>AI personas are powerful: giving AI a specific character/expertise dramatically improves output quality</li><li>The "jagged frontier": AI is brilliant at some things and terrible at others, and the boundary is unpredictable</li></ul>\n<h3 id="chapter-5-ai-as-a-creative">Chapter 5: AI as a Creative</h3>\n<p>One of the book\'s strongest chapters. Mollick shows that AI doesn\'t just assist creativity — it can <strong>change how we think about creative work</strong>.</p>\n<p>What to remember:</p>\n<ul><li>AI scores in the <strong>top 1%</strong> on standardized creativity tests (Torrance Tests)</li><li>The best results come from <strong>human-AI collaboration</strong>, not pure AI generation — humans provide direction, taste, and judgment</li><li>AI lowers the cost of exploration: you can generate 50 ideas in minutes, then curate the best ones</li><li>The risk is <strong>homogenization</strong> — if everyone uses the same AI, outputs converge. Originality comes from the human steering</li></ul>\n<h3 id="chapter-6-ai-as-a-coworker">Chapter 6: AI as a Coworker</h3>\n<p>Mollick presents research on AI\'s impact on professional work. This chapter is data-heavy and practical.</p>\n<p>What to remember:</p>\n<ul><li>A Boston Consulting Group study found consultants using AI completed <strong>12% more tasks, 25% faster, with 40% higher quality</strong></li><li>But: AI helps the <em>least skilled</em> workers the most — it\'s an "equalizer" that compresses the performance gap</li><li>The "Centaur" model: humans and AI split tasks by comparative advantage. Humans handle judgment, AI handles generation and analysis</li><li>The "Cyborg" model: human and AI work interleaved on the same task, sentence by sentence, step by step</li><li>Organizations that succeed with AI will <strong>redesign workflows</strong>, not just add AI to existing ones</li></ul>\n<h3 id="chapter-7-ai-as-a-tutor">Chapter 7: AI as a Tutor</h3>\n<p>Mollick draws on his education research to argue that AI could finally deliver the "2 sigma" dream — personalized tutoring at scale.</p>\n<p>What to remember:</p>\n<ul><li>Benjamin Bloom\'s "2 sigma problem" (1984): students with personal tutors perform 2 standard deviations better than classroom students. AI could be that tutor.</li><li>AI tutors work best when they <strong>ask questions</strong> rather than give answers — Socratic method, not lecture mode</li><li>The danger: students using AI to <em>avoid</em> learning instead of <em>enhance</em> learning</li><li>Effective AI tutoring requires careful prompt design — the AI needs to be told to challenge, not just help</li></ul>\n<h3 id="chapter-8-ai-as-a-coach">Chapter 8: AI as a Coach</h3>\n<p>AI can provide something rare and valuable: honest, judgment-free feedback on soft skills like leadership, communication, and decision-making.</p>\n<p>What to remember:</p>\n<ul><li>Most people get <strong>almost no feedback</strong> on their interpersonal skills — AI can fill this gap</li><li>AI coaching works for practice scenarios: negotiations, difficult conversations, presentations</li><li>The key prompt pattern: tell the AI to be a tough coach, not a supportive friend</li><li>AI coaches won\'t replace human coaches, but they make coaching <strong>accessible to everyone</strong></li></ul>\n<h3 id="chapter-9-ai-as-our-future">Chapter 9: AI as Our Future</h3>\n<p>Mollick looks ahead at the societal implications. He\'s cautiously optimistic but clear-eyed about the risks.</p>\n<p>What to remember:</p>\n<ul><li><strong>Job displacement is real</strong> but not uniform — creative, strategic, and interpersonal roles will change rather than disappear</li><li>The biggest risk isn\'t unemployment, it\'s <strong>inequality</strong> — those who learn to work with AI will pull ahead</li><li>Education systems must adapt now or become irrelevant</li><li>The pace of change means <strong>no one can predict the details</strong> — adaptability is the key skill</li></ul>\n<hr>\n<h2 id="key-takeaways">Key Takeaways</h2>\n<ol><li><strong>AI is a co-intelligence, not a tool.</strong> Treat it as a thinking partner, not a search engine or calculator.</li></ol>\n<ol><li><strong>Try AI on everything.</strong> You can\'t predict where it\'ll add value. The only way to find out is to experiment constantly.</li></ol>\n<ol><li><strong>Stay in the loop.</strong> AI hallucinates, sycophants, and confidently produces wrong answers. Your judgment is the quality filter.</li></ol>\n<ol><li><strong>Give AI a persona.</strong> "You are an expert X" is the single most effective prompting technique.</li></ol>\n<ol><li><strong>Today\'s AI is the worst you\'ll ever use.</strong> Build the habits now. The tools will improve faster than you expect.</li></ol>\n<ol><li><strong>Humans + AI &gt; AI alone.</strong> The Centaur/Cyborg models consistently outperform pure AI. Your value is direction, taste, and judgment.</li></ol>\n<ol><li><strong>AI is an equalizer.</strong> It helps weaker performers more than strong ones. Organizations will flatten.</li></ol>\n<ol><li><strong>Redesign workflows, don\'t just add AI.</strong> Bolting AI onto existing processes captures a fraction of the value.</li></ol>\n<ol><li><strong>Use AI to practice, not just produce.</strong> Negotiation, writing, coaching, teaching — AI is an infinite practice partner.</li></ol>\n<ol><li><strong>Adaptability is the meta-skill.</strong> In a world where AI capabilities shift quarterly, the ability to learn and adjust matters more than any specific expertise.</li></ol>',
+  fr: '<h2 id="résumé">Résumé</h2>\n<p><strong>Co-Intelligence</strong> (2024) d\'Ethan Mollick, professeur à Wharton, est l\'un des livres les plus influents sur la manière de travailler concrètement avec l\'IA. Sa thèse centrale : l\'IA n\'est pas un simple outil — c\'est une <strong>co-intelligence</strong>, une entité collaborative qui augmente la pensée humaine d\'une façon qu\'aucune technologie précédente n\'a réalisée.</p>\n<p>Mollick affirme que l\'IA est une Technologie à Usage Général (General Purpose Technology) à l\'échelle de la machine à vapeur ou d\'internet, avec deux différences critiques :</p>\n<ol><li><strong>Vitesse d\'adoption</strong> : ChatGPT a atteint 100 millions d\'utilisateurs plus vite que n\'importe quel produit de l\'histoire. Les précédentes GPT ont mis des décennies à se diffuser.</li><li><strong>Impact cognitif</strong> : là où la vapeur remplaçait les muscles et les ordinateurs automatisaient le calcul, l\'IA augmente <em>la pensée elle-même</em>. Les premières études montrent des gains de productivité de 20 à 80 % selon les métiers.</li></ol>\n<p>Le livre est divisé en deux parties : <strong>comprendre</strong> ce qu\'est l\'IA et comment la penser (Partie I), puis l\'<strong>appliquer</strong> dans des rôles spécifiques — partenaire créatif, collègue, tuteur et coach (Partie II).</p>\n<hr>\n<h2 id="partie-i-comprendre-lia">Partie I — Comprendre l\'IA</h2>\n<h3 id="chapitre-1-créer-des-esprits-aliens">Chapitre 1 : Créer des esprits aliens</h3>\n<p>Mollick retrace l\'histoire de l\'IA — du Turc mécanique (1770) à la souris de Shannon résolvant un labyrinthe (1950) jusqu\'aux LLMs modernes. L\'insight clé : <strong>les LLMs ne sont pas des logiciels traditionnels</strong>. Ils ne suivent pas de règles explicites. Ils sont entraînés sur des quantités massives de texte et développent des capacités émergentes que même leurs créateurs ne comprennent pas totalement.</p>\n<p>À retenir :</p>\n<ul><li>Les LLMs sont des <strong>perroquets stochastiques avec une profondeur surprenante</strong> — ils prédisent le token suivant, mais le résultat ressemble souvent à un vrai raisonnement</li><li>Personne ne comprend pleinement <em>pourquoi</em> ces modèles réussissent l\'examen du barreau, excellent aux tests de créativité et écrivent du code fonctionnel</li><li>La capacité de l\'IA croît plus vite que n\'importe quelle technologie précédente — d\'un ordre de grandeur par an</li></ul>\n<h3 id="chapitre-2-aligner-lalien">Chapitre 2 : Aligner l\'alien</h3>\n<p>Ce chapitre aborde le problème de l\'alignement : comment faire en sorte que l\'IA fasse ce qu\'on veut vraiment ? Mollick explique le RLHF (Reinforcement Learning from Human Feedback) et la tension constante entre utilité et sécurité.</p>\n<p>À retenir :</p>\n<ul><li>Les systèmes d\'IA sont <strong>alignés par le feedback humain</strong>, pas par des règles rigides — l\'alignement est donc imparfait et évolutif</li><li>Le "problème de la complaisance" : l\'IA tend à dire ce que vous voulez entendre plutôt que ce qui est vrai</li><li>Les garde-fous peuvent être trop lâches (l\'IA aide pour des tâches nuisibles) ou trop stricts (l\'IA refuse des demandes légitimes)</li><li>L\'alignement est une <strong>cible mouvante</strong> — chaque nouvelle génération de modèle nécessite de nouvelles approches</li></ul>\n<h3 id="chapitre-3-quatre-règles-pour-la-co-intelligence">Chapitre 3 : Quatre règles pour la co-intelligence</h3>\n<p>C\'est le cœur stratégique du livre. Mollick propose quatre principes pour travailler avec l\'IA :</p>\n<p><strong>Règle 1 : Invitez toujours l\'IA à la table</strong> Ne décidez pas à l\'avance où l\'IA peut ou ne peut pas aider. Essayez-la sur tout. Vous serez surpris de là où elle apporte de la valeur et là où elle n\'en apporte pas. Le coût d\'essayer est faible ; le coût de rater une opportunité est élevé.</p>\n<p><strong>Règle 2 : Soyez l\'humain dans la boucle</strong> Les outputs de l\'IA nécessitent le jugement humain. Vous êtes responsable de vérifier les faits, détecter les hallucinations, appliquer un raisonnement éthique et prendre les décisions finales. L\'IA est une machine à premiers jets, pas un oracle.</p>\n<p><strong>Règle 3 : Traitez l\'IA comme une personne (mais dites-lui quel genre de personne)</strong> La façon la plus efficace d\'utiliser l\'IA est de lui donner un rôle, un persona, un contexte. "Tu es un coach expert en négociation" fonctionne mieux que "aide-moi à négocier." Ce n\'est pas de l\'anthropomorphisme — c\'est une technique de prompting pratique qui active les patterns pertinents dans le modèle.</p>\n<p><strong>Règle 4 : Supposez que c\'est la pire IA que vous utiliserez jamais</strong> L\'IA d\'aujourd\'hui est la moins capable que vous rencontrerez à l\'avenir. Construisez des habitudes et des workflows maintenant, car les outils ne feront que s\'améliorer. Ce qui semble maladroit aujourd\'hui sera fluide demain.</p>\n<hr>\n<h2 id="partie-ii-lia-en-pratique">Partie II — L\'IA en pratique</h2>\n<h3 id="chapitre-4-lia-comme-personne">Chapitre 4 : L\'IA comme personne</h3>\n<p>Mollick explore les qualités étrangement humaines de l\'IA. Les LLMs passent le test de Turing et le test de Lovelace (évaluation créative). Ils affichent ce qui ressemble à de la personnalité, de l\'humour et de l\'intelligence émotionnelle — sans être sentients.</p>\n<p>À retenir :</p>\n<ul><li>Les gens anthropomorphisent naturellement l\'IA — c\'est à la fois une force (interaction intuitive) et un danger (confiance mal placée)</li><li>Les personas IA sont puissants : donner à l\'IA un caractère/expertise spécifique améliore dramatiquement la qualité des outputs</li><li>La "frontière dentelée" : l\'IA est brillante sur certaines choses et médiocre sur d\'autres, et la frontière est imprévisible</li></ul>\n<h3 id="chapitre-5-lia-comme-créatif">Chapitre 5 : L\'IA comme créatif</h3>\n<p>L\'un des chapitres les plus forts du livre. Mollick montre que l\'IA n\'aide pas seulement la créativité — elle peut <strong>changer notre façon de penser le travail créatif</strong>.</p>\n<p>À retenir :</p>\n<ul><li>L\'IA se classe dans le <strong>top 1%</strong> aux tests standardisés de créativité (tests de Torrance)</li><li>Les meilleurs résultats viennent de la <strong>collaboration humain-IA</strong>, pas de la génération pure par l\'IA — l\'humain apporte la direction, le goût et le jugement</li><li>L\'IA réduit le coût de l\'exploration : on peut générer 50 idées en quelques minutes, puis sélectionner les meilleures</li><li>Le risque est l\'<strong>homogénéisation</strong> — si tout le monde utilise la même IA, les outputs convergent. L\'originalité vient du pilotage humain</li></ul>\n<h3 id="chapitre-6-lia-comme-collègue">Chapitre 6 : L\'IA comme collègue</h3>\n<p>Mollick présente des recherches sur l\'impact de l\'IA sur le travail professionnel. Ce chapitre est riche en données et très pratique.</p>\n<p>À retenir :</p>\n<ul><li>Une étude Boston Consulting Group a montré que les consultants utilisant l\'IA ont complété <strong>12% de tâches en plus, 25% plus vite, avec une qualité 40% supérieure</strong></li><li>Mais : l\'IA aide davantage les travailleurs les <em>moins qualifiés</em> — c\'est un "égalisateur" qui compresse l\'écart de performance</li><li>Le modèle "Centaure" : humains et IA se répartissent les tâches selon l\'avantage comparatif. L\'humain gère le jugement, l\'IA gère la génération et l\'analyse</li><li>Le modèle "Cyborg" : humain et IA travaillent entrelacés sur la même tâche, phrase par phrase, étape par étape</li><li>Les organisations qui réussissent avec l\'IA <strong>repensent leurs workflows</strong>, pas seulement ajoutent l\'IA aux processus existants</li></ul>\n<h3 id="chapitre-7-lia-comme-tuteur">Chapitre 7 : L\'IA comme tuteur</h3>\n<p>Mollick s\'appuie sur ses recherches en éducation pour affirmer que l\'IA pourrait enfin réaliser le rêve du "2 sigma" — le tutorat personnalisé à grande échelle.</p>\n<p>À retenir :</p>\n<ul><li>Le "problème des 2 sigma" de Benjamin Bloom (1984) : les étudiants avec un tuteur personnel performent 2 écarts-types au-dessus des étudiants en classe. L\'IA pourrait être ce tuteur.</li><li>Les tuteurs IA fonctionnent mieux quand ils <strong>posent des questions</strong> plutôt que donner des réponses — méthode socratique, pas cours magistral</li><li>Le danger : les étudiants qui utilisent l\'IA pour <em>éviter</em> d\'apprendre au lieu d\'<em>améliorer</em> leur apprentissage</li><li>Un tutorat IA efficace nécessite un design de prompt soigné — l\'IA doit être configurée pour challenger, pas juste aider</li></ul>\n<h3 id="chapitre-8-lia-comme-coach">Chapitre 8 : L\'IA comme coach</h3>\n<p>L\'IA peut fournir quelque chose de rare et précieux : un feedback honnête et sans jugement sur les compétences interpersonnelles comme le leadership, la communication et la prise de décision.</p>\n<p>À retenir :</p>\n<ul><li>La plupart des gens ne reçoivent <strong>presque aucun feedback</strong> sur leurs compétences interpersonnelles — l\'IA peut combler ce vide</li><li>Le coaching IA fonctionne pour les scénarios de pratique : négociations, conversations difficiles, présentations</li><li>Le pattern de prompt clé : dire à l\'IA d\'être un coach exigeant, pas un ami bienveillant</li><li>Les coachs IA ne remplaceront pas les coachs humains, mais ils rendent le coaching <strong>accessible à tous</strong></li></ul>\n<h3 id="chapitre-9-lia-et-notre-futur">Chapitre 9 : L\'IA et notre futur</h3>\n<p>Mollick regarde vers l\'avenir et les implications sociétales. Il est prudemment optimiste mais lucide sur les risques.</p>\n<p>À retenir :</p>\n<ul><li>Le <strong>remplacement d\'emplois est réel</strong> mais pas uniforme — les rôles créatifs, stratégiques et interpersonnels changeront plutôt que de disparaître</li><li>Le plus gros risque n\'est pas le chômage, c\'est l\'<strong>inégalité</strong> — ceux qui apprennent à travailler avec l\'IA prendront de l\'avance</li><li>Les systèmes éducatifs doivent s\'adapter maintenant ou devenir obsolètes</li><li>Le rythme du changement fait que <strong>personne ne peut prédire les détails</strong> — l\'adaptabilité est la compétence clé</li></ul>\n<hr>\n<h2 id="points-clés-à-retenir">Points clés à retenir</h2>\n<ol><li><strong>L\'IA est une co-intelligence, pas un outil.</strong> Traitez-la comme un partenaire de réflexion, pas comme un moteur de recherche ou une calculatrice.</li></ol>\n<ol><li><strong>Essayez l\'IA sur tout.</strong> Vous ne pouvez pas prédire où elle ajoutera de la valeur. La seule façon de le savoir est d\'expérimenter constamment.</li></ol>\n<ol><li><strong>Restez dans la boucle.</strong> L\'IA hallucine, flatte et produit des réponses fausses avec assurance. Votre jugement est le filtre qualité.</li></ol>\n<ol><li><strong>Donnez un persona à l\'IA.</strong> "Tu es un expert en X" est la technique de prompting la plus efficace.</li></ol>\n<ol><li><strong>L\'IA d\'aujourd\'hui est la pire que vous utiliserez.</strong> Construisez les habitudes maintenant. Les outils s\'amélioreront plus vite que vous ne le pensez.</li></ol>\n<ol><li><strong>Humain + IA &gt; IA seule.</strong> Les modèles Centaure/Cyborg surpassent systématiquement l\'IA pure. Votre valeur est la direction, le goût et le jugement.</li></ol>\n<ol><li><strong>L\'IA est un égalisateur.</strong> Elle aide davantage les performeurs faibles que les forts. Les organisations vont s\'aplatir.</li></ol>\n<ol><li><strong>Repensez les workflows, n\'ajoutez pas juste l\'IA.</strong> Greffer l\'IA sur des processus existants ne capture qu\'une fraction de la valeur.</li></ol>\n<ol><li><strong>Utilisez l\'IA pour pratiquer, pas seulement produire.</strong> Négociation, écriture, coaching, enseignement — l\'IA est un partenaire d\'entraînement infini.</li></ol>\n<ol><li><strong>L\'adaptabilité est la méta-compétence.</strong> Dans un monde où les capacités de l\'IA évoluent chaque trimestre, la capacité d\'apprendre et de s\'ajuster compte plus que n\'importe quelle expertise spécifique.</li></ol>',
+};
+const TOC = {
+  en: '<nav class="toc"><a href="#summary" class="toc-h2">Summary</a>\n<a href="#part-i-understanding-ai" class="toc-h2">Part I — Understanding AI</a>\n<a href="#chapter-1-creating-alien-minds" class="toc-h3">Chapter 1: Creating Alien Minds</a>\n<a href="#chapter-2-aligning-the-alien" class="toc-h3">Chapter 2: Aligning the Alien</a>\n<a href="#chapter-3-four-rules-for-co-intelligence" class="toc-h3">Chapter 3: Four Rules for Co-Intelligence</a>\n<a href="#part-ii-ai-in-practice" class="toc-h2">Part II — AI in Practice</a>\n<a href="#chapter-4-ai-as-a-person" class="toc-h3">Chapter 4: AI as a Person</a>\n<a href="#chapter-5-ai-as-a-creative" class="toc-h3">Chapter 5: AI as a Creative</a>\n<a href="#chapter-6-ai-as-a-coworker" class="toc-h3">Chapter 6: AI as a Coworker</a>\n<a href="#chapter-7-ai-as-a-tutor" class="toc-h3">Chapter 7: AI as a Tutor</a>\n<a href="#chapter-8-ai-as-a-coach" class="toc-h3">Chapter 8: AI as a Coach</a>\n<a href="#chapter-9-ai-as-our-future" class="toc-h3">Chapter 9: AI as Our Future</a>\n<a href="#key-takeaways" class="toc-h2">Key Takeaways</a></nav>',
+  fr: '<nav class="toc"><a href="#résumé" class="toc-h2">Résumé</a>\n<a href="#partie-i-comprendre-lia" class="toc-h2">Partie I — Comprendre l\'IA</a>\n<a href="#chapitre-1-créer-des-esprits-aliens" class="toc-h3">Chapitre 1 : Créer des esprits aliens</a>\n<a href="#chapitre-2-aligner-lalien" class="toc-h3">Chapitre 2 : Aligner l\'alien</a>\n<a href="#chapitre-3-quatre-règles-pour-la-co-intelligence" class="toc-h3">Chapitre 3 : Quatre règles pour la co-intelligence</a>\n<a href="#partie-ii-lia-en-pratique" class="toc-h2">Partie II — L\'IA en pratique</a>\n<a href="#chapitre-4-lia-comme-personne" class="toc-h3">Chapitre 4 : L\'IA comme personne</a>\n<a href="#chapitre-5-lia-comme-créatif" class="toc-h3">Chapitre 5 : L\'IA comme créatif</a>\n<a href="#chapitre-6-lia-comme-collègue" class="toc-h3">Chapitre 6 : L\'IA comme collègue</a>\n<a href="#chapitre-7-lia-comme-tuteur" class="toc-h3">Chapitre 7 : L\'IA comme tuteur</a>\n<a href="#chapitre-8-lia-comme-coach" class="toc-h3">Chapitre 8 : L\'IA comme coach</a>\n<a href="#chapitre-9-lia-et-notre-futur" class="toc-h3">Chapitre 9 : L\'IA et notre futur</a>\n<a href="#points-clés-à-retenir" class="toc-h2">Points clés à retenir</a></nav>',
+};
+let lang = 'en';
+
+function renderMermaid() {
+  mermaid.run({ querySelector: '.mermaid' });
+}
+
+function setLang(newLang) {
+  lang = newLang;
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  document.getElementById('toc-nav').innerHTML = TOC[lang] || TOC.en;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.en;
+  });
+  renderMermaid();
+}
+
+document.addEventListener('DOMContentLoaded', renderMermaid);
+</script>
+</body>
+</html>
