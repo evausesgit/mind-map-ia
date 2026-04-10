@@ -87,11 +87,11 @@ nodes:
       en: |
         Founded in 2021 by former OpenAI leaders, Anthropic focuses on AI safety research.
         Introduced Constitutional AI (CAI) and developed the Model Context Protocol (MCP).
-        Claude 3.5 Sonnet and Claude 3.7 are widely used in production coding workflows.
+        Current lineup: Opus 4 (most capable), Sonnet 4 (balanced), Haiku 3.5 (fast/cheap).
       fr: |
         Fondé en 2021 par d'anciens dirigeants d'OpenAI, Anthropic se concentre sur la sécurité IA.
         A introduit le Constitutional AI (CAI) et développé le Model Context Protocol (MCP).
-        Claude 3.5 Sonnet et Claude 3.7 sont très utilisés dans les workflows de code en production.
+        Gamme actuelle : Opus 4 (le plus puissant), Sonnet 4 (équilibré), Haiku 3.5 (rapide/économique).
 
   - id: google_deepmind
     label:
@@ -446,6 +446,63 @@ nodes:
         Contexte de 200k tokens. Bien meilleur sur les tâches multi-étapes complexes.
         Marque l'entrée d'Anthropic dans l'espace des modèles de raisonnement.
 
+  - id: claude_opus4
+    label:
+      en: "Claude Opus 4"
+      fr: "Claude Opus 4"
+    layer: 3
+    category: model
+    status: stable
+    since: "2025"
+    link: "https://anthropic.com/claude/opus"
+    description:
+      en: |
+        Anthropic's most capable model. Excels at complex reasoning, coding, and extended analysis.
+        200k context window with extended thinking. Top-tier scores on SWE-bench and research benchmarks.
+        Best suited for hard tasks requiring deep expertise: architecture, research, nuanced writing.
+      fr: |
+        Le modèle le plus puissant d'Anthropic. Excelle en raisonnement complexe, code et analyse approfondie.
+        Contexte de 200k tokens avec extended thinking. Scores de premier plan sur SWE-bench et benchmarks de recherche.
+        Idéal pour les tâches difficiles nécessitant une expertise profonde : architecture, recherche, rédaction nuancée.
+
+  - id: claude_sonnet4
+    label:
+      en: "Claude Sonnet 4"
+      fr: "Claude Sonnet 4"
+    layer: 3
+    category: model
+    status: stable
+    since: "2025"
+    link: "https://anthropic.com/claude/sonnet"
+    description:
+      en: |
+        Anthropic's balanced model — strong performance at moderate cost. Successor to Claude 3.7 Sonnet.
+        200k context window with extended thinking. Excellent for coding, analysis, and production workloads.
+        Default choice in most coding tools (Cursor, Claude Code, GitHub Copilot).
+      fr: |
+        Le modèle équilibré d'Anthropic — performances solides à coût modéré. Successeur de Claude 3.7 Sonnet.
+        Contexte de 200k tokens avec extended thinking. Excellent pour le code, l'analyse et la production.
+        Choix par défaut dans la plupart des outils de code (Cursor, Claude Code, GitHub Copilot).
+
+  - id: claude_haiku35
+    label:
+      en: "Claude Haiku 3.5"
+      fr: "Claude Haiku 3.5"
+    layer: 3
+    category: model
+    status: stable
+    since: "2024"
+    link: "https://anthropic.com/claude/haiku"
+    description:
+      en: |
+        Anthropic's fastest and most cost-efficient model. Optimized for high-volume, low-latency tasks.
+        200k context window. Strong for classification, extraction, summarization, and simple Q&A.
+        Ideal for production pipelines where speed and cost matter more than peak reasoning.
+      fr: |
+        Le modèle le plus rapide et économique d'Anthropic. Optimisé pour les tâches à haut volume et faible latence.
+        Contexte de 200k tokens. Solide pour la classification, l'extraction, le résumé et le Q&A simple.
+        Idéal pour les pipelines de production où la vitesse et le coût priment sur le raisonnement.
+
   - id: gemini25pro
     label:
       en: "Gemini 2.5 Pro"
@@ -607,6 +664,18 @@ edges:
     type: part_of
   - from: claude_family
     to: claude37
+    label: ""
+    type: part_of
+  - from: claude_family
+    to: claude_opus4
+    label: ""
+    type: part_of
+  - from: claude_family
+    to: claude_sonnet4
+    label: ""
+    type: part_of
+  - from: claude_family
+    to: claude_haiku35
     label: ""
     type: part_of
   - from: gemini_family
