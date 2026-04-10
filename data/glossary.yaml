@@ -412,6 +412,64 @@ terms:
         - **Prefix caching** : réutilise le cache K/V d'un system prompt répété entre les requêtes —
           économisant latence et coût (supporté par les APIs Anthropic, OpenAI, Google).
 
+  - id: quantization
+    label:
+      en: "Quantization"
+      fr: "Quantisation"
+    aliases: ["quantization", "quantisation", "model quantization", "quantisation du modèle", "INT8", "INT4", "FP8", "post-training quantization", "PTQ", "GGUF", "GPTQ", "AWQ"]
+    description:
+      en: >
+        A compression technique that reduces the numerical precision of model weights —
+        and sometimes activations — from high-precision formats (FP32, BF16) to lower-precision ones
+        (INT8, FP8, INT4). The goal: smaller model, faster inference, less memory, minimal quality loss.
+
+        **Why it matters:** a 70B parameter model in BF16 requires ~140 GB of VRAM.
+        In INT4, it fits in ~35 GB — runnable on 2× consumer GPUs or a single high-end one.
+
+        **Common formats:**
+        - **FP32** (32-bit float): training reference, rarely used for inference
+        - **BF16 / FP16** (16-bit): standard inference today — good quality, half the FP32 size
+        - **INT8** (8-bit integer): ~2× smaller than BF16, fast on modern GPUs, minimal degradation
+        - **FP8** (8-bit float): newer format (H100 GPUs), better than INT8 for preserving range
+        - **INT4** (4-bit integer): aggressive compression, some quality loss, used in consumer setups
+
+        **Popular quantization methods:**
+        - **GPTQ**: post-training quantization (PTQ), layer-by-layer, good INT4 quality
+        - **AWQ** (Activation-aware Weight Quantization): preserves important weights, better quality than GPTQ
+        - **GGUF** (llama.cpp): file format that bundles model + quantization metadata for CPU/GPU inference
+
+        **KV cache quantization:** quantization can also be applied to the KV cache (not just weights),
+        reducing its memory footprint for long contexts — distinct from model weight quantization.
+
+        **Not the same as KV cache:** quantization compresses the model itself at load time;
+        the KV cache is a runtime optimization for storing attention states during generation.
+      fr: >
+        Une technique de compression qui réduit la précision numérique des poids du modèle —
+        et parfois des activations — depuis des formats haute précision (FP32, BF16) vers des formats
+        plus compacts (INT8, FP8, INT4). L'objectif : un modèle plus petit, une inférence plus rapide,
+        moins de mémoire, avec une perte de qualité minimale.
+
+        **Pourquoi c'est important :** un modèle 70B en BF16 requiert ~140 Go de VRAM.
+        En INT4, il tient dans ~35 Go — utilisable sur 2 GPUs grand public ou un seul GPU haut de gamme.
+
+        **Formats courants :**
+        - **FP32** (flottant 32 bits) : référence pour l'entraînement, rarement utilisé pour l'inférence
+        - **BF16 / FP16** (16 bits) : standard d'inférence aujourd'hui — bonne qualité, moitié du FP32
+        - **INT8** (entier 8 bits) : ~2× plus compact que BF16, rapide sur GPUs modernes, dégradation minime
+        - **FP8** (flottant 8 bits) : format récent (GPUs H100), meilleure conservation de la plage que INT8
+        - **INT4** (entier 4 bits) : compression agressive, légère perte de qualité, usage grand public
+
+        **Méthodes de quantisation populaires :**
+        - **GPTQ** : quantisation post-entraînement (PTQ), couche par couche, bonne qualité en INT4
+        - **AWQ** (Activation-aware Weight Quantization) : préserve les poids importants, meilleure qualité
+        - **GGUF** (llama.cpp) : format de fichier qui regroupe modèle et métadonnées de quantisation
+
+        **Quantisation du cache KV :** la quantisation peut aussi s'appliquer au cache KV (et pas seulement
+        aux poids), réduisant son empreinte mémoire pour les longs contextes — distinct de la quantisation des poids.
+
+        **Différence avec le cache KV :** la quantisation compresse le modèle au chargement ;
+        le cache KV est une optimisation d'exécution pour stocker les états d'attention pendant la génération.
+
   - id: temperature
     label:
       en: "Temperature"

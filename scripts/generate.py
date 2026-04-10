@@ -1795,6 +1795,13 @@ function drawCategoryBoxes() {{
   }});
 }}
 
+// Must be declared before cy.ready() since Cytoscape fires ready() synchronously
+// when the graph is already initialised. Placing `let` after the cy.ready() call
+// leaves currentNode in the TDZ when navigateToHash() → showPanel() runs on
+// hash-navigation (global search), causing a silent ReferenceError that also
+// prevents the hashchange listener and tap handlers from being registered.
+let currentNode = null;
+
 cy.ready(() => {{
   if (!loadPositions()) {{
     cy.fit(undefined, 40);
@@ -1827,8 +1834,6 @@ cy.on('viewport position dragfree', drawCategoryBoxes);
 
 // Auto-save on drag
 cy.on('dragfree', 'node', savePositions);
-
-let currentNode = null;
 
 function shareNode() {{
   const url = window.location.href.split('#')[0] + '#' + currentNode.id();

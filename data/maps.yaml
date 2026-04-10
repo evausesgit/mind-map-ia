@@ -101,6 +101,16 @@ maps:
     output: dense-vs-moe.html
     data: data/dense-vs-moe.yaml
 
+  - id: quantization
+    icon: "🗜️"
+    title:
+      en: "Memory by Format"
+      fr: "Mémoire par Format"
+    description:
+      en: "How numerical precision (FP32 → INT4) affects a 70B model's memory footprint"
+      fr: "Comment la précision numérique (FP32 → INT4) affecte l'empreinte mémoire d'un modèle 70B"
+    output: quantization.html
+
   - id: rag-pattern
     icon: "🔍"
     title:

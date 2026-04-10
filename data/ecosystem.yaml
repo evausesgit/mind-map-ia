@@ -171,6 +171,20 @@ nodes:
       Critical for inference latency and throughput — but consumes significant VRAM.
       Managed by serving engines like vLLM (paged attention) and llama.cpp.
 
+  - id: quantization
+    label: "Quantization"
+    layer: 1
+    category: foundations
+    status: stable
+    since: "2022"
+    description: >
+      Compression technique that reduces the numerical precision of model weights
+      from FP32/BF16 to lower formats (INT8, FP8, INT4).
+      Cuts memory footprint 2–8×, speeds up inference, minimal quality loss.
+      Enables large models to run on consumer hardware.
+      Common formats: INT8 (good balance), INT4 (used by llama.cpp/GGUF),
+      FP8 (newer, H100 GPUs, used by vLLM). Can also be applied to the KV cache.
+
   - id: temperature
     label: "Temperature"
     layer: 1
@@ -795,6 +809,16 @@ edges:
     to: kv_cache
     label: "optimized by"
     type: uses
+
+  # Foundations → Quantization
+  - from: inference
+    to: quantization
+    label: "optimized by"
+    type: uses
+  - from: training
+    to: quantization
+    label: "post-training step"
+    type: enables
 
   # Foundations → Models
   - from: transformer
