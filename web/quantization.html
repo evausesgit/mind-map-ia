@@ -109,14 +109,12 @@
   /* ── SVG container ── */
   .svg-wrap {
     flex: 0 0 auto;
-    width: 420px;
-    height: 420px;
-    position: relative;
+    width: 520px;
   }
 
   .svg-wrap svg {
     width: 100%;
-    height: 100%;
+    height: auto;
     overflow: visible;
   }
 
@@ -219,8 +217,8 @@
       gap: 32px;
     }
     .svg-wrap {
-      width: 300px;
-      height: 300px;
+      width: 100%;
+      max-width: 420px;
     }
     .legend {
       width: 100%;
@@ -270,81 +268,92 @@
 
   <div class="visual-block">
 
-    <!-- SVG: concentric circles, area ∝ memory -->
-    <!-- radii: FP32=200 BF16=141 FP8/INT8=100 INT4=71  center=210,210 -->
+    <!-- SVG: concentric circles + external callout labels             -->
+    <!-- viewBox 560×420 · circles center=(210,210) · area ∝ memory  -->
+    <!-- radii: FP32=200 BF16=141 FP8=100 INT4=71                     -->
+    <!-- callout anchors (right side of each ring at chosen y):        -->
+    <!--   FP32  y=90  → x=210+sqrt(200²-120²)=210+160=370            -->
+    <!--   BF16  y=145 → x=210+sqrt(141²-65²) =210+125=335            -->
+    <!--   FP8   y=195 → x=210+sqrt(100²-15²) =210+99 =309            -->
+    <!--   INT4  y=245 → x=210+sqrt(71²-35²)  =210+62 =272            -->
     <div class="svg-wrap">
-      <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
           <radialGradient id="gFP32" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#E74C3C" stop-opacity="0.08"/>
-            <stop offset="100%" stop-color="#E74C3C" stop-opacity="0.22"/>
+            <stop offset="0%" stop-color="#E74C3C" stop-opacity="0.06"/>
+            <stop offset="100%" stop-color="#E74C3C" stop-opacity="0.20"/>
           </radialGradient>
           <radialGradient id="gBF16" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#E67E22" stop-opacity="0.08"/>
-            <stop offset="100%" stop-color="#E67E22" stop-opacity="0.28"/>
+            <stop offset="0%" stop-color="#E67E22" stop-opacity="0.06"/>
+            <stop offset="100%" stop-color="#E67E22" stop-opacity="0.24"/>
           </radialGradient>
           <radialGradient id="gFP8" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#1ABC9C" stop-opacity="0.1"/>
-            <stop offset="100%" stop-color="#1ABC9C" stop-opacity="0.32"/>
+            <stop offset="0%" stop-color="#1ABC9C" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="#1ABC9C" stop-opacity="0.28"/>
           </radialGradient>
           <radialGradient id="gINT4" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#3498DB" stop-opacity="0.18"/>
-            <stop offset="100%" stop-color="#3498DB" stop-opacity="0.42"/>
+            <stop offset="0%" stop-color="#3498DB" stop-opacity="0.14"/>
+            <stop offset="100%" stop-color="#3498DB" stop-opacity="0.38"/>
           </radialGradient>
-          <filter id="glow-red">
-            <feGaussianBlur stdDeviation="4" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
         </defs>
 
-        <!-- FP32 — r=200 -->
+        <!-- ── Circles ── -->
         <circle class="mem-ring" style="--glow:#E74C3C" cx="210" cy="210" r="200"
-          fill="url(#gFP32)" stroke="#E74C3C" stroke-width="2.5" opacity="0.85"/>
-
-        <!-- BF16 — r=141 -->
+          fill="url(#gFP32)" stroke="#E74C3C" stroke-width="2" opacity="0.85"/>
         <circle class="mem-ring" style="--glow:#E67E22" cx="210" cy="210" r="141"
-          fill="url(#gBF16)" stroke="#E67E22" stroke-width="2.5" opacity="0.9"/>
-
-        <!-- FP8 / INT8 — r=100 -->
+          fill="url(#gBF16)" stroke="#E67E22" stroke-width="2" opacity="0.9"/>
         <circle class="mem-ring" style="--glow:#1ABC9C" cx="210" cy="210" r="100"
-          fill="url(#gFP8)" stroke="#1ABC9C" stroke-width="2.5" opacity="0.9"/>
-
-        <!-- INT4 — r=71 -->
+          fill="url(#gFP8)" stroke="#1ABC9C" stroke-width="2" opacity="0.9"/>
         <circle class="mem-ring" style="--glow:#3498DB" cx="210" cy="210" r="71"
-          fill="url(#gINT4)" stroke="#3498DB" stroke-width="2.5"/>
+          fill="url(#gINT4)" stroke="#3498DB" stroke-width="2"/>
 
-        <!-- Labels on rings -->
-        <!-- FP32 label — top of ring -->
-        <text x="210" y="16" text-anchor="middle" font-family="-apple-system,sans-serif"
+        <!-- ── Callout: FP32 — anchor (370, 90) ── -->
+        <circle cx="370" cy="90" r="4" fill="#E74C3C"/>
+        <line x1="372" y1="90" x2="426" y2="90"
+              stroke="#E74C3C" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
+        <rect x="428" y="76" width="124" height="32" rx="5" fill="#1C2128"/>
+        <text x="438" y="89" font-family="-apple-system,sans-serif"
               font-size="13" font-weight="700" fill="#E74C3C">FP32</text>
-        <text x="210" y="30" text-anchor="middle" font-family="-apple-system,sans-serif"
-              font-size="11" fill="#E74C3C" opacity="0.8">~280 GB</text>
+        <text x="438" y="103" font-family="-apple-system,sans-serif"
+              font-size="11" fill="#E74C3C" opacity="0.7">~280 GB · 32 bits</text>
 
-        <!-- BF16 label — top-right of ring -->
-        <text x="330" y="88" text-anchor="middle" font-family="-apple-system,sans-serif"
-              font-size="12" font-weight="700" fill="#E67E22">BF16</text>
-        <text x="330" y="102" text-anchor="middle" font-family="-apple-system,sans-serif"
-              font-size="11" fill="#E67E22" opacity="0.8">~140 GB</text>
+        <!-- ── Callout: BF16 — anchor (335, 145) ── -->
+        <circle cx="335" cy="145" r="4" fill="#E67E22"/>
+        <line x1="337" y1="145" x2="426" y2="145"
+              stroke="#E67E22" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
+        <rect x="428" y="131" width="124" height="32" rx="5" fill="#1C2128"/>
+        <text x="438" y="144" font-family="-apple-system,sans-serif"
+              font-size="13" font-weight="700" fill="#E67E22">BF16</text>
+        <text x="438" y="158" font-family="-apple-system,sans-serif"
+              font-size="11" fill="#E67E22" opacity="0.7">~140 GB · 16 bits</text>
 
-        <!-- FP8 label — right of ring -->
-        <text x="324" y="196" text-anchor="start" font-family="-apple-system,sans-serif"
+        <!-- ── Callout: FP8 / INT8 — anchor (309, 195) ── -->
+        <circle cx="309" cy="195" r="4" fill="#1ABC9C"/>
+        <line x1="311" y1="195" x2="426" y2="195"
+              stroke="#1ABC9C" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
+        <rect x="428" y="181" width="124" height="32" rx="5" fill="#1C2128"/>
+        <text x="438" y="194" font-family="-apple-system,sans-serif"
               font-size="12" font-weight="700" fill="#1ABC9C">FP8 / INT8</text>
-        <text x="324" y="210" text-anchor="start" font-family="-apple-system,sans-serif"
-              font-size="11" fill="#1ABC9C" opacity="0.8">~70 GB</text>
+        <text x="438" y="208" font-family="-apple-system,sans-serif"
+              font-size="11" fill="#1ABC9C" opacity="0.7">~70 GB · 8 bits</text>
 
-        <!-- INT4 label — right of ring -->
-        <text x="286" y="248" text-anchor="start" font-family="-apple-system,sans-serif"
-              font-size="12" font-weight="700" fill="#3498DB">INT4</text>
-        <text x="286" y="262" text-anchor="start" font-family="-apple-system,sans-serif"
-              font-size="11" fill="#3498DB" opacity="0.8">~35 GB</text>
+        <!-- ── Callout: INT4 — anchor (272, 245) ── -->
+        <circle cx="272" cy="245" r="4" fill="#3498DB"/>
+        <line x1="274" y1="245" x2="426" y2="245"
+              stroke="#3498DB" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
+        <rect x="428" y="231" width="124" height="32" rx="5" fill="#1C2128"/>
+        <text x="438" y="244" font-family="-apple-system,sans-serif"
+              font-size="13" font-weight="700" fill="#3498DB">INT4</text>
+        <text x="438" y="258" font-family="-apple-system,sans-serif"
+              font-size="11" fill="#3498DB" opacity="0.7">~35 GB · 4 bits</text>
 
-        <!-- Center label -->
+        <!-- ── Center label ── -->
         <text x="210" y="205" text-anchor="middle" font-family="-apple-system,sans-serif"
               font-size="13" font-weight="800" fill="#E6EDF3" opacity="0.9">
           <tspan data-en="70B model" data-fr="Modèle 70B">70B model</tspan>
         </text>
-        <text x="210" y="222" text-anchor="middle" font-family="-apple-system,sans-serif"
-              font-size="10" fill="#8B949E">
+        <text x="210" y="221" text-anchor="middle" font-family="-apple-system,sans-serif"
+              font-size="10" fill="#6E7681">
           <tspan data-en="same weights" data-fr="mêmes poids">same weights</tspan>
         </text>
       </svg>
