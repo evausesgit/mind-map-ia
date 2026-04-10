@@ -62,7 +62,7 @@ def generate_html(maps):
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-en="Memory by Format — Quantization" data-fr="Mémoire par Format — Quantisation">Memory by Format — Quantization</title>
+<title data-en="Quantization — Memory by Format" data-fr="Quantisation — Mémoire par Format">Quantization — Memory by Format</title>
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 
@@ -292,7 +292,7 @@ def generate_html(maps):
     {nav_html}
     <div>
       <h1 id="main-title">
-        <span data-en="Memory by Format" data-fr="Mémoire par Format">Memory by Format</span>
+        <span data-en="Quantization — Memory by Format" data-fr="Quantisation — Mémoire par Format">Quantization — Memory by Format</span>
       </h1>
       <div class="meta">
         <span data-en="Model quantization · 70B parameters reference"
