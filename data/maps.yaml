@@ -22,6 +22,18 @@ maps:
     output: macro.html
     data: data/ecosystem-macro.yaml
 
+  - id: ecosystem
+    icon: "🔬"
+    title:
+      en: "Full Ecosystem"
+      fr: "Écosystème Complet"
+    description:
+      en: "All 55 nodes — detailed view of the LLM & AI ecosystem"
+      fr: "Les 55 nœuds — vue détaillée de l'écosystème LLM & IA"
+    nodes: 55
+    output: ecosystem.html
+    data: data/ecosystem.yaml
+
   - id: use-cases
     icon: "🎯"
     title:
