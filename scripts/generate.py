@@ -41,6 +41,13 @@ def load_maps():
     return []
 
 
+def load_links():
+    if MAPS_FILE.exists():
+        with open(MAPS_FILE) as f:
+            return yaml.safe_load(f).get("links", [])
+    return []
+
+
 def load_topics_meta():
     """Return list of topic frontmatter dicts from data/topics/*.md."""
     if not TOPICS_DIR.exists():
@@ -229,8 +236,8 @@ def build_elements(data, data_file=None):
     return elements
 
 
-def build_nav(maps, current_output, topics=None):
-    """Build the site-wide nav: logo + Mind Maps dropdown + Deep Dives dropdown."""
+def build_nav(maps, current_output, topics=None, links=None):
+    """Build the site-wide nav: logo + Mind Maps dropdown + Deep Dives dropdown + Links dropdown."""
     current_name = Path(current_output).name
 
     # ── Mind Maps dropdown ──────────────────────────────────────
@@ -280,9 +287,26 @@ def build_nav(maps, current_output, topics=None):
     dive_items = _topic_items(deep_dives)
     reflexion_items = _topic_items(reflexions)
 
+    # ── Links dropdown ──────────────────────────────────────────
+    link_items = ""
+    for link in (links or []):
+        title_en = t(link.get("title", ""), "en")
+        title_fr = t(link.get("title", ""), "fr") or title_en
+        desc_en  = t(link.get("description", ""), "en")
+        desc_fr  = t(link.get("description", ""), "fr") or desc_en
+        url = link.get("url", "")
+        link_items += (
+            f'<a href="{url}" class="nav-item" target="_blank" rel="noopener">'
+            f'<span class="nav-item-icon">{link.get("icon","🔗")}</span>'
+            f'<span class="nav-item-info">'
+            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f'</span></a>'
+        )
+
     glossary_active = " active" if current_name == "glossary.html" else ""
 
-    return (
+    nav = (
         f'<a href="index.html" class="nav-logo" title="Home">'
         f'<svg width="44" height="30" viewBox="0 0 120 82" fill="none" xmlns="http://www.w3.org/2000/svg">'
         f'<line x1="22" y1="34" x2="42" y2="16" stroke="white" stroke-width="1" stroke-opacity="0.55"/>'
@@ -317,15 +341,26 @@ def build_nav(maps, current_output, topics=None):
         f'  </button>'
         f'  <div class="nav-dropdown">{dive_items}</div>'
         f'</div>'
-        + (
+    )
+    if reflexion_items:
+        nav += (
             f'<div class="nav-group">'
             f'  <button class="nav-btn">'
             f'    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾'
             f'  </button>'
             f'  <div class="nav-dropdown">{reflexion_items}</div>'
             f'</div>'
-            if reflexion_items else ""
-        ) +
+        )
+    if link_items:
+        nav += (
+            f'<div class="nav-group">'
+            f'  <button class="nav-btn">'
+            f'    <span data-en="Links" data-fr="Liens">Links</span> ▾'
+            f'  </button>'
+            f'  <div class="nav-dropdown">{link_items}</div>'
+            f'</div>'
+        )
+    nav += (
         f'<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
         f'  <span data-en="News" data-fr="Nouveautés">News</span>'
         f'</a>'
@@ -333,6 +368,7 @@ def build_nav(maps, current_output, topics=None):
         f'  <span data-en="📖 Glossary" data-fr="📖 Glossaire">📖 Glossary</span>'
         f'</a>'
     )
+    return nav
 
 
 def load_drilldown_datasets(data, maps):
@@ -438,7 +474,8 @@ def generate_html(data, elements, maps=None, current_output=""):
     legend_fr = legend_items("fr")
 
     topics = load_topics_meta()
-    nav_html = build_nav(maps or [], current_output, topics=topics) if maps else ""
+    links = load_links()
+    nav_html = build_nav(maps or [], current_output, topics=topics, links=links) if maps else ""
 
     drilldown_datasets = load_drilldown_datasets(data, maps or [])
     drilldown_datasets_js = json.dumps(drilldown_datasets)

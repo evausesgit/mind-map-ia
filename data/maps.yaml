@@ -133,3 +133,14 @@ maps:
       fr: "Étapes, composants et outils pour la génération augmentée par récupération"
     output: rag-pattern.html
     data: data/rag-pattern.yaml
+
+links:
+  - id: artificial-analysis
+    icon: "📊"
+    title:
+      en: "Artificial Analysis"
+      fr: "Artificial Analysis"
+    description:
+      en: "Independent analysis of AI — choose the best model and provider for your use case"
+      fr: "Analyse indépendante de l'IA — choisir le meilleur modèle et fournisseur pour votre cas d'usage"
+    url: "https://artificialanalysis.ai/"

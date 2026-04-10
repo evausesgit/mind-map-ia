@@ -246,8 +246,28 @@ def split_topics_by_category(topics):
     return deep_dives, reflexions
 
 
-def build_nav_html(maps, topics):
-    """Build the site-wide nav: Mind Maps dropdown + Deep Dives dropdown + Réflexion dropdown + Glossary link."""
+def _build_link_nav_items(links, prefix=""):
+    """Build nav dropdown items for external links."""
+    items = ""
+    for link in links:
+        title_en = t(link.get("title", ""), "en")
+        title_fr = t(link.get("title", ""), "fr") or title_en
+        desc_en  = t(link.get("description", ""), "en")
+        desc_fr  = t(link.get("description", ""), "fr") or desc_en
+        url = link.get("url", "")
+        items += (
+            f'<a href="{url}" class="nav-item" target="_blank" rel="noopener">'
+            f'<span class="nav-item-icon">{link.get("icon","🔗")}</span>'
+            f'<span class="nav-item-info">'
+            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f'</span></a>'
+        )
+    return items
+
+
+def build_nav_html(maps, topics, links=None):
+    """Build the site-wide nav: Mind Maps dropdown + Deep Dives dropdown + Réflexion dropdown + Links dropdown + Glossary link."""
     map_items = ""
     for m in maps:
         if m.get("id") == "glossary":
@@ -267,6 +287,7 @@ def build_nav_html(maps, topics):
     deep_dives, reflexions = split_topics_by_category(topics)
     dive_items = _build_topic_nav_items(deep_dives)
     reflexion_items = _build_topic_nav_items(reflexions)
+    link_items = _build_link_nav_items(links or [])
 
     nav = (
         f'<div class="nav-group">'
@@ -291,6 +312,15 @@ def build_nav_html(maps, topics):
             f'  <div class="nav-dropdown">{reflexion_items}</div>'
             f'</div>'
         )
+    if link_items:
+        nav += (
+            f'<div class="nav-group">'
+            f'  <button class="nav-btn">'
+            f'    <span data-en="Links" data-fr="Liens">Links</span> ▾'
+            f'  </button>'
+            f'  <div class="nav-dropdown">{link_items}</div>'
+            f'</div>'
+        )
     nav += (
         f'<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
         f'  <span data-en="News" data-fr="Nouveautés">News</span>'
@@ -303,6 +333,7 @@ def main():
     with open(MAPS_FILE) as f:
         config = yaml.safe_load(f)
     maps = config.get("maps", [])
+    links = config.get("links", [])
     topics = load_topics()
     news = load_news()
     # Split: featured (Big Picture) vs rest
@@ -389,7 +420,7 @@ def main():
     topics_html = "\n".join(build_topic_card(topic) for topic in deep_dives)
     reflexions_html = "\n".join(build_topic_card(topic) for topic in reflexions)
     news_html = "\n".join(build_news_item(n) for n in news)
-    nav_html = build_nav_html(maps, topics)
+    nav_html = build_nav_html(maps, topics, links=links)
 
     html = f"""<!DOCTYPE html>
 <html lang="en">

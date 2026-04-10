@@ -107,7 +107,7 @@ def format_desc(text, entries):
     return html
 
 
-def build_nav(maps):
+def build_nav(maps, links=None):
     items = ""
     for m in maps:
         if m.get("id") == "glossary":
@@ -127,7 +127,23 @@ def build_nav(maps):
             f"  </span>"
             f"</a>"
         )
-    return (
+    link_items = ""
+    for link in (links or []):
+        title_en = t(link.get("title", ""), "en")
+        title_fr = t(link.get("title", ""), "fr") or title_en
+        desc_en = t(link.get("description", ""), "en")
+        desc_fr = t(link.get("description", ""), "fr") or desc_en
+        url = link.get("url", "")
+        link_items += (
+            f'<a href="{url}" target="_blank" rel="noopener">'
+            f'  <span class="nav-icon">{link.get("icon", "🔗")}</span>'
+            f'  <span class="nav-info">'
+            f'    <span class="nav-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'    <span class="nav-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f'  </span>'
+            f'</a>'
+        )
+    nav = (
         '<div class="nav-menu">'
         '  <button class="nav-btn">≡ Maps ▾</button>'
         '  <div class="nav-dropdown">'
@@ -135,17 +151,31 @@ def build_nav(maps):
         f"   {items}"
         "  </div>"
         "</div>"
+    )
+    if link_items:
+        nav += (
+            '<div class="nav-menu">'
+            '  <button class="nav-btn">'
+            '    <span data-en="Links" data-fr="Liens">Links</span> ▾'
+            '  </button>'
+            '  <div class="nav-dropdown">'
+            f'   {link_items}'
+            '  </div>'
+            '</div>'
+        )
+    nav += (
         '<a href="index.html#news" class="nav-btn" style="text-decoration:none;padding:5px 11px;border:1.5px solid #333;border-radius:6px;color:#BDC3C7;font-size:13px;font-weight:600;">'
         '  <span data-en="News" data-fr="Nouveautés">News</span>'
         '</a>'
     )
+    return nav
 
 
-def generate_html(data, maps):
+def generate_html(data, maps, links=None):
     terms = data["terms"]
     title_en = t(data["meta"]["title"], "en")
     title_fr = t(data["meta"]["title"], "fr")
-    nav_html = build_nav(maps)
+    nav_html = build_nav(maps, links=links)
 
     terms_sorted = sorted(terms, key=lambda x: t(x["label"], "en").lower())
 
@@ -540,7 +570,8 @@ def main():
     with open(MAPS_FILE) as f:
         maps_config = yaml.safe_load(f)
     maps = maps_config.get("maps", [])
-    html = generate_html(data, maps)
+    links = maps_config.get("links", [])
+    html = generate_html(data, maps, links)
     OUTPUT.parent.mkdir(exist_ok=True)
     with open(OUTPUT, "w") as f:
         f.write(html)
