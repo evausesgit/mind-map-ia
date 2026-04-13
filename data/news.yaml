@@ -1,4 +1,14 @@
 news:
+  - date: 2026-04-13
+    type: update
+    title:
+      en: "Community report: Claude reasoning depth regression (Jan–Mar 2026)"
+      fr: "Rapport communautaire : régression de la profondeur de raisonnement de Claude (jan.–mars 2026)"
+    description:
+      en: "A detailed user analysis documents a sharp drop in Claude's thinking depth between January and March 2026: median reasoning length fell from ~2 200 to ~600 chars, read/edit ratio dropped from 6.6× to 2.0×, and autonomous task completion degraded. The author calls for Anthropic to expose thinking-budget metrics via the API and offer a 'max thinking' tier for heavy engineering workflows."
+      fr: "Une analyse utilisateur détaillée documente une chute marquée de la profondeur de raisonnement de Claude entre janvier et mars 2026 : la longueur médiane du raisonnement est passée de ~2 200 à ~600 caractères, le ratio lecture/édition de 6,6× à 2,0×, et la capacité d'exécution autonome s'est dégradée. L'auteur demande à Anthropic d'exposer les métriques de budget de raisonnement via l'API et de proposer un tier 'max thinking' pour les workflows d'ingénierie intensifs."
+    link: https://github.com/anthropics/claude-code/issues/42796#issuecomment-4194007103
+
   - date: 2026-04-08
     type: new-feature
     title:
