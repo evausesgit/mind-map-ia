@@ -563,6 +563,7 @@ def generate_html(topic, maps, links=None):
   }}
   .toc a:hover {{ color: #1A1A2E; border-left-color: #1A1A2E; }}
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 

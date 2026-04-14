@@ -1049,6 +1049,7 @@ def generate_html(data, elements, maps=None, current_output=""):
   }}
   .ctrl-btn {{ position: relative; }}
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -2203,6 +2204,7 @@ def generate_slides_html(data):
   .lang-btn {{ background:none; border:1px solid #555; border-radius:4px; color:#aaa; padding:4px 10px; font-size:12px; cursor:pointer }}
   .lang-btn.active {{ background:white; color:#1a237e; border-color:white }}
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 <div id="lang-toggle">

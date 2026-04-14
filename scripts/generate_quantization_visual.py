@@ -314,6 +314,7 @@ def generate_html(maps, links=None):
     .page-title {{ font-size: 22px; }}
   }}
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 

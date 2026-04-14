@@ -179,6 +179,7 @@ def generate_html(data, maps, links=None):
     max-width: 100%;
   }}
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 

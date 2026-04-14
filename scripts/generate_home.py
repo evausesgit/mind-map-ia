@@ -787,6 +787,7 @@ def main():
     border-top: 1px solid #1A1A2E;
   }}
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
