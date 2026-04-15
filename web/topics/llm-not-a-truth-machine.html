@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLMs Are Not Truth Machines</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    color: #1A1A2E;
+    min-height: 100vh;
+  }
+  header {
+    background: #1A1A2E;
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-menu { position: relative; }
+  .nav-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: #aaa; color: white; }
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 260px;
+    background: #16213E;
+    border: 1px solid #1E2D4E;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+  .nav-menu:hover .nav-dropdown,
+  .nav-menu:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #1E2D4E;
+    text-decoration: none;
+    color: #BDC3C7;
+    font-size: 13px;
+    transition: background 0.1s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { background: #1E2D4E; color: white; }
+  .nav-dropdown a .nav-icon { font-size: 18px; }
+  .nav-dropdown a .nav-info { display: flex; flex-direction: column; }
+  .nav-dropdown a .nav-title { font-weight: 600; }
+  .nav-dropdown a .nav-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .nav-home { color: #BDC3C7 !important; font-size: 13px !important; border-bottom: 1px solid #1E2D4E; }
+  .nav-home:hover { color: #FF6B6B !important; }
+  .lang-toggle { display: flex; gap: 6px; }
+  .lang-btn {
+    background: none;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+
+  .page-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .page-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  .article-header { margin-bottom: 32px; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #27AE6022;
+    color: #27AE60;
+    border: 1px solid #27AE6044;
+  }
+  .date { font-size: 12px; color: #95A5A6; }
+  .article-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1A1A2E;
+    margin-bottom: 12px;
+  }
+  .article-summary {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #E8EAF6;
+    color: #3F51B5;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .article-body { line-height: 1.75; color: #2C3E50; }
+  .article-body h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #E8EAED;
+  }
+  .article-body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 24px 0 8px;
+  }
+  .article-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7F8C8D;
+    margin: 20px 0 6px;
+  }
+  .article-body p { margin-bottom: 14px; font-size: 15px; }
+  .article-body ul, .article-body ol {
+    margin: 8px 0 14px 20px;
+    font-size: 15px;
+  }
+  .article-body li { margin-bottom: 4px; }
+  .article-body strong { font-weight: 700; color: #1A1A2E; }
+  .article-body em { color: #555; }
+  .article-body code {
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 13px;
+    background: #EEF0F3;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #C0392B;
+  }
+  .article-body pre {
+    background: #1A1A2E;
+    color: #E8EAF6;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .article-body pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .article-body th {
+    background: #1A1A2E;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .article-body td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #E8EAED;
+  }
+  .article-body tr:nth-child(even) td { background: #F8F9FA; }
+  .article-body blockquote {
+    border-left: 3px solid #1A1A2E;
+    padding: 8px 16px;
+    margin: 12px 0;
+    color: #555;
+    background: #F0F0F5;
+    border-radius: 0 4px 4px 0;
+  }
+  .article-body hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 28px 0;
+  }
+  .article-body a { color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }
+  .article-body a:hover { color: #3498DB; }
+
+  /* Sidebar */
+  .sidebar { position: sticky; top: 80px; }
+  .toc { display: flex; flex-direction: column; gap: 4px; }
+  .toc-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #95A5A6;
+    margin-bottom: 8px;
+  }
+  .toc a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    padding: 3px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    line-height: 1.4;
+    transition: all 0.1s;
+  }
+  .toc a.toc-h3 {
+    padding-left: 20px;
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+  .toc a:hover { color: #1A1A2E; border-left-color: #1A1A2E; }
+</style>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="nav-menu">  <button class="nav-btn">≡ Maps ▾</button>  <div class="nav-dropdown">    <a href="../index.html" class="nav-home">← Home</a>   <a href="../glossary.html">  <span class="nav-icon">📖</span>  <span class="nav-info">    <span class="nav-title" data-en="Glossary" data-fr="Glossaire">Glossary</span>    <span class="nav-desc" data-en="Key terms and concepts of the LLM & AI ecosystem" data-fr="Termes et concepts clés de l'écosystème LLM & IA">Key terms and concepts of the LLM & AI ecosystem</span>  </span></a><a href="../macro.html">  <span class="nav-icon">🗺️</span>  <span class="nav-info">    <span class="nav-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span>    <span class="nav-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span>  </span></a><a href="../ecosystem.html">  <span class="nav-icon">🔬</span>  <span class="nav-info">    <span class="nav-title" data-en="Full Ecosystem" data-fr="Écosystème Complet">Full Ecosystem</span>    <span class="nav-desc" data-en="All 55 nodes — detailed view of the LLM & AI ecosystem" data-fr="Les 55 nœuds — vue détaillée de l'écosystème LLM & IA">All 55 nodes — detailed view of the LLM & AI ecosystem</span>  </span></a><a href="../use-cases.html">  <span class="nav-icon">🎯</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Use Cases" data-fr="Cas d'Usage IA">AI Use Cases</span>    <span class="nav-desc" data-en="4 user personas, their scenarios, AI patterns, and key stack components" data-fr="4 personas utilisateur, leurs scénarios, patterns IA, et composants clés">4 user personas, their scenarios, AI patterns, and key stack components</span>  </span></a><a href="../ai-agents.html">  <span class="nav-icon">🤖</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span>    <span class="nav-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span>  </span></a><a href="../ai-coding-assistants.html">  <span class="nav-icon">💻</span>  <span class="nav-info">    <span class="nav-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span>    <span class="nav-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span>  </span></a><a href="../proprietary-models.html">  <span class="nav-icon">🏢</span>  <span class="nav-info">    <span class="nav-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span>    <span class="nav-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span>  </span></a><a href="../open-weights-models.html">  <span class="nav-icon">🔓</span>  <span class="nav-info">    <span class="nav-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span>    <span class="nav-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span>  </span></a><a href="../cloud-managed.html">  <span class="nav-icon">☁️</span>  <span class="nav-info">    <span class="nav-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span>    <span class="nav-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span>  </span></a><a href="../dense-vs-moe.html">  <span class="nav-icon">⚡</span>  <span class="nav-info">    <span class="nav-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span>    <span class="nav-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span>  </span></a><a href="../quantization.html">  <span class="nav-icon">🗜️</span>  <span class="nav-info">    <span class="nav-title" data-en="Quantization — Memory by Format" data-fr="Quantisation — Mémoire par Format">Quantization — Memory by Format</span>    <span class="nav-desc" data-en="How numerical precision (FP32 → INT4) affects a 70B model's memory footprint" data-fr="Comment la précision numérique (FP32 → INT4) affecte l'empreinte mémoire d'un modèle 70B">How numerical precision (FP32 → INT4) affects a 70B model's memory footprint</span>  </span></a><a href="../rag-pattern.html">  <span class="nav-icon">🔍</span>  <span class="nav-info">    <span class="nav-title" data-en="RAG" data-fr="RAG">RAG</span>    <span class="nav-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span>  </span></a>  </div></div><div class="nav-menu">  <button class="nav-btn">    <span data-en="Links" data-fr="Liens">Links</span> ▾  </button>  <div class="nav-dropdown">   <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener">  <span class="nav-icon">📊</span>  <span class="nav-info">    <span class="nav-title" data-en="Artificial Analysis" data-fr="Artificial Analysis">Artificial Analysis</span>    <span class="nav-desc" data-en="Independent analysis of AI — choose the best model and provider for your use case" data-fr="Analyse indépendante de l'IA — choisir le meilleur modèle et fournisseur pour votre cas d'usage">Independent analysis of AI — choose the best model and provider for your use case</span>  </span></a>  </div></div><a href="../index.html#news" class="nav-btn" style="text-decoration:none;padding:5px 11px;border:1.5px solid #333;border-radius:6px;color:#BDC3C7;font-size:13px;font-weight:600;">  <span data-en="News" data-fr="Nouveautés">News</span></a>
+  </div>
+  
+<!-- ── Global Search Widget ── -->
+<style>
+#gs-trigger {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 8px; min-width: 180px;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+  color: #aaa; font-size: 13px; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+#gs-trigger:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.3); color: #fff; }
+#gs-trigger .gs-placeholder { flex: 1; text-align: left; }
+#gs-trigger .gs-kbd {
+  font-size: 11px; opacity: 0.5;
+  background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+}
+#gs-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(10,10,20,0.7); backdrop-filter: blur(4px);
+  align-items: flex-start; justify-content: center; padding-top: 80px;
+}
+#gs-overlay.open { display: flex; }
+#gs-modal {
+  width: 100%; max-width: 640px; background: #1e2030;
+  border: 1px solid #3a3f5c; border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6); overflow: hidden;
+}
+#gs-input-wrap {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px; border-bottom: 1px solid #2e3350;
+}
+#gs-input-wrap svg { flex-shrink: 0; opacity: 0.5; }
+#gs-input {
+  flex: 1; background: none; border: none; outline: none;
+  color: #f0f0f0; font-size: 16px;
+}
+#gs-input::placeholder { color: #555; }
+#gs-esc {
+  font-size: 11px; color: #555; background: rgba(255,255,255,0.07);
+  border: 1px solid #333; padding: 2px 7px; border-radius: 5px; cursor: pointer;
+  white-space: nowrap;
+}
+#gs-results {
+  max-height: 440px; overflow-y: auto; padding: 8px 0;
+}
+#gs-results:empty::after {
+  content: ''; display: block;
+}
+.gs-empty { padding: 20px; text-align: center; color: #555; font-size: 14px; }
+.gs-section { padding: 6px 18px 2px; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; color: #4a5080; text-transform: uppercase; }
+.gs-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 18px; cursor: pointer; transition: background 0.1s;
+}
+.gs-item:hover, .gs-item.active { background: rgba(255,255,255,0.06); }
+.gs-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+}
+.gs-body { flex: 1; min-width: 0; }
+.gs-label { font-size: 14px; font-weight: 600; color: #e8eaf0; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+.gs-meta { font-size: 11px; color: #5a6080; margin-top: 1px; }
+.gs-excerpt { font-size: 12px; color: #6a7090; margin-top: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-badge {
+  font-size: 10px; padding: 1px 7px; border-radius: 10px;
+  background: rgba(255,255,255,0.07); color: #8090b0; white-space: nowrap;
+  align-self: center; flex-shrink: 0;
+}
+</style>
+
+<button id="gs-trigger" onclick="gsOpen()" title="Global search (⌘K)">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </svg>
+  <span class="gs-placeholder">Search everywhere…</span>
+  <span class="gs-kbd">⌘K</span>
+</button>
+
+<div id="gs-overlay" onclick="gsOverlayClick(event)">
+  <div id="gs-modal">
+    <div id="gs-input-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="gs-input" placeholder="Search all maps, glossary, articles…"
+             oninput="gsSearch(this.value)" autocomplete="off" spellcheck="false">
+      <span id="gs-esc" onclick="gsClose()">Esc</span>
+    </div>
+    <div id="gs-results"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const INDEX_PATH = '../search-index.json';
+  let gsData = null, gsActive = -1, gsItems = [];
+
+  async function gsLoad() {
+    if (gsData) return;
+    try {
+      const r = await fetch(INDEX_PATH);
+      gsData = await r.json();
+    } catch(e) {
+      console.warn('Global search: could not load index', e);
+      gsData = { nodes: [], glossary: [], terms: [], topics: [] };
+    }
+  }
+
+  window.gsOpen = function() {
+    document.getElementById('gs-overlay').classList.add('open');
+    document.getElementById('gs-input').focus();
+    gsLoad();
+  };
+
+  window.gsClose = function() {
+    document.getElementById('gs-overlay').classList.remove('open');
+    gsActive = -1;
+  };
+
+  window.gsOverlayClick = function(e) {
+    if (e.target === document.getElementById('gs-overlay')) gsClose();
+  };
+
+  function currentLang() {
+    return (typeof lang !== 'undefined' ? lang : null) ||
+           document.querySelector('.lang-btn.active')?.dataset?.lang || 'en';
+  }
+
+  function excerpt(text, q) {
+    if (!text) return '';
+    const i = text.toLowerCase().indexOf(q.toLowerCase());
+    if (i === -1) return text.slice(0, 80) + (text.length > 80 ? '…' : '');
+    const s = Math.max(0, i - 20), e = Math.min(text.length, i + q.length + 50);
+    return (s > 0 ? '…' : '') + text.slice(s, e) + (e < text.length ? '…' : '');
+  }
+
+  function matches(fields, q) {
+    return fields.some(f => f && f.toLowerCase().includes(q));
+  }
+
+  window.gsSearch = async function(raw) {
+    await gsLoad();
+    const q = raw.toLowerCase().trim();
+    const el = document.getElementById('gs-results');
+    gsActive = -1; gsItems = [];
+    if (!q) { el.innerHTML = ''; return; }
+    const l = currentLang();
+
+    const nodeHits = gsData.nodes.filter(n =>
+      matches([n.label_en, n.label_fr, n.description_en, n.description_fr, n.category], q)
+    ).slice(0, 6);
+
+    const glossHits = gsData.glossary.filter(g =>
+      matches([g.label_en, g.label_fr, g.description_en, g.description_fr, ...(g.aliases||[])], q)
+    ).slice(0, 4);
+
+    const topicHits = gsData.topics.filter(t =>
+      matches([t.title_en, t.title_fr, t.summary_en, t.summary_fr, ...(t.tags||[])], q)
+    ).slice(0, 4);
+
+    if (!nodeHits.length && !glossHits.length && !topicHits.length) {
+      el.innerHTML = `<div class="gs-empty">${l === 'fr' ? 'Aucun résultat' : 'No results'}</div>`;
+      return;
+    }
+
+    let html = '';
+    const CAT_COLORS = {
+      org:'#58D68D', provider:'#58D68D', model:'#D5F5E3', model_family:'#A9CCE3',
+      persona:'#9B59B6', usecase:'#1ABC9C', pattern:'#E67E22', component:'#3498DB',
+      stage:'#58D68D', tool:'#85C1E9', block:'#F4D03F', framework:'#85C1E9',
+      default:'#7f8c8d'
+    };
+
+    function color(cat) { return CAT_COLORS[cat] || CAT_COLORS.default; }
+
+    if (nodeHits.length) {
+      html += `<div class="gs-section">${l==='fr'?'Cartes':'Maps'}</div>`;
+      nodeHits.forEach(n => {
+        const label = (l==='fr'?n.label_fr:n.label_en) || n.label_en;
+        const desc  = (l==='fr'?n.description_fr:n.description_en) || n.description_en;
+        const map   = (l==='fr'?n.map_title_fr:n.map_title_en) || n.map_id;
+        gsItems.push({ url: n.map_url + '#' + n.id, label });
+        html += `<div class="gs-item" data-url="${n.map_url}#${n.id}" onclick="gsGo(this)">
+          <div class="gs-dot" style="background:${color(n.category)}"></div>
+          <div class="gs-body">
+            <div class="gs-label">${label}</div>
+            <div class="gs-excerpt">${excerpt(desc, raw)}</div>
+          </div>
+          <span class="gs-badge">${map}</span>
+        </div>`;
+      });
+    }
+
+    if (glossHits.length) {
+      html += `<div class="gs-section">${l==='fr'?'Glossaire':'Glossary'}</div>`;
+      glossHits.forEach(g => {
+        const label = (l==='fr'?g.label_fr:g.label_en) || g.label_en;
+        const desc  = (l==='fr'?g.description_fr:g.description_en) || g.description_en;
+        const glossUrl = INDEX_PATH.replace('search-index.json','') + 'glossary.html#' + g.id;
+        gsItems.push({ url: glossUrl, label });
+        html += `<div class="gs-item" data-url="${glossUrl}" onclick="gsGo(this)">
+          <div class="gs-dot" style="background:#95A5A6"></div>
+          <div class="gs-body">
+            <div class="gs-label">${label}</div>
+            <div class="gs-excerpt">${excerpt(desc, raw)}</div>
+          </div>
+          <span class="gs-badge">Glossary</span>
+        </div>`;
+      });
+    }
+
+    if (topicHits.length) {
+      html += `<div class="gs-section">${l==='fr'?'Articles':'Articles'}</div>`;
+      topicHits.forEach(tp => {
+        const label = (l==='fr'?tp.title_fr:tp.title_en) || tp.title_en;
+        const desc  = (l==='fr'?tp.summary_fr:tp.summary_en) || tp.summary_en;
+        const tUrl  = INDEX_PATH.replace('search-index.json','') + tp.url;
+        gsItems.push({ url: tUrl, label });
+        html += `<div class="gs-item" data-url="${tUrl}" onclick="gsGo(this)">
+          <div class="gs-dot" style="background:#E74C3C"></div>
+          <div class="gs-body">
+            <div class="gs-label">${label}</div>
+            <div class="gs-excerpt">${excerpt(desc, raw)}</div>
+          </div>
+          <span class="gs-badge">Article</span>
+        </div>`;
+      });
+    }
+
+    el.innerHTML = html;
+  };
+
+  window.gsGo = function(el) {
+    const url = el.dataset.url;
+    const hashIdx = url.indexOf('#');
+    // If navigating to a hash on the same page, force hashchange even if hash is identical
+    if (hashIdx !== -1) {
+      const page = url.slice(0, hashIdx) || location.pathname;
+      const samePage = location.pathname.endsWith(page) || page === location.pathname;
+      if (samePage) {
+        const newHash = url.slice(hashIdx);
+        if (location.hash === newHash) {
+          // Same hash — dispatch manually since browser won't fire hashchange
+          window.dispatchEvent(new HashChangeEvent('hashchange'));
+        } else {
+          location.hash = newHash;
+        }
+        gsClose();
+        return;
+      }
+    }
+    window.location.href = url;
+    gsClose();
+  };
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault(); gsOpen(); return;
+    }
+    if (!document.getElementById('gs-overlay').classList.contains('open')) return;
+    if (e.key === 'Escape') { gsClose(); return; }
+    const items = document.querySelectorAll('.gs-item');
+    if (!items.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      gsActive = Math.min(gsActive + 1, items.length - 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      gsActive = Math.max(gsActive - 1, 0);
+    } else if (e.key === 'Enter' && gsActive >= 0) {
+      e.preventDefault();
+      items[gsActive].click(); return;
+    }
+    items.forEach((el, i) => el.classList.toggle('active', i === gsActive));
+    if (gsActive >= 0) items[gsActive].scrollIntoView({block:'nearest'});
+  });
+})();
+</script>
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <main>
+    <div class="article-header">
+      <div class="article-meta">
+        <span class="status-badge">stable</span>
+        <span class="date">2026-04-15</span>
+      </div>
+      <h1 class="article-title" data-en="LLMs Are Not Truth Machines" data-fr="Les LLMs ne sont pas des machines à vérité">LLMs Are Not Truth Machines</h1>
+      <p class="article-summary" data-en="Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead." data-fr="Pourquoi demander la vérité à un LLM est le mauvais modèle mental — et ce que fait RAG à la place.">Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead.</p>
+      <div class="tags"><span class="tag">llm</span><span class="tag">inference</span><span class="tag">hallucination</span><span class="tag">rag</span><span class="tag">mental-model</span><span class="tag">temperature</span></div>
+    </div>
+
+    <div class="article-body" id="article-body">
+      <h2 id="the-question-nobody-asks-out-loud">The question nobody asks out loud</h2>
+<p>When people get a wrong answer from an LLM, the usual reaction is: "it hallucinated." The word implies the model made a mistake it shouldn't have made — like a reliable system that glitched. That framing is wrong, and it leads to a bad mental model for everything that follows.</p>
+<p>The better question is: why would a language model ever be <em>right</em> about a specific fact?</p>
+<h2 id="what-an-llm-actually-is">What an LLM actually is</h2>
+<p>A large language model is trained on a massive corpus of text — web pages, books, code, forums. The training process doesn't build a database of facts. It compresses statistical patterns into billions of numerical parameters called <strong>weights</strong>.</p>
+<p>When you ask a question, the model doesn't look anything up. It runs a mathematical operation over its weights and the tokens in your prompt to compute <strong>what text is most likely to come next</strong>. That's it. The mechanism is prediction, not recall.</p>
+<p>This has a non-obvious consequence: the model can produce a fluent, confident, detailed answer about something it was never directly trained on — by interpolating from related patterns. Sometimes that interpolation is accurate. Sometimes it isn't. The model has no internal signal to tell the difference.</p>
+<h2 id="what-changes-the-output">What changes the output</h2>
+<p>If you ask the same question twice, you may not get the same answer. Here's why:</p>
+<p><strong>Temperature</strong> is a parameter that controls randomness in the sampling process. At temperature 0, the model always picks the most probable next token — outputs are deterministic. At higher temperatures, lower-probability tokens get more chances to be selected. The same question becomes a probability distribution over possible answers, not a single answer.</p>
+<p><strong>Top-p and top-k</strong> are related sampling parameters that constrain which tokens are eligible at each step. They tune the balance between coherence and diversity.</p>
+<p><strong>The system prompt and context window</strong> change what the model "sees" when generating. A different system prompt — even a subtle one — shifts the probability distribution over outputs. The model doesn't have a view of facts independent of its context; it reasons over what's in front of it.</p>
+<p><strong>The model itself</strong> matters. GPT-4, Claude, Llama 3, and Mistral were trained on different data, with different architectures and different fine-tuning processes (RLHF, RLAIF, DPO...). They have systematically different strengths, biases, and failure modes. On contested facts, they may genuinely disagree.</p>
+<p>None of these parameters have a "correct" setting for factual accuracy. The model has no access to ground truth.</p>
+<h2 id="the-training-cutoff-problem">The training cutoff problem</h2>
+<p>Model weights are frozen at the end of training. Nothing that happened after the cutoff date exists in the model's weights. If you ask about recent events, the model may:</p>
+<ul><li>correctly say it doesn't know</li><li>confabulate something plausible based on earlier patterns</li><li>confidently give you outdated information presented as current</li></ul>
+<p>The cutoff is published for each model, but it's not a clean line — data from just before the cutoff is underrepresented compared to older data (the internet takes time to process and discuss events). Models are often less reliable about the year preceding their cutoff than about things from several years earlier.</p>
+<h2 id="hallucination-is-not-a-bug">Hallucination is not a bug</h2>
+<p>The word "hallucination" gets used as if it describes an anomaly. It describes the default behavior of the architecture.</p>
+<p>When a model generates a citation that doesn't exist, it's doing exactly what it was trained to do: producing a sequence of tokens that looks like a valid citation, based on the patterns of how citations are structured in its training data. The model isn't checking against a database of real papers. There is no such check in the architecture.</p>
+<p>The same applies to statistics, dates, names, addresses, code behavior, and legal facts. The model generates plausible continuations. Plausibility is not accuracy.</p>
+<p>This doesn't mean LLMs are useless for factual tasks. It means the right use of an LLM for factual tasks requires a different architecture — one that separates retrieval of real data from generation of language.</p>
+<h2 id="the-right-mental-model">The right mental model</h2>
+<p>Think of an LLM as an expert reasoner with no access to recent documents and an imperfect memory.</p>
+<p>Ask it to explain a concept, structure an argument, synthesize multiple perspectives, write code, translate, or reason over something you've given it — it's excellent at these. These are tasks where the quality of reasoning matters more than access to ground truth.</p>
+<p>Ask it to tell you what happened last week, whether a specific fact is true, or what a specific document says (without giving it the document) — these are tasks where you need data, not reasoning. An LLM alone is the wrong tool.</p>
+<h2 id="what-rag-does">What RAG does</h2>
+<p>RAG (Retrieval-Augmented Generation) is the standard architectural answer to this problem. Instead of asking the model to recall facts from its weights, you:</p>
+<ol><li><strong>Retrieve</strong> relevant documents from a database you control (recent, verified, specific)</li><li><strong>Inject</strong> those documents into the model's context window</li><li><strong>Ask the model to reason</strong> over the provided documents</li></ol>
+<p>The model's job becomes reasoning and synthesis over real data you supplied — not recalling compressed patterns from training. The knowledge comes from your database. The reasoning comes from the model. These two responsibilities are cleanly separated.</p>
+<p>This is why RAG dramatically reduces hallucinations on factual questions: the model is no longer asked to generate facts from memory. It's asked to extract and synthesize facts from documents it can actually see.</p>
+<p>See the <a href="/topics/rag-deep-dive.html">RAG deep dive</a> for the full technical breakdown.</p>
+<h2 id="what-this-means-in-practice">What this means in practice</h2>
+<p>When you use an LLM:</p>
+<ul><li><strong>Don't verify outputs by asking the same model again.</strong> The model will confirm its own confabulations fluently.</li><li><strong>Treat confidence of phrasing as unrelated to accuracy.</strong> A model can be maximally confident and maximally wrong simultaneously.</li><li><strong>For factual tasks, give the model the documents.</strong> Paste in the relevant text, policy, or data. RAG automates this at scale.</li><li><strong>For reasoning tasks, LLMs are powerful.</strong> Analysis, synthesis, writing, code generation — these are not ground-truth tasks and LLMs excel at them.</li><li><strong>Different models, different answers.</strong> If a question matters, cross-check across models and treat disagreement as a signal to verify externally.</li></ul>
+<p>The mental model shift: stop thinking of an LLM as a search engine that knows things. Start thinking of it as a powerful reasoning engine that needs you to supply the data.</p>
+    </div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="toc-label" data-en="On this page" data-fr="Sur cette page">On this page</div>
+    <nav class="toc" id="toc-nav">
+      <nav class="toc"><a href="#the-question-nobody-asks-out-loud" class="toc-h2">The question nobody asks out loud</a>
+<a href="#what-an-llm-actually-is" class="toc-h2">What an LLM actually is</a>
+<a href="#what-changes-the-output" class="toc-h2">What changes the output</a>
+<a href="#the-training-cutoff-problem" class="toc-h2">The training cutoff problem</a>
+<a href="#hallucination-is-not-a-bug" class="toc-h2">Hallucination is not a bug</a>
+<a href="#the-right-mental-model" class="toc-h2">The right mental model</a>
+<a href="#what-rag-does" class="toc-h2">What RAG does</a>
+<a href="#what-this-means-in-practice" class="toc-h2">What this means in practice</a></nav>
+    </nav>
+  </aside>
+</div>
+
+<script src="../mermaid.min.js"></script>
+<script>
+mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+
+const CONTENT = {
+  en: '<h2 id="the-question-nobody-asks-out-loud">The question nobody asks out loud</h2>\n<p>When people get a wrong answer from an LLM, the usual reaction is: "it hallucinated." The word implies the model made a mistake it shouldn\'t have made — like a reliable system that glitched. That framing is wrong, and it leads to a bad mental model for everything that follows.</p>\n<p>The better question is: why would a language model ever be <em>right</em> about a specific fact?</p>\n<h2 id="what-an-llm-actually-is">What an LLM actually is</h2>\n<p>A large language model is trained on a massive corpus of text — web pages, books, code, forums. The training process doesn\'t build a database of facts. It compresses statistical patterns into billions of numerical parameters called <strong>weights</strong>.</p>\n<p>When you ask a question, the model doesn\'t look anything up. It runs a mathematical operation over its weights and the tokens in your prompt to compute <strong>what text is most likely to come next</strong>. That\'s it. The mechanism is prediction, not recall.</p>\n<p>This has a non-obvious consequence: the model can produce a fluent, confident, detailed answer about something it was never directly trained on — by interpolating from related patterns. Sometimes that interpolation is accurate. Sometimes it isn\'t. The model has no internal signal to tell the difference.</p>\n<h2 id="what-changes-the-output">What changes the output</h2>\n<p>If you ask the same question twice, you may not get the same answer. Here\'s why:</p>\n<p><strong>Temperature</strong> is a parameter that controls randomness in the sampling process. At temperature 0, the model always picks the most probable next token — outputs are deterministic. At higher temperatures, lower-probability tokens get more chances to be selected. The same question becomes a probability distribution over possible answers, not a single answer.</p>\n<p><strong>Top-p and top-k</strong> are related sampling parameters that constrain which tokens are eligible at each step. They tune the balance between coherence and diversity.</p>\n<p><strong>The system prompt and context window</strong> change what the model "sees" when generating. A different system prompt — even a subtle one — shifts the probability distribution over outputs. The model doesn\'t have a view of facts independent of its context; it reasons over what\'s in front of it.</p>\n<p><strong>The model itself</strong> matters. GPT-4, Claude, Llama 3, and Mistral were trained on different data, with different architectures and different fine-tuning processes (RLHF, RLAIF, DPO...). They have systematically different strengths, biases, and failure modes. On contested facts, they may genuinely disagree.</p>\n<p>None of these parameters have a "correct" setting for factual accuracy. The model has no access to ground truth.</p>\n<h2 id="the-training-cutoff-problem">The training cutoff problem</h2>\n<p>Model weights are frozen at the end of training. Nothing that happened after the cutoff date exists in the model\'s weights. If you ask about recent events, the model may:</p>\n<ul><li>correctly say it doesn\'t know</li><li>confabulate something plausible based on earlier patterns</li><li>confidently give you outdated information presented as current</li></ul>\n<p>The cutoff is published for each model, but it\'s not a clean line — data from just before the cutoff is underrepresented compared to older data (the internet takes time to process and discuss events). Models are often less reliable about the year preceding their cutoff than about things from several years earlier.</p>\n<h2 id="hallucination-is-not-a-bug">Hallucination is not a bug</h2>\n<p>The word "hallucination" gets used as if it describes an anomaly. It describes the default behavior of the architecture.</p>\n<p>When a model generates a citation that doesn\'t exist, it\'s doing exactly what it was trained to do: producing a sequence of tokens that looks like a valid citation, based on the patterns of how citations are structured in its training data. The model isn\'t checking against a database of real papers. There is no such check in the architecture.</p>\n<p>The same applies to statistics, dates, names, addresses, code behavior, and legal facts. The model generates plausible continuations. Plausibility is not accuracy.</p>\n<p>This doesn\'t mean LLMs are useless for factual tasks. It means the right use of an LLM for factual tasks requires a different architecture — one that separates retrieval of real data from generation of language.</p>\n<h2 id="the-right-mental-model">The right mental model</h2>\n<p>Think of an LLM as an expert reasoner with no access to recent documents and an imperfect memory.</p>\n<p>Ask it to explain a concept, structure an argument, synthesize multiple perspectives, write code, translate, or reason over something you\'ve given it — it\'s excellent at these. These are tasks where the quality of reasoning matters more than access to ground truth.</p>\n<p>Ask it to tell you what happened last week, whether a specific fact is true, or what a specific document says (without giving it the document) — these are tasks where you need data, not reasoning. An LLM alone is the wrong tool.</p>\n<h2 id="what-rag-does">What RAG does</h2>\n<p>RAG (Retrieval-Augmented Generation) is the standard architectural answer to this problem. Instead of asking the model to recall facts from its weights, you:</p>\n<ol><li><strong>Retrieve</strong> relevant documents from a database you control (recent, verified, specific)</li><li><strong>Inject</strong> those documents into the model\'s context window</li><li><strong>Ask the model to reason</strong> over the provided documents</li></ol>\n<p>The model\'s job becomes reasoning and synthesis over real data you supplied — not recalling compressed patterns from training. The knowledge comes from your database. The reasoning comes from the model. These two responsibilities are cleanly separated.</p>\n<p>This is why RAG dramatically reduces hallucinations on factual questions: the model is no longer asked to generate facts from memory. It\'s asked to extract and synthesize facts from documents it can actually see.</p>\n<p>See the <a href="/topics/rag-deep-dive.html">RAG deep dive</a> for the full technical breakdown.</p>\n<h2 id="what-this-means-in-practice">What this means in practice</h2>\n<p>When you use an LLM:</p>\n<ul><li><strong>Don\'t verify outputs by asking the same model again.</strong> The model will confirm its own confabulations fluently.</li><li><strong>Treat confidence of phrasing as unrelated to accuracy.</strong> A model can be maximally confident and maximally wrong simultaneously.</li><li><strong>For factual tasks, give the model the documents.</strong> Paste in the relevant text, policy, or data. RAG automates this at scale.</li><li><strong>For reasoning tasks, LLMs are powerful.</strong> Analysis, synthesis, writing, code generation — these are not ground-truth tasks and LLMs excel at them.</li><li><strong>Different models, different answers.</strong> If a question matters, cross-check across models and treat disagreement as a signal to verify externally.</li></ul>\n<p>The mental model shift: stop thinking of an LLM as a search engine that knows things. Start thinking of it as a powerful reasoning engine that needs you to supply the data.</p>',
+  fr: '<h2 id="la-question-que-personne-ne-pose-à-voix-haute">La question que personne ne pose à voix haute</h2>\n<p>Quand on obtient une mauvaise réponse d\'un LLM, la réaction habituelle est : "il a halluciné." Le mot suggère que le modèle a fait une erreur qu\'il n\'aurait pas dû faire — comme un système fiable qui a bugué. Ce cadrage est faux, et il mène à un mauvais modèle mental pour tout ce qui suit.</p>\n<p>La meilleure question est : pourquoi un modèle de langage serait-il <em>exact</em> sur un fait précis ?</p>\n<h2 id="ce-quest-vraiment-un-llm">Ce qu\'est vraiment un LLM</h2>\n<p>Un grand modèle de langage est entraîné sur un corpus massif de textes — pages web, livres, code, forums. Le processus d\'entraînement ne construit pas une base de données de faits. Il compresse des patterns statistiques dans des milliards de paramètres numériques appelés <strong>poids</strong>.</p>\n<p>Quand tu poses une question, le modèle ne cherche rien. Il exécute une opération mathématique sur ses poids et les tokens de ton prompt pour calculer <strong>quel texte a la plus grande probabilité de suivre</strong>. C\'est tout. Le mécanisme est la prédiction, pas la mémorisation.</p>\n<p>Ça a une conséquence contre-intuitive : le modèle peut produire une réponse fluide, confiante et détaillée sur quelque chose qu\'il n\'a jamais vu directement à l\'entraînement — par interpolation de patterns voisins. Parfois cette interpolation est exacte. Parfois non. Le modèle n\'a aucun signal interne pour faire la différence.</p>\n<h2 id="ce-qui-change-la-réponse">Ce qui change la réponse</h2>\n<p>Si tu poses la même question deux fois, tu ne peux pas garantir la même réponse. Voici pourquoi.</p>\n<p><strong>La température</strong> est un paramètre qui contrôle l\'aléatoire dans le processus d\'échantillonnage. À température 0, le modèle choisit toujours le token suivant le plus probable — les sorties sont déterministes. À des températures plus élevées, les tokens moins probables ont plus de chances d\'être sélectionnés. La même question devient une distribution de probabilité sur des réponses possibles, pas une réponse unique.</p>\n<p><strong>Top-p et top-k</strong> sont des paramètres d\'échantillonnage voisins qui contraignent quels tokens sont éligibles à chaque étape. Ils règlent l\'équilibre entre cohérence et diversité.</p>\n<p><strong>Le system prompt et la fenêtre de contexte</strong> changent ce que le modèle "voit" en générant. Un system prompt différent — même subtilement — déplace la distribution de probabilité sur les sorties. Le modèle n\'a pas de point de vue sur les faits indépendant de son contexte ; il raisonne sur ce qui est devant lui.</p>\n<p><strong>Le modèle lui-même</strong> compte. GPT-4, Claude, Llama 3 et Mistral ont été entraînés sur des données différentes, avec des architectures et des processus de fine-tuning différents (RLHF, RLAIF, DPO...). Ils ont des forces, des biais et des modes d\'échec systématiquement différents. Sur des faits controversés, ils peuvent sincèrement ne pas être d\'accord.</p>\n<p>Aucun de ces paramètres n\'a un réglage "correct" pour l\'exactitude factuelle. Le modèle n\'a pas accès à une vérité de référence.</p>\n<h2 id="le-problème-du-knowledge-cutoff">Le problème du knowledge cutoff</h2>\n<p>Les poids du modèle sont gelés à la fin de l\'entraînement. Rien de ce qui s\'est passé après la date de cutoff n\'existe dans les poids. Si tu poses une question sur des événements récents, le modèle peut :</p>\n<ul><li>dire correctement qu\'il ne sait pas</li><li>confabuler quelque chose de plausible basé sur des patterns antérieurs</li><li>te donner confidemment une information obsolète présentée comme actuelle</li></ul>\n<p>Le cutoff est publié pour chaque modèle, mais ce n\'est pas une ligne nette — les données de juste avant le cutoff sont sous-représentées par rapport aux données plus anciennes (internet prend du temps pour traiter et discuter des événements). Les modèles sont souvent moins fiables sur l\'année qui précède leur cutoff que sur des choses de plusieurs années plus tôt.</p>\n<h2 id="lhallucination-nest-pas-un-bug">L\'hallucination n\'est pas un bug</h2>\n<p>Le mot "hallucination" est utilisé comme s\'il décrivait une anomalie. Il décrit le comportement par défaut de l\'architecture.</p>\n<p>Quand un modèle génère une citation qui n\'existe pas, il fait exactement ce pour quoi il a été entraîné : produire une séquence de tokens qui ressemble à une citation valide, basée sur les patterns de la façon dont les citations sont structurées dans ses données d\'entraînement. Le modèle ne vérifie pas contre une base de vrais articles. Cette vérification n\'existe pas dans l\'architecture.</p>\n<p>La même chose s\'applique aux statistiques, aux dates, aux noms, aux adresses, au comportement du code et aux faits juridiques. Le modèle génère des continuations plausibles. La plausibilité n\'est pas l\'exactitude.</p>\n<p>Ça ne veut pas dire que les LLMs sont inutiles pour les tâches factuelles. Ça veut dire que le bon usage d\'un LLM pour des tâches factuelles nécessite une architecture différente — une qui sépare la récupération de données réelles de la génération de langage.</p>\n<h2 id="le-bon-modèle-mental">Le bon modèle mental</h2>\n<p>Pense à un LLM comme à un expert raisonnant sans accès aux documents récents et avec une mémoire imparfaite.</p>\n<p>Demande-lui d\'expliquer un concept, structurer un argument, synthétiser plusieurs perspectives, écrire du code, traduire, ou raisonner sur quelque chose que tu lui as fourni — il est excellent pour ça. Ce sont des tâches où la qualité du raisonnement compte plus que l\'accès à la vérité de référence.</p>\n<p>Demande-lui ce qui s\'est passé la semaine dernière, si un fait précis est vrai, ou ce que dit un document spécifique (sans lui donner le document) — là tu as besoin de données, pas de raisonnement. Un LLM seul est le mauvais outil.</p>\n<h2 id="ce-que-fait-rag">Ce que fait RAG</h2>\n<p>RAG (Retrieval-Augmented Generation) est la réponse architecturale standard à ce problème. Au lieu de demander au modèle de rappeler des faits depuis ses poids, tu :</p>\n<ol><li><strong>Récupères</strong> des documents pertinents depuis une base de données que tu contrôles (récente, vérifiée, spécifique)</li><li><strong>Injectes</strong> ces documents dans la fenêtre de contexte du modèle</li><li><strong>Demandes au modèle de raisonner</strong> sur les documents fournis</li></ol>\n<p>Le travail du modèle devient le raisonnement et la synthèse sur des données réelles que tu as fournies — pas le rappel de patterns compressés depuis l\'entraînement. La connaissance vient de ta base de données. Le raisonnement vient du modèle. Ces deux responsabilités sont clairement séparées.</p>\n<p>C\'est pourquoi RAG réduit drastiquement les hallucinations sur les questions factuelles : le modèle n\'est plus invité à générer des faits de mémoire. Il est invité à extraire et synthétiser des faits depuis des documents qu\'il peut réellement voir.</p>\n<p>Voir le <a href="/topics/rag-deep-dive.html">deep dive sur RAG</a> pour l\'analyse technique complète.</p>\n<h2 id="ce-que-ça-veut-dire-en-pratique">Ce que ça veut dire en pratique</h2>\n<p>Quand tu utilises un LLM :</p>\n<ul><li><strong>Ne vérifie pas les sorties en reposant la même question au même modèle.</strong> Le modèle confirmera ses propres confabulations avec fluidité.</li><li><strong>Traite la confiance du style comme sans rapport avec l\'exactitude.</strong> Un modèle peut être maximalement confiant et maximalement dans l\'erreur simultanément.</li><li><strong>Pour les tâches factuelles, donne les documents au modèle.</strong> Colle le texte, la politique ou les données pertinentes. RAG automatise ça à l\'échelle.</li><li><strong>Pour les tâches de raisonnement, les LLMs sont puissants.</strong> Analyse, synthèse, rédaction, génération de code — ce ne sont pas des tâches de vérité de référence et les LLMs y excellent.</li><li><strong>Modèles différents, réponses différentes.</strong> Si une question compte, vérifie en croisant les modèles et traite le désaccord comme un signal pour vérifier en externe.</li></ul>\n<p>Le changement de modèle mental : arrête de penser à un LLM comme à un moteur de recherche qui sait des choses. Commence à le voir comme un moteur de raisonnement puissant qui a besoin que tu lui fournisses les données.</p>',
+};
+const TOC = {
+  en: '<nav class="toc"><a href="#the-question-nobody-asks-out-loud" class="toc-h2">The question nobody asks out loud</a>\n<a href="#what-an-llm-actually-is" class="toc-h2">What an LLM actually is</a>\n<a href="#what-changes-the-output" class="toc-h2">What changes the output</a>\n<a href="#the-training-cutoff-problem" class="toc-h2">The training cutoff problem</a>\n<a href="#hallucination-is-not-a-bug" class="toc-h2">Hallucination is not a bug</a>\n<a href="#the-right-mental-model" class="toc-h2">The right mental model</a>\n<a href="#what-rag-does" class="toc-h2">What RAG does</a>\n<a href="#what-this-means-in-practice" class="toc-h2">What this means in practice</a></nav>',
+  fr: '<nav class="toc"><a href="#la-question-que-personne-ne-pose-à-voix-haute" class="toc-h2">La question que personne ne pose à voix haute</a>\n<a href="#ce-quest-vraiment-un-llm" class="toc-h2">Ce qu\'est vraiment un LLM</a>\n<a href="#ce-qui-change-la-réponse" class="toc-h2">Ce qui change la réponse</a>\n<a href="#le-problème-du-knowledge-cutoff" class="toc-h2">Le problème du knowledge cutoff</a>\n<a href="#lhallucination-nest-pas-un-bug" class="toc-h2">L\'hallucination n\'est pas un bug</a>\n<a href="#le-bon-modèle-mental" class="toc-h2">Le bon modèle mental</a>\n<a href="#ce-que-fait-rag" class="toc-h2">Ce que fait RAG</a>\n<a href="#ce-que-ça-veut-dire-en-pratique" class="toc-h2">Ce que ça veut dire en pratique</a></nav>',
+};
+let lang = 'en';
+
+function renderMermaid() {
+  mermaid.run({ querySelector: '.mermaid' });
+}
+
+function setLang(newLang) {
+  lang = newLang;
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  document.getElementById('toc-nav').innerHTML = TOC[lang] || TOC.en;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.en;
+  });
+  renderMermaid();
+}
+
+document.addEventListener('DOMContentLoaded', renderMermaid);
+</script>
+</body>
+</html>
