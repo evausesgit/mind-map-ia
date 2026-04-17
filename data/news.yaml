@@ -2,6 +2,16 @@ news:
   - date: 2026-04-17
     type: update
     title:
+      en: "OpenAI releases GPT Rosalind"
+      fr: "OpenAI lance GPT Rosalind"
+    description:
+      en: "OpenAI announces GPT Rosalind, a new model in the GPT family."
+      fr: "OpenAI annonce GPT Rosalind, un nouveau modèle de la famille GPT."
+    link: https://x.com/OpenAI/status/2044861690911850863?s=20
+
+  - date: 2026-04-17
+    type: update
+    title:
       en: "Anthropic releases Claude Opus 4.7"
       fr: "Anthropic lance Claude Opus 4.7"
     description:
