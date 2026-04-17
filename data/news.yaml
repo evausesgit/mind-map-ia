@@ -1,4 +1,14 @@
 news:
+  - date: 2026-04-17
+    type: update
+    title:
+      en: "Anthropic releases Claude Opus 4.7"
+      fr: "Anthropic lance Claude Opus 4.7"
+    description:
+      en: "Anthropic announces Claude Opus 4.7, a new iteration of its flagship model. Follows the Claude 4 family (Opus 4, Sonnet 4, Haiku 3.5) released earlier in 2026."
+      fr: "Anthropic annonce Claude Opus 4.7, une nouvelle itération de son modèle phare. Fait suite à la famille Claude 4 (Opus 4, Sonnet 4, Haiku 3.5) sortie début 2026."
+    link: https://x.com/claudeai/status/2044785261393977612?s=20
+
   - date: 2026-04-13
     type: update
     title:
