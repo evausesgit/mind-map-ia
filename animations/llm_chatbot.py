@@ -213,7 +213,8 @@ def scene4(self, t):
     N = len(tokens)
     cell_size = 0.72
     grid_w = N * cell_size
-    origin = LEFT * (grid_w / 2) + DOWN * 0.15
+    # Shift right to visually center grid+row_labels together (~0.6 = half avg label width + buff)
+    origin = LEFT * (grid_w / 2) + RIGHT * 0.6 + DOWN * 0.15
 
     cells = []
     for r in range(N):
