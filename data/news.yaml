@@ -1,4 +1,14 @@
 news:
+  - date: 2026-04-18
+    type: update
+    title:
+      en: "Anthropic launches new Claude design"
+      fr: "Anthropic lance un nouveau design pour Claude"
+    description:
+      en: "Anthropic unveils a refreshed visual identity for Claude, with a new logo and updated brand aesthetic."
+      fr: "Anthropic dévoile une nouvelle identité visuelle pour Claude, avec un nouveau logo et une esthétique de marque actualisée."
+    link: https://x.com/claudeai/status/2045156267690213649?s=20
+
   - date: 2026-04-17
     type: update
     title:
