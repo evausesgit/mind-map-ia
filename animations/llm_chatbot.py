@@ -188,57 +188,103 @@ class Scene4_Attention(Scene):
                      font_size=32, color=WHITE).to_edge(UP, buff=0.5)
         self.play(Write(title))
 
-        subtitle = Text("Chaque token « regarde » les autres et pondère l'information",
-                        font_size=18, color=GRAY).next_to(title, DOWN, buff=0.2)
+        subtitle = Text("Chaque token calcule un score d'attention avec tous les autres",
+                        font_size=17, color=GRAY).next_to(title, DOWN, buff=0.2)
         self.play(FadeIn(subtitle))
 
-        tokens = ["Expli", "que", "-moi", "comment", "fon…", "un", "LLM"]
-        cols =   [BRAND_BLUE, BRAND_PURPLE, BRAND_GREEN, BRAND_ORANGE,
-                  BRAND_RED, "#06B6D4", "#84CC16"]
+        tokens = ["Expli", "que", "-moi", "comment", "fonc…", "un", "LLM"]
+        N = len(tokens)
 
-        nodes = VGroup()
-        for tok, col in zip(tokens, cols):
-            circle = Circle(radius=0.38, fill_color=CARD_BG, fill_opacity=1,
-                            stroke_color=col, stroke_width=2.5)
-            label = Text(tok, font_size=13, color=col).move_to(circle)
-            nodes.add(VGroup(circle, label))
+        # Attention matrix — rows = "qui regarde", cols = "vers qui"
+        # Scores simulés (softmax appliqué mentalement, somme ≈ 1 par ligne)
+        attn = [
+            [0.60, 0.15, 0.08, 0.07, 0.04, 0.03, 0.03],  # Expli → très fort sur lui-même
+            [0.18, 0.42, 0.14, 0.12, 0.07, 0.04, 0.03],  # que
+            [0.10, 0.14, 0.38, 0.18, 0.09, 0.07, 0.04],  # -moi
+            [0.06, 0.10, 0.12, 0.45, 0.14, 0.08, 0.05],  # comment
+            [0.04, 0.07, 0.08, 0.18, 0.40, 0.14, 0.09],  # fonc…
+            [0.03, 0.05, 0.07, 0.12, 0.16, 0.38, 0.19],  # un
+            [0.03, 0.12, 0.05, 0.22, 0.18, 0.10, 0.30],  # LLM → fort sur "comment" et lui-même
+        ]
 
-        nodes.arrange(RIGHT, buff=0.55).shift(UP * 0.3)
-        self.play(LaggedStart(*[FadeIn(n) for n in nodes], lag_ratio=0.1), run_time=1)
+        cell_size = 0.72
+        grid_w = N * cell_size
+        grid_h = N * cell_size
+        origin = LEFT * (grid_w / 2) + DOWN * 0.15
 
-        # Attention arrows from "LLM" (last token) to others — weighted
-        focus_idx = 6  # LLM
-        weights = [0.05, 0.08, 0.06, 0.10, 0.09, 0.12, 1.0]
-        attention_lines = VGroup()
+        # Draw heatmap cells
+        cells = []
+        for r in range(N):
+            row_cells = []
+            for c in range(N):
+                score = attn[r][c]
+                # Color: dark blue (low) → bright green (high)
+                t = score ** 0.5  # gamma for better visual contrast
+                cell_color = interpolate_color(
+                    color1=ManimColor("#0F2040"),
+                    color2=ManimColor("#10B981"),
+                    alpha=t
+                )
+                rect = Rectangle(
+                    width=cell_size - 0.04, height=cell_size - 0.04,
+                    fill_color=cell_color, fill_opacity=1,
+                    stroke_color="#1E293B", stroke_width=1
+                )
+                rect.move_to(origin + RIGHT * (c + 0.5) * cell_size + DOWN * (r + 0.5) * cell_size)
 
-        for i, (n, w) in enumerate(zip(nodes, weights)):
-            if i == focus_idx:
-                continue
-            opacity = min(0.15 + w * 1.5, 0.9)
-            width = 0.5 + w * 6
-            arc = ArcBetweenPoints(
-                nodes[focus_idx][0].get_center(),
-                n[0].get_center(),
-                angle=-TAU / 8 if i < focus_idx else TAU / 8,
-                color=cols[focus_idx],
-                stroke_width=width,
-            ).set_opacity(opacity)
-            attention_lines.add(arc)
+                pct = int(score * 100)
+                val = Text(f"{pct}%", font_size=11,
+                           color=WHITE if score > 0.15 else "#334155")
+                val.move_to(rect)
+                row_cells.append(VGroup(rect, val))
+            cells.append(row_cells)
 
-        self.play(
-            LaggedStart(*[Create(a) for a in attention_lines], lag_ratio=0.1),
-            run_time=1.8
+        # Token labels — columns (top)
+        col_labels = VGroup()
+        for c, tok in enumerate(tokens):
+            lbl = Text(tok, font_size=12, color=GRAY)
+            lbl.move_to(origin + RIGHT * (c + 0.5) * cell_size + UP * 0.45)
+            col_labels.add(lbl)
+
+        # Token labels — rows (left)
+        row_labels = VGroup()
+        for r, tok in enumerate(tokens):
+            lbl = Text(tok, font_size=12, color=GRAY)
+            lbl.next_to(origin + DOWN * (r + 0.5) * cell_size, LEFT, buff=0.15)
+            row_labels.add(lbl)
+
+        axis_q = Text("← regarde", font_size=11, color="#475569").rotate(PI / 2)
+        axis_q.next_to(row_labels, LEFT, buff=0.1)
+        axis_k = Text("vers →", font_size=11, color="#475569")
+        axis_k.next_to(col_labels, UP, buff=0.05)
+
+        self.play(FadeIn(col_labels), FadeIn(row_labels), run_time=0.6)
+        self.play(FadeIn(axis_q), FadeIn(axis_k), run_time=0.4)
+
+        # Animate rows one by one
+        for r in range(N):
+            self.play(
+                LaggedStart(*[FadeIn(cells[r][c]) for c in range(N)], lag_ratio=0.05),
+                run_time=0.5
+            )
+
+        self.wait(0.5)
+
+        # Highlight last row (LLM) with a border
+        highlight = Rectangle(
+            width=grid_w - 0.04, height=cell_size - 0.04,
+            stroke_color=BRAND_GREEN, stroke_width=2.5, fill_opacity=0
         )
+        highlight.move_to(origin + RIGHT * grid_w / 2 + DOWN * (N - 0.5) * cell_size)
+        focus_label = Text(
+            '"LLM" s\'attend fortement sur "comment" (22%) et lui-même (30%)',
+            font_size=14, color=BRAND_GREEN
+        ).shift(DOWN * 3.3)
+        self.play(Create(highlight), Write(focus_label), run_time=0.8)
+        self.wait(1.2)
 
-        weight_note = Text(
-            'LLM (dernier token) s\'attend sur "que", "comment", "un" — ce qui est pertinent',
-            font_size=15, color=GRAY
-        ).shift(DOWN * 1.8)
-        self.play(Write(weight_note))
-
-        # N layers indicator
-        layers = Text("→  Ce mécanisme se répète sur N couches (GPT-4 : 96 couches)",
-                      font_size=16, color=BRAND_BLUE).shift(DOWN * 2.5)
+        layers = Text("→ Ce calcul se répète sur N couches en parallèle (GPT-4 : 96 couches)",
+                      font_size=14, color=BRAND_BLUE).shift(DOWN * 3.8)
         self.play(Write(layers))
         self.wait(2.5)
 
