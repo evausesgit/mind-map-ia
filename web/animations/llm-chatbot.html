@@ -163,8 +163,8 @@
   </div>
 
   <div class="video-wrapper">
-    <video controls autoplay muted loop>
-      <source src="llm-chatbot.mp4" type="video/mp4">
+    <video id="main-video" controls autoplay muted loop>
+      <source id="video-src" src="llm-chatbot-fr.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
@@ -227,6 +227,14 @@ function setLang(lang) {
     b.classList.toggle('active', b.dataset.lang === lang)
   );
   document.documentElement.lang = lang;
+
+  // Switch video source
+  const video = document.getElementById('main-video');
+  const src = document.getElementById('video-src');
+  const currentTime = video.currentTime;
+  src.src = lang === 'fr' ? 'llm-chatbot-fr.mp4' : 'llm-chatbot-en.mp4';
+  video.load();
+  video.currentTime = currentTime;
 }
 </script>
 
