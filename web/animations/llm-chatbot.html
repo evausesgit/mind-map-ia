@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animation · How an LLM works</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0F0F1A;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1E2D4E;
+    background: #0D1117;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .back-btn {
+    padding: 5px 11px;
+    border: 1.5px solid #333;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .back-btn:hover { border-color: #888; color: white; }
+  .header-title { font-size: 15px; font-weight: 600; color: #eee; }
+
+  .lang-toggle { display: flex; gap: 6px; }
+  .lang-btn {
+    padding: 4px 10px;
+    border: 1.5px solid #333;
+    border-radius: 5px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .lang-btn.active { background: #E74C3C; border-color: #E74C3C; color: white; }
+  .lang-btn:hover:not(.active) { border-color: #aaa; color: white; }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px 60px;
+    gap: 32px;
+    max-width: 960px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .page-title {
+    text-align: center;
+  }
+  .page-title h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .page-title p {
+    font-size: 15px;
+    color: #8892a4;
+    max-width: 600px;
+  }
+
+  .video-wrapper {
+    width: 100%;
+    background: #0A0A14;
+    border: 1px solid #1E2D4E;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  }
+  video {
+    width: 100%;
+    display: block;
+  }
+
+  .steps {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .step {
+    background: #1E293B;
+    border: 1px solid #2C3E6E;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .step-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: #E74C3C;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .step-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #eee;
+  }
+  .step-desc {
+    font-size: 12px;
+    color: #8892a4;
+    line-height: 1.45;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #444;
+    border-top: 1px solid #1E2D4E;
+  }
+  footer a { color: #666; text-decoration: none; }
+  footer a:hover { color: #aaa; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="../index.html" class="back-btn">← Accueil</a>
+    <span class="header-title" data-en="Animation · How an LLM works" data-fr="Animation · Comment fonctionne un LLM">Animation · How an LLM works</span>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-title">
+    <h1 data-en="How does an LLM chatbot work?" data-fr="Comment fonctionne un chatbot LLM ?">How does an LLM chatbot work?</h1>
+    <p data-en="From the user's message to the generated response — an animated walkthrough of each step inside a large language model."
+       data-fr="Du message de l'utilisateur à la réponse générée — un parcours animé de chaque étape à l'intérieur d'un grand modèle de langage.">
+      From the user's message to the generated response — an animated walkthrough of each step inside a large language model.
+    </p>
+  </div>
+
+  <div class="video-wrapper">
+    <video controls autoplay muted loop>
+      <source src="llm-chatbot.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">Step 1</div>
+      <div class="step-label" data-en="User Input" data-fr="Message utilisateur">User Input</div>
+      <div class="step-desc" data-en="The user types a message. The model receives raw text."
+           data-fr="L'utilisateur écrit un message. Le modèle reçoit du texte brut.">
+        The user types a message. The model receives raw text.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 2</div>
+      <div class="step-label" data-en="Tokenisation" data-fr="Tokenisation">Tokenisation</div>
+      <div class="step-desc" data-en="Text is split into sub-word tokens, each mapped to an integer ID (~100k vocabulary)."
+           data-fr="Le texte est découpé en sous-mots (tokens), chacun mappé à un entier (~100k vocabulaire).">
+        Text is split into sub-word tokens, each mapped to an integer ID.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 3</div>
+      <div class="step-label" data-en="Embeddings" data-fr="Embeddings">Embeddings</div>
+      <div class="step-desc" data-en="Each token ID becomes a dense vector (768–4096 dims) + positional encoding."
+           data-fr="Chaque ID devient un vecteur dense (768–4096 dims) + encodage positionnel.">
+        Each token ID becomes a dense vector + positional encoding.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 4</div>
+      <div class="step-label" data-en="Self-Attention" data-fr="Self-Attention">Self-Attention</div>
+      <div class="step-desc" data-en="Each token attends to all others, weighting what's relevant. Repeated across N layers."
+           data-fr="Chaque token « regarde » les autres et pondère l'information. Répété sur N couches.">
+        Each token attends to all others. Repeated across N transformer layers.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 5</div>
+      <div class="step-label" data-en="Generation" data-fr="Génération">Generation</div>
+      <div class="step-desc" data-en="Output probabilities → next token selected → repeated word by word until done."
+           data-fr="Distribution de probabilités → token sélectionné → répété mot par mot jusqu'à la fin.">
+        Output probabilities → next token selected → word-by-word generation.
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <a href="../index.html">LLM &amp; AI Mind Maps</a> · Made with Manim &amp; Claude Code
+</footer>
+
+<script>
+function setLang(lang) {
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.en;
+  });
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.documentElement.lang = lang;
+}
+</script>
+
+</body>
+</html>
