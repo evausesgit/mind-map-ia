@@ -1,4 +1,14 @@
 news:
+  - date: 2026-04-21
+    type: update
+    title:
+      en: "Anthropic secures 5 GW of compute via expanded AWS deal"
+      fr: "Anthropic sécurise 5 GW de capacité de calcul via un accord AWS élargi"
+    description:
+      en: "Anthropic has secured up to 5 gigawatts of compute capacity through an expanded deal with Amazon — roughly equivalent to 5 nuclear power plants, and on par with Microsoft's entire 2024 global data center footprint. Key figures: $100B+ committed to AWS over a decade, $5B invested by Amazon today with up to $20B more to come, over 1 million Trainium2 chips already in use. Anthropic's annualized revenue has tripled from ~$9B (end of 2025) to over $30B. The Claude Platform will also be available directly via AWS billing."
+      fr: "Anthropic a sécurisé jusqu'à 5 gigawatts de capacité de calcul via un accord élargi avec Amazon — l'équivalent d'environ 5 centrales nucléaires, comparable à l'ensemble du parc mondial de datacenters de Microsoft en 2024. Chiffres clés : plus de 100 Md$ engagés sur AWS sur une décennie, 5 Md$ investis par Amazon aujourd'hui avec jusqu'à 20 Md$ supplémentaires, plus d'un million de puces Trainium2 déjà en service. Le chiffre d'affaires annualisé d'Anthropic a triplé, passant de ~9 Md$ (fin 2025) à plus de 30 Md$. La Claude Platform sera aussi accessible directement via la facturation AWS."
+    link: https://x.com/kimmonismus/status/2046328535573475779?s=20
+
   - date: 2026-04-18
     type: update
     title:
