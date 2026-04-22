@@ -10,6 +10,16 @@ news:
     link: https://x.com/kimmonismus/status/2046328535573475779?s=20
 
   - date: 2026-04-18
+    type: new-content
+    title:
+      en: "New animation: How an LLM chatbot works"
+      fr: "Nouvelle animation : Comment fonctionne un chatbot LLM"
+    description:
+      en: "Step-by-step animated walkthrough of an LLM chatbot — tokenisation, embeddings, self-attention, and token generation, in English and French."
+      fr: "Présentation animée étape par étape d'un chatbot LLM — tokenisation, embeddings, self-attention et génération de tokens, en anglais et en français."
+    link: animations/llm-chatbot.html
+
+  - date: 2026-04-18
     type: update
     title:
       en: "Anthropic launches new Claude design"

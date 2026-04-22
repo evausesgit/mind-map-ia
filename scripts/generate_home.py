@@ -285,7 +285,15 @@ def build_nav_html(maps, topics, links=None):
             f'</span></a>'
         )
     deep_dives, reflexions = split_topics_by_category(topics)
-    dive_items = _build_topic_nav_items(deep_dives)
+    anim_item = (
+        '<a href="animations/llm-chatbot.html" class="nav-item">'
+        '<span class="nav-item-icon">🎬</span>'
+        '<span class="nav-item-info">'
+        '<span class="nav-item-title" data-en="Animation — How an LLM Works" data-fr="Animation — Comment fonctionne un LLM">Animation — How an LLM Works</span>'
+        '<span class="nav-item-desc" data-en="Tokenisation, embeddings, self-attention and generation — animated" data-fr="Tokenisation, embeddings, self-attention et génération — animés">Tokenisation, embeddings, self-attention and generation — animated</span>'
+        '</span></a>'
+    )
+    dive_items = anim_item + _build_topic_nav_items(deep_dives)
     reflexion_items = _build_topic_nav_items(reflexions)
     link_items = _build_link_nav_items(links or [])
 
