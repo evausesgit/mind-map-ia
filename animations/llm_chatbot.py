@@ -30,12 +30,30 @@ TEXTS = {
         "s4_axis_k":  "vers →",
         "s4_focus":   '"LLM" s\'attend fortement sur "comment" (22%) et lui-même (30%)',
         "s4_layers":  "→ Ce calcul se répète sur N couches en parallèle (GPT-4 : 96 couches)",
-        "s5_title":   "5 · Sélection du token & Génération",
-        "s5_prob":    "Distribution de probabilité — prochain token :",
-        "s5_cands":   [("L'", 0.41), ("Un", 0.22), ("Le", 0.18), ("Les", 0.09), ("Ce", 0.06), ("…", 0.04)],
-        "s5_win":     '✓ Sélectionné : "L\'"',
-        "s5_gen":     "Génération autorégressive — mot par mot :",
-        "s5_words":   ["L'", "IA", "est", "un", "système", "qui...", ""],
+        "s5_title":      "5 · Sélection du token & Génération",
+        "s5_ctx_label":  "Contexte :",
+        "s5_prob_label": "Prochain token — distribution de probabilité :",
+        "s5_iterations": [
+            {
+                "ctx_before": '"...fonctionne un LLM" ->',
+                "candidates": [("Un", 0.41), ("Le", 0.28), ("L'", 0.18), ("Ce", 0.09), ("Les", 0.04)],
+                "winner": 0,
+                "ctx_after":  '"...fonctionne un LLM" -> Un',
+            },
+            {
+                "ctx_before": '"...fonctionne un LLM" -> Un',
+                "candidates": [("LLM", 0.52), ("modele", 0.21), ("systeme", 0.15), ("reseau", 0.08), ("algo.", 0.04)],
+                "winner": 0,
+                "ctx_after":  '"...fonctionne un LLM" -> Un LLM',
+            },
+            {
+                "ctx_before": '"...fonctionne un LLM" -> Un LLM',
+                "candidates": [("est", 0.44), ("predit", 0.28), ("genere", 0.16), ("apprend", 0.08), ("traite", 0.04)],
+                "winner": 0,
+                "ctx_after":  '"...fonctionne un LLM" -> Un LLM est',
+            },
+        ],
+        "s5_loop_note": "-> generation autoregressive : chaque token selectionne conditionne le suivant",
     },
     "en": {
         "s1_title":   "1 · User types a message",
@@ -58,12 +76,30 @@ TEXTS = {
         "s4_axis_k":  "→ what",
         "s4_focus":   '"LLM" strongly attends to "how" (22%) and itself (30%)',
         "s4_layers":  "→ This repeats across N layers in parallel (GPT-4: 96 layers)",
-        "s5_title":   "5 · Token Selection & Generation",
-        "s5_prob":    "Probability distribution — next token:",
-        "s5_cands":   [("The", 0.41), ("An", 0.22), ("A", 0.18), ("It", 0.09), ("This", 0.06), ("…", 0.04)],
-        "s5_win":     '✓ Selected: "The"',
-        "s5_gen":     "Autoregressive generation — word by word:",
-        "s5_words":   ["The", "AI", "is", "a", "system", "that...", ""],
+        "s5_title":      "5 · Token Selection & Generation",
+        "s5_ctx_label":  "Context:",
+        "s5_prob_label": "Next token — probability distribution:",
+        "s5_iterations": [
+            {
+                "ctx_before": '"...how an LLM works" ->',
+                "candidates": [("An", 0.41), ("The", 0.28), ("A", 0.18), ("It", 0.09), ("This", 0.04)],
+                "winner": 0,
+                "ctx_after":  '"...how an LLM works" -> An',
+            },
+            {
+                "ctx_before": '"...how an LLM works" -> An',
+                "candidates": [("LLM", 0.52), ("AI", 0.21), ("model", 0.15), ("neural", 0.08), ("system", 0.04)],
+                "winner": 0,
+                "ctx_after":  '"...how an LLM works" -> An LLM',
+            },
+            {
+                "ctx_before": '"...how an LLM works" -> An LLM',
+                "candidates": [("is", 0.44), ("works", 0.28), ("learns", 0.16), ("processes", 0.08), ("generates", 0.04)],
+                "winner": 0,
+                "ctx_after":  '"...how an LLM works" -> An LLM is',
+            },
+        ],
+        "s5_loop_note": "-> autoregressive: each selected token conditions the next",
     },
 }
 
@@ -212,10 +248,8 @@ def scene4(self, t):
     tokens = t["s4_tokens"]
     N = len(tokens)
     cell_size = 0.72
-    grid_w = N * cell_size
-    # Shift right to visually center grid+row_labels together (~0.6 = half avg label width + buff)
-    origin = LEFT * (grid_w / 2) + RIGHT * 0.6 + DOWN * 0.15
 
+    # Build grid relative to (0,0) origin — VGroup.move_to() will center everything
     cells = []
     for r in range(N):
         row_cells = []
@@ -226,23 +260,31 @@ def scene4(self, t):
             rect = Rectangle(width=cell_size - 0.04, height=cell_size - 0.04,
                              fill_color=cell_color, fill_opacity=1,
                              stroke_color="#1E293B", stroke_width=1)
-            rect.move_to(origin + RIGHT * (c + 0.5) * cell_size + DOWN * (r + 0.5) * cell_size)
+            rect.move_to(RIGHT * (c + 0.5) * cell_size + DOWN * (r + 0.5) * cell_size)
             pct = int(score * 100)
             val = Text(f"{pct}%", font_size=11, color=WHITE if score > 0.15 else "#334155")
             val.move_to(rect)
             row_cells.append(VGroup(rect, val))
         cells.append(row_cells)
 
+    grid_group = VGroup(*[cells[r][c] for r in range(N) for c in range(N)])
+
     col_labels = VGroup(*[
-        Text(tok, font_size=12, color=GRAY).move_to(origin + RIGHT * (c + 0.5) * cell_size + UP * 0.45)
+        Text(tok, font_size=12, color=GRAY).move_to(
+            RIGHT * (c + 0.5) * cell_size + UP * (cell_size * 0.5 + 0.15)
+        )
         for c, tok in enumerate(tokens)
     ])
-    row_labels = VGroup(*[
-        Text(tok, font_size=12, color=GRAY).next_to(origin + DOWN * (r + 0.5) * cell_size, LEFT, buff=0.15)
-        for r, tok in enumerate(tokens)
-    ])
+
+    row_labels = VGroup(*[Text(tok, font_size=12, color=GRAY) for tok in tokens])
+    for r, lbl in enumerate(row_labels):
+        lbl.next_to(cells[r][0], LEFT, buff=0.15)
+
     axis_q = Text(t["s4_axis_q"], font_size=11, color="#475569").rotate(PI / 2).next_to(row_labels, LEFT, buff=0.1)
     axis_k = Text(t["s4_axis_k"], font_size=11, color="#475569").next_to(col_labels, UP, buff=0.05)
+
+    full_group = VGroup(grid_group, col_labels, row_labels, axis_q, axis_k)
+    full_group.move_to(DOWN * 0.35)
 
     self.play(FadeIn(col_labels), FadeIn(row_labels), run_time=0.6)
     self.play(FadeIn(axis_q), FadeIn(axis_k), run_time=0.4)
@@ -252,58 +294,108 @@ def scene4(self, t):
 
     self.wait(0.5)
 
-    highlight = Rectangle(width=grid_w - 0.04, height=cell_size - 0.04,
+    last_row = VGroup(*cells[N - 1])
+    highlight = Rectangle(width=N * cell_size - 0.04, height=cell_size - 0.04,
                           stroke_color=BRAND_GREEN, stroke_width=2.5, fill_opacity=0)
-    highlight.move_to(origin + RIGHT * grid_w / 2 + DOWN * (N - 0.5) * cell_size)
-    focus_label = Text(t["s4_focus"], font_size=14, color=BRAND_GREEN).shift(DOWN * 3.3)
+    highlight.move_to(last_row.get_center())
+
+    focus_label = Text(t["s4_focus"], font_size=14, color=BRAND_GREEN)
+    focus_label.next_to(full_group, DOWN, buff=0.2)
     self.play(Create(highlight), Write(focus_label), run_time=0.8)
     self.wait(1.2)
 
-    self.play(Write(Text(t["s4_layers"], font_size=14, color=BRAND_BLUE).shift(DOWN * 3.8)))
+    layers_text = Text(t["s4_layers"], font_size=14, color=BRAND_BLUE)
+    layers_text.next_to(focus_label, DOWN, buff=0.15)
+    self.play(Write(layers_text))
     self.wait(2.5)
 
 
 def scene5(self, t):
     self.camera.background_color = DARK_BG
-    title = Text(t["s5_title"], font_size=32, color=WHITE).to_edge(UP, buff=0.5)
+    ROW_H = 0.62
+    BAR_LEFT_X = -1.6
+    BAR_MAX_W = 3.8
+    LIST_TOP_Y = 0.75
+    CURSOR_W = 5.8
+    CURSOR_X = 0.15   # slight right shift so list looks centered
+
+    title = Text(t["s5_title"], font_size=30, color=WHITE).to_edge(UP, buff=0.4)
     self.play(Write(title))
 
-    candidates = t["s5_cands"]
-    bar_colors = [BRAND_GREEN, BRAND_BLUE, BRAND_PURPLE, BRAND_ORANGE, BRAND_RED, GRAY]
+    ctx_header = Text(t["s5_ctx_label"], font_size=13, color="#475569")
+    ctx_header.to_corner(UL, buff=0.7).shift(DOWN * 0.7)
+    self.play(FadeIn(ctx_header))
 
-    self.play(Write(Text(t["s5_prob"], font_size=18, color=GRAY).shift(UP * 2)))
+    prob_header = Text(t["s5_prob_label"], font_size=14, color=GRAY).move_to(UP * 1.15)
+    self.play(FadeIn(prob_header))
 
-    bar_groups = VGroup()
-    for i, ((word, prob), col) in enumerate(zip(candidates, bar_colors)):
-        x = -4.0 + i * 1.55
-        bar_h = prob * 4
-        bar = Rectangle(width=1.0, height=bar_h, fill_color=col, fill_opacity=0.85, stroke_width=0)
-        bar.align_to(ORIGIN + DOWN * 0.3, DOWN).shift(RIGHT * x)
-        word_label = Text(word, font_size=16, color=col).next_to(bar, DOWN, buff=0.1)
-        pct_label = Text(f"{int(prob*100)}%", font_size=14, color=col).next_to(bar, UP, buff=0.1)
-        bar_groups.add(VGroup(bar, word_label, pct_label))
+    ctx_mob = None
 
-    self.play(LaggedStart(*[GrowFromEdge(bg, DOWN) for bg in bar_groups], lag_ratio=0.12), run_time=1.5)
+    for it_idx, it in enumerate(t["s5_iterations"]):
+        ctx_before = it["ctx_before"]
+        candidates = it["candidates"]
+        winner = it["winner"]
+        ctx_after = it["ctx_after"]
+        n = len(candidates)
 
-    win_box = SurroundingRectangle(bar_groups[0], color=BRAND_GREEN, stroke_width=3, buff=0.1)
-    win_text = Text(t["s5_win"], font_size=20, color=BRAND_GREEN).shift(DOWN * 2.3)
-    self.play(Create(win_box), Write(win_text))
-    self.wait(0.8)
+        # Show context (only FadeIn on first iteration; later it persists from prev iter)
+        if it_idx == 0:
+            ctx_mob = Text(ctx_before, font_size=16, color=WHITE)
+            ctx_mob.next_to(ctx_header, DOWN, buff=0.12).align_to(ctx_header, LEFT)
+            self.play(FadeIn(ctx_mob), run_time=0.4)
 
-    self.play(Write(Text(t["s5_gen"], font_size=18, color=GRAY).shift(DOWN * 2.9)))
+        # Build vertical list rows
+        row_groups = []
+        for i, (word, prob) in enumerate(candidates):
+            y = LIST_TOP_Y - i * ROW_H
+            word_mob = Text(word, font_size=17, color=WHITE)
+            word_mob.move_to([BAR_LEFT_X - word_mob.width / 2 - 0.2, y, 0])
+            bar_w = max(prob * BAR_MAX_W, 0.08)
+            bar = Rectangle(width=bar_w, height=0.3,
+                            fill_color=BRAND_BLUE, fill_opacity=0.65, stroke_width=0)
+            bar.move_to([BAR_LEFT_X + bar_w / 2, y, 0])
+            pct_mob = Text(f"{int(prob * 100)}%", font_size=12, color=GRAY)
+            pct_mob.move_to([BAR_LEFT_X + bar_w + 0.12 + pct_mob.width / 2, y, 0])
+            row_groups.append(VGroup(word_mob, bar, pct_mob))
 
-    response_text = ""
-    response_mob = None
-    for w in t["s5_words"]:
-        response_text += w + (" " if w else "")
-        new_mob = Text(response_text.strip(), font_size=22, color=WHITE).shift(DOWN * 3.6)
-        if response_mob is None:
-            self.play(FadeIn(new_mob), run_time=0.3)
-        else:
-            self.play(Transform(response_mob, new_mob), run_time=0.25)
-            self.remove(response_mob)
-        response_mob = new_mob
-    self.wait(2)
+        self.play(LaggedStart(*[FadeIn(rg) for rg in row_groups], lag_ratio=0.1), run_time=0.7)
+
+        # Cursor starts at bottom row, scans upward to winner
+        cursor = Rectangle(
+            width=CURSOR_W, height=ROW_H - 0.08,
+            fill_color=BRAND_GREEN, fill_opacity=0.08,
+            stroke_color="#334155", stroke_width=1.5
+        )
+        cursor.move_to([CURSOR_X, LIST_TOP_Y - (n - 1) * ROW_H, 0])
+        self.play(FadeIn(cursor), run_time=0.1)
+
+        for i in range(n - 2, winner - 1, -1):
+            target_y = LIST_TOP_Y - i * ROW_H
+            speed = 0.1 if i > winner else 0.45
+            self.play(cursor.animate.move_to([CURSOR_X, target_y, 0]), run_time=speed)
+
+        # Highlight winner
+        winner_rect = cursor.copy().set_fill(BRAND_GREEN, opacity=0.2).set_stroke(BRAND_GREEN, width=2.5)
+        self.play(
+            Transform(cursor, winner_rect),
+            row_groups[winner][0].animate.set_color(BRAND_GREEN),
+            run_time=0.25
+        )
+        self.wait(0.4)
+
+        # Update context: fade out old, fade in with appended token
+        new_ctx = Text(ctx_after, font_size=16, color=WHITE)
+        new_ctx.next_to(ctx_header, DOWN, buff=0.12).align_to(ctx_header, LEFT)
+        self.play(FadeOut(ctx_mob), FadeIn(new_ctx), run_time=0.4)
+        ctx_mob = new_ctx
+
+        # Fade list + cursor before next iteration
+        self.play(FadeOut(VGroup(*row_groups), cursor), run_time=0.35)
+        self.wait(0.2)
+
+    loop_note = Text(t["s5_loop_note"], font_size=14, color=BRAND_BLUE).move_to(DOWN * 0.5)
+    self.play(Write(loop_note))
+    self.wait(2.5)
 
 
 # ─── Individual scenes (FR, for dev/preview) ──────────────────────────────────
