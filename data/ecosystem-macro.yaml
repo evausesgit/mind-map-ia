@@ -661,102 +661,120 @@ nodes:
         La mémoire est le différenciateur clé entre un chatbot sans état et un agent IA persistant.
 
   # ── LAYER 5 · DEVELOPER TOOLS ───────────────
+  # Structure: a nested taxonomy of container boxes.
+  #   developer_tools (outer)
+  #   ├── agentic_coding_assistants (inner)
+  #   │    ├── cli_agents
+  #   │    └── ide_agents
+  #   ├── coding_copilots
+  #   └── monitoring
 
-  - id: orch_frameworks
+  - id: developer_tools
     label:
-      en: "Orchestration\nFrameworks"
-      fr: "Frameworks\nd'Orchestration"
+      en: "Developer Tools"
+      fr: "Outils Développeurs"
     layer: 5
     category: tooling
-    status: evolving
-    since: "2022"
-    link: "https://www.langchain.com"
+    container: true
+    status: stable
+    since: "2023"
     description:
       en: >
-        Libraries that help chain LLM calls, manage memory, and build complex pipelines.
-        Handle the plumbing so developers focus on logic.
-        Examples: LangChain, LlamaIndex, LangGraph, CrewAI.
+        The tooling layer for developers building with LLMs.
+        Organized as a capability taxonomy rather than a vendor inventory.
       fr: >
-        Bibliothèques qui permettent d'enchaîner les appels LLM, gérer la mémoire et construire des pipelines complexes.
-        Gèrent la plomberie pour que les développeurs se concentrent sur la logique métier.
-        Exemples : LangChain, LlamaIndex, LangGraph, CrewAI.
+        La couche d'outillage pour les développeurs qui construisent avec des LLM.
+        Organisée comme une taxonomie de capacités, pas comme un inventaire de produits.
 
-  - id: ai_coding
+  - id: agentic_coding_assistants
     label:
-      en: "AI Coding\nAssistants CLI"
-      fr: "Assistants Code IA\nCLI"
+      en: "Agentic Coding Assistants"
+      fr: "Assistants de Code Agentiques"
     layer: 5
-    drilldown: "ai-coding-assistants.html"
     category: tooling
+    container: true
+    parent: developer_tools
     status: evolving
-    since: "2023"
+    since: "2024"
+    description:
+      en: >
+        Autonomous coding agents that plan, execute and iterate on tasks
+        with minimal human intervention — the evolution beyond reactive copilots.
+      fr: >
+        Agents de code autonomes qui planifient, exécutent et itèrent sur des tâches
+        avec une intervention humaine minimale — l'évolution au-delà des copilots réactifs.
+
+  - id: cli_agents
+    label:
+      en: "CLI Agents"
+      fr: "Agents CLI"
+    layer: 5
+    category: tooling
+    parent: agentic_coding_assistants
+    status: evolving
+    since: "2024"
     link: "https://docs.anthropic.com/en/docs/claude-code/overview"
     description:
       en: >
-        Terminal-based AI coding assistants that operate via command line.
-        Work on entire codebases, run commands, manage files autonomously.
-        Examples: Claude Code, Aider, Codex CLI.
+        Terminal-based autonomous coding agents: Claude Code, Aider, Codex CLI, OpenCode.
+        Operate on entire codebases, run commands, manage files autonomously.
       fr: >
-        Assistants de code IA opérant en ligne de commande.
-        Travaillent sur des bases de code entières, exécutent des commandes, gèrent des fichiers de façon autonome.
-        Exemples : Claude Code, Aider, Codex CLI.
+        Agents de code autonomes en ligne de commande : Claude Code, Aider, Codex CLI, OpenCode.
+        Opèrent sur des bases de code entières, exécutent des commandes, gèrent les fichiers de façon autonome.
 
-  - id: ai_coding_ide
+  - id: ide_agents
     label:
-      en: "AI Coding\nAssistants in IDE"
-      fr: "Assistants Code IA\nen IDE"
+      en: "IDE Agents"
+      fr: "Agents IDE"
     layer: 5
     category: tooling
+    parent: agentic_coding_assistants
     status: evolving
-    since: "2021"
+    since: "2024"
     link: "https://www.cursor.com"
     description:
       en: >
-        AI coding assistants integrated directly into the code editor.
-        Provide inline suggestions, chat panels, refactoring — within the IDE experience.
-        Examples: Cursor, GitHub Copilot, Windsurf.
+        Autonomous coding agents embedded directly in the IDE: Cursor, Windsurf.
+        Drive multi-step edits across the workspace from natural-language intent.
       fr: >
-        Assistants de code IA intégrés directement dans l'éditeur de code.
-        Proposent des suggestions inline, des panneaux de chat, du refactoring — dans l'environnement IDE.
-        Exemples : Cursor, GitHub Copilot, Windsurf.
+        Agents de code autonomes intégrés directement dans l'IDE : Cursor, Windsurf.
+        Pilotent des éditions multi-étapes à travers le workspace à partir d'une intention en langage naturel.
 
-  - id: eval_obs
+  - id: coding_copilots
     label:
-      en: "Eval &\nObservability"
-      fr: "Éval &\nObservabilité"
+      en: "Coding Assistants\n(Copilots)"
+      fr: "Assistants de Code\n(Copilots)"
     layer: 5
     category: tooling
+    parent: developer_tools
+    status: stable
+    since: "2021"
+    link: "https://github.com/features/copilot"
+    description:
+      en: >
+        Reactive IDE-integrated assistants: GitHub Copilot, Amazon Q Developer, Gemini Code Assist.
+        Suggest completions and answer inline — the developer stays in the driver seat.
+      fr: >
+        Assistants réactifs intégrés à l'IDE : GitHub Copilot, Amazon Q Developer, Gemini Code Assist.
+        Proposent des complétions et répondent inline — le développeur reste aux commandes.
+
+  - id: monitoring
+    label:
+      en: "Monitoring /\nEval & Observability"
+      fr: "Monitoring /\nÉval & Observabilité"
+    layer: 5
+    category: tooling
+    parent: developer_tools
     status: evolving
     since: "2023"
     link: "https://www.langchain.com/langsmith"
     description:
       en: >
-        Tools to monitor, trace, evaluate and debug LLM applications in production.
-        Answer: "Is my app actually working well?"
-        Examples: LangSmith, Helicone, Arize, Braintrust.
+        Tools to trace, evaluate and debug LLM applications in production:
+        LangSmith, Helicone, Arize, Braintrust.
       fr: >
-        Outils pour monitorer, tracer, évaluer et déboguer les applications LLM en production.
-        Répondent à la question : "Mon application fonctionne-t-elle vraiment bien ?"
-        Exemples : LangSmith, Helicone, Arize, Braintrust.
-
-  - id: model_hubs
-    label:
-      en: "Model Hubs"
-      fr: "Hubs de Modèles"
-    layer: 5
-    category: tooling
-    status: stable
-    since: "2018"
-    link: "https://huggingface.co/models"
-    description:
-      en: >
-        Platforms to discover, download, share and run open models.
-        The "GitHub of AI models". Central to the open-weights ecosystem.
-        Examples: HuggingFace, Ollama, Replicate.
-      fr: >
-        Plateformes pour découvrir, télécharger, partager et faire tourner des modèles ouverts.
-        Le "GitHub des modèles IA". Central dans l'écosystème open weights.
-        Exemples : HuggingFace, Ollama, Replicate.
+        Outils pour tracer, évaluer et déboguer les applications LLM en production :
+        LangSmith, Helicone, Arize, Braintrust.
 
 edges:
   - from: transformer
@@ -871,29 +889,13 @@ edges:
     label: "combined with"
     type: uses
   - from: rag_pattern
-    to: orch_frameworks
-    label: "built with"
-    type: implemented_by
-  - from: agents_pattern
-    to: orch_frameworks
-    label: "built with"
-    type: implemented_by
-  - from: rag_pattern
-    to: eval_obs
+    to: monitoring
     label: "monitored by"
     type: uses
   - from: agents_pattern
-    to: eval_obs
+    to: monitoring
     label: "monitored by"
     type: uses
-  - from: open_weights
-    to: model_hubs
-    label: "distributed via"
-    type: uses
-  - from: language_model
-    to: ai_coding
-    label: "powers"
-    type: powers
   - from: prompt_eng
     to: public_api
     label: "reaches model through"
@@ -934,7 +936,3 @@ edges:
     to: agents_pattern
     label: "core capability of"
     type: part_of
-  - from: language_model
-    to: ai_coding_ide
-    label: "powers"
-    type: powers

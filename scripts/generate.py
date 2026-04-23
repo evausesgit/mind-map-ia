@@ -159,15 +159,57 @@ def build_elements(data, data_file=None):
 
     elements = []
 
+    def make_node_data(node, layer_id):
+        nd = {
+            "id": node["id"],
+            "label": t(node.get("label", ""), "en"),  # default lang
+            "category": node["category"],
+            "subcategory": node.get("subcategory", ""),
+            "node_type": node.get("node_type", ""),
+            "layer": node["layer"],
+            "status": node.get("status", "stable"),
+            "since": str(node.get("since", "")),
+            "link": node.get("link", ""),
+            "ref": node.get("ref", ""),
+            "drilldown": node.get("drilldown", ""),
+            "color": category_colors.get(node["category"], "#BDC3C7"),
+            "layerLabel": t(
+                layer_labels.get(layer_id, f"Layer {layer_id}"), "en"
+            ),
+        }
+        if node.get("parent"):
+            nd["parent"] = node["parent"]
+        for lang in LANGS:
+            nd[f"label_{lang}"] = t(node.get("label", ""), lang)
+            nd[f"description_{lang}"] = clean(
+                t(node.get("description", ""), lang)
+            )
+            nd[f"layerLabel_{lang}"] = t(
+                layer_labels.get(layer_id, f"Layer {layer_id}"), lang
+            )
+        return nd
+
     # Add actual nodes with absolute positions (horizontal layout)
     for layer_id, nodes in sorted(by_layer.items()):
+        # Containers (compound nodes) — no position, Cytoscape auto-sizes around children
+        containers = [n for n in nodes if n.get("container")]
+        leaves = [n for n in nodes if not n.get("container")]
+
+        for node in containers:
+            elements.append(
+                {
+                    "data": make_node_data(node, layer_id),
+                    "classes": "container",
+                }
+            )
+
         # Layer 2: split providers (right col) vs models (left col)
         if layer_id == 2:
-            providers = [n for n in nodes if n.get("node_type") == "provider"]
-            models = [n for n in nodes if n.get("node_type") != "provider"]
+            providers = [n for n in leaves if n.get("node_type") == "provider"]
+            models = [n for n in leaves if n.get("node_type") != "provider"]
             buckets = [(LAYER_X_PROVIDERS, providers), (LAYER_X[2], models)]
         else:
-            buckets = [(LAYER_X[layer_id], nodes)]
+            buckets = [(LAYER_X[layer_id], leaves)]
 
         for x_pos, bucket in buckets:
             x_pos = int(x_pos * col_scale)
@@ -181,39 +223,12 @@ def build_elements(data, data_file=None):
                 x_pos_final = saved["x"] if saved else default_x
                 y = saved["y"] if saved else default_y
 
-                # Build multilingual data fields
-                node_data = {
-                    "id": node["id"],
-                    "label": t(node.get("label", ""), "en"),  # default lang
-                    "category": node["category"],
-                    "subcategory": node.get("subcategory", ""),
-                    "node_type": node.get("node_type", ""),
-                    "layer": node["layer"],
-                    "status": node["status"],
-                    "since": str(node["since"]),
-                    "link": node.get("link", ""),
-                    "ref": node.get("ref", ""),
-                    "drilldown": node.get("drilldown", ""),
-                    "color": category_colors.get(node["category"], "#BDC3C7"),
-                    "layerLabel": t(
-                        layer_labels.get(layer_id, f"Layer {layer_id}"), "en"
-                    ),
-                }
-                for lang in LANGS:
-                    node_data[f"label_{lang}"] = t(node.get("label", ""), lang)
-                    node_data[f"description_{lang}"] = clean(
-                        t(node.get("description", ""), lang)
-                    )
-                    node_data[f"layerLabel_{lang}"] = t(
-                        layer_labels.get(layer_id, f"Layer {layer_id}"), lang
-                    )
-
                 classes = f"status-{node['status']}"
                 if node.get("drilldown"):
                     classes += " has-drilldown"
                 elements.append(
                     {
-                        "data": node_data,
+                        "data": make_node_data(node, layer_id),
                         "position": {"x": x_pos_final, "y": y},
                         "classes": classes,
                     }
@@ -1548,6 +1563,30 @@ const CY_STYLE = [
         "background-opacity": 1,
       }}
     }},
+    // Compound (container / parent) nodes — nested taxonomy boxes
+    {{
+      selector: ":parent",
+      style: {{
+        "background-color": "data(color)",
+        "background-opacity": 0.06,
+        "border-width": 2,
+        "border-color": "data(color)",
+        "border-opacity": 0.55,
+        "border-style": "solid",
+        "shape": "round-rectangle",
+        "label": "data(label)",
+        "text-valign": "top",
+        "text-halign": "center",
+        "text-margin-y": 8,
+        "font-size": "14px",
+        "font-weight": "700",
+        "color": "#1A1A2E",
+        "text-wrap": "wrap",
+        "padding": "26px",
+        "shadow-blur": 0,
+        "shadow-opacity": 0,
+      }}
+    }},
     // Edges
     {{
       selector: "edge",
@@ -2101,9 +2140,11 @@ def generate_slides_html(data):
 
     STATUS_EMOJI = {"stable": "🟢", "evolving": "🟡", "emerging": "🔵", "deprecated": "🔴"}
 
-    # Group nodes by layer
+    # Group nodes by layer — skip container (compound) nodes, they're visual groupings only
     by_layer = {}
     for node in data["nodes"]:
+        if node.get("container"):
+            continue
         by_layer.setdefault(node["layer"], []).append(node)
 
     def make_slides(lang):
