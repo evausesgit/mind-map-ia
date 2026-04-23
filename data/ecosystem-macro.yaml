@@ -20,11 +20,11 @@ layers:
     en: "ACCESS & DEPLOYMENT"
     fr: "ACCÈS & DÉPLOIEMENT"
   4:
-    en: "APPLICATION PATTERNS"
-    fr: "PATTERNS APPLICATIFS"
+    en: "ARCHITECTURE PATTERNS"
+    fr: "PATTERNS D'ARCHITECTURE"
   5:
-    en: "TOOLING ECOSYSTEM"
-    fr: "ÉCOSYSTÈME D'OUTILS"
+    en: "DEVELOPER TOOLS"
+    fr: "OUTILS DÉVELOPPEURS"
 
 categories:
   - id: concepts
@@ -56,8 +56,8 @@ categories:
 
   - id: patterns
     label:
-      en: "Application Patterns"
-      fr: "Patterns Applicatifs"
+      en: "Architecture Patterns"
+      fr: "Patterns d'Architecture"
     color: "#58D68D"
     description:
       en: "Architectural patterns to build AI-powered applications"
@@ -65,8 +65,8 @@ categories:
 
   - id: tooling
     label:
-      en: "Tooling Ecosystem"
-      fr: "Écosystème d'Outils"
+      en: "Developer Tools"
+      fr: "Outils Développeurs"
     color: "#5DADE2"
     description:
       en: "Categories of tools developers use to build with LLMs"
@@ -281,6 +281,73 @@ nodes:
         Les modèles frontier modernes sont nativement multimodaux.
         Étend les LLM bien au-delà des interactions textuelles.
 
+  - id: quantization
+    label:
+      en: "Quantization"
+      fr: "Quantisation"
+    layer: 1
+    category: concepts
+    status: evolving
+    since: "2023"
+    link: "https://huggingface.co/docs/optimum/concept_guides/quantization"
+    description:
+      en: |
+        Reducing a model's numerical precision (e.g. FP32 → INT8 or INT4) to shrink its size and memory footprint.
+        A 70B model at full precision needs ~140 GB VRAM. At 4-bit quantization: ~35 GB — runnable on a single GPU.
+        Trade-off: slight quality loss, major hardware savings.
+        Key formats: GGUF (llama.cpp), AWQ, GPTQ, bitsandbytes.
+      fr: |
+        Réduire la précision numérique d'un modèle (ex. FP32 → INT8 ou INT4) pour diminuer sa taille et son empreinte mémoire.
+        Un modèle 70B en pleine précision nécessite ~140 Go de VRAM. En quantisation 4 bits : ~35 Go — exécutable sur un seul GPU.
+        Compromis : légère perte de qualité, économies matérielles considérables.
+        Formats clés : GGUF (llama.cpp), AWQ, GPTQ, bitsandbytes.
+
+  - id: rlhf
+    label:
+      en: "RLHF"
+      fr: "RLHF"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2022"
+    ref: "https://arxiv.org/abs/1706.03741"
+    description:
+      en: |
+        Reinforcement Learning from Human Feedback.
+        The technique that transforms a raw pre-trained model into a useful assistant.
+        Process: human annotators rank model outputs → a reward model learns those preferences → the LLM is fine-tuned to maximise the reward.
+        Used to train ChatGPT, Claude, Gemini. The key step that makes models helpful, honest and safe.
+        Variants: RLHF, RLAIF (AI feedback), DPO (simpler, no RL loop).
+      fr: |
+        Apprentissage par renforcement à partir des retours humains.
+        La technique qui transforme un modèle pré-entraîné brut en assistant utile.
+        Processus : des annotateurs humains classent les sorties du modèle → un modèle de récompense apprend ces préférences → le LLM est fine-tuné pour maximiser la récompense.
+        Utilisé pour entraîner ChatGPT, Claude, Gemini. L'étape clé qui rend les modèles utiles, honnêtes et sûrs.
+        Variantes : RLHF, RLAIF (feedback IA), DPO (plus simple, sans boucle RL).
+
+  - id: temperature
+    label:
+      en: "Temperature"
+      fr: "Température"
+    layer: 1
+    category: concepts
+    status: stable
+    since: "2017"
+    link: "https://platform.openai.com/docs/api-reference/chat/create#chat-create-temperature"
+    description:
+      en: |
+        A parameter (0–2) that controls the randomness of model outputs.
+        Low (0): deterministic, always the most probable token — good for code, structured data.
+        High (1+): creative and varied — good for brainstorming, writing.
+        Related parameters: top_p (nucleus sampling), top_k.
+        Set at inference time. Has no effect on the model weights.
+      fr: |
+        Un paramètre (0–2) qui contrôle le caractère aléatoire des sorties du modèle.
+        Bas (0) : déterministe, toujours le token le plus probable — idéal pour le code, les données structurées.
+        Élevé (1+) : créatif et varié — idéal pour le brainstorming, l'écriture.
+        Paramètres associés : top_p (nucleus sampling), top_k.
+        Défini au moment de l'inférence. N'affecte pas les poids du modèle.
+
   # ── LAYER 2 · MODEL TAXONOMY ─────────────────
 
   - id: frontier_models
@@ -327,26 +394,6 @@ nodes:
         Souvent appelés "open source" (terme courant), mais plus précisément "open weights" :
         les données d'entraînement et le code complet ne sont généralement pas publiés.
         Exemples : Llama, Mistral, DeepSeek, Qwen, Gemma, Phi.
-
-  - id: embedding_models
-    label:
-      en: "Embedding Models"
-      fr: "Modèles d'Embedding"
-    layer: 2
-    category: model_types
-    status: stable
-    since: "2022"
-    link: "https://platform.openai.com/docs/guides/embeddings"
-    ref: "https://huggingface.co/spaces/mteb/leaderboard"
-    description:
-      en: >
-        Specialized models that convert text into vectors (not text generators).
-        Essential building block for semantic search and RAG pipelines.
-        Examples: text-embedding-3, Voyage-3, nomic-embed.
-      fr: >
-        Modèles spécialisés qui convertissent du texte en vecteurs (pas des générateurs de texte).
-        Brique indispensable pour la recherche sémantique et les pipelines RAG.
-        Exemples : text-embedding-3, Voyage-3, nomic-embed.
 
   # ── LAYER 3 · ACCESS & DEPLOYMENT ───────────
 
@@ -588,7 +635,32 @@ nodes:
         Rend les sorties LLM fiables et directement exploitables par du code.
         Indispensable en production. Aussi appelé "structured outputs".
 
-  # ── LAYER 5 · TOOLING ECOSYSTEM ─────────────
+  - id: memory_pattern
+    label:
+      en: "Memory"
+      fr: "Mémoire"
+    layer: 4
+    category: patterns
+    status: evolving
+    since: "2024"
+    link: "https://docs.langchain.com/docs/components/memory"
+    description:
+      en: |
+        The ability of an AI system to retain and retrieve information across interactions.
+        Three types:
+        - In-context (short-term): information injected directly into the prompt window.
+        - External (long-term): information stored in a database, retrieved when needed (vector store, key-value).
+        - Episodic: structured summaries of past sessions, compressed and re-injected.
+        Memory is the key differentiator between a stateless chatbot and a persistent AI agent.
+      fr: |
+        La capacité d'un système IA à conserver et retrouver des informations entre les interactions.
+        Trois types :
+        - En contexte (court terme) : informations injectées directement dans la fenêtre de prompt.
+        - Externe (long terme) : informations stockées en base de données, récupérées à la demande (vector store, clé-valeur).
+        - Épisodique : résumés structurés de sessions passées, compressés et ré-injectés.
+        La mémoire est le différenciateur clé entre un chatbot sans état et un agent IA persistant.
+
+  # ── LAYER 5 · DEVELOPER TOOLS ───────────────
 
   - id: orch_frameworks
     label:
@@ -611,42 +683,42 @@ nodes:
 
   - id: ai_coding
     label:
-      en: "AI Coding\nAssistants"
-      fr: "Assistants de Code IA"
+      en: "AI Coding\nAssistants CLI"
+      fr: "Assistants Code IA\nCLI"
     layer: 5
     drilldown: "ai-coding-assistants.html"
+    category: tooling
+    status: evolving
+    since: "2023"
+    link: "https://docs.anthropic.com/en/docs/claude-code/overview"
+    description:
+      en: >
+        Terminal-based AI coding assistants that operate via command line.
+        Work on entire codebases, run commands, manage files autonomously.
+        Examples: Claude Code, Aider, Codex CLI.
+      fr: >
+        Assistants de code IA opérant en ligne de commande.
+        Travaillent sur des bases de code entières, exécutent des commandes, gèrent des fichiers de façon autonome.
+        Exemples : Claude Code, Aider, Codex CLI.
+
+  - id: ai_coding_ide
+    label:
+      en: "AI Coding\nAssistants in IDE"
+      fr: "Assistants Code IA\nen IDE"
+    layer: 5
     category: tooling
     status: evolving
     since: "2021"
     link: "https://www.cursor.com"
     description:
       en: >
-        Tools that integrate LLMs directly into the development workflow.
-        Generate, explain, refactor code. Dramatically boost developer productivity.
-        Examples: Cursor, GitHub Copilot, Claude Code.
+        AI coding assistants integrated directly into the code editor.
+        Provide inline suggestions, chat panels, refactoring — within the IDE experience.
+        Examples: Cursor, GitHub Copilot, Windsurf.
       fr: >
-        Outils qui intègrent les LLM directement dans le workflow de développement.
-        Génèrent, expliquent, refactorisent du code. Boostent considérablement la productivité.
-        Exemples : Cursor, GitHub Copilot, Claude Code.
-
-  - id: vector_dbs_tool
-    label:
-      en: "Vector Databases"
-      fr: "Bases Vectorielles"
-    layer: 5
-    category: tooling
-    status: stable
-    since: "2021"
-    link: "https://www.pinecone.io/learn/vector-database/"
-    description:
-      en: >
-        Databases optimized to store and query embeddings by semantic similarity.
-        The storage backbone of RAG pipelines.
-        Examples: Pinecone, Chroma, Weaviate, pgvector.
-      fr: >
-        Bases de données optimisées pour stocker et interroger des embeddings par similarité sémantique.
-        L'épine dorsale du stockage dans les pipelines RAG.
-        Exemples : Pinecone, Chroma, Weaviate, pgvector.
+        Assistants de code IA intégrés directement dans l'éditeur de code.
+        Proposent des suggestions inline, des panneaux de chat, du refactoring — dans l'environnement IDE.
+        Exemples : Cursor, GitHub Copilot, Windsurf.
 
   - id: eval_obs
     label:
@@ -710,8 +782,8 @@ edges:
     label: "manifests as"
     type: part_of
   - from: embedding_vectors
-    to: embedding_models
-    label: "produced by"
+    to: rag_pattern
+    label: "enables"
     type: enables
   - from: training_alignment
     to: frontier_models
@@ -748,10 +820,6 @@ edges:
   - from: open_weights
     to: local_edge
     label: "runs on"
-    type: accesses
-  - from: embedding_models
-    to: public_api
-    label: "accessed via"
     type: accesses
   - from: open_weights
     to: finetuning_pattern
@@ -826,14 +894,6 @@ edges:
     to: ai_coding
     label: "powers"
     type: powers
-  - from: embedding_models
-    to: vector_dbs_tool
-    label: "populates"
-    type: enables
-  - from: vector_dbs_tool
-    to: rag_pattern
-    label: "powers retrieval in"
-    type: enables
   - from: prompt_eng
     to: public_api
     label: "reaches model through"
@@ -854,3 +914,27 @@ edges:
     to: frontier_models
     label: "native to"
     type: part_of
+  - from: quantization
+    to: inference
+    label: "optimizes"
+    type: enables
+  - from: quantization
+    to: local_edge
+    label: "enables"
+    type: enables
+  - from: rlhf
+    to: training_alignment
+    label: "part of"
+    type: part_of
+  - from: temperature
+    to: inference
+    label: "controls"
+    type: part_of
+  - from: memory_pattern
+    to: agents_pattern
+    label: "core capability of"
+    type: part_of
+  - from: language_model
+    to: ai_coding_ide
+    label: "powers"
+    type: powers

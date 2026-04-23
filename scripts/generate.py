@@ -1078,7 +1078,7 @@ def generate_html(data, elements, maps=None, current_output=""):
       <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
     </div>
   </div>
-  <div class="meta hint-bar" id="hint-text">Click a node · Double-click to explore · Scroll to zoom · Drag to pan</div>
+  <div class="meta hint-bar" id="hint-text">Click a node to explore · Scroll to zoom · Drag to pan</div>
 </header>
 
 <div class="main">
@@ -1241,8 +1241,8 @@ function setLang(newLang) {{
 
   // Hint text
   document.getElementById('hint-text').textContent =
-    lang === 'fr' ? 'Cliquez sur un nœud · Double-cliquez pour explorer · Molette pour zoomer · Glisser pour naviguer'
-                  : 'Click a node · Double-click to explore · Scroll to zoom · Drag to pan';
+    lang === 'fr' ? 'Cliquez sur un nœud pour explorer · Molette pour zoomer · Glisser pour naviguer'
+                  : 'Click a node to explore · Scroll to zoom · Drag to pan';
 
   // Legend
   document.getElementById('legend-en').style.display = lang === 'en' ? '' : 'none';
@@ -1933,7 +1933,7 @@ function showPanel(node) {{
   const drilldownHint = document.getElementById("ph-drilldown-hint");
   if (DRILLDOWN_DATA[d.id]) {{
     drilldownEl.style.display = "block";
-    drilldownHint.textContent = lang === "fr" ? "↗ Double-cliquez pour explorer" : "↗ Double-click to explore";
+    drilldownHint.textContent = lang === "fr" ? "↗ Cliquez pour explorer" : "↗ Click to explore";
     drilldownHint.onclick = () => {{
       const dd = DRILLDOWN_DATA[d.id];
       if (dd) showDrilldown(dd, d[`label_${{lang}}`] || d.label, d.color);
@@ -1959,20 +1959,13 @@ cy.on("tap", "node", function(evt) {{
   node.addClass("highlighted");
 }});
 
-// ── Node double-tap → drill-down inline ──────
-let _tapTimer = null, _lastTapNode = null;
+// ── Node tap → drill-down inline (single click) ──────
 cy.on("tap", "node", function(evt) {{
   const node = evt.target;
   if (!DRILLDOWN_DATA[node.id()]) return;
-  if (_lastTapNode === node.id() && _tapTimer) {{
-    clearTimeout(_tapTimer); _tapTimer = null; _lastTapNode = null;
-    showDrilldown(DRILLDOWN_DATA[node.id()],
-      node.data(`label_${{lang}}`) || node.data("label"),
-      node.data("color"));
-  }} else {{
-    _lastTapNode = node.id();
-    _tapTimer = setTimeout(() => {{ _tapTimer = null; _lastTapNode = null; }}, 350);
-  }}
+  showDrilldown(DRILLDOWN_DATA[node.id()],
+    node.data(`label_${{lang}}`) || node.data("label"),
+    node.data("color"));
 }});
 
 let cy2 = null;
