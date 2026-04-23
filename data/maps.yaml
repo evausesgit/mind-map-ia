@@ -144,3 +144,12 @@ links:
       en: "Independent analysis of AI — choose the best model and provider for your use case"
       fr: "Analyse indépendante de l'IA — choisir le meilleur modèle et fournisseur pour votre cas d'usage"
     url: "https://artificialanalysis.ai/"
+  - id: epoch-ai
+    icon: "📈"
+    title:
+      en: "Epoch AI"
+      fr: "Epoch AI"
+    description:
+      en: "Research institute studying AI progress — trends in compute, data, and capabilities"
+      fr: "Institut de recherche sur la progression de l'IA — tendances en calcul, données et capacités"
+    url: "https://epoch.ai/"
