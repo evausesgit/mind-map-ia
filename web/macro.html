@@ -2592,7 +2592,9 @@ const CY_STYLE = [
         "background-opacity": 1,
       }
     },
-    // Compound (container / parent) nodes — nested taxonomy boxes
+    // Compound (container / parent) nodes — nested taxonomy boxes.
+    // Label styled like HTML cat-box labels: small, uppercase, coloured,
+    // sitting on the top border with a canvas-coloured background.
     {
       selector: ":parent",
       style: {
@@ -2602,15 +2604,21 @@ const CY_STYLE = [
         "border-color": "data(color)",
         "border-opacity": 0.55,
         "border-style": "solid",
+        "border-radius": 12,
         "shape": "round-rectangle",
         "label": "data(label)",
         "text-valign": "top",
         "text-halign": "center",
-        "text-margin-y": 8,
-        "font-size": "14px",
+        "text-margin-y": -8,
+        "font-size": "10px",
         "font-weight": "700",
-        "color": "#1A1A2E",
-        "text-wrap": "wrap",
+        "text-transform": "uppercase",
+        "color": "data(color)",
+        "text-background-color": "#F8F9FA",
+        "text-background-opacity": 1,
+        "text-background-padding": "4px",
+        "text-background-shape": "round-rectangle",
+        "text-wrap": "none",
         "padding": "26px",
         "shadow-blur": 0,
         "shadow-opacity": 0,
