@@ -2876,6 +2876,9 @@ function drawCategoryBoxes() {
   CATEGORIES.forEach(cat => {
     const nodes = cy.nodes('[category = "' + cat.id + '"]');
     if (nodes.length === 0) return;
+    // If this category already has a compound container, skip — that
+    // compound is the visual wrapper for the category (avoids duplicate label).
+    if (nodes.some(n => n.isParent())) return;
     const bb = nodes.boundingBox();
     const pad = 24;
     const x = (bb.x1 - pad) * zoom + pan.x;
