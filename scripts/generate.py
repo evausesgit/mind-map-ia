@@ -1582,7 +1582,7 @@ const CY_STYLE = [
         "text-halign": "center",
         "text-margin-y": -8,
         "font-family": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        "font-size": "10px",
+        "font-size": "12px",
         "font-weight": "700",
         "text-transform": "uppercase",
         "letter-spacing": 1,
@@ -2000,7 +2000,9 @@ cy.on("tap", "node", function(evt) {{
   const node = evt.target;
   showPanel(node);
   if (cy2) cy2.elements().removeClass("dimmed highlighted");
-  cy.elements().addClass("dimmed");
+  // Don't dim compound parents — their opacity cascades to children,
+  // making the clicked card appear transparent inside a faded container.
+  cy.elements().not(":parent").addClass("dimmed");
   node.removeClass("dimmed");
   const connected = node.connectedEdges();
   connected.removeClass("dimmed").addClass("highlighted");
