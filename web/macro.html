@@ -1452,6 +1452,130 @@ const elements = [
   },
   {
     "data": {
+      "id": "arch_patterns",
+      "label": "Architecture Patterns",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2023",
+      "link": "",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "label_en": "Architecture Patterns",
+      "description_en": "The architectural patterns used to build AI-powered applications. Organized in four capability groups: context management, tool connectivity, agentic systems, and output control.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "Patterns d'Architecture",
+      "description_fr": "Les patterns architecturaux pour construire des applications IA. Organis\u00e9s en quatre groupes : gestion du contexte, connectivit\u00e9 des outils, syst\u00e8mes agentiques et contr\u00f4le des sorties.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "classes": "container"
+  },
+  {
+    "data": {
+      "id": "ctx_knowledge",
+      "label": "Context & Knowledge",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2023",
+      "link": "",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "arch_patterns",
+      "label_en": "Context & Knowledge",
+      "description_en": "Patterns for managing what the model knows and remembers: retrieving external data, engineering the context window, and persisting memory.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "Contexte & Connaissance",
+      "description_fr": "Patterns pour g\u00e9rer ce que le mod\u00e8le sait et retient : r\u00e9cup\u00e9ration de donn\u00e9es externes, ing\u00e9nierie du contexte et persistance de la m\u00e9moire.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "classes": "container"
+  },
+  {
+    "data": {
+      "id": "action_tools",
+      "label": "Action & Tools",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "stable",
+      "since": "2023",
+      "link": "",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "arch_patterns",
+      "label_en": "Action & Tools",
+      "description_en": "Patterns for connecting LLMs to the outside world: calling functions, running code, querying databases, browsing the web.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "Action & Outils",
+      "description_fr": "Patterns pour connecter les LLM au monde ext\u00e9rieur : appel de fonctions, ex\u00e9cution de code, requ\u00eates bases de donn\u00e9es, navigation web.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "classes": "container"
+  },
+  {
+    "data": {
+      "id": "agentic_systems",
+      "label": "Agentic Systems",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "evolving",
+      "since": "2023",
+      "link": "",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "arch_patterns",
+      "label_en": "Agentic Systems",
+      "description_en": "Patterns for building systems that act autonomously: single agents, structured workflows, multi-agent coordination, and human oversight.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "Syst\u00e8mes Agentiques",
+      "description_fr": "Patterns pour construire des syst\u00e8mes qui agissent de fa\u00e7on autonome : agents simples, workflows structur\u00e9s, coordination multi-agents et supervision humaine.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "classes": "container"
+  },
+  {
+    "data": {
+      "id": "output_control",
+      "label": "Output & Control",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "evolving",
+      "since": "2023",
+      "link": "",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "arch_patterns",
+      "label_en": "Output & Control",
+      "description_en": "Patterns for making LLM outputs reliable, safe and measurable: structured formats, safety guardrails, and continuous evaluation loops.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "Sorties & Contr\u00f4le",
+      "description_fr": "Patterns pour rendre les sorties LLM fiables, s\u00fbres et mesurables : formats structur\u00e9s, garde-fous de s\u00e9curit\u00e9 et boucles d'\u00e9valuation continues.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "classes": "container"
+  },
+  {
+    "data": {
       "id": "rag_pattern",
       "label": "RAG",
       "category": "patterns",
@@ -1465,6 +1589,7 @@ const elements = [
       "drilldown": "rag-pattern.html",
       "color": "#58D68D",
       "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "ctx_knowledge",
       "label_en": "RAG",
       "description_en": "Retrieval-Augmented Generation. At query time, retrieve relevant documents from a knowledge base and inject them into the prompt. Solves knowledge cutoff and hallucination on specific data. Very widely adopted.",
       "layerLabel_en": "ARCHITECTURE PATTERNS",
@@ -1480,31 +1605,61 @@ const elements = [
   },
   {
     "data": {
-      "id": "agents_pattern",
-      "label": "AI Agents",
+      "id": "context_engineering",
+      "label": "Context Engineering",
       "category": "patterns",
       "subcategory": "",
       "node_type": "",
       "layer": 4,
       "status": "evolving",
-      "since": "2023",
-      "link": "https://www.anthropic.com/research/building-effective-agents",
-      "ref": "https://arxiv.org/abs/2309.07864",
-      "drilldown": "ai-agents.html",
+      "since": "2024",
+      "link": "https://www.anthropic.com/engineering/context-windows",
+      "ref": "",
+      "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "ARCHITECTURE PATTERNS",
-      "label_en": "AI Agents",
-      "description_en": "Systems where an LLM autonomously plans, calls tools, and iterates until a goal is achieved. Shift from \"Q&A\" to \"autonomous task completion\". The central paradigm of 2024-2025.",
+      "parent": "ctx_knowledge",
+      "label_en": "Context Engineering",
+      "description_en": "The deliberate practice of managing what goes into the context window.\nAs context windows grow (200K\u20131M tokens), what you put in \u2014 and how \u2014 becomes\na key engineering decision.\nTechniques: prompt compression, few-shot selection, conversation summarisation,\ndocument chunking strategy, system prompt design.\nDistinct from RAG (retrieval) \u2014 context engineering is the broader discipline\nthat encompasses how all information is structured and prioritised before the model sees it.",
       "layerLabel_en": "ARCHITECTURE PATTERNS",
-      "label_fr": "Agents IA",
-      "description_fr": "Syst\u00e8mes o\u00f9 un LLM planifie de fa\u00e7on autonome, appelle des outils et it\u00e8re jusqu'\u00e0 atteindre un objectif. Passage du \"question-r\u00e9ponse\" \u00e0 l'\"ex\u00e9cution autonome de t\u00e2ches\". Le paradigme central de 2024-2025.",
+      "label_fr": "Ing\u00e9nierie du Contexte",
+      "description_fr": "La pratique d\u00e9lib\u00e9r\u00e9e de g\u00e9rer ce qui entre dans la fen\u00eatre de contexte.\n\u00c0 mesure que les fen\u00eatres de contexte grandissent (200 K\u20131 M tokens), ce qu'on y met \u2014\net comment \u2014 devient une d\u00e9cision d'ing\u00e9nierie centrale.\nTechniques : compression de prompt, s\u00e9lection few-shot, r\u00e9sum\u00e9 de conversation,\nstrat\u00e9gie de d\u00e9coupage de documents, conception du system prompt.\nDistinct du RAG (r\u00e9cup\u00e9ration) \u2014 l'ing\u00e9nierie du contexte est la discipline plus large\nqui englobe comment toute l'information est structur\u00e9e et prioris\u00e9e avant que le mod\u00e8le ne la voie.",
       "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
     },
     "position": {
-      "x": -679,
-      "y": -398
+      "x": -700,
+      "y": -315.0
     },
-    "classes": "status-evolving has-drilldown"
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "memory_pattern",
+      "label": "Memory",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "evolving",
+      "since": "2024",
+      "link": "https://docs.langchain.com/docs/components/memory",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "ctx_knowledge",
+      "label_en": "Memory",
+      "description_en": "The ability of an AI system to retain and retrieve information across interactions.\nThree types:\n- In-context (short-term): information injected directly into the prompt window.\n- External (long-term): stored in a database, retrieved when needed (vector store, key-value).\n- Episodic: structured summaries of past sessions, compressed and re-injected.\nMemory is the key differentiator between a stateless chatbot and a persistent AI agent.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "M\u00e9moire",
+      "description_fr": "La capacit\u00e9 d'un syst\u00e8me IA \u00e0 conserver et retrouver des informations entre les interactions.\nTrois types :\n- En contexte (court terme) : informations inject\u00e9es directement dans la fen\u00eatre de prompt.\n- Externe (long terme) : stock\u00e9es en base de donn\u00e9es, r\u00e9cup\u00e9r\u00e9es \u00e0 la demande (vector store, cl\u00e9-valeur).\n- \u00c9pisodique : r\u00e9sum\u00e9s structur\u00e9s de sessions pass\u00e9es, compress\u00e9s et r\u00e9-inject\u00e9s.\nLa m\u00e9moire est le diff\u00e9renciateur cl\u00e9 entre un chatbot sans \u00e9tat et un agent IA persistant.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "position": {
+      "x": -700,
+      "y": -245.0
+    },
+    "classes": "status-evolving"
   },
   {
     "data": {
@@ -1517,15 +1672,16 @@ const elements = [
       "status": "stable",
       "since": "2023",
       "link": "https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview",
-      "ref": "https://modelcontextprotocol.io/introduction",
+      "ref": "",
       "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "action_tools",
       "label_en": "Tool Use",
-      "description_en": "The ability for a model to call external functions during generation.\nHow it works: (1) the model decides it needs a tool, (2) it emits a structured request\n(e.g. {\"tool\": \"web_search\", \"query\": \"...\"}), (3) your application executes the function\nand returns the result, (4) the model continues with that information.\nExamples: web search, database query, run code, send email, call any API.\nMCP (Model Context Protocol) is the emerging standard that formalizes how tools\nare declared and called across models and applications.\nThe bridge between \"the model thinks\" and \"the model acts\" \u2014 core capability of AI Agents.",
+      "description_en": "The ability for a model to call external functions during generation.\nAlso called \"function calling\" (OpenAI terminology).\nHow it works: (1) the model decides it needs a tool, (2) it emits a structured\nrequest, (3) your application executes the function and returns the result,\n(4) the model continues with that information.\nExamples: web search, database query, run code, send email, call any API.\nThe bridge between \"the model thinks\" and \"the model acts\".",
       "layerLabel_en": "ARCHITECTURE PATTERNS",
       "label_fr": "Utilisation d'Outils",
-      "description_fr": "La capacit\u00e9 d'un mod\u00e8le \u00e0 appeler des fonctions externes pendant la g\u00e9n\u00e9ration.\nFonctionnement : (1) le mod\u00e8le d\u00e9cide qu'il a besoin d'un outil, (2) il \u00e9met une requ\u00eate\nstructur\u00e9e (ex : {\"tool\": \"web_search\", \"query\": \"...\"}), (3) l'application ex\u00e9cute la\nfonction et renvoie le r\u00e9sultat, (4) le mod\u00e8le continue avec cette information.\nExemples : recherche web, requ\u00eate base de donn\u00e9es, ex\u00e9cution de code, envoi d'email, appel d'API.\nMCP (Model Context Protocol) est le standard \u00e9mergent qui formalise comment les outils\nsont d\u00e9clar\u00e9s et appel\u00e9s entre mod\u00e8les et applications.\nLe pont entre \"le mod\u00e8le r\u00e9fl\u00e9chit\" et \"le mod\u00e8le agit\" \u2014 capacit\u00e9 centrale des Agents IA.",
+      "description_fr": "La capacit\u00e9 d'un mod\u00e8le \u00e0 appeler des fonctions externes pendant la g\u00e9n\u00e9ration.\nAussi appel\u00e9 \"function calling\" (terminologie OpenAI).\nFonctionnement : (1) le mod\u00e8le d\u00e9cide qu'il a besoin d'un outil, (2) il \u00e9met une\nrequ\u00eate structur\u00e9e, (3) l'application ex\u00e9cute la fonction et renvoie le r\u00e9sultat,\n(4) le mod\u00e8le continue avec cette information.\nExemples : recherche web, base de donn\u00e9es, ex\u00e9cution de code, envoi d'email, appel d'API.\nLe pont entre \"le mod\u00e8le r\u00e9fl\u00e9chit\" et \"le mod\u00e8le agit\".",
       "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
     },
     "position": {
@@ -1549,6 +1705,7 @@ const elements = [
       "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "action_tools",
       "label_en": "MCP",
       "description_en": "Model Context Protocol. An open standard that defines how AI applications\nconnect to external tools and data sources.\nBefore MCP: every app needed custom integrations for every tool.\nAfter MCP: any compliant client talks to any compliant server \u2014 like USB-C for AI.\nBacked by Anthropic, adopted by OpenAI, Google, Microsoft and hundreds of community servers.",
       "layerLabel_en": "ARCHITECTURE PATTERNS",
@@ -1564,59 +1721,119 @@ const elements = [
   },
   {
     "data": {
-      "id": "finetuning_pattern",
-      "label": "Fine-tuning",
+      "id": "agents_pattern",
+      "label": "AI Agents",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "evolving",
+      "since": "2023",
+      "link": "https://www.anthropic.com/research/building-effective-agents",
+      "ref": "https://arxiv.org/abs/2309.07864",
+      "drilldown": "ai-agents.html",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "agentic_systems",
+      "label_en": "AI Agents",
+      "description_en": "Systems where an LLM autonomously plans, calls tools, and iterates until a goal is achieved. Shift from \"Q&A\" to \"autonomous task completion\". The LLM dynamically decides its own next steps \u2014 distinct from pre-defined workflows. The central paradigm of 2024-2025. Still early in production maturity.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "Agents IA",
+      "description_fr": "Syst\u00e8mes o\u00f9 un LLM planifie de fa\u00e7on autonome, appelle des outils et it\u00e8re jusqu'\u00e0 atteindre un objectif. Passage du \"question-r\u00e9ponse\" \u00e0 l'\"ex\u00e9cution autonome de t\u00e2ches\". Le LLM d\u00e9cide dynamiquement ses propres prochaines \u00e9tapes \u2014 distinct des workflows pr\u00e9d\u00e9finis. Le paradigme central de 2024-2025. Encore en phase d'immaturit\u00e9 en production.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "position": {
+      "x": -679,
+      "y": -398
+    },
+    "classes": "status-evolving has-drilldown"
+  },
+  {
+    "data": {
+      "id": "workflows_pattern",
+      "label": "Workflows",
       "category": "patterns",
       "subcategory": "",
       "node_type": "",
       "layer": 4,
       "status": "stable",
-      "since": "2022",
-      "link": "https://platform.openai.com/docs/guides/fine-tuning",
-      "ref": "https://arxiv.org/abs/2106.09685",
+      "since": "2023",
+      "link": "https://www.anthropic.com/research/building-effective-agents",
+      "ref": "",
       "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "ARCHITECTURE PATTERNS",
-      "label_en": "Fine-tuning",
-      "description_en": "Adapt a pre-trained model to a specific domain or behavior by training it further on curated data. Only possible with open-weights models. Produces a specialized model.",
+      "parent": "agentic_systems",
+      "label_en": "Workflows",
+      "description_en": "Structured pipelines where LLMs and tools are orchestrated through predefined code paths.\nUnlike agents: the control flow is deterministic and set by the developer.\nWhen to use: well-understood tasks, reliability requirements, predictable outputs.\nExamples: document summarisation pipeline, classification \u2192 routing \u2192 response chains.\nOften the right starting point before reaching for full agentic autonomy.",
       "layerLabel_en": "ARCHITECTURE PATTERNS",
-      "label_fr": "Fine-tuning",
-      "description_fr": "Adapter un mod\u00e8le pr\u00e9-entra\u00een\u00e9 \u00e0 un domaine ou comportement sp\u00e9cifique en le r\u00e9-entra\u00eenant sur des donn\u00e9es cibl\u00e9es. Uniquement possible avec les mod\u00e8les open weights. Produit un mod\u00e8le sp\u00e9cialis\u00e9.",
+      "label_fr": "Workflows",
+      "description_fr": "Pipelines structur\u00e9s o\u00f9 les LLM et les outils sont orchestr\u00e9s via des chemins de code pr\u00e9d\u00e9finis.\nContrairement aux agents : le flux de contr\u00f4le est d\u00e9terministe et d\u00e9fini par le d\u00e9veloppeur.\nQuand l'utiliser : t\u00e2ches bien comprises, exigences de fiabilit\u00e9, sorties pr\u00e9visibles.\nExemples : pipeline de r\u00e9sum\u00e9 de documents, cha\u00eenes classification \u2192 routage \u2192 r\u00e9ponse.\nSouvent le bon point de d\u00e9part avant de recourir \u00e0 l'autonomie agentique compl\u00e8te.",
       "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
     },
     "position": {
-      "x": -515,
-      "y": -20
+      "x": -700,
+      "y": 35.0
     },
     "classes": "status-stable"
   },
   {
     "data": {
-      "id": "prompt_eng",
-      "label": "Prompt Engineering",
+      "id": "multi_agent",
+      "label": "Multi-Agent",
       "category": "patterns",
       "subcategory": "",
       "node_type": "",
       "layer": 4,
-      "status": "stable",
-      "since": "2022",
-      "link": "https://platform.openai.com/docs/guides/prompt-engineering",
-      "ref": "https://www.promptingguide.ai/",
+      "status": "emerging",
+      "since": "2024",
+      "link": "https://arxiv.org/abs/2601.13671",
+      "ref": "",
       "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "ARCHITECTURE PATTERNS",
-      "label_en": "Prompt Engineering",
-      "description_en": "The practice of crafting inputs to reliably get the desired output from a model.\nA prompt is the input text sent to the model.\nThe system prompt is a special instruction set that defines the model's role, behavior and constraints \u2014 it shapes every response before the user even speaks.\nTechniques: few-shot examples, chain-of-thought, role assignment.\nNo code required. High-leverage, often underestimated.",
+      "parent": "agentic_systems",
+      "label_en": "Multi-Agent",
+      "description_en": "Systems where multiple specialized agents collaborate to solve a task.\nEach agent has a defined role; an orchestrator coordinates handoffs.\nInteraction patterns: chain (sequential), star (hub + specialists), mesh (peer-to-peer).\nKey challenges: trust between agents, prompt injection, coordination overhead.\nFrameworks: AutoGen, CrewAI, LangGraph, MetaGPT.\nThe evolution from \"one smart agent\" to \"a team of agents\".",
       "layerLabel_en": "ARCHITECTURE PATTERNS",
-      "label_fr": "Prompt Engineering",
-      "description_fr": "L'art de formuler les entr\u00e9es pour obtenir de fa\u00e7on fiable la sortie souhait\u00e9e d'un mod\u00e8le.\nLe prompt est le texte d'entr\u00e9e envoy\u00e9 au mod\u00e8le.\nLe system prompt est un ensemble d'instructions sp\u00e9ciales qui d\u00e9finit le r\u00f4le, le comportement et les contraintes du mod\u00e8le \u2014 il conditionne chaque r\u00e9ponse avant m\u00eame que l'utilisateur parle.\nTechniques : few-shot, chain-of-thought, assignation de r\u00f4le.\nSans code. Tr\u00e8s impactant, souvent sous-estim\u00e9.",
+      "label_fr": "Multi-Agent",
+      "description_fr": "Syst\u00e8mes o\u00f9 plusieurs agents sp\u00e9cialis\u00e9s collaborent pour r\u00e9soudre une t\u00e2che.\nChaque agent a un r\u00f4le d\u00e9fini ; un orchestrateur coordonne les transferts.\nPatterns d'interaction : cha\u00eene (s\u00e9quentiel), \u00e9toile (hub + sp\u00e9cialistes), maillage (pair \u00e0 pair).\nD\u00e9fis cl\u00e9s : confiance entre agents, injection de prompt, surcharge de coordination.\nFrameworks : AutoGen, CrewAI, LangGraph, MetaGPT.\nL'\u00e9volution de \"un agent intelligent\" vers \"une \u00e9quipe d'agents\".",
       "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
     },
     "position": {
-      "x": -701,
-      "y": 135
+      "x": -700,
+      "y": 105.0
     },
-    "classes": "status-stable"
+    "classes": "status-emerging"
+  },
+  {
+    "data": {
+      "id": "hitl_pattern",
+      "label": "Human-in-the-Loop",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "evolving",
+      "since": "2023",
+      "link": "https://www.anthropic.com/research/building-effective-agents",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "agentic_systems",
+      "label_en": "Human-in-the-Loop",
+      "description_en": "A control pattern where a human validates or corrects the agent at key decision points\nbefore it continues \u2014 rather than letting it run fully autonomously.\nWhen to use: high-stakes actions (send email, run code, delete data),\nlow-confidence decisions, compliance requirements.\nThe practical answer to the reliability problem of agentic systems.\nSpectrum: fully automated \u2192 checkpoint approval \u2192 step-by-step review.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "Humain dans la Boucle",
+      "description_fr": "Un pattern de contr\u00f4le o\u00f9 un humain valide ou corrige l'agent \u00e0 des points de d\u00e9cision cl\u00e9s\navant qu'il continue \u2014 plut\u00f4t que de le laisser tourner de fa\u00e7on totalement autonome.\nQuand l'utiliser : actions \u00e0 fort enjeu (envoyer un email, ex\u00e9cuter du code, supprimer des donn\u00e9es),\nd\u00e9cisions \u00e0 faible confiance, exigences de conformit\u00e9.\nLa r\u00e9ponse pratique au probl\u00e8me de fiabilit\u00e9 des syst\u00e8mes agentiques.\nSpectre : enti\u00e8rement automatis\u00e9 \u2192 approbation par checkpoint \u2192 revue \u00e9tape par \u00e9tape.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "position": {
+      "x": -700,
+      "y": 175.0
+    },
+    "classes": "status-evolving"
   },
   {
     "data": {
@@ -1633,6 +1850,7 @@ const elements = [
       "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "output_control",
       "label_en": "Structured Generation",
       "description_en": "Force the model to respond in a defined format (e.g. JSON schema). Makes LLM outputs reliable and directly usable by code. Essential for production applications. Also called \"structured outputs\".",
       "layerLabel_en": "ARCHITECTURE PATTERNS",
@@ -1648,29 +1866,59 @@ const elements = [
   },
   {
     "data": {
-      "id": "memory_pattern",
-      "label": "Memory",
+      "id": "guardrails_pattern",
+      "label": "Guardrails",
       "category": "patterns",
       "subcategory": "",
       "node_type": "",
       "layer": 4,
       "status": "evolving",
-      "since": "2024",
-      "link": "https://docs.langchain.com/docs/components/memory",
+      "since": "2023",
+      "link": "https://nvidia.github.io/NeMo-Guardrails/",
       "ref": "",
       "drilldown": "",
       "color": "#58D68D",
       "layerLabel": "ARCHITECTURE PATTERNS",
-      "label_en": "Memory",
-      "description_en": "The ability of an AI system to retain and retrieve information across interactions.\nThree types:\n- In-context (short-term): information injected directly into the prompt window.\n- External (long-term): information stored in a database, retrieved when needed (vector store, key-value).\n- Episodic: structured summaries of past sessions, compressed and re-injected.\nMemory is the key differentiator between a stateless chatbot and a persistent AI agent.",
+      "parent": "output_control",
+      "label_en": "Guardrails",
+      "description_en": "Constraints applied to LLM inputs and outputs to enforce safety, relevance and compliance.\nInput guardrails: detect jailbreaks, off-topic requests, PII.\nOutput guardrails: filter harmful content, verify factual claims, enforce format.\nImplemented as: rule-based filters, secondary classifier models, constitutional prompts.\nFrameworks: NeMo Guardrails, Guardrails AI, LlamaGuard.\nThe production safety layer between the raw model and the end user.",
       "layerLabel_en": "ARCHITECTURE PATTERNS",
-      "label_fr": "M\u00e9moire",
-      "description_fr": "La capacit\u00e9 d'un syst\u00e8me IA \u00e0 conserver et retrouver des informations entre les interactions.\nTrois types :\n- En contexte (court terme) : informations inject\u00e9es directement dans la fen\u00eatre de prompt.\n- Externe (long terme) : informations stock\u00e9es en base de donn\u00e9es, r\u00e9cup\u00e9r\u00e9es \u00e0 la demande (vector store, cl\u00e9-valeur).\n- \u00c9pisodique : r\u00e9sum\u00e9s structur\u00e9s de sessions pass\u00e9es, compress\u00e9s et r\u00e9-inject\u00e9s.\nLa m\u00e9moire est le diff\u00e9renciateur cl\u00e9 entre un chatbot sans \u00e9tat et un agent IA persistant.",
+      "label_fr": "Guardrails",
+      "description_fr": "Contraintes appliqu\u00e9es aux entr\u00e9es et sorties LLM pour assurer s\u00e9curit\u00e9, pertinence et conformit\u00e9.\nGuardrails d'entr\u00e9e : d\u00e9tecter les jailbreaks, requ\u00eates hors sujet, donn\u00e9es personnelles.\nGuardrails de sortie : filtrer le contenu nuisible, v\u00e9rifier les affirmations factuelles, imposer le format.\nImpl\u00e9ment\u00e9s via : filtres bas\u00e9s sur des r\u00e8gles, mod\u00e8les classificateurs secondaires, prompts constitutionnels.\nFrameworks : NeMo Guardrails, Guardrails AI, LlamaGuard.\nLa couche de s\u00e9curit\u00e9 en production entre le mod\u00e8le brut et l'utilisateur final.",
       "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
     },
     "position": {
       "x": -700,
-      "y": 245.0
+      "y": 315.0
+    },
+    "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "eval_loop",
+      "label": "Evaluation Loop",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "evolving",
+      "since": "2023",
+      "link": "https://www.langchain.com/langsmith",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "output_control",
+      "label_en": "Evaluation Loop",
+      "description_en": "The continuous process of measuring LLM application quality in development and production.\nWhy it matters: reliability is the #1 challenge of agentic systems \u2014 you can't improve\nwhat you don't measure.\nComponents: test datasets (evals), automated scoring, human review, regression tracking.\nTypes: task-specific (did the agent complete the goal?), quality (is the output good?),\nsafety (did guardrails hold?).\nTools: LangSmith, Braintrust, Arize, Helicone, PromptFlow.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "Boucle d'\u00c9valuation",
+      "description_fr": "Le processus continu de mesure de la qualit\u00e9 des applications LLM en d\u00e9veloppement et en production.\nPourquoi c'est important : la fiabilit\u00e9 est le d\u00e9fi n\u00b01 des syst\u00e8mes agentiques \u2014 on ne peut pas\nam\u00e9liorer ce qu'on ne mesure pas.\nComposants : jeux de tests (evals), scoring automatis\u00e9, revue humaine, suivi des r\u00e9gressions.\nTypes : sp\u00e9cifique \u00e0 la t\u00e2che (l'agent a-t-il atteint l'objectif ?), qualit\u00e9 (la sortie est-elle bonne ?),\ns\u00e9curit\u00e9 (les guardrails ont-ils tenu ?).\nOutils : LangSmith, Braintrust, Arize, Helicone, PromptFlow.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "position": {
+      "x": -700,
+      "y": 385.0
     },
     "classes": "status-evolving"
   },
@@ -1976,15 +2224,6 @@ const elements = [
   },
   {
     "data": {
-      "id": "open_weights__finetuning_pattern",
-      "source": "open_weights",
-      "target": "finetuning_pattern",
-      "label": "required for",
-      "etype": "enables"
-    }
-  },
-  {
-    "data": {
       "id": "public_api__rag_pattern",
       "source": "public_api",
       "target": "rag_pattern",
@@ -2039,24 +2278,6 @@ const elements = [
   },
   {
     "data": {
-      "id": "prompt_eng__rag_pattern",
-      "source": "prompt_eng",
-      "target": "rag_pattern",
-      "label": "improves",
-      "etype": "enables"
-    }
-  },
-  {
-    "data": {
-      "id": "prompt_eng__agents_pattern",
-      "source": "prompt_eng",
-      "target": "agents_pattern",
-      "label": "improves",
-      "etype": "enables"
-    }
-  },
-  {
-    "data": {
       "id": "mcp_pattern__tool_use_pattern",
       "source": "mcp_pattern",
       "target": "tool_use_pattern",
@@ -2098,15 +2319,6 @@ const elements = [
       "target": "monitoring",
       "label": "monitored by",
       "etype": "uses"
-    }
-  },
-  {
-    "data": {
-      "id": "prompt_eng__public_api",
-      "source": "prompt_eng",
-      "target": "public_api",
-      "label": "reaches model through",
-      "etype": "enables"
     }
   },
   {
@@ -2187,6 +2399,60 @@ const elements = [
       "source": "memory_pattern",
       "target": "agents_pattern",
       "label": "core capability of",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "workflows_pattern__agents_pattern",
+      "source": "workflows_pattern",
+      "target": "agents_pattern",
+      "label": "structured form of",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "multi_agent__agents_pattern",
+      "source": "multi_agent",
+      "target": "agents_pattern",
+      "label": "coordinates",
+      "etype": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "hitl_pattern__agents_pattern",
+      "source": "hitl_pattern",
+      "target": "agents_pattern",
+      "label": "controls",
+      "etype": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "agents_pattern__eval_loop",
+      "source": "agents_pattern",
+      "target": "eval_loop",
+      "label": "evaluated by",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "agents_pattern__guardrails_pattern",
+      "source": "agents_pattern",
+      "target": "guardrails_pattern",
+      "label": "controlled by",
+      "etype": "uses"
+    }
+  },
+  {
+    "data": {
+      "id": "context_engineering__rag_pattern",
+      "source": "context_engineering",
+      "target": "rag_pattern",
+      "label": "encompasses",
       "etype": "part_of"
     }
   }

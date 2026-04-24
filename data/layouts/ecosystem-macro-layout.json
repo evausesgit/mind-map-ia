@@ -75,14 +75,6 @@
     "x": -695,
     "y": -138
   },
-  "finetuning_pattern": {
-    "x": -515,
-    "y": -20
-  },
-  "prompt_eng": {
-    "x": -701,
-    "y": 135
-  },
   "structured_gen": {
     "x": -502,
     "y": 267

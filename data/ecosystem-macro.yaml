@@ -474,7 +474,118 @@ nodes:
         Confidentialité maximale. Rendu possible par des modèles plus petits et des outils comme Ollama.
         En forte croissance au fil des avancées matérielles.
 
-  # ── LAYER 4 · APPLICATION PATTERNS ──────────
+  # ── LAYER 4 · ARCHITECTURE PATTERNS ────────────
+  # Structure: nested taxonomy of container boxes.
+  #   arch_patterns (outer)
+  #   ├── ctx_knowledge
+  #   │    ├── rag_pattern
+  #   │    ├── context_engineering
+  #   │    └── memory_pattern
+  #   ├── action_tools
+  #   │    ├── tool_use_pattern
+  #   │    └── mcp_pattern
+  #   ├── agentic_systems
+  #   │    ├── agents_pattern
+  #   │    ├── workflows_pattern
+  #   │    ├── multi_agent
+  #   │    └── hitl_pattern
+  #   └── output_control
+  #        ├── structured_gen
+  #        ├── guardrails_pattern
+  #        └── eval_loop
+
+  - id: arch_patterns
+    label:
+      en: "Architecture Patterns"
+      fr: "Patterns d'Architecture"
+    layer: 4
+    category: patterns
+    container: true
+    status: stable
+    since: "2023"
+    description:
+      en: >
+        The architectural patterns used to build AI-powered applications.
+        Organized in four capability groups: context management, tool connectivity,
+        agentic systems, and output control.
+      fr: >
+        Les patterns architecturaux pour construire des applications IA.
+        Organisés en quatre groupes : gestion du contexte, connectivité des outils,
+        systèmes agentiques et contrôle des sorties.
+
+  - id: ctx_knowledge
+    label:
+      en: "Context & Knowledge"
+      fr: "Contexte & Connaissance"
+    layer: 4
+    category: patterns
+    container: true
+    parent: arch_patterns
+    status: stable
+    since: "2023"
+    description:
+      en: >
+        Patterns for managing what the model knows and remembers:
+        retrieving external data, engineering the context window, and persisting memory.
+      fr: >
+        Patterns pour gérer ce que le modèle sait et retient :
+        récupération de données externes, ingénierie du contexte et persistance de la mémoire.
+
+  - id: action_tools
+    label:
+      en: "Action & Tools"
+      fr: "Action & Outils"
+    layer: 4
+    category: patterns
+    container: true
+    parent: arch_patterns
+    status: stable
+    since: "2023"
+    description:
+      en: >
+        Patterns for connecting LLMs to the outside world:
+        calling functions, running code, querying databases, browsing the web.
+      fr: >
+        Patterns pour connecter les LLM au monde extérieur :
+        appel de fonctions, exécution de code, requêtes bases de données, navigation web.
+
+  - id: agentic_systems
+    label:
+      en: "Agentic Systems"
+      fr: "Systèmes Agentiques"
+    layer: 4
+    category: patterns
+    container: true
+    parent: arch_patterns
+    status: evolving
+    since: "2023"
+    description:
+      en: >
+        Patterns for building systems that act autonomously:
+        single agents, structured workflows, multi-agent coordination, and human oversight.
+      fr: >
+        Patterns pour construire des systèmes qui agissent de façon autonome :
+        agents simples, workflows structurés, coordination multi-agents et supervision humaine.
+
+  - id: output_control
+    label:
+      en: "Output & Control"
+      fr: "Sorties & Contrôle"
+    layer: 4
+    category: patterns
+    container: true
+    parent: arch_patterns
+    status: evolving
+    since: "2023"
+    description:
+      en: >
+        Patterns for making LLM outputs reliable, safe and measurable:
+        structured formats, safety guardrails, and continuous evaluation loops.
+      fr: >
+        Patterns pour rendre les sorties LLM fiables, sûres et mesurables :
+        formats structurés, garde-fous de sécurité et boucles d'évaluation continues.
+
+  # ── ctx_knowledge ──
 
   - id: rag_pattern
     label:
@@ -483,6 +594,7 @@ nodes:
     layer: 4
     drilldown: "rag-pattern.html"
     category: patterns
+    parent: ctx_knowledge
     status: stable
     since: "2023"
     link: "https://aws.amazon.com/what-is/retrieval-augmented-generation/"
@@ -497,26 +609,61 @@ nodes:
         depuis une base de connaissances et les injecter dans le prompt.
         Résout les problèmes de date limite de connaissance et d'hallucination. Très largement adopté.
 
-  - id: agents_pattern
+  - id: context_engineering
     label:
-      en: "AI Agents"
-      fr: "Agents IA"
+      en: "Context Engineering"
+      fr: "Ingénierie du Contexte"
     layer: 4
-    drilldown: "ai-agents.html"
     category: patterns
+    parent: ctx_knowledge
     status: evolving
-    since: "2023"
-    link: "https://www.anthropic.com/research/building-effective-agents"
-    ref: "https://arxiv.org/abs/2309.07864"
+    since: "2024"
+    link: "https://www.anthropic.com/engineering/context-windows"
     description:
-      en: >
-        Systems where an LLM autonomously plans, calls tools, and iterates
-        until a goal is achieved. Shift from "Q&A" to "autonomous task completion".
-        The central paradigm of 2024-2025.
-      fr: >
-        Systèmes où un LLM planifie de façon autonome, appelle des outils et itère
-        jusqu'à atteindre un objectif. Passage du "question-réponse" à l'"exécution autonome de tâches".
-        Le paradigme central de 2024-2025.
+      en: |
+        The deliberate practice of managing what goes into the context window.
+        As context windows grow (200K–1M tokens), what you put in — and how — becomes
+        a key engineering decision.
+        Techniques: prompt compression, few-shot selection, conversation summarisation,
+        document chunking strategy, system prompt design.
+        Distinct from RAG (retrieval) — context engineering is the broader discipline
+        that encompasses how all information is structured and prioritised before the model sees it.
+      fr: |
+        La pratique délibérée de gérer ce qui entre dans la fenêtre de contexte.
+        À mesure que les fenêtres de contexte grandissent (200 K–1 M tokens), ce qu'on y met —
+        et comment — devient une décision d'ingénierie centrale.
+        Techniques : compression de prompt, sélection few-shot, résumé de conversation,
+        stratégie de découpage de documents, conception du system prompt.
+        Distinct du RAG (récupération) — l'ingénierie du contexte est la discipline plus large
+        qui englobe comment toute l'information est structurée et priorisée avant que le modèle ne la voie.
+
+  - id: memory_pattern
+    label:
+      en: "Memory"
+      fr: "Mémoire"
+    layer: 4
+    category: patterns
+    parent: ctx_knowledge
+    status: evolving
+    since: "2024"
+    link: "https://docs.langchain.com/docs/components/memory"
+    description:
+      en: |
+        The ability of an AI system to retain and retrieve information across interactions.
+        Three types:
+        - In-context (short-term): information injected directly into the prompt window.
+        - External (long-term): stored in a database, retrieved when needed (vector store, key-value).
+        - Episodic: structured summaries of past sessions, compressed and re-injected.
+        Memory is the key differentiator between a stateless chatbot and a persistent AI agent.
+      fr: |
+        La capacité d'un système IA à conserver et retrouver des informations entre les interactions.
+        Trois types :
+        - En contexte (court terme) : informations injectées directement dans la fenêtre de prompt.
+        - Externe (long terme) : stockées en base de données, récupérées à la demande (vector store, clé-valeur).
+        - Épisodique : résumés structurés de sessions passées, compressés et ré-injectés.
+        La mémoire est le différenciateur clé entre un chatbot sans état et un agent IA persistant.
+
+  # ── action_tools ──
 
   - id: tool_use_pattern
     label:
@@ -524,29 +671,27 @@ nodes:
       fr: "Utilisation d'Outils"
     layer: 4
     category: patterns
+    parent: action_tools
     status: stable
     since: "2023"
     link: "https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview"
-    ref: "https://modelcontextprotocol.io/introduction"
     description:
       en: |
         The ability for a model to call external functions during generation.
-        How it works: (1) the model decides it needs a tool, (2) it emits a structured request
-        (e.g. {"tool": "web_search", "query": "..."}), (3) your application executes the function
-        and returns the result, (4) the model continues with that information.
+        Also called "function calling" (OpenAI terminology).
+        How it works: (1) the model decides it needs a tool, (2) it emits a structured
+        request, (3) your application executes the function and returns the result,
+        (4) the model continues with that information.
         Examples: web search, database query, run code, send email, call any API.
-        MCP (Model Context Protocol) is the emerging standard that formalizes how tools
-        are declared and called across models and applications.
-        The bridge between "the model thinks" and "the model acts" — core capability of AI Agents.
+        The bridge between "the model thinks" and "the model acts".
       fr: |
         La capacité d'un modèle à appeler des fonctions externes pendant la génération.
-        Fonctionnement : (1) le modèle décide qu'il a besoin d'un outil, (2) il émet une requête
-        structurée (ex : {"tool": "web_search", "query": "..."}), (3) l'application exécute la
-        fonction et renvoie le résultat, (4) le modèle continue avec cette information.
-        Exemples : recherche web, requête base de données, exécution de code, envoi d'email, appel d'API.
-        MCP (Model Context Protocol) est le standard émergent qui formalise comment les outils
-        sont déclarés et appelés entre modèles et applications.
-        Le pont entre "le modèle réfléchit" et "le modèle agit" — capacité centrale des Agents IA.
+        Aussi appelé "function calling" (terminologie OpenAI).
+        Fonctionnement : (1) le modèle décide qu'il a besoin d'un outil, (2) il émet une
+        requête structurée, (3) l'application exécute la fonction et renvoie le résultat,
+        (4) le modèle continue avec cette information.
+        Exemples : recherche web, base de données, exécution de code, envoi d'email, appel d'API.
+        Le pont entre "le modèle réfléchit" et "le modèle agit".
 
   - id: mcp_pattern
     label:
@@ -554,6 +699,7 @@ nodes:
       fr: "MCP"
     layer: 4
     category: patterns
+    parent: action_tools
     status: emerging
     since: "2024"
     link: "https://modelcontextprotocol.io"
@@ -571,49 +717,109 @@ nodes:
         Après MCP : tout client compatible parle à tout serveur compatible — comme l'USB-C pour l'IA.
         Porté par Anthropic, adopté par OpenAI, Google, Microsoft et des centaines de serveurs communautaires.
 
-  - id: finetuning_pattern
+  # ── agentic_systems ──
+
+  - id: agents_pattern
     label:
-      en: "Fine-tuning"
-      fr: "Fine-tuning"
+      en: "AI Agents"
+      fr: "Agents IA"
     layer: 4
+    drilldown: "ai-agents.html"
     category: patterns
-    status: stable
-    since: "2022"
-    link: "https://platform.openai.com/docs/guides/fine-tuning"
-    ref: "https://arxiv.org/abs/2106.09685"
+    parent: agentic_systems
+    status: evolving
+    since: "2023"
+    link: "https://www.anthropic.com/research/building-effective-agents"
+    ref: "https://arxiv.org/abs/2309.07864"
     description:
       en: >
-        Adapt a pre-trained model to a specific domain or behavior
-        by training it further on curated data.
-        Only possible with open-weights models. Produces a specialized model.
+        Systems where an LLM autonomously plans, calls tools, and iterates
+        until a goal is achieved. Shift from "Q&A" to "autonomous task completion".
+        The LLM dynamically decides its own next steps — distinct from pre-defined workflows.
+        The central paradigm of 2024-2025. Still early in production maturity.
       fr: >
-        Adapter un modèle pré-entraîné à un domaine ou comportement spécifique
-        en le ré-entraînant sur des données ciblées.
-        Uniquement possible avec les modèles open weights. Produit un modèle spécialisé.
+        Systèmes où un LLM planifie de façon autonome, appelle des outils et itère
+        jusqu'à atteindre un objectif. Passage du "question-réponse" à l'"exécution autonome de tâches".
+        Le LLM décide dynamiquement ses propres prochaines étapes — distinct des workflows prédéfinis.
+        Le paradigme central de 2024-2025. Encore en phase d'immaturité en production.
 
-  - id: prompt_eng
+  - id: workflows_pattern
     label:
-      en: "Prompt Engineering"
-      fr: "Prompt Engineering"
+      en: "Workflows"
+      fr: "Workflows"
     layer: 4
     category: patterns
+    parent: agentic_systems
     status: stable
-    since: "2022"
-    link: "https://platform.openai.com/docs/guides/prompt-engineering"
-    ref: "https://www.promptingguide.ai/"
+    since: "2023"
+    link: "https://www.anthropic.com/research/building-effective-agents"
     description:
       en: |
-        The practice of crafting inputs to reliably get the desired output from a model.
-        A prompt is the input text sent to the model.
-        The system prompt is a special instruction set that defines the model's role, behavior and constraints — it shapes every response before the user even speaks.
-        Techniques: few-shot examples, chain-of-thought, role assignment.
-        No code required. High-leverage, often underestimated.
+        Structured pipelines where LLMs and tools are orchestrated through predefined code paths.
+        Unlike agents: the control flow is deterministic and set by the developer.
+        When to use: well-understood tasks, reliability requirements, predictable outputs.
+        Examples: document summarisation pipeline, classification → routing → response chains.
+        Often the right starting point before reaching for full agentic autonomy.
       fr: |
-        L'art de formuler les entrées pour obtenir de façon fiable la sortie souhaitée d'un modèle.
-        Le prompt est le texte d'entrée envoyé au modèle.
-        Le system prompt est un ensemble d'instructions spéciales qui définit le rôle, le comportement et les contraintes du modèle — il conditionne chaque réponse avant même que l'utilisateur parle.
-        Techniques : few-shot, chain-of-thought, assignation de rôle.
-        Sans code. Très impactant, souvent sous-estimé.
+        Pipelines structurés où les LLM et les outils sont orchestrés via des chemins de code prédéfinis.
+        Contrairement aux agents : le flux de contrôle est déterministe et défini par le développeur.
+        Quand l'utiliser : tâches bien comprises, exigences de fiabilité, sorties prévisibles.
+        Exemples : pipeline de résumé de documents, chaînes classification → routage → réponse.
+        Souvent le bon point de départ avant de recourir à l'autonomie agentique complète.
+
+  - id: multi_agent
+    label:
+      en: "Multi-Agent"
+      fr: "Multi-Agent"
+    layer: 4
+    category: patterns
+    parent: agentic_systems
+    status: emerging
+    since: "2024"
+    link: "https://arxiv.org/abs/2601.13671"
+    description:
+      en: |
+        Systems where multiple specialized agents collaborate to solve a task.
+        Each agent has a defined role; an orchestrator coordinates handoffs.
+        Interaction patterns: chain (sequential), star (hub + specialists), mesh (peer-to-peer).
+        Key challenges: trust between agents, prompt injection, coordination overhead.
+        Frameworks: AutoGen, CrewAI, LangGraph, MetaGPT.
+        The evolution from "one smart agent" to "a team of agents".
+      fr: |
+        Systèmes où plusieurs agents spécialisés collaborent pour résoudre une tâche.
+        Chaque agent a un rôle défini ; un orchestrateur coordonne les transferts.
+        Patterns d'interaction : chaîne (séquentiel), étoile (hub + spécialistes), maillage (pair à pair).
+        Défis clés : confiance entre agents, injection de prompt, surcharge de coordination.
+        Frameworks : AutoGen, CrewAI, LangGraph, MetaGPT.
+        L'évolution de "un agent intelligent" vers "une équipe d'agents".
+
+  - id: hitl_pattern
+    label:
+      en: "Human-in-the-Loop"
+      fr: "Humain dans la Boucle"
+    layer: 4
+    category: patterns
+    parent: agentic_systems
+    status: evolving
+    since: "2023"
+    link: "https://www.anthropic.com/research/building-effective-agents"
+    description:
+      en: |
+        A control pattern where a human validates or corrects the agent at key decision points
+        before it continues — rather than letting it run fully autonomously.
+        When to use: high-stakes actions (send email, run code, delete data),
+        low-confidence decisions, compliance requirements.
+        The practical answer to the reliability problem of agentic systems.
+        Spectrum: fully automated → checkpoint approval → step-by-step review.
+      fr: |
+        Un pattern de contrôle où un humain valide ou corrige l'agent à des points de décision clés
+        avant qu'il continue — plutôt que de le laisser tourner de façon totalement autonome.
+        Quand l'utiliser : actions à fort enjeu (envoyer un email, exécuter du code, supprimer des données),
+        décisions à faible confiance, exigences de conformité.
+        La réponse pratique au problème de fiabilité des systèmes agentiques.
+        Spectre : entièrement automatisé → approbation par checkpoint → revue étape par étape.
+
+  # ── output_control ──
 
   - id: structured_gen
     label:
@@ -621,6 +827,7 @@ nodes:
       fr: "Génération Structurée"
     layer: 4
     category: patterns
+    parent: output_control
     status: stable
     since: "2023"
     link: "https://platform.openai.com/docs/guides/structured-outputs"
@@ -635,30 +842,59 @@ nodes:
         Rend les sorties LLM fiables et directement exploitables par du code.
         Indispensable en production. Aussi appelé "structured outputs".
 
-  - id: memory_pattern
+  - id: guardrails_pattern
     label:
-      en: "Memory"
-      fr: "Mémoire"
+      en: "Guardrails"
+      fr: "Guardrails"
     layer: 4
     category: patterns
+    parent: output_control
     status: evolving
-    since: "2024"
-    link: "https://docs.langchain.com/docs/components/memory"
+    since: "2023"
+    link: "https://nvidia.github.io/NeMo-Guardrails/"
     description:
       en: |
-        The ability of an AI system to retain and retrieve information across interactions.
-        Three types:
-        - In-context (short-term): information injected directly into the prompt window.
-        - External (long-term): information stored in a database, retrieved when needed (vector store, key-value).
-        - Episodic: structured summaries of past sessions, compressed and re-injected.
-        Memory is the key differentiator between a stateless chatbot and a persistent AI agent.
+        Constraints applied to LLM inputs and outputs to enforce safety, relevance and compliance.
+        Input guardrails: detect jailbreaks, off-topic requests, PII.
+        Output guardrails: filter harmful content, verify factual claims, enforce format.
+        Implemented as: rule-based filters, secondary classifier models, constitutional prompts.
+        Frameworks: NeMo Guardrails, Guardrails AI, LlamaGuard.
+        The production safety layer between the raw model and the end user.
       fr: |
-        La capacité d'un système IA à conserver et retrouver des informations entre les interactions.
-        Trois types :
-        - En contexte (court terme) : informations injectées directement dans la fenêtre de prompt.
-        - Externe (long terme) : informations stockées en base de données, récupérées à la demande (vector store, clé-valeur).
-        - Épisodique : résumés structurés de sessions passées, compressés et ré-injectés.
-        La mémoire est le différenciateur clé entre un chatbot sans état et un agent IA persistant.
+        Contraintes appliquées aux entrées et sorties LLM pour assurer sécurité, pertinence et conformité.
+        Guardrails d'entrée : détecter les jailbreaks, requêtes hors sujet, données personnelles.
+        Guardrails de sortie : filtrer le contenu nuisible, vérifier les affirmations factuelles, imposer le format.
+        Implémentés via : filtres basés sur des règles, modèles classificateurs secondaires, prompts constitutionnels.
+        Frameworks : NeMo Guardrails, Guardrails AI, LlamaGuard.
+        La couche de sécurité en production entre le modèle brut et l'utilisateur final.
+
+  - id: eval_loop
+    label:
+      en: "Evaluation Loop"
+      fr: "Boucle d'Évaluation"
+    layer: 4
+    category: patterns
+    parent: output_control
+    status: evolving
+    since: "2023"
+    link: "https://www.langchain.com/langsmith"
+    description:
+      en: |
+        The continuous process of measuring LLM application quality in development and production.
+        Why it matters: reliability is the #1 challenge of agentic systems — you can't improve
+        what you don't measure.
+        Components: test datasets (evals), automated scoring, human review, regression tracking.
+        Types: task-specific (did the agent complete the goal?), quality (is the output good?),
+        safety (did guardrails hold?).
+        Tools: LangSmith, Braintrust, Arize, Helicone, PromptFlow.
+      fr: |
+        Le processus continu de mesure de la qualité des applications LLM en développement et en production.
+        Pourquoi c'est important : la fiabilité est le défi n°1 des systèmes agentiques — on ne peut pas
+        améliorer ce qu'on ne mesure pas.
+        Composants : jeux de tests (evals), scoring automatisé, revue humaine, suivi des régressions.
+        Types : spécifique à la tâche (l'agent a-t-il atteint l'objectif ?), qualité (la sortie est-elle bonne ?),
+        sécurité (les guardrails ont-ils tenu ?).
+        Outils : LangSmith, Braintrust, Arize, Helicone, PromptFlow.
 
   # ── LAYER 5 · DEVELOPER TOOLS ───────────────
   # Structure: a nested taxonomy of container boxes.
@@ -839,10 +1075,6 @@ edges:
     to: local_edge
     label: "runs on"
     type: accesses
-  - from: open_weights
-    to: finetuning_pattern
-    label: "required for"
-    type: enables
   - from: public_api
     to: rag_pattern
     label: "enables"
@@ -867,14 +1099,6 @@ edges:
     to: agents_pattern
     label: "used inside"
     type: part_of
-  - from: prompt_eng
-    to: rag_pattern
-    label: "improves"
-    type: enables
-  - from: prompt_eng
-    to: agents_pattern
-    label: "improves"
-    type: enables
   - from: mcp_pattern
     to: tool_use_pattern
     label: "standardizes"
@@ -896,10 +1120,6 @@ edges:
     to: monitoring
     label: "monitored by"
     type: uses
-  - from: prompt_eng
-    to: public_api
-    label: "reaches model through"
-    type: enables
   - from: frontier_models
     to: inference
     label: "runs as"
@@ -935,4 +1155,28 @@ edges:
   - from: memory_pattern
     to: agents_pattern
     label: "core capability of"
+    type: part_of
+  - from: workflows_pattern
+    to: agents_pattern
+    label: "structured form of"
+    type: part_of
+  - from: multi_agent
+    to: agents_pattern
+    label: "coordinates"
+    type: part_of
+  - from: hitl_pattern
+    to: agents_pattern
+    label: "controls"
+    type: enables
+  - from: agents_pattern
+    to: eval_loop
+    label: "evaluated by"
+    type: uses
+  - from: agents_pattern
+    to: guardrails_pattern
+    label: "controlled by"
+    type: uses
+  - from: context_engineering
+    to: rag_pattern
+    label: "encompasses"
     type: part_of
