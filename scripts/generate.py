@@ -1563,9 +1563,9 @@ const CY_STYLE = [
         "background-opacity": 1,
       }}
     }},
-    // Compound (container / parent) nodes — nested taxonomy boxes.
-    // Label styled like HTML cat-box labels: small, uppercase, coloured,
-    // sitting on the top border with a canvas-coloured background.
+    // Compound (container / parent) nodes — visual box only, no Cytoscape label.
+    // Labels are rendered as HTML overlays in drawCategoryBoxes() so they match
+    // the cat-box-label style exactly (same font, size, position).
     {{
       selector: ":parent",
       style: {{
@@ -1577,21 +1577,7 @@ const CY_STYLE = [
         "border-style": "solid",
         "border-radius": 12,
         "shape": "round-rectangle",
-        "label": "data(label)",
-        "text-valign": "top",
-        "text-halign": "center",
-        "text-margin-y": -8,
-        "font-family": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        "font-size": "12px",
-        "font-weight": "700",
-        "text-transform": "uppercase",
-        "letter-spacing": 1,
-        "color": "data(color)",
-        "text-background-color": "#F8F9FA",
-        "text-background-opacity": 1,
-        "text-background-padding": "3px",
-        "text-background-shape": "round-rectangle",
-        "text-wrap": "none",
+        "label": "",
         "padding": "26px",
         "shadow-blur": 0,
         "shadow-opacity": 0,
@@ -1882,6 +1868,18 @@ function drawCategoryBoxes() {{
     lbl.textContent = cat['label_' + lang] || cat.label_en;
     box.appendChild(lbl);
     container.appendChild(box);
+  }});
+
+  // Draw HTML labels for compound container nodes — same style as cat-box-label.
+  cy.nodes('.container').forEach(n => {{
+    const rbb = n.renderedBoundingBox({{includeLabels: false, includeOverlays: false}});
+    const lbl = document.createElement('div');
+    lbl.className = 'cat-box-label';
+    lbl.style.left  = (rbb.x1 + 14) + 'px';
+    lbl.style.top   = (rbb.y1 - 11) + 'px';
+    lbl.style.color = n.data('color');
+    lbl.textContent = (n.data('label_' + lang) || n.data('label')).toUpperCase();
+    container.appendChild(lbl);
   }});
 }}
 
