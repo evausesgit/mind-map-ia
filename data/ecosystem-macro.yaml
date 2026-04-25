@@ -3,8 +3,10 @@ meta:
     en: "LLM & AI Ecosystem"
     fr: "LLM & AI Ecosystem"
   description:
-    en: "A macro view of the AI/LLM ecosystem: concepts, categories and building blocks"
-    fr: "Vue macro de l'écosystème IA/LLM : concepts, catégories et briques fondamentales"
+    en: "A macro view of the AI/LLM ecosystem: concepts, categories and building
+      blocks"
+    fr: "Vue macro de l'écosystème IA/LLM : concepts, catégories et briques
+      fondamentales"
   version: "2026-Q1"
   date: "2026-04-02"
   node_scale: 2
@@ -70,7 +72,8 @@ categories:
     color: "#5DADE2"
     description:
       en: "Categories of tools developers use to build with LLMs"
-      fr: "Catégories d'outils utilisés par les développeurs pour construire avec les LLM"
+      fr: "Catégories d'outils utilisés par les développeurs pour construire avec les
+        LLM"
 
 nodes:
   # ── LAYER 1 · CORE CONCEPTS ─────────────────
@@ -87,13 +90,14 @@ nodes:
     ref: "https://arxiv.org/abs/1706.03762"
     description:
       en: >
-        A model trained on massive text datasets to understand and generate human language.
-        The foundation of the entire ecosystem. All LLMs are language models,
-        but not all language models are LLMs.
+        A model trained on massive text datasets to understand and generate
+        human language. The foundation of the entire ecosystem. All LLMs are
+        language models, but not all language models are LLMs.
       fr: >
-        Un modèle entraîné sur d'immenses corpus textuels pour comprendre et générer du langage humain.
-        La brique de base de tout l'écosystème. Tous les LLM sont des modèles de langage,
-        mais tous les modèles de langage ne sont pas des LLM.
+        Un modèle entraîné sur d'immenses corpus textuels pour comprendre et
+        générer du langage humain. La brique de base de tout l'écosystème. Tous
+        les LLM sont des modèles de langage, mais tous les modèles de langage ne
+        sont pas des LLM.
 
   - id: token_context
     label:
@@ -108,12 +112,13 @@ nodes:
     description:
       en: >
         A token is the smallest unit of text a model processes (~0.75 words).
-        The context window is the maximum number of tokens a model can handle at once.
-        These two notions define the model's "working memory".
+        The context window is the maximum number of tokens a model can handle at
+        once. These two notions define the model's "working memory".
       fr: >
-        Un token est la plus petite unité de texte traitée par un modèle (~0,75 mot).
-        La fenêtre de contexte est le nombre maximum de tokens traités en une seule fois.
-        Ces deux notions définissent la "mémoire de travail" du modèle.
+        Un token est la plus petite unité de texte traitée par un modèle (~0,75
+        mot). La fenêtre de contexte est le nombre maximum de tokens traités en
+        une seule fois. Ces deux notions définissent la "mémoire de travail" du
+        modèle.
 
   - id: embedding_vectors
     label:
@@ -127,13 +132,14 @@ nodes:
     ref: "https://arxiv.org/abs/1301.3666"
     description:
       en: >
-        An embedding is a list of numbers (a vector) that represents the meaning of a text.
-        Similar texts produce similar vectors. This enables semantic search,
-        clustering, and retrieval — the backbone of RAG.
+        An embedding is a list of numbers (a vector) that represents the meaning
+        of a text. Similar texts produce similar vectors. This enables semantic
+        search, clustering, and retrieval — the backbone of RAG.
       fr: >
-        Un embedding est une liste de nombres (un vecteur) représentant le sens d'un texte.
-        Des textes similaires produisent des vecteurs proches. Cela permet la recherche sémantique,
-        le clustering et la récupération de documents — colonne vertébrale du RAG.
+        Un embedding est une liste de nombres (un vecteur) représentant le sens
+        d'un texte. Des textes similaires produisent des vecteurs proches. Cela
+        permet la recherche sémantique, le clustering et la récupération de
+        documents — colonne vertébrale du RAG.
 
   - id: training_alignment
     label:
@@ -143,7 +149,8 @@ nodes:
     category: concepts
     status: stable
     since: "2018"
-    link: "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback"
+    link: "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-a\
+      i-feedback"
     ref: "https://arxiv.org/abs/1706.03741"
     description:
       en: >
@@ -151,9 +158,10 @@ nodes:
         Alignment: shaping the model's behavior to be helpful, honest and safe
         (via RLHF, Constitutional AI, etc.). Two distinct but essential phases.
       fr: >
-        Entraînement : apprendre à un modèle en le exposant à d'immenses quantités de données.
-        Alignement : façonner son comportement pour qu'il soit utile, honnête et sûr
-        (via RLHF, Constitutional AI, etc.). Deux phases distinctes mais indispensables.
+        Entraînement : apprendre à un modèle en le exposant à d'immenses
+        quantités de données. Alignement : façonner son comportement pour qu'il
+        soit utile, honnête et sûr (via RLHF, Constitutional AI, etc.). Deux
+        phases distinctes mais indispensables.
 
   - id: inference
     label:
@@ -166,12 +174,12 @@ nodes:
     link: "https://huggingface.co/docs/transformers/main/en/pipeline_tutorial"
     description:
       en: >
-        Running a trained model to generate a response from an input.
-        Every API call, every chat message is an inference.
-        Opposite of training — much cheaper and faster.
+        Running a trained model to generate a response from an input. Every API
+        call, every chat message is an inference. Opposite of training — much
+        cheaper and faster.
       fr: >
-        Faire tourner un modèle entraîné pour générer une réponse à partir d'une entrée.
-        Chaque appel API, chaque message de chat est une inférence.
+        Faire tourner un modèle entraîné pour générer une réponse à partir d'une
+        entrée. Chaque appel API, chaque message de chat est une inférence.
         Opposé de l'entraînement — beaucoup moins coûteux et plus rapide.
 
   - id: reasoning_models
@@ -333,7 +341,8 @@ nodes:
     category: concepts
     status: stable
     since: "2017"
-    link: "https://platform.openai.com/docs/api-reference/chat/create#chat-create-temperature"
+    link: "https://platform.openai.com/docs/api-reference/chat/create#chat-create-t\
+      emperature"
     description:
       en: |
         A parameter (0–2) that controls the randomness of model outputs.
@@ -408,13 +417,14 @@ nodes:
     link: "https://platform.openai.com/docs/api-reference"
     description:
       en: >
-        Send an HTTP request to a provider's endpoint, get a response.
-        The simplest way to use a model. Pay per token.
-        No infrastructure to manage. Operated by the model creator.
+        Send an HTTP request to a provider's endpoint, get a response. The
+        simplest way to use a model. Pay per token. No infrastructure to manage.
+        Operated by the model creator.
       fr: >
-        Envoyer une requête HTTP à l'endpoint d'un fournisseur, recevoir une réponse.
-        La façon la plus simple d'utiliser un modèle. Facturation à la consommation (par token).
-        Aucune infrastructure à gérer. Opéré par le créateur du modèle.
+        Envoyer une requête HTTP à l'endpoint d'un fournisseur, recevoir une
+        réponse. La façon la plus simple d'utiliser un modèle. Facturation à la
+        consommation (par token). Aucune infrastructure à gérer. Opéré par le
+        créateur du modèle.
 
   - id: cloud_managed
     label:
@@ -430,11 +440,13 @@ nodes:
       en: >
         Access models through a major cloud provider (AWS, GCP, Azure).
         Benefits: enterprise compliance, data privacy, multi-model choice,
-        integration with existing cloud infra. Managed by the cloud, not the AI lab.
+        integration with existing cloud infra. Managed by the cloud, not the AI
+        lab.
       fr: >
         Accès aux modèles via un grand fournisseur cloud (AWS, GCP, Azure).
-        Avantages : conformité entreprise, confidentialité des données, choix multi-modèles,
-        intégration avec l'infra cloud existante. Géré par le cloud, pas par le laboratoire IA.
+        Avantages : conformité entreprise, confidentialité des données, choix
+        multi-modèles, intégration avec l'infra cloud existante. Géré par le
+        cloud, pas par le laboratoire IA.
 
   - id: self_hosted
     label:
@@ -447,12 +459,12 @@ nodes:
     link: "https://docs.vllm.ai/en/latest/"
     description:
       en: >
-        Deploy the model on your own GPU servers (on-premise or cloud VMs).
-        Full control over data and costs at scale.
-        Requires ML infrastructure expertise.
+        Deploy the model on your own GPU servers (on-premise or cloud VMs). Full
+        control over data and costs at scale. Requires ML infrastructure
+        expertise.
       fr: >
-        Déployer le modèle sur ses propres serveurs GPU (on-premise ou VMs cloud).
-        Contrôle total sur les données et les coûts à grande échelle.
+        Déployer le modèle sur ses propres serveurs GPU (on-premise ou VMs
+        cloud). Contrôle total sur les données et les coûts à grande échelle.
         Nécessite une expertise en infrastructure ML.
 
   - id: local_edge
@@ -467,12 +479,13 @@ nodes:
     description:
       en: >
         Run a model on a laptop, phone, or edge device. No internet required.
-        Maximum privacy. Enabled by smaller, efficient models and tools like Ollama.
-        Growing fast as hardware improves.
+        Maximum privacy. Enabled by smaller, efficient models and tools like
+        Ollama. Growing fast as hardware improves.
       fr: >
-        Faire tourner un modèle sur un laptop, téléphone ou dispositif edge. Sans internet.
-        Confidentialité maximale. Rendu possible par des modèles plus petits et des outils comme Ollama.
-        En forte croissance au fil des avancées matérielles.
+        Faire tourner un modèle sur un laptop, téléphone ou dispositif edge.
+        Sans internet. Confidentialité maximale. Rendu possible par des modèles
+        plus petits et des outils comme Ollama. En forte croissance au fil des
+        avancées matérielles.
 
   # ── LAYER 4 · ARCHITECTURE PATTERNS ────────────
   # Structure: nested taxonomy of container boxes.
@@ -506,12 +519,12 @@ nodes:
     description:
       en: >
         The architectural patterns used to build AI-powered applications.
-        Organized in four capability groups: context management, tool connectivity,
-        agentic systems, and output control.
+        Organized in four capability groups: context management, tool
+        connectivity, agentic systems, and output control.
       fr: >
         Les patterns architecturaux pour construire des applications IA.
-        Organisés en quatre groupes : gestion du contexte, connectivité des outils,
-        systèmes agentiques et contrôle des sorties.
+        Organisés en quatre groupes : gestion du contexte, connectivité des
+        outils, systèmes agentiques et contrôle des sorties.
 
   - id: ctx_knowledge
     label:
@@ -525,11 +538,11 @@ nodes:
     since: "2023"
     description:
       en: >
-        Patterns for managing what the model knows and remembers:
-        retrieving external data, engineering the context window, and persisting memory.
+        Patterns for managing what the model knows and remembers: retrieving
+        external data, engineering the context window, and persisting memory.
       fr: >
-        Patterns pour gérer ce que le modèle sait et retient :
-        récupération de données externes, ingénierie du contexte et persistance de la mémoire.
+        Patterns pour gérer ce que le modèle sait et retient : récupération de
+        données externes, ingénierie du contexte et persistance de la mémoire.
 
   - id: action_tools
     label:
@@ -543,11 +556,11 @@ nodes:
     since: "2023"
     description:
       en: >
-        Patterns for connecting LLMs to the outside world:
-        calling functions, running code, querying databases, browsing the web.
+        Patterns for connecting LLMs to the outside world: calling functions,
+        running code, querying databases, browsing the web.
       fr: >
-        Patterns pour connecter les LLM au monde extérieur :
-        appel de fonctions, exécution de code, requêtes bases de données, navigation web.
+        Patterns pour connecter les LLM au monde extérieur : appel de fonctions,
+        exécution de code, requêtes bases de données, navigation web.
 
   - id: agentic_systems
     label:
@@ -561,11 +574,12 @@ nodes:
     since: "2023"
     description:
       en: >
-        Patterns for building systems that act autonomously:
-        single agents, structured workflows, multi-agent coordination, and human oversight.
+        Patterns for building systems that act autonomously: single agents,
+        structured workflows, multi-agent coordination, and human oversight.
       fr: >
         Patterns pour construire des systèmes qui agissent de façon autonome :
-        agents simples, workflows structurés, coordination multi-agents et supervision humaine.
+        agents simples, workflows structurés, coordination multi-agents et
+        supervision humaine.
 
   - id: output_control
     label:
@@ -583,7 +597,8 @@ nodes:
         structured formats, safety guardrails, and continuous evaluation loops.
       fr: >
         Patterns pour rendre les sorties LLM fiables, sûres et mesurables :
-        formats structurés, garde-fous de sécurité et boucles d'évaluation continues.
+        formats structurés, garde-fous de sécurité et boucles d'évaluation
+        continues.
 
   # ── ctx_knowledge ──
 
@@ -601,13 +616,15 @@ nodes:
     ref: "https://arxiv.org/abs/2005.11401"
     description:
       en: >
-        Retrieval-Augmented Generation. At query time, retrieve relevant documents
-        from a knowledge base and inject them into the prompt.
-        Solves knowledge cutoff and hallucination on specific data. Very widely adopted.
+        Retrieval-Augmented Generation. At query time, retrieve relevant
+        documents from a knowledge base and inject them into the prompt. Solves
+        knowledge cutoff and hallucination on specific data. Very widely
+        adopted.
       fr: >
-        Retrieval-Augmented Generation. Au moment de la requête, récupérer les documents pertinents
-        depuis une base de connaissances et les injecter dans le prompt.
-        Résout les problèmes de date limite de connaissance et d'hallucination. Très largement adopté.
+        Retrieval-Augmented Generation. Au moment de la requête, récupérer les
+        documents pertinents depuis une base de connaissances et les injecter
+        dans le prompt. Résout les problèmes de date limite de connaissance et
+        d'hallucination. Très largement adopté.
 
   - id: context_engineering
     label:
@@ -706,16 +723,38 @@ nodes:
     description:
       en: |
         Model Context Protocol. An open standard that defines how AI applications
-        connect to external tools and data sources.
+        connect to external tools and data sources. A universal protocol.
         Before MCP: every app needed custom integrations for every tool.
         After MCP: any compliant client talks to any compliant server — like USB-C for AI.
         Backed by Anthropic, adopted by OpenAI, Google, Microsoft and hundreds of community servers.
       fr: |
         Model Context Protocol. Un standard ouvert qui définit comment les applications IA
-        se connectent à des outils et sources de données externes.
+        se connectent à des outils et sources de données externes. Un protocole universel.
         Avant MCP : chaque app nécessitait des intégrations sur mesure pour chaque outil.
         Après MCP : tout client compatible parle à tout serveur compatible — comme l'USB-C pour l'IA.
         Porté par Anthropic, adopté par OpenAI, Google, Microsoft et des centaines de serveurs communautaires.
+
+  - id: skills_pattern
+    label:
+      en: "Skills"
+      fr: "Skills"
+    layer: 4
+    category: patterns
+    parent: action_tools
+    status: emerging
+    since: "2024"
+    link: "https://learn.microsoft.com/en-us/semantic-kernel/concepts/plugins"
+    description:
+      en: >
+        Reusable capability units (functions, plugins) that an LLM can invoke by
+        name. Package domain logic — email, calendar, search — as named skills
+        the model can compose at runtime. Foundation of orchestration frameworks
+        like Semantic Kernel.
+      fr: >
+        Unités de capacité réutilisables (fonctions, plugins) qu'un LLM peut
+        invoquer par nom. Encapsulent de la logique métier — email, calendrier,
+        recherche — comme des skills nommés que le modèle peut composer à
+        l'exécution. Base des frameworks d'orchestration comme Semantic Kernel.
 
   # ── agentic_systems ──
 
@@ -733,15 +772,18 @@ nodes:
     ref: "https://arxiv.org/abs/2309.07864"
     description:
       en: >
-        Systems where an LLM autonomously plans, calls tools, and iterates
-        until a goal is achieved. Shift from "Q&A" to "autonomous task completion".
-        The LLM dynamically decides its own next steps — distinct from pre-defined workflows.
-        The central paradigm of 2024-2025. Still early in production maturity.
+        Systems where an LLM autonomously plans, calls tools, and iterates until
+        a goal is achieved. Shift from "Q&A" to "autonomous task completion".
+        The LLM dynamically decides its own next steps — distinct from
+        pre-defined workflows. The central paradigm of 2024-2025. Still early in
+        production maturity.
       fr: >
-        Systèmes où un LLM planifie de façon autonome, appelle des outils et itère
-        jusqu'à atteindre un objectif. Passage du "question-réponse" à l'"exécution autonome de tâches".
-        Le LLM décide dynamiquement ses propres prochaines étapes — distinct des workflows prédéfinis.
-        Le paradigme central de 2024-2025. Encore en phase d'immaturité en production.
+        Systèmes où un LLM planifie de façon autonome, appelle des outils et
+        itère jusqu'à atteindre un objectif. Passage du "question-réponse" à
+        l'"exécution autonome de tâches". Le LLM décide dynamiquement ses
+        propres prochaines étapes — distinct des workflows prédéfinis. Le
+        paradigme central de 2024-2025. Encore en phase d'immaturité en
+        production.
 
   - id: workflows_pattern
     label:
@@ -834,9 +876,9 @@ nodes:
     ref: "https://arxiv.org/abs/2307.09702"
     description:
       en: >
-        Force the model to respond in a defined format (e.g. JSON schema).
-        Makes LLM outputs reliable and directly usable by code.
-        Essential for production applications. Also called "structured outputs".
+        Force the model to respond in a defined format (e.g. JSON schema). Makes
+        LLM outputs reliable and directly usable by code. Essential for
+        production applications. Also called "structured outputs".
       fr: >
         Forcer le modèle à répondre dans un format défini (ex : schéma JSON).
         Rend les sorties LLM fiables et directement exploitables par du code.
@@ -916,11 +958,12 @@ nodes:
     since: "2023"
     description:
       en: >
-        The tooling layer for developers building with LLMs.
-        Organized as a capability taxonomy rather than a vendor inventory.
+        The tooling layer for developers building with LLMs. Organized as a
+        capability taxonomy rather than a vendor inventory.
       fr: >
-        La couche d'outillage pour les développeurs qui construisent avec des LLM.
-        Organisée comme une taxonomie de capacités, pas comme un inventaire de produits.
+        La couche d'outillage pour les développeurs qui construisent avec des
+        LLM. Organisée comme une taxonomie de capacités, pas comme un inventaire
+        de produits.
 
   - id: agentic_coding_assistants
     label:
@@ -934,11 +977,12 @@ nodes:
     since: "2024"
     description:
       en: >
-        Autonomous coding agents that plan, execute and iterate on tasks
-        with minimal human intervention — the evolution beyond reactive copilots.
+        Autonomous coding agents that plan, execute and iterate on tasks with
+        minimal human intervention — the evolution beyond reactive copilots.
       fr: >
-        Agents de code autonomes qui planifient, exécutent et itèrent sur des tâches
-        avec une intervention humaine minimale — l'évolution au-delà des copilots réactifs.
+        Agents de code autonomes qui planifient, exécutent et itèrent sur des
+        tâches avec une intervention humaine minimale — l'évolution au-delà des
+        copilots réactifs.
 
   - id: cli_agents
     label:
@@ -952,11 +996,13 @@ nodes:
     link: "https://docs.anthropic.com/en/docs/claude-code/overview"
     description:
       en: >
-        Terminal-based autonomous coding agents: Claude Code, Aider, Codex CLI, OpenCode.
-        Operate on entire codebases, run commands, manage files autonomously.
+        Terminal-based autonomous coding agents: Claude Code, Aider, Codex CLI,
+        OpenCode. Operate on entire codebases, run commands, manage files
+        autonomously.
       fr: >
-        Agents de code autonomes en ligne de commande : Claude Code, Aider, Codex CLI, OpenCode.
-        Opèrent sur des bases de code entières, exécutent des commandes, gèrent les fichiers de façon autonome.
+        Agents de code autonomes en ligne de commande : Claude Code, Aider,
+        Codex CLI, OpenCode. Opèrent sur des bases de code entières, exécutent
+        des commandes, gèrent les fichiers de façon autonome.
 
   - id: ide_agents
     label:
@@ -971,10 +1017,12 @@ nodes:
     description:
       en: >
         Autonomous coding agents embedded directly in the IDE: Cursor, Windsurf.
-        Drive multi-step edits across the workspace from natural-language intent.
+        Drive multi-step edits across the workspace from natural-language
+        intent.
       fr: >
-        Agents de code autonomes intégrés directement dans l'IDE : Cursor, Windsurf.
-        Pilotent des éditions multi-étapes à travers le workspace à partir d'une intention en langage naturel.
+        Agents de code autonomes intégrés directement dans l'IDE : Cursor,
+        Windsurf. Pilotent des éditions multi-étapes à travers le workspace à
+        partir d'une intention en langage naturel.
 
   - id: coding_copilots
     label:
@@ -988,11 +1036,13 @@ nodes:
     link: "https://github.com/features/copilot"
     description:
       en: >
-        Reactive IDE-integrated assistants: GitHub Copilot, Amazon Q Developer, Gemini Code Assist.
-        Suggest completions and answer inline — the developer stays in the driver seat.
+        Reactive IDE-integrated assistants: GitHub Copilot, Amazon Q Developer,
+        Gemini Code Assist. Suggest completions and answer inline — the
+        developer stays in the driver seat.
       fr: >
-        Assistants réactifs intégrés à l'IDE : GitHub Copilot, Amazon Q Developer, Gemini Code Assist.
-        Proposent des complétions et répondent inline — le développeur reste aux commandes.
+        Assistants réactifs intégrés à l'IDE : GitHub Copilot, Amazon Q
+        Developer, Gemini Code Assist. Proposent des complétions et répondent
+        inline — le développeur reste aux commandes.
 
   - id: monitoring
     label:
@@ -1009,8 +1059,28 @@ nodes:
         Tools to trace, evaluate and debug LLM applications in production:
         LangSmith, Helicone, Arize, Braintrust.
       fr: >
-        Outils pour tracer, évaluer et déboguer les applications LLM en production :
-        LangSmith, Helicone, Arize, Braintrust.
+        Outils pour tracer, évaluer et déboguer les applications LLM en
+        production : LangSmith, Helicone, Arize, Braintrust.
+
+  - id: chat_bot
+    label:
+      en: "Chat Bot"
+      fr: "Chat Bot"
+    layer: 5
+    category: tooling
+    parent: developer_tools
+    status: stable
+    since: "2022"
+    link: "https://platform.openai.com/docs/assistants/overview"
+    description:
+      en: >
+        Conversational interfaces powered by LLMs: customer support bots,
+        internal assistants, FAQ agents. The most widespread LLM deployment
+        pattern — a chat UI over a model with a system prompt.
+      fr: >
+        Interfaces conversationnelles propulsées par les LLM : bots de support
+        client, assistants internes, agents FAQ. Le pattern de déploiement LLM
+        le plus répandu — une interface chat sur un modèle avec un system prompt.
 
 edges:
   - from: transformer

@@ -1628,7 +1628,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": -315.0
+      "y": -350.0
     },
     "classes": "status-evolving"
   },
@@ -1657,7 +1657,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": -245.0
+      "y": -280.0
     },
     "classes": "status-evolving"
   },
@@ -1707,15 +1707,44 @@ const elements = [
       "layerLabel": "ARCHITECTURE PATTERNS",
       "parent": "action_tools",
       "label_en": "MCP",
-      "description_en": "Model Context Protocol. An open standard that defines how AI applications\nconnect to external tools and data sources.\nBefore MCP: every app needed custom integrations for every tool.\nAfter MCP: any compliant client talks to any compliant server \u2014 like USB-C for AI.\nBacked by Anthropic, adopted by OpenAI, Google, Microsoft and hundreds of community servers.",
+      "description_en": "Model Context Protocol. An open standard that defines how AI applications\nconnect to external tools and data sources. A universal protocol.\nBefore MCP: every app needed custom integrations for every tool.\nAfter MCP: any compliant client talks to any compliant server \u2014 like USB-C for AI.\nBacked by Anthropic, adopted by OpenAI, Google, Microsoft and hundreds of community servers.",
       "layerLabel_en": "ARCHITECTURE PATTERNS",
       "label_fr": "MCP",
-      "description_fr": "Model Context Protocol. Un standard ouvert qui d\u00e9finit comment les applications IA\nse connectent \u00e0 des outils et sources de donn\u00e9es externes.\nAvant MCP : chaque app n\u00e9cessitait des int\u00e9grations sur mesure pour chaque outil.\nApr\u00e8s MCP : tout client compatible parle \u00e0 tout serveur compatible \u2014 comme l'USB-C pour l'IA.\nPort\u00e9 par Anthropic, adopt\u00e9 par OpenAI, Google, Microsoft et des centaines de serveurs communautaires.",
+      "description_fr": "Model Context Protocol. Un standard ouvert qui d\u00e9finit comment les applications IA\nse connectent \u00e0 des outils et sources de donn\u00e9es externes. Un protocole universel.\nAvant MCP : chaque app n\u00e9cessitait des int\u00e9grations sur mesure pour chaque outil.\nApr\u00e8s MCP : tout client compatible parle \u00e0 tout serveur compatible \u2014 comme l'USB-C pour l'IA.\nPort\u00e9 par Anthropic, adopt\u00e9 par OpenAI, Google, Microsoft et des centaines de serveurs communautaires.",
       "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
     },
     "position": {
       "x": -695,
       "y": -138
+    },
+    "classes": "status-emerging"
+  },
+  {
+    "data": {
+      "id": "skills_pattern",
+      "label": "Skills",
+      "category": "patterns",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 4,
+      "status": "emerging",
+      "since": "2024",
+      "link": "https://learn.microsoft.com/en-us/semantic-kernel/concepts/plugins",
+      "ref": "",
+      "drilldown": "",
+      "color": "#58D68D",
+      "layerLabel": "ARCHITECTURE PATTERNS",
+      "parent": "action_tools",
+      "label_en": "Skills",
+      "description_en": "Reusable capability units (functions, plugins) that an LLM can invoke by name. Package domain logic \u2014 email, calendar, search \u2014 as named skills the model can compose at runtime. Foundation of orchestration frameworks like Semantic Kernel.",
+      "layerLabel_en": "ARCHITECTURE PATTERNS",
+      "label_fr": "Skills",
+      "description_fr": "Unit\u00e9s de capacit\u00e9 r\u00e9utilisables (fonctions, plugins) qu'un LLM peut invoquer par nom. Encapsulent de la logique m\u00e9tier \u2014 email, calendrier, recherche \u2014 comme des skills nomm\u00e9s que le mod\u00e8le peut composer \u00e0 l'ex\u00e9cution. Base des frameworks d'orchestration comme Semantic Kernel.",
+      "layerLabel_fr": "PATTERNS D'ARCHITECTURE"
+    },
+    "position": {
+      "x": -700,
+      "y": -70.0
     },
     "classes": "status-emerging"
   },
@@ -1773,7 +1802,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": 35.0
+      "y": 70.0
     },
     "classes": "status-stable"
   },
@@ -1802,7 +1831,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": 105.0
+      "y": 140.0
     },
     "classes": "status-emerging"
   },
@@ -1831,7 +1860,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": 175.0
+      "y": 210.0
     },
     "classes": "status-evolving"
   },
@@ -1889,7 +1918,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": 315.0
+      "y": 350.0
     },
     "classes": "status-evolving"
   },
@@ -1918,7 +1947,7 @@ const elements = [
     },
     "position": {
       "x": -700,
-      "y": 385.0
+      "y": 420.0
     },
     "classes": "status-evolving"
   },
@@ -1996,7 +2025,7 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": -105.0
+      "y": -140.0
     },
     "classes": "status-evolving"
   },
@@ -2025,7 +2054,7 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": -35.0
+      "y": -70.0
     },
     "classes": "status-evolving"
   },
@@ -2054,7 +2083,7 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": 35.0
+      "y": 0.0
     },
     "classes": "status-stable"
   },
@@ -2083,9 +2112,38 @@ const elements = [
     },
     "position": {
       "x": -1200,
-      "y": 105.0
+      "y": 70.0
     },
     "classes": "status-evolving"
+  },
+  {
+    "data": {
+      "id": "chat_bot",
+      "label": "Chat Bot",
+      "category": "tooling",
+      "subcategory": "",
+      "node_type": "",
+      "layer": 5,
+      "status": "stable",
+      "since": "2022",
+      "link": "https://platform.openai.com/docs/assistants/overview",
+      "ref": "",
+      "drilldown": "",
+      "color": "#5DADE2",
+      "layerLabel": "DEVELOPER TOOLS",
+      "parent": "developer_tools",
+      "label_en": "Chat Bot",
+      "description_en": "Conversational interfaces powered by LLMs: customer support bots, internal assistants, FAQ agents. The most widespread LLM deployment pattern \u2014 a chat UI over a model with a system prompt.",
+      "layerLabel_en": "DEVELOPER TOOLS",
+      "label_fr": "Chat Bot",
+      "description_fr": "Interfaces conversationnelles propuls\u00e9es par les LLM : bots de support client, assistants internes, agents FAQ. Le pattern de d\u00e9ploiement LLM le plus r\u00e9pandu \u2014 une interface chat sur un mod\u00e8le avec un system prompt.",
+      "layerLabel_fr": "OUTILS D\u00c9VELOPPEURS"
+    },
+    "position": {
+      "x": -1200,
+      "y": 140.0
+    },
+    "classes": "status-stable"
   },
   {
     "data": {

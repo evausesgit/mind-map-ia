@@ -1,86 +1,174 @@
 {
   "language_model": {
-    "x": 1016,
-    "y": -171
-  },
-  "token_context": {
-    "x": 1044,
-    "y": -350
-  },
-  "embedding_vectors": {
-    "x": 943,
-    "y": 389
-  },
-  "training_alignment": {
-    "x": 1064,
-    "y": -54
-  },
-  "inference": {
-    "x": 1302,
-    "y": 190
-  },
-  "reasoning_models": {
-    "x": 1255,
-    "y": 78
-  },
-  "transformer": {
-    "x": 1334,
-    "y": -184
-  },
-  "multimodality": {
-    "x": 1103,
-    "y": 235
-  },
-  "frontier_models": {
-    "x": 407,
+    "x": 935,
     "y": -187
   },
-  "open_weights": {
-    "x": 400,
-    "y": 0
+  "token_context": {
+    "x": 965,
+    "y": -326
   },
-  "embedding_models": {
-    "x": 397,
-    "y": 211
+  "embedding_vectors": {
+    "x": 1037,
+    "y": 498
+  },
+  "training_alignment": {
+    "x": 947,
+    "y": -43
+  },
+  "inference": {
+    "x": 1345,
+    "y": 14
+  },
+  "reasoning_models": {
+    "x": 1014,
+    "y": 100
+  },
+  "kv_cache": {
+    "x": 1310,
+    "y": -141
+  },
+  "transformer": {
+    "x": 1331,
+    "y": -273
+  },
+  "multimodality": {
+    "x": 976,
+    "y": 240
+  },
+  "quantization": {
+    "x": 1368,
+    "y": 155
+  },
+  "rlhf": {
+    "x": 984,
+    "y": 375
+  },
+  "temperature": {
+    "x": 1370,
+    "y": 360
+  },
+  "frontier_models": {
+    "x": 454,
+    "y": -167
+  },
+  "open_weights": {
+    "x": 457,
+    "y": 154
   },
   "public_api": {
-    "x": -84,
-    "y": -234
+    "x": 31,
+    "y": 135
   },
   "cloud_managed": {
-    "x": -121,
-    "y": 56
+    "x": 35,
+    "y": -48
   },
   "self_hosted": {
-    "x": -106,
-    "y": 288
+    "x": 39,
+    "y": 346
   },
   "local_edge": {
-    "x": -123,
-    "y": -422
+    "x": 30,
+    "y": -223
+  },
+  "arch_patterns": {
+    "x": -541,
+    "y": -216
+  },
+  "ctx_knowledge": {
+    "x": -541,
+    "y": -772
+  },
+  "action_tools": {
+    "x": -531,
+    "y": -383
+  },
+  "agentic_systems": {
+    "x": -534,
+    "y": -43
+  },
+  "output_control": {
+    "x": -552,
+    "y": 328
   },
   "rag_pattern": {
-    "x": -623,
-    "y": -535
+    "x": -694,
+    "y": -832
   },
-  "agents_pattern": {
-    "x": -679,
-    "y": -398
+  "context_engineering": {
+    "x": -387,
+    "y": -833
+  },
+  "memory_pattern": {
+    "x": -463,
+    "y": -710
   },
   "tool_use_pattern": {
-    "x": -506,
-    "y": -286
+    "x": -689,
+    "y": -451
   },
   "mcp_pattern": {
-    "x": -695,
-    "y": -138
+    "x": -372,
+    "y": -437
+  },
+  "skills_pattern": {
+    "x": -563,
+    "y": -315
+  },
+  "agents_pattern": {
+    "x": -688,
+    "y": -130
+  },
+  "workflows_pattern": {
+    "x": -385,
+    "y": -111
+  },
+  "multi_agent": {
+    "x": -679,
+    "y": -2
+  },
+  "hitl_pattern": {
+    "x": -380,
+    "y": 45
   },
   "structured_gen": {
-    "x": -502,
-    "y": 267
+    "x": -394,
+    "y": 253
   },
-  "vector_dbs_tool": {
-    "x": -1175,
-    "y": -471
+  "guardrails_pattern": {
+    "x": -709,
+    "y": 262
+  },
+  "eval_loop": {
+    "x": -482,
+    "y": 402
+  },
+  "developer_tools": {
+    "x": -1183,
+    "y": -202
+  },
+  "agentic_coding_assistants": {
+    "x": -1183,
+    "y": -121
+  },
+  "cli_agents": {
+    "x": -1178,
+    "y": -224
+  },
+  "ide_agents": {
+    "x": -1188,
+    "y": -19
+  },
+  "coding_copilots": {
+    "x": -1183,
+    "y": -480
+  },
+  "monitoring": {
+    "x": -1184,
+    "y": 229
+  },
+  "chat_bot": {
+    "x": -1180,
+    "y": -633
   }
 }
