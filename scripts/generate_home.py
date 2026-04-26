@@ -98,15 +98,15 @@ def build_topic_card(topic):
     </a>"""
 
 
-def load_news(max_items=8):
-    """Load news entries from data/news.yaml, sorted by date desc."""
+def load_news():
+    """Load all news entries from data/news.yaml, sorted by date desc."""
     if not NEWS_FILE.exists():
         return []
     with open(NEWS_FILE) as f:
         data = yaml.safe_load(f)
     entries = data.get("news", [])
     entries.sort(key=lambda x: str(x.get("date", "")), reverse=True)
-    return entries[:max_items]
+    return entries
 
 
 def _slugify(text):
@@ -123,7 +123,9 @@ def _slugify(text):
     return text.strip('-')[:60]
 
 
-def build_news_item(entry):
+NEWS_INITIAL = 8
+
+def build_news_item(entry, index=0):
     date = str(entry.get("date", ""))
     ntype = entry.get("type", "update")
     title_en = t(entry.get("title", ""), "en")
@@ -138,7 +140,8 @@ def build_news_item(entry):
     label_en = type_labels_en.get(ntype, "News")
     label_fr = type_labels_fr.get(ntype, "News")
     anchor = f"news-{date}-{_slugify(title_en)}"
-    tag = f'<a href="{link}" id="{anchor}" class="news-item">' if link else f'<div id="{anchor}" class="news-item">'
+    hidden_class = " news-hidden" if index >= NEWS_INITIAL else ""
+    tag = f'<a href="{link}" id="{anchor}" class="news-item{hidden_class}">' if link else f'<div id="{anchor}" class="news-item{hidden_class}">'
     end_tag = '</a>' if link else '</div>'
     return f"""
     {tag}
@@ -427,7 +430,8 @@ def main():
     deep_dives, reflexions = split_topics_by_category(topics)
     topics_html = "\n".join(build_topic_card(topic) for topic in deep_dives)
     reflexions_html = "\n".join(build_topic_card(topic) for topic in reflexions)
-    news_html = "\n".join(build_news_item(n) for n in news)
+    news_html = "\n".join(build_news_item(n, i) for i, n in enumerate(news))
+    news_load_more_display = "none" if len(news) <= NEWS_INITIAL else "block"
     nav_html = build_nav_html(maps, topics, links=links)
 
     html = f"""<!DOCTYPE html>
@@ -788,6 +792,24 @@ def main():
     color: #7F8C8D;
     line-height: 1.5;
   }}
+  .news-hidden {{ display: none; }}
+  .news-load-more {{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    background: none;
+    border: 1px solid #1E2D4E;
+    color: #7F8C8D;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-radius: 4px;
+  }}
+  .news-load-more:hover {{ background: #16213E; color: white; border-color: #E74C3C; }}
 
   footer {{
     text-align: center;
@@ -859,6 +881,7 @@ def main():
       <div class="news-feed">
         {news_html}
       </div>
+      <button class="news-load-more" id="news-load-more" data-en="Load more" data-fr="Voir plus" onclick="loadMoreNews()" style="display:{news_load_more_display}">Load more</button>
     </aside>
 
     <div class="main-content">
@@ -921,6 +944,12 @@ function setLang(lang) {{
   document.querySelectorAll('[data-en]').forEach(el => {{
     el.textContent = lang === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
   }});
+}}
+
+// Load more news
+function loadMoreNews() {{
+  document.querySelectorAll('.news-hidden').forEach(el => el.classList.remove('news-hidden'));
+  document.getElementById('news-load-more').style.display = 'none';
 }}
 
 // Highlight news item if URL has a news anchor

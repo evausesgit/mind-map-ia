@@ -356,6 +356,24 @@
     color: #7F8C8D;
     line-height: 1.5;
   }
+  .news-hidden { display: none; }
+  .news-load-more {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    background: none;
+    border: 1px solid #1E2D4E;
+    color: #7F8C8D;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-radius: 4px;
+  }
+  .news-load-more:hover { background: #16213E; color: white; border-color: #E74C3C; }
 
   footer {
     text-align: center;
@@ -869,7 +887,125 @@
       </div>
       <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-17-anthropic-releases-claude-opus-4-7');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
     </a>
+
+    <a href="https://github.com/anthropics/claude-code/issues/42796#issuecomment-4194007103" id="news-2026-04-13-community-report-claude-reasoning-depth-regression-jan-mar-2" class="news-item news-hidden">
+      <div class="news-icon">🔄</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="Update" data-fr="Mise à jour">Update</span>
+          <span class="news-date">2026-04-13</span>
+        </div>
+        <div class="news-title" data-en="Community report: Claude reasoning depth regression (Jan–Mar 2026)" data-fr="Rapport communautaire : régression de la profondeur de raisonnement de Claude (jan.–mars 2026)">Community report: Claude reasoning depth regression (Jan–Mar 2026)</div>
+        <div class="news-desc" data-en="A detailed user analysis documents a sharp drop in Claude's thinking depth between January and March 2026: median reasoning length fell from ~2 200 to ~600 chars, read/edit ratio dropped from 6.6× to 2.0×, and autonomous task completion degraded. The author calls for Anthropic to expose thinking-budget metrics via the API and offer a 'max thinking' tier for heavy engineering workflows." data-fr="Une analyse utilisateur détaillée documente une chute marquée de la profondeur de raisonnement de Claude entre janvier et mars 2026 : la longueur médiane du raisonnement est passée de ~2 200 à ~600 caractères, le ratio lecture/édition de 6,6× à 2,0×, et la capacité d'exécution autonome s'est dégradée. L'auteur demande à Anthropic d'exposer les métriques de budget de raisonnement via l'API et de proposer un tier 'max thinking' pour les workflows d'ingénierie intensifs.">A detailed user analysis documents a sharp drop in Claude's thinking depth between January and March 2026: median reasoning length fell from ~2 200 to ~600 chars, read/edit ratio dropped from 6.6× to 2.0×, and autonomous task completion degraded. The author calls for Anthropic to expose thinking-budget metrics via the API and offer a 'max thinking' tier for heavy engineering workflows.</div>
       </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-13-community-report-claude-reasoning-depth-regression-jan-mar-2');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <a href="https://www.anthropic.com/research/managed-agents" id="news-2026-04-08-anthropic-launches-claude-managed-agents-public-beta" class="news-item news-hidden">
+      <div class="news-icon">✨</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="New feature" data-fr="Nouveauté">New feature</span>
+          <span class="news-date">2026-04-08</span>
+        </div>
+        <div class="news-title" data-en="Anthropic launches Claude Managed Agents (public beta)" data-fr="Anthropic lance Claude Managed Agents (bêta publique)">Anthropic launches Claude Managed Agents (public beta)</div>
+        <div class="news-desc" data-en="A new suite of composable APIs to build and deploy cloud-hosted AI agents at scale. Features sandboxed execution, checkpointing, multi-agent orchestration, and scoped permissions. Deploy via Console, Claude Code, or CLI." data-fr="Une nouvelle suite d'API composables pour créer et déployer des agents IA hébergés dans le cloud à grande échelle. Exécution sandboxée, checkpointing, orchestration multi-agents et permissions scopées. Déploiement via Console, Claude Code ou CLI.">A new suite of composable APIs to build and deploy cloud-hosted AI agents at scale. Features sandboxed execution, checkpointing, multi-agent orchestration, and scoped permissions. Deploy via Console, Claude Code, or CLI.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-08-anthropic-launches-claude-managed-agents-public-beta');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <a href="https://ai.meta.com/blog/introducing-muse-spark-msl/" id="news-2026-04-08-meta-launches-muse-spark-first-model-from-superintelligence-" class="news-item news-hidden">
+      <div class="news-icon">🔄</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="Update" data-fr="Mise à jour">Update</span>
+          <span class="news-date">2026-04-08</span>
+        </div>
+        <div class="news-title" data-en="Meta launches Muse Spark — first model from Superintelligence Labs" data-fr="Meta lance Muse Spark — premier modèle de Superintelligence Labs">Meta launches Muse Spark — first model from Superintelligence Labs</div>
+        <div class="news-desc" data-en="Meta debuts Muse Spark, a proprietary multimodal reasoning model led by Alexandr Wang. Features thought compression (10× less compute than Llama 4 Maverick), multi-agent orchestration, and three reasoning modes. A major pivot away from Meta's open-source Llama strategy." data-fr="Meta dévoile Muse Spark, un modèle de raisonnement multimodal propriétaire dirigé par Alexandr Wang. Compression de pensée (10× moins de calcul que Llama 4 Maverick), orchestration multi-agents et trois modes de raisonnement. Un virage majeur par rapport à la stratégie open-source Llama.">Meta debuts Muse Spark, a proprietary multimodal reasoning model led by Alexandr Wang. Features thought compression (10× less compute than Llama 4 Maverick), multi-agent orchestration, and three reasoning modes. A major pivot away from Meta's open-source Llama strategy.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-08-meta-launches-muse-spark-first-model-from-superintelligence-');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <a href="topics/co-intelligence-mollick.html" id="news-2026-04-08-new-article-co-intelligence-by-ethan-mollick" class="news-item news-hidden">
+      <div class="news-icon">📝</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="New content" data-fr="Nouveau contenu">New content</span>
+          <span class="news-date">2026-04-08</span>
+        </div>
+        <div class="news-title" data-en="New article: Co-Intelligence by Ethan Mollick" data-fr="Nouvel article : Co-Intelligence d'Ethan Mollick">New article: Co-Intelligence by Ethan Mollick</div>
+        <div class="news-desc" data-en="Book analysis — AI as a collaborative partner, the 4 rules of co-intelligence, and practical frameworks for work, creativity and education." data-fr="Analyse du livre — L'IA comme partenaire collaboratif, les 4 règles de la co-intelligence, et des cadres pratiques pour le travail, la créativité et l'éducation.">Book analysis — AI as a collaborative partner, the 4 rules of co-intelligence, and practical frameworks for work, creativity and education.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-08-new-article-co-intelligence-by-ethan-mollick');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <a href="proprietary-models.html" id="news-2026-04-07-mistral-ai-hybrid-strategy-added-to-model-maps" class="news-item news-hidden">
+      <div class="news-icon">🔄</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="Update" data-fr="Mise à jour">Update</span>
+          <span class="news-date">2026-04-07</span>
+        </div>
+        <div class="news-title" data-en="Mistral AI hybrid strategy added to model maps" data-fr="Stratégie hybride Mistral AI ajoutée aux cartes modèles">Mistral AI hybrid strategy added to model maps</div>
+        <div class="news-desc" data-en="Proprietary and open-weights maps updated with Mistral's dual-licensing approach." data-fr="Cartes modèles propriétaires et open-weights mises à jour avec l'approche double licence de Mistral.">Proprietary and open-weights maps updated with Mistral's dual-licensing approach.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-07-mistral-ai-hybrid-strategy-added-to-model-maps');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <div id="news-2026-04-06-global-search-across-all-maps" class="news-item news-hidden">
+      <div class="news-icon">✨</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="New feature" data-fr="Nouveauté">New feature</span>
+          <span class="news-date">2026-04-06</span>
+        </div>
+        <div class="news-title" data-en="Global search across all maps" data-fr="Recherche globale sur toutes les cartes">Global search across all maps</div>
+        <div class="news-desc" data-en="Press Cmd+K anywhere to search concepts, models and tools across every map, the glossary and articles." data-fr="Appuyez sur Cmd+K n'importe où pour chercher concepts, modèles et outils dans toutes les cartes, le glossaire et les articles.">Press Cmd+K anywhere to search concepts, models and tools across every map, the glossary and articles.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-06-global-search-across-all-maps');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </div>
+
+    <a href="proprietary-models.html" id="news-2026-04-05-gpt-5-4-family-added-to-proprietary-models" class="news-item news-hidden">
+      <div class="news-icon">🔄</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="Update" data-fr="Mise à jour">Update</span>
+          <span class="news-date">2026-04-05</span>
+        </div>
+        <div class="news-title" data-en="GPT-5.4 family added to proprietary models" data-fr="Famille GPT-5.4 ajoutée aux modèles propriétaires">GPT-5.4 family added to proprietary models</div>
+        <div class="news-desc" data-en="GPT-5.4, GPT-5.4 mini and GPT-5.4 nano added to the proprietary models map." data-fr="GPT-5.4, GPT-5.4 mini et GPT-5.4 nano ajoutés à la carte des modèles propriétaires.">GPT-5.4, GPT-5.4 mini and GPT-5.4 nano added to the proprietary models map.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-05-gpt-5-4-family-added-to-proprietary-models');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <a href="topics/mcp-explained.html" id="news-2026-04-04-new-articles-mcp-explained-rag-deep-dive" class="news-item news-hidden">
+      <div class="news-icon">📝</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="New content" data-fr="Nouveau contenu">New content</span>
+          <span class="news-date">2026-04-04</span>
+        </div>
+        <div class="news-title" data-en="New articles: MCP explained & RAG deep dive" data-fr="Nouveaux articles : MCP expliqué & RAG en profondeur">New articles: MCP explained & RAG deep dive</div>
+        <div class="news-desc" data-en="Two new deep dives covering Model Context Protocol architecture and RAG pipeline design." data-fr="Deux nouveaux articles de fond sur l'architecture MCP et la conception de pipelines RAG.">Two new deep dives covering Model Context Protocol architecture and RAG pipeline design.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-04-new-articles-mcp-explained-rag-deep-dive');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
+    <div id="news-2026-03-31-anthropic-hit-by-two-leaks-in-five-days-claude-mythos-model-" class="news-item news-hidden">
+      <div class="news-icon">🔄</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="Update" data-fr="Mise à jour">Update</span>
+          <span class="news-date">2026-03-31</span>
+        </div>
+        <div class="news-title" data-en="Anthropic hit by two leaks in five days: Claude Mythos model & Claude Code source" data-fr="Anthropic frappé par deux fuites en cinq jours : modèle Claude Mythos & code source Claude Code">Anthropic hit by two leaks in five days: Claude Mythos model & Claude Code source</div>
+        <div class="news-desc" data-en="In the span of five days, Anthropic suffered two significant leaks. On March 26, a draft announcement for its next frontier model — codenamed Claude Mythos — was accidentally published. On March 31, the full source code of Claude Code was exposed through an npm package (~512K lines across ~1,900 files), revealing agent orchestration logic, automation pipelines, and internal component structure." data-fr="En l'espace de cinq jours, Anthropic a subi deux fuites significatives. Le 26 mars, un brouillon d'annonce pour son prochain modèle frontier — baptisé Claude Mythos — a été accidentellement publié. Le 31 mars, le code source complet de Claude Code a été exposé via un paquet npm (~512K lignes dans ~1 900 fichiers), révélant la logique d'orchestration des agents, les pipelines d'automatisation et la structure des composants internes.">In the span of five days, Anthropic suffered two significant leaks. On March 26, a draft announcement for its next frontier model — codenamed Claude Mythos — was accidentally published. On March 31, the full source code of Claude Code was exposed through an npm package (~512K lines across ~1,900 files), revealing agent orchestration logic, automation pipelines, and internal component structure.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-03-31-anthropic-hit-by-two-leaks-in-five-days-claude-mythos-model-');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </div>
+      </div>
+      <button class="news-load-more" id="news-load-more" data-en="Load more" data-fr="Voir plus" onclick="loadMoreNews()" style="display:block">Load more</button>
     </aside>
 
     <div class="main-content">
@@ -1129,6 +1265,12 @@ function setLang(lang) {
   document.querySelectorAll('[data-en]').forEach(el => {
     el.textContent = lang === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
   });
+}
+
+// Load more news
+function loadMoreNews() {
+  document.querySelectorAll('.news-hidden').forEach(el => el.classList.remove('news-hidden'));
+  document.getElementById('news-load-more').style.display = 'none';
 }
 
 // Highlight news item if URL has a news anchor
