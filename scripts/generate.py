@@ -516,16 +516,16 @@ def generate_html(data, elements, maps=None, current_output=""):
   }}
 
   header {{
-    background: #1A1A2E;
+    background: #0D1117;
     color: white;
-    padding: 10px 20px;
+    padding: 14px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     row-gap: 4px;
     flex-shrink: 0;
-    border-bottom: 3px solid #E74C3C;
+    border-bottom: 1px solid #1E2D4E;
   }}
   header h1 {{ font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }}
   header .meta {{ font-size: 12px; color: #95A5A6; }}
@@ -692,18 +692,18 @@ def generate_html(data, elements, maps=None, current_output=""):
     position: relative;
   }}
   .nav-btn {{
-    padding: 4px 10px;
-    border: 1.5px solid #555;
+    padding: 5px 11px;
+    border: 1.5px solid #333;
     border-radius: 6px;
     background: transparent;
     color: #BDC3C7;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.15s;
     white-space: nowrap;
   }}
-  .nav-btn:hover {{ border-color: #aaa; color: white; }}
+  .nav-btn:hover {{ border-color: #888; color: white; }}
   .nav-group:hover .nav-dropdown,
   .nav-group:focus-within .nav-dropdown {{ display: block; }}
   .nav-dropdown {{

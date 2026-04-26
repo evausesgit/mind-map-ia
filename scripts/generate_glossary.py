@@ -164,7 +164,7 @@ def build_nav(maps, links=None):
             '</div>'
         )
     nav += (
-        '<a href="index.html#news" class="nav-btn" style="text-decoration:none;padding:5px 11px;border:1.5px solid #333;border-radius:6px;color:#BDC3C7;font-size:13px;font-weight:600;">'
+        '<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
         '  <span data-en="News" data-fr="Nouveautés">News</span>'
         '</a>'
     )
@@ -252,20 +252,21 @@ def generate_html(data, maps, links=None):
     min-height: 100vh;
   }}
   header {{
-    background: #1A1A2E;
+    background: #0D1117;
     color: white;
-    padding: 16px 32px;
+    padding: 14px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+    border-bottom: 1px solid #1E2D4E;
   }}
   header h1 {{ font-size: 20px; font-weight: 700; }}
   .nav-menu {{ position: relative; }}
   .nav-btn {{
-    padding: 6px 14px;
-    border: 1.5px solid #444;
-    border-radius: 8px;
+    padding: 5px 11px;
+    border: 1.5px solid #333;
+    border-radius: 6px;
     background: transparent;
     color: #BDC3C7;
     font-size: 13px;
@@ -274,7 +275,7 @@ def generate_html(data, maps, links=None):
     transition: all 0.15s;
     white-space: nowrap;
   }}
-  .nav-btn:hover {{ border-color: #aaa; color: white; }}
+  .nav-btn:hover {{ border-color: #888; color: white; }}
   .nav-dropdown {{
     position: absolute;
     top: calc(100% + 6px);
