@@ -1,15 +1,4 @@
 maps:
-  - id: glossary
-    icon: "📖"
-    title:
-      en: "Glossary"
-      fr: "Glossaire"
-    description:
-      en: "Key terms and concepts of the LLM & AI ecosystem"
-      fr: "Termes et concepts clés de l'écosystème LLM & IA"
-    terms: 10
-    output: glossary.html
-
   - id: macro
     icon: "🗺️"
     title:
