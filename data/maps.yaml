@@ -142,3 +142,12 @@ links:
       en: "Research institute studying AI progress — trends in compute, data, and capabilities"
       fr: "Institut de recherche sur la progression de l'IA — tendances en calcul, données et capacités"
     url: "https://epoch.ai/"
+  - id: karpathy
+    icon: "🎓"
+    title:
+      en: "Andrej Karpathy"
+      fr: "Andrej Karpathy"
+    description:
+      en: "AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs"
+      fr: "Chercheur et pédagogue en IA — cours de deep learning, réseaux de neurones from scratch, et explications claires des LLMs"
+    url: "https://karpathy.ai/"

@@ -1,4 +1,14 @@
 news:
+  - date: 2026-04-23
+    type: update
+    title:
+      en: "OpenAI releases GPT-5.5"
+      fr: "OpenAI lance GPT-5.5"
+    description:
+      en: "OpenAI announces GPT-5.5, the latest iteration of its flagship model family."
+      fr: "OpenAI annonce GPT-5.5, la dernière itération de sa famille de modèles phares."
+    link: https://openai.com/index/introducing-gpt-5-5/
+
   - date: 2026-04-21
     type: update
     title:
