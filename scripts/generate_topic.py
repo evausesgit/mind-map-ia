@@ -380,6 +380,8 @@ def generate_html(topic, maps, topics=None, links=None):
     cursor: pointer;
     transition: all 0.15s;
     white-space: nowrap;
+    min-width: 110px;
+    text-align: center;
   }}
   .nav-btn:hover {{ border-color: #888; color: white; }}
   .nav-group:hover .nav-dropdown,
