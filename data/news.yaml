@@ -109,15 +109,14 @@ news:
       fr: "Meta dévoile Muse Spark, un modèle de raisonnement multimodal propriétaire dirigé par Alexandr Wang. Compression de pensée (10× moins de calcul que Llama 4 Maverick), orchestration multi-agents et trois modes de raisonnement. Un virage majeur par rapport à la stratégie open-source Llama."
     link: https://ai.meta.com/blog/introducing-muse-spark-msl/
 
-  - date: 2026-04-08
-    type: new-content
+  - date: 2026-03-31
+    type: update
     title:
-      en: "New article: Anthropic Leaks — Claude Mythos & Claude Code Source Exposed"
-      fr: "Nouvel article : Fuites Anthropic — Claude Mythos & code source de Claude Code exposés"
+      en: "Anthropic hit by two leaks in five days: Claude Mythos model & Claude Code source"
+      fr: "Anthropic frappé par deux fuites en cinq jours : modèle Claude Mythos & code source Claude Code"
     description:
-      en: "Two back-to-back leaks in five days: a draft announcement of the frontier model Claude Mythos and 512K lines of Claude Code source via npm."
-      fr: "Deux fuites coup sur coup en cinq jours : un brouillon d'annonce du modèle frontier Claude Mythos et 512K lignes du code source de Claude Code via npm."
-    link: topics/anthropic-leaks-mythos.html
+      en: "In the span of five days, Anthropic suffered two significant leaks. On March 26, a draft announcement for its next frontier model — codenamed Claude Mythos — was accidentally published. On March 31, the full source code of Claude Code was exposed through an npm package (~512K lines across ~1,900 files), revealing agent orchestration logic, automation pipelines, and internal component structure."
+      fr: "En l'espace de cinq jours, Anthropic a subi deux fuites significatives. Le 26 mars, un brouillon d'annonce pour son prochain modèle frontier — baptisé Claude Mythos — a été accidentellement publié. Le 31 mars, le code source complet de Claude Code a été exposé via un paquet npm (~512K lignes dans ~1 900 fichiers), révélant la logique d'orchestration des agents, les pipelines d'automatisation et la structure des composants internes."
 
   - date: 2026-04-08
     type: new-content
