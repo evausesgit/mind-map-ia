@@ -12,7 +12,21 @@ from global_search import widget_html as gs_widget
 ROOT = Path(__file__).parent.parent
 GLOSSARY_FILE = ROOT / "data" / "glossary.yaml"
 MAPS_FILE = ROOT / "data" / "maps.yaml"
+TOPICS_DIR = ROOT / "data" / "topics"
 OUTPUT = ROOT / "web" / "glossary.html"
+
+
+def load_topics_meta():
+    if not TOPICS_DIR.exists():
+        return []
+    topics = []
+    for path in sorted(TOPICS_DIR.glob("*.md")):
+        raw = path.read_text(encoding="utf-8")
+        fm_match = re.match(r"^---\n(.*?)\n---\n", raw, re.DOTALL)
+        if fm_match:
+            topics.append(yaml.safe_load(fm_match.group(1)))
+    topics.sort(key=lambda x: str(x.get("date", "")), reverse=True)
+    return topics
 
 
 def t(field, lang):
@@ -107,75 +121,109 @@ def format_desc(text, entries):
     return html
 
 
-def build_nav(maps, links=None):
-    items = ""
-    for m in maps:
+def build_nav(maps, topics=None, links=None):
+    map_items = ""
+    for m in (maps or []):
         if m.get("id") == "glossary":
-            active = "active"
-        else:
-            active = ""
+            continue
         title_en = t(m.get("title", ""), "en")
         title_fr = t(m.get("title", ""), "fr") or title_en
-        desc_en = t(m.get("description", ""), "en")
-        desc_fr = t(m.get("description", ""), "fr") or desc_en
-        items += (
-            f'<a href="{m["output"]}" class="{active}">'
-            f'  <span class="nav-icon">{m.get("icon", "📄")}</span>'
-            f'  <span class="nav-info">'
-            f'    <span class="nav-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'    <span class="nav-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f"  </span>"
-            f"</a>"
+        desc_en  = t(m.get("description", ""), "en")
+        desc_fr  = t(m.get("description", ""), "fr") or desc_en
+        map_items += (
+            f'<a href="{m["output"]}" class="nav-item">'
+            f'<span class="nav-item-icon">{m.get("icon","📄")}</span>'
+            f'<span class="nav-item-info">'
+            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f'</span></a>'
         )
+
+    deep_dives = [tp for tp in (topics or []) if tp.get("category") != "reflexion"]
+    reflexions = [tp for tp in (topics or []) if tp.get("category") == "reflexion"]
+
+    def _topic_items(topic_list):
+        items = ""
+        for topic in topic_list:
+            tid = topic.get("id", "")
+            title_en = t(topic.get("title",   ""), "en")
+            title_fr = t(topic.get("title",   ""), "fr") or title_en
+            summ_en  = t(topic.get("summary", ""), "en")
+            summ_fr  = t(topic.get("summary", ""), "fr") or summ_en
+            items += (
+                f'<a href="topics/{tid}.html" class="nav-item">'
+                f'<span class="nav-item-icon">📝</span>'
+                f'<span class="nav-item-info">'
+                f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+                f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
+                f'</span></a>'
+            )
+        return items
+
+    dive_items = _topic_items(deep_dives)
+    reflexion_items = _topic_items(reflexions)
+
     link_items = ""
     for link in (links or []):
         title_en = t(link.get("title", ""), "en")
         title_fr = t(link.get("title", ""), "fr") or title_en
-        desc_en = t(link.get("description", ""), "en")
-        desc_fr = t(link.get("description", ""), "fr") or desc_en
+        desc_en  = t(link.get("description", ""), "en")
+        desc_fr  = t(link.get("description", ""), "fr") or desc_en
         url = link.get("url", "")
         link_items += (
-            f'<a href="{url}" target="_blank" rel="noopener">'
-            f'  <span class="nav-icon">{link.get("icon", "🔗")}</span>'
-            f'  <span class="nav-info">'
-            f'    <span class="nav-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'    <span class="nav-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'  </span>'
-            f'</a>'
+            f'<a href="{url}" class="nav-item" target="_blank" rel="noopener">'
+            f'<span class="nav-item-icon">{link.get("icon","🔗")}</span>'
+            f'<span class="nav-item-info">'
+            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f'</span></a>'
         )
+
     nav = (
-        '<div class="nav-menu">'
-        '  <button class="nav-btn">≡ Maps ▾</button>'
-        '  <div class="nav-dropdown">'
-        '    <a href="index.html" class="nav-home">← Home</a>'
-        f"   {items}"
-        "  </div>"
-        "</div>"
+        f'<div class="nav-group">'
+        f'  <button class="nav-btn">'
+        f'    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾'
+        f'  </button>'
+        f'  <div class="nav-dropdown">{map_items}</div>'
+        f'</div>'
+        f'<div class="nav-group">'
+        f'  <button class="nav-btn">'
+        f'    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾'
+        f'  </button>'
+        f'  <div class="nav-dropdown">{dive_items}</div>'
+        f'</div>'
     )
+    if reflexion_items:
+        nav += (
+            f'<div class="nav-group">'
+            f'  <button class="nav-btn">'
+            f'    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾'
+            f'  </button>'
+            f'  <div class="nav-dropdown">{reflexion_items}</div>'
+            f'</div>'
+        )
     if link_items:
         nav += (
-            '<div class="nav-menu">'
-            '  <button class="nav-btn">'
-            '    <span data-en="Links" data-fr="Liens">Links</span> ▾'
-            '  </button>'
-            '  <div class="nav-dropdown">'
-            f'   {link_items}'
-            '  </div>'
-            '</div>'
+            f'<div class="nav-group">'
+            f'  <button class="nav-btn">'
+            f'    <span data-en="Links" data-fr="Liens">Links</span> ▾'
+            f'  </button>'
+            f'  <div class="nav-dropdown">{link_items}</div>'
+            f'</div>'
         )
     nav += (
-        '<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
-        '  <span data-en="News" data-fr="Nouveautés">News</span>'
-        '</a>'
+        f'<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
+        f'  <span data-en="News" data-fr="Nouveautés">News</span>'
+        f'</a>'
     )
     return nav
 
 
-def generate_html(data, maps, links=None):
+def generate_html(data, maps, topics=None, links=None):
     terms = data["terms"]
     title_en = t(data["meta"]["title"], "en")
     title_fr = t(data["meta"]["title"], "fr")
-    nav_html = build_nav(maps, links=links)
+    nav_html = build_nav(maps, topics=topics, links=links)
 
     terms_sorted = sorted(terms, key=lambda x: t(x["label"], "en").lower())
 
@@ -262,7 +310,7 @@ def generate_html(data, maps, links=None):
     border-bottom: 1px solid #1E2D4E;
   }}
   header h1 {{ font-size: 20px; font-weight: 700; }}
-  .nav-menu {{ position: relative; }}
+  .nav-group {{ position: relative; }}
   .nav-btn {{
     padding: 5px 11px;
     border: 1.5px solid #333;
@@ -276,44 +324,38 @@ def generate_html(data, maps, links=None):
     white-space: nowrap;
   }}
   .nav-btn:hover {{ border-color: #888; color: white; }}
+  .nav-group:hover .nav-dropdown,
+  .nav-group:focus-within .nav-dropdown {{ display: block; }}
   .nav-dropdown {{
+    display: none;
     position: absolute;
     top: calc(100% + 6px);
     left: 0;
-    min-width: 260px;
     background: #16213E;
-    border: 1px solid #1E2D4E;
+    border: 1px solid #2C3E6E;
     border-radius: 10px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    min-width: 280px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
     z-index: 1000;
-    display: none;
+    overflow: hidden;
   }}
-  .nav-menu:hover .nav-dropdown,
-  .nav-menu:focus-within .nav-dropdown {{ display: block; }}
-  .nav-dropdown a {{
+  .nav-item {{
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     padding: 10px 14px;
-    border-bottom: 1px solid #1E2D4E;
-    text-decoration: none;
     color: #BDC3C7;
+    text-decoration: none;
     font-size: 13px;
-    transition: background 0.1s;
-  }}
-  .nav-dropdown a:last-child {{ border-bottom: none; }}
-  .nav-dropdown a:hover {{ background: #1E2D4E; color: white; }}
-  .nav-dropdown a.active {{ color: white; background: #1E2D4E; }}
-  .nav-dropdown a .nav-icon {{ font-size: 18px; }}
-  .nav-dropdown a .nav-info {{ display: flex; flex-direction: column; }}
-  .nav-dropdown a .nav-title {{ font-weight: 600; }}
-  .nav-dropdown a .nav-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
-  .nav-home {{
-    color: #BDC3C7 !important;
-    font-size: 13px !important;
+    transition: background 0.12s;
     border-bottom: 1px solid #1E2D4E;
   }}
-  .nav-home:hover {{ color: #FF6B6B !important; }}
+  .nav-item:last-child {{ border-bottom: none; }}
+  .nav-item:hover {{ background: #1E2D4E; color: white; }}
+  .nav-item-icon {{ font-size: 16px; flex-shrink: 0; }}
+  .nav-item-info {{ display: flex; flex-direction: column; }}
+  .nav-item-title {{ font-weight: 600; font-size: 13px; }}
+  .nav-item-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
   .lang-toggle {{ display: flex; gap: 6px; }}
   .lang-btn {{
     background: none;
@@ -573,7 +615,8 @@ def main():
         maps_config = yaml.safe_load(f)
     maps = maps_config.get("maps", [])
     links = maps_config.get("links", [])
-    html = generate_html(data, maps, links)
+    topics = load_topics_meta()
+    html = generate_html(data, maps, topics=topics, links=links)
     OUTPUT.parent.mkdir(exist_ok=True)
     with open(OUTPUT, "w") as f:
         f.write(html)

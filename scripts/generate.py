@@ -319,8 +319,6 @@ def build_nav(maps, current_output, topics=None, links=None):
             f'</span></a>'
         )
 
-    glossary_active = " active" if current_name == "glossary.html" else ""
-
     nav = (
         f'<a href="index.html" class="nav-logo" title="Home">'
         f'<svg width="44" height="30" viewBox="0 0 120 82" fill="none" xmlns="http://www.w3.org/2000/svg">'
@@ -378,9 +376,6 @@ def build_nav(maps, current_output, topics=None, links=None):
     nav += (
         f'<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
         f'  <span data-en="News" data-fr="Nouveautés">News</span>'
-        f'</a>'
-        f'<a href="glossary.html" class="nav-glossary-link{glossary_active}">'
-        f'  <span data-en="📖 Glossary" data-fr="📖 Glossaire">📖 Glossary</span>'
         f'</a>'
     )
     return nav
@@ -737,21 +732,6 @@ def generate_html(data, elements, maps=None, current_output=""):
   .nav-item-info {{ display: flex; flex-direction: column; }}
   .nav-item-title {{ font-weight: 600; font-size: 13px; }}
   .nav-item-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
-  .nav-glossary-link {{
-    padding: 4px 10px;
-    border: 1.5px solid #555;
-    border-radius: 6px;
-    color: #BDC3C7;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: all 0.15s;
-  }}
-  .nav-glossary-link:hover, .nav-glossary-link.active {{
-    border-color: #C39BD3;
-    color: #C39BD3;
-  }}
 
   .main {{
     display: flex;

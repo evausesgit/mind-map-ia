@@ -1,4 +1,14 @@
 news:
+  - date: 2026-04-24
+    type: update
+    title:
+      en: "DeepSeek V4 Pro and V4 Flash: back among the top open-weights models"
+      fr: "DeepSeek V4 Pro et V4 Flash : retour parmi les meilleurs modèles open-weights"
+    description:
+      en: "DeepSeek releases two new MoE models. V4 Pro (1.6T/49B active params) ranks #2 among open-weights reasoning models with a score of 52 on the Artificial Analysis Intelligence Index — a 10-point jump over V3.2 — and leads all open-weights models on agentic tasks. V4 Flash (284B/13B active) scores 47 and targets efficiency. Both support a 1M-token context window (8× V3.2) and are MIT-licensed. Pricing: V4 Pro at $1.74/$3.48 per 1M tokens, V4 Flash at $0.14/$0.28. Major caveat: hallucination rates of 94–96%, meaning the models almost always respond even when they don't know the answer."
+      fr: "DeepSeek lance deux nouveaux modèles MoE. V4 Pro (1,6T/49B paramètres actifs) se classe 2ᵉ parmi les modèles open-weights de raisonnement avec un score de 52 à l'Artificial Analysis Intelligence Index — +10 points par rapport à V3.2 — et domine sur les tâches agentives. V4 Flash (284B/13B actifs) score 47 et vise l'efficacité. Les deux supportent une fenêtre de contexte de 1M tokens (×8 vs V3.2) et sont sous licence MIT. Tarifs : V4 Pro à 1,74 $/3,48 $ par million de tokens, V4 Flash à 0,14 $/0,28 $. Bémol majeur : des taux d'hallucination de 94–96 %, les modèles répondant presque toujours même sans connaître la réponse."
+    link: https://artificialanalysis.ai/articles/deepseek-is-back-among-the-leading-open-weights-models-with-v4-pro-and-v4-flash
+
   - date: 2026-04-23
     type: update
     title:

@@ -210,69 +210,108 @@ def t(field, lang):
     return str(field) if field else ""
 
 
-def build_nav(maps, topic_id, links=None):
-    items = ""
-    for m in maps:
+def build_nav(maps, current_id=None, topics=None, links=None):
+    map_items = ""
+    for m in (maps or []):
+        if m.get("id") == "glossary":
+            continue
         title_en = t(m.get("title", ""), "en")
         title_fr = t(m.get("title", ""), "fr") or title_en
-        desc_en = t(m.get("description", ""), "en")
-        desc_fr = t(m.get("description", ""), "fr") or desc_en
-        items += (
-            f'<a href="../{m["output"]}">'
-            f'  <span class="nav-icon">{m.get("icon", "📄")}</span>'
-            f'  <span class="nav-info">'
-            f'    <span class="nav-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'    <span class="nav-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'  </span>'
-            f'</a>'
+        desc_en  = t(m.get("description", ""), "en")
+        desc_fr  = t(m.get("description", ""), "fr") or desc_en
+        map_items += (
+            f'<a href="../{m["output"]}" class="nav-item">'
+            f'<span class="nav-item-icon">{m.get("icon","📄")}</span>'
+            f'<span class="nav-item-info">'
+            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f'</span></a>'
         )
+
+    deep_dives = [tp for tp in (topics or []) if tp.get("category") != "reflexion"]
+    reflexions = [tp for tp in (topics or []) if tp.get("category") == "reflexion"]
+
+    def _topic_items(topic_list):
+        items = ""
+        for topic in topic_list:
+            tid = topic.get("id", "")
+            active_cls = " active" if tid == current_id else ""
+            title_en = t(topic.get("title",   ""), "en")
+            title_fr = t(topic.get("title",   ""), "fr") or title_en
+            summ_en  = t(topic.get("summary", ""), "en")
+            summ_fr  = t(topic.get("summary", ""), "fr") or summ_en
+            items += (
+                f'<a href="../topics/{tid}.html" class="nav-item{active_cls}">'
+                f'<span class="nav-item-icon">📝</span>'
+                f'<span class="nav-item-info">'
+                f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+                f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
+                f'</span></a>'
+            )
+        return items
+
+    dive_items = _topic_items(deep_dives)
+    reflexion_items = _topic_items(reflexions)
+
     link_items = ""
     for link in (links or []):
         title_en = t(link.get("title", ""), "en")
         title_fr = t(link.get("title", ""), "fr") or title_en
-        desc_en = t(link.get("description", ""), "en")
-        desc_fr = t(link.get("description", ""), "fr") or desc_en
+        desc_en  = t(link.get("description", ""), "en")
+        desc_fr  = t(link.get("description", ""), "fr") or desc_en
         url = link.get("url", "")
         link_items += (
-            f'<a href="{url}" target="_blank" rel="noopener">'
-            f'  <span class="nav-icon">{link.get("icon", "🔗")}</span>'
-            f'  <span class="nav-info">'
-            f'    <span class="nav-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'    <span class="nav-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'  </span>'
-            f'</a>'
+            f'<a href="{url}" class="nav-item" target="_blank" rel="noopener">'
+            f'<span class="nav-item-icon">{link.get("icon","🔗")}</span>'
+            f'<span class="nav-item-info">'
+            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
+            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
+            f'</span></a>'
         )
+
     nav = (
-        '<div class="nav-menu">'
-        '  <button class="nav-btn">≡ Maps ▾</button>'
-        '  <div class="nav-dropdown">'
-        '    <a href="../index.html" class="nav-home">← Home</a>'
-        f'   {items}'
-        '  </div>'
-        '</div>'
+        f'<div class="nav-group">'
+        f'  <button class="nav-btn">'
+        f'    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾'
+        f'  </button>'
+        f'  <div class="nav-dropdown">{map_items}</div>'
+        f'</div>'
+        f'<div class="nav-group">'
+        f'  <button class="nav-btn">'
+        f'    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾'
+        f'  </button>'
+        f'  <div class="nav-dropdown">{dive_items}</div>'
+        f'</div>'
     )
+    if reflexion_items:
+        nav += (
+            f'<div class="nav-group">'
+            f'  <button class="nav-btn">'
+            f'    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾'
+            f'  </button>'
+            f'  <div class="nav-dropdown">{reflexion_items}</div>'
+            f'</div>'
+        )
     if link_items:
         nav += (
-            '<div class="nav-menu">'
-            '  <button class="nav-btn">'
-            '    <span data-en="Links" data-fr="Liens">Links</span> ▾'
-            '  </button>'
-            '  <div class="nav-dropdown">'
-            f'   {link_items}'
-            '  </div>'
-            '</div>'
+            f'<div class="nav-group">'
+            f'  <button class="nav-btn">'
+            f'    <span data-en="Links" data-fr="Liens">Links</span> ▾'
+            f'  </button>'
+            f'  <div class="nav-dropdown">{link_items}</div>'
+            f'</div>'
         )
     nav += (
-        '<a href="../index.html#news" class="nav-btn" style="text-decoration:none;">'
-        '  <span data-en="News" data-fr="Nouveautés">News</span>'
-        '</a>'
+        f'<a href="../index.html#news" class="nav-btn" style="text-decoration:none;">'
+        f'  <span data-en="News" data-fr="Nouveautés">News</span>'
+        f'</a>'
     )
     return nav
 
 
 # ── HTML generation ───────────────────────────────────────────────────────────
 
-def generate_html(topic, maps, links=None):
+def generate_html(topic, maps, topics=None, links=None):
     tid = topic["id"]
     title_en = t(topic.get("title", ""), "en")
     title_fr = t(topic.get("title", ""), "fr") or title_en
@@ -291,7 +330,7 @@ def generate_html(topic, maps, links=None):
     toc_en = build_toc(content_en_md)
     toc_fr = build_toc(content_fr_md)
 
-    nav_html = build_nav(maps, tid, links=links)
+    nav_html = build_nav(maps, current_id=tid, topics=topics, links=links)
     tags_html = "".join(f'<span class="tag">{tag}</span>' for tag in tags)
 
     status_colors = {
@@ -329,7 +368,7 @@ def generate_html(topic, maps, links=None):
     top: 0;
     z-index: 100;
   }}
-  .nav-menu {{ position: relative; }}
+  .nav-group {{ position: relative; }}
   .nav-btn {{
     padding: 5px 11px;
     border: 1.5px solid #333;
@@ -343,39 +382,39 @@ def generate_html(topic, maps, links=None):
     white-space: nowrap;
   }}
   .nav-btn:hover {{ border-color: #888; color: white; }}
+  .nav-group:hover .nav-dropdown,
+  .nav-group:focus-within .nav-dropdown {{ display: block; }}
   .nav-dropdown {{
+    display: none;
     position: absolute;
     top: calc(100% + 6px);
     left: 0;
-    min-width: 260px;
     background: #16213E;
-    border: 1px solid #1E2D4E;
+    border: 1px solid #2C3E6E;
     border-radius: 10px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    min-width: 280px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
     z-index: 1000;
-    display: none;
+    overflow: hidden;
   }}
-  .nav-menu:hover .nav-dropdown,
-  .nav-menu:focus-within .nav-dropdown {{ display: block; }}
-  .nav-dropdown a {{
+  .nav-item {{
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     padding: 10px 14px;
-    border-bottom: 1px solid #1E2D4E;
-    text-decoration: none;
     color: #BDC3C7;
+    text-decoration: none;
     font-size: 13px;
-    transition: background 0.1s;
+    transition: background 0.12s;
+    border-bottom: 1px solid #1E2D4E;
   }}
-  .nav-dropdown a:last-child {{ border-bottom: none; }}
-  .nav-dropdown a:hover {{ background: #1E2D4E; color: white; }}
-  .nav-dropdown a .nav-icon {{ font-size: 18px; }}
-  .nav-dropdown a .nav-info {{ display: flex; flex-direction: column; }}
-  .nav-dropdown a .nav-title {{ font-weight: 600; }}
-  .nav-dropdown a .nav-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
-  .nav-home {{ color: #BDC3C7 !important; font-size: 13px !important; border-bottom: 1px solid #1E2D4E; }}
-  .nav-home:hover {{ color: #FF6B6B !important; }}
+  .nav-item:last-child {{ border-bottom: none; }}
+  .nav-item:hover {{ background: #1E2D4E; color: white; }}
+  .nav-item.active {{ background: #1E2D4E; color: white; }}
+  .nav-item-icon {{ font-size: 16px; flex-shrink: 0; }}
+  .nav-item-info {{ display: flex; flex-direction: column; }}
+  .nav-item-title {{ font-weight: 600; font-size: 13px; }}
+  .nav-item-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
   .lang-toggle {{ display: flex; gap: 6px; }}
   .lang-btn {{
     background: none;
@@ -664,19 +703,21 @@ def main():
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+    all_topics = [parse_topic(p) for p in topic_files]
+    all_topics.sort(key=lambda x: str(x.get("date", "")), reverse=True)
+
     generated = []
     errors = []
-    for path in topic_files:
+    for topic in all_topics:
         try:
-            topic = parse_topic(path)
-            html = generate_html(topic, maps, links=links)
+            html = generate_html(topic, maps, topics=all_topics, links=links)
             out_path = OUTPUT_DIR / f"{topic['id']}.html"
             out_path.write_text(html, encoding="utf-8")
             generated.append((topic["id"], t(topic.get("title", ""), "en")))
             print(f"  ✓ {out_path.relative_to(ROOT)}")
         except Exception as e:
-            errors.append((path.name, str(e)))
-            print(f"  ✗ {path.name}: {e}")
+            errors.append((topic.get("id", "?"), str(e)))
+            print(f"  ✗ {topic.get('id', '?')}: {e}")
 
     print(f"\n{len(generated)} topic(s) generated → web/topics/")
     if errors:
