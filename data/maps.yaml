@@ -151,3 +151,12 @@ links:
       en: "AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs"
       fr: "Chercheur et pédagogue en IA — cours de deep learning, réseaux de neurones from scratch, et explications claires des LLMs"
     url: "https://karpathy.ai/"
+  - id: claude-devs
+    icon: "🐦"
+    title:
+      en: "Claude Devs (X)"
+      fr: "Claude Devs (X)"
+    description:
+      en: "Official Anthropic account for Claude developers — API updates, tips and community news"
+      fr: "Compte Anthropic officiel pour les développeurs Claude — mises à jour API, conseils et actualités communautaires"
+    url: "https://x.com/ClaudeDevs"
