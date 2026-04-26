@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta-Reasoning: Teaching AI Agents to Know When They're Stuck</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #F8F9FA;
+    color: #1A1A2E;
+    min-height: 100vh;
+  }
+  header {
+    background: #0D1117;
+    color: white;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid #1E2D4E;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-group { position: relative; }
+  .nav-btn {
+    padding: 5px 11px;
+    border: 1.5px solid #333;
+    border-radius: 6px;
+    background: transparent;
+    color: #BDC3C7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    min-width: 110px;
+    text-align: center;
+  }
+  .nav-btn:hover { border-color: #888; color: white; }
+  .nav-group:hover .nav-dropdown,
+  .nav-group:focus-within .nav-dropdown { display: block; }
+  .nav-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: #16213E;
+    border: 1px solid #2C3E6E;
+    border-radius: 10px;
+    min-width: 280px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    z-index: 1000;
+    overflow: hidden;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    color: #BDC3C7;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.12s;
+    border-bottom: 1px solid #1E2D4E;
+  }
+  .nav-item:last-child { border-bottom: none; }
+  .nav-item:hover { background: #1E2D4E; color: white; }
+  .nav-item.active { background: #1E2D4E; color: white; }
+  .nav-item-icon { font-size: 16px; flex-shrink: 0; }
+  .nav-item-info { display: flex; flex-direction: column; }
+  .nav-item-title { font-weight: 600; font-size: 13px; }
+  .nav-item-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
+  .lang-toggle { display: flex; gap: 6px; }
+  .lang-btn {
+    background: none;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #BDC3C7;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+
+  .page-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .page-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  .article-header { margin-bottom: 32px; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #27AE6022;
+    color: #27AE60;
+    border: 1px solid #27AE6044;
+  }
+  .date { font-size: 12px; color: #95A5A6; }
+  .article-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1A1A2E;
+    margin-bottom: 12px;
+  }
+  .article-summary {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #E8EAF6;
+    color: #3F51B5;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .article-body { line-height: 1.75; color: #2C3E50; }
+  .article-body h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #E8EAED;
+  }
+  .article-body h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A1A2E;
+    margin: 24px 0 8px;
+  }
+  .article-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7F8C8D;
+    margin: 20px 0 6px;
+  }
+  .article-body p { margin-bottom: 14px; font-size: 15px; }
+  .article-body ul, .article-body ol {
+    margin: 8px 0 14px 20px;
+    font-size: 15px;
+  }
+  .article-body li { margin-bottom: 4px; }
+  .article-body strong { font-weight: 700; color: #1A1A2E; }
+  .article-body em { color: #555; }
+  .article-body code {
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 13px;
+    background: #EEF0F3;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #C0392B;
+  }
+  .article-body pre {
+    background: #1A1A2E;
+    color: #E8EAF6;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .article-body pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .article-body th {
+    background: #1A1A2E;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .article-body td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #E8EAED;
+  }
+  .article-body tr:nth-child(even) td { background: #F8F9FA; }
+  .article-body blockquote {
+    border-left: 3px solid #1A1A2E;
+    padding: 8px 16px;
+    margin: 12px 0;
+    color: #555;
+    background: #F0F0F5;
+    border-radius: 0 4px 4px 0;
+  }
+  .article-body hr {
+    border: none;
+    border-top: 1px solid #E0E0E0;
+    margin: 28px 0;
+  }
+  .article-body a { color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }
+  .article-body a:hover { color: #3498DB; }
+
+  /* Sidebar */
+  .sidebar { position: sticky; top: 80px; }
+  .toc { display: flex; flex-direction: column; gap: 4px; }
+  .toc-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #95A5A6;
+    margin-bottom: 8px;
+  }
+  .toc a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    padding: 3px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    line-height: 1.4;
+    transition: all 0.1s;
+  }
+  .toc a.toc-h3 {
+    padding-left: 20px;
+    font-size: 12px;
+    color: #7F8C8D;
+  }
+  .toc a:hover { color: #1A1A2E; border-left-color: #1A1A2E; }
+</style>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="nav-group">  <button class="nav-btn">    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾  </button>  <div class="nav-dropdown"><a href="../macro.html" class="nav-item"><span class="nav-item-icon">🗺️</span><span class="nav-item-info"><span class="nav-item-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span><span class="nav-item-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span></span></a><a href="../ai-agents.html" class="nav-item"><span class="nav-item-icon">🤖</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span><span class="nav-item-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span></span></a><a href="../ai-coding-assistants.html" class="nav-item"><span class="nav-item-icon">💻</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span><span class="nav-item-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span></span></a><a href="../proprietary-models.html" class="nav-item"><span class="nav-item-icon">🏢</span><span class="nav-item-info"><span class="nav-item-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span><span class="nav-item-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span></span></a><a href="../open-weights-models.html" class="nav-item"><span class="nav-item-icon">🔓</span><span class="nav-item-info"><span class="nav-item-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span><span class="nav-item-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span></span></a><a href="../cloud-managed.html" class="nav-item"><span class="nav-item-icon">☁️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span><span class="nav-item-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span></span></a><a href="../dense-vs-moe.html" class="nav-item"><span class="nav-item-icon">⚡</span><span class="nav-item-info"><span class="nav-item-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span><span class="nav-item-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span></span></a><a href="../quantization.html" class="nav-item"><span class="nav-item-icon">🗜️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Quantization — Memory by Format" data-fr="Quantisation — Mémoire par Format">Quantization — Memory by Format</span><span class="nav-item-desc" data-en="How numerical precision (FP32 → INT4) affects a 70B model's memory footprint" data-fr="Comment la précision numérique (FP32 → INT4) affecte l'empreinte mémoire d'un modèle 70B">How numerical precision (FP32 → INT4) affects a 70B model's memory footprint</span></span></a><a href="../rag-pattern.html" class="nav-item"><span class="nav-item-icon">🔍</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG" data-fr="RAG">RAG</span><span class="nav-item-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾  </button>  <div class="nav-dropdown"><a href="../topics/llm-not-a-truth-machine.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="LLMs Are Not Truth Machines" data-fr="Les LLMs ne sont pas des machines à vérité">LLMs Are Not Truth Machines</span><span class="nav-item-desc" data-en="Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead." data-fr="Pourquoi demander la vérité à un LLM est le mauvais modèle mental — et ce que fait RAG à la place.">Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead.</span></span></a><a href="../topics/usecase-chat-qa.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case — Chat LLM (ChatGPT-like)" data-fr="Cas d'Usage — Chat LLM (type ChatGPT)">Use Case — Chat LLM (ChatGPT-like)</span><span class="nav-item-desc" data-en="How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes." data-fr="Comment un Chat LLM fonctionne de bout en bout : construction du prompt, RAG optionnel, inférence, génération de tokens, et les bons modèles mentaux pour éviter les erreurs courantes.">How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes.</span></span></a><a href="../topics/usecase-analyst-rag.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Knowledge Search for Analysts" data-fr="Cas d'Usage : Recherche dans la Connaissance pour Analystes">Use Case: Knowledge Search for Analysts</span><span class="nav-item-desc" data-en="How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs." data-fr="Comment un analyste métier interroge des corpus de documents privés avec l'IA — architecture, gouvernance, et compromis pratiques.">How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs.</span></span></a><a href="../topics/usecase-dev-agentic.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Agentic Coding" data-fr="Cas d'Usage : Coding Agentique">Use Case: Agentic Coding</span><span class="nav-item-desc" data-en="How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously." data-fr="Comment un agent IA assiste un développeur au-delà de l'autocomplétion — planification, édition, exécution de tests, et itération autonome.">How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously.</span></span></a><a href="../topics/usecase-ops-automation.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Ops Workflow Automation" data-fr="Cas d'Usage : Automatisation de Workflows Ops">Use Case: Ops Workflow Automation</span><span class="nav-item-desc" data-en="How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model." data-fr="Comment des agents autonomes gèrent des processus opérationnels multi-étapes — triage d'incidents, orchestration de pipelines, et le modèle humain dans la boucle.">How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model.</span></span></a><a href="../topics/mcp-explained.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</span><span class="nav-item-desc" data-en="What MCP is, how it works architecturally, and why it matters for AI agent development." data-fr="Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA.">What MCP is, how it works architecturally, and why it matters for AI agent development.</span></span></a><a href="../topics/rag-deep-dive.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</span><span class="nav-item-desc" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾  </button>  <div class="nav-dropdown"><a href="../topics/meta-reasoning-agents.html" class="nav-item active"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Meta-Reasoning: Teaching AI Agents to Know When They're Stuck" data-fr="Méta-raisonnement : Apprendre aux agents IA à reconnaître quand ils bloquent">Meta-Reasoning: Teaching AI Agents to Know When They're Stuck</span><span class="nav-item-desc" data-en="A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most." data-fr="Une étude de 2026 montre que les agents capables de surveiller leur raisonnement et de changer de stratégie surpassent les agents standard de 31 % — les modèles open-source en bénéficiant le plus.">A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most.</span></span></a><a href="../topics/laurent-alexandre-assemblee-ia.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en=""Stop the Denial" — Laurent Alexandre on AI at the French National Assembly" data-fr=""Sortir du déni" — Laurent Alexandre sur l'IA à l'Assemblée nationale">"Stop the Denial" — Laurent Alexandre on AI at the French National Assembly</span><span class="nav-item-desc" data-en="Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake." data-fr="Laurent Alexandre soutient devant l'Assemblée nationale que l'IA dépasse déjà des experts sur des tâches cognitives — et que minimiser ce fait est une erreur stratégique.">Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake.</span></span></a><a href="../topics/co-intelligence-mollick.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</span><span class="nav-item-desc" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Links" data-fr="Liens">Links</span> ▾  </button>  <div class="nav-dropdown"><a href="https://artificialanalysis.ai/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">📊</span><span class="nav-item-info"><span class="nav-item-title" data-en="Artificial Analysis" data-fr="Artificial Analysis">Artificial Analysis</span><span class="nav-item-desc" data-en="Independent analysis of AI — choose the best model and provider for your use case" data-fr="Analyse indépendante de l'IA — choisir le meilleur modèle et fournisseur pour votre cas d'usage">Independent analysis of AI — choose the best model and provider for your use case</span></span></a><a href="https://epoch.ai/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">📈</span><span class="nav-item-info"><span class="nav-item-title" data-en="Epoch AI" data-fr="Epoch AI">Epoch AI</span><span class="nav-item-desc" data-en="Research institute studying AI progress — trends in compute, data, and capabilities" data-fr="Institut de recherche sur la progression de l'IA — tendances en calcul, données et capacités">Research institute studying AI progress — trends in compute, data, and capabilities</span></span></a><a href="https://karpathy.ai/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🎓</span><span class="nav-item-info"><span class="nav-item-title" data-en="Andrej Karpathy" data-fr="Andrej Karpathy">Andrej Karpathy</span><span class="nav-item-desc" data-en="AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs" data-fr="Chercheur et pédagogue en IA — cours de deep learning, réseaux de neurones from scratch, et explications claires des LLMs">AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs</span></span></a><a href="https://x.com/ClaudeDevs" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🐦</span><span class="nav-item-info"><span class="nav-item-title" data-en="Claude Devs (X)" data-fr="Claude Devs (X)">Claude Devs (X)</span><span class="nav-item-desc" data-en="Official Anthropic account for Claude developers — API updates, tips and community news" data-fr="Compte Anthropic officiel pour les développeurs Claude — mises à jour API, conseils et actualités communautaires">Official Anthropic account for Claude developers — API updates, tips and community news</span></span></a></div></div><a href="../index.html#news" class="nav-btn" style="text-decoration:none;">  <span data-en="News" data-fr="Nouveautés">News</span></a>
+  </div>
+  
+<!-- ── Global Search Widget ── -->
+<style>
+#gs-trigger {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 8px; min-width: 180px;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+  color: #aaa; font-size: 13px; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+#gs-trigger:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.3); color: #fff; }
+#gs-trigger .gs-placeholder { flex: 1; text-align: left; }
+#gs-trigger .gs-kbd {
+  font-size: 11px; opacity: 0.5;
+  background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+}
+#gs-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(10,10,20,0.7); backdrop-filter: blur(4px);
+  align-items: flex-start; justify-content: center; padding-top: 80px;
+}
+#gs-overlay.open { display: flex; }
+#gs-modal {
+  width: 100%; max-width: 640px; background: #1e2030;
+  border: 1px solid #3a3f5c; border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6); overflow: hidden;
+}
+#gs-input-wrap {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px; border-bottom: 1px solid #2e3350;
+}
+#gs-input-wrap svg { flex-shrink: 0; opacity: 0.5; }
+#gs-input {
+  flex: 1; background: none; border: none; outline: none;
+  color: #f0f0f0; font-size: 16px;
+}
+#gs-input::placeholder { color: #555; }
+#gs-esc {
+  font-size: 11px; color: #555; background: rgba(255,255,255,0.07);
+  border: 1px solid #333; padding: 2px 7px; border-radius: 5px; cursor: pointer;
+  white-space: nowrap;
+}
+#gs-results {
+  max-height: 440px; overflow-y: auto; padding: 8px 0;
+}
+#gs-results:empty::after {
+  content: ''; display: block;
+}
+.gs-empty { padding: 20px; text-align: center; color: #555; font-size: 14px; }
+.gs-section { padding: 6px 18px 2px; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; color: #4a5080; text-transform: uppercase; }
+.gs-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 18px; cursor: pointer; transition: background 0.1s;
+}
+.gs-item:hover, .gs-item.active { background: rgba(255,255,255,0.06); }
+.gs-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+}
+.gs-body { flex: 1; min-width: 0; }
+.gs-label { font-size: 14px; font-weight: 600; color: #e8eaf0; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+.gs-meta { font-size: 11px; color: #5a6080; margin-top: 1px; }
+.gs-excerpt { font-size: 12px; color: #6a7090; margin-top: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gs-badge {
+  font-size: 10px; padding: 1px 7px; border-radius: 10px;
+  background: rgba(255,255,255,0.07); color: #8090b0; white-space: nowrap;
+  align-self: center; flex-shrink: 0;
+}
+</style>
+
+<button id="gs-trigger" onclick="gsOpen()" title="Global search (⌘K)">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </svg>
+  <span class="gs-placeholder">Search everywhere…</span>
+  <span class="gs-kbd">⌘K</span>
+</button>
+
+<div id="gs-overlay" onclick="gsOverlayClick(event)">
+  <div id="gs-modal">
+    <div id="gs-input-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="gs-input" placeholder="Search all maps, glossary, articles…"
+             oninput="gsSearch(this.value)" autocomplete="off" spellcheck="false">
+      <span id="gs-esc" onclick="gsClose()">Esc</span>
+    </div>
+    <div id="gs-results"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const INDEX_PATH = '../search-index.json';
+  let gsData = null, gsActive = -1, gsItems = [];
+
+  async function gsLoad() {
+    if (gsData) return;
+    try {
+      const r = await fetch(INDEX_PATH);
+      gsData = await r.json();
+    } catch(e) {
+      console.warn('Global search: could not load index', e);
+      gsData = { nodes: [], glossary: [], terms: [], topics: [] };
+    }
+  }
+
+  window.gsOpen = function() {
+    document.getElementById('gs-overlay').classList.add('open');
+    document.getElementById('gs-input').focus();
+    gsLoad();
+  };
+
+  window.gsClose = function() {
+    document.getElementById('gs-overlay').classList.remove('open');
+    gsActive = -1;
+  };
+
+  window.gsOverlayClick = function(e) {
+    if (e.target === document.getElementById('gs-overlay')) gsClose();
+  };
+
+  function currentLang() {
+    return (typeof lang !== 'undefined' ? lang : null) ||
+           document.querySelector('.lang-btn.active')?.dataset?.lang || 'en';
+  }
+
+  function excerpt(text, q) {
+    if (!text) return '';
+    const i = text.toLowerCase().indexOf(q.toLowerCase());
+    if (i === -1) return text.slice(0, 80) + (text.length > 80 ? '…' : '');
+    const s = Math.max(0, i - 20), e = Math.min(text.length, i + q.length + 50);
+    return (s > 0 ? '…' : '') + text.slice(s, e) + (e < text.length ? '…' : '');
+  }
+
+  function matches(fields, q) {
+    return fields.some(f => f && f.toLowerCase().includes(q));
+  }
+
+  window.gsSearch = async function(raw) {
+    await gsLoad();
+    const q = raw.toLowerCase().trim();
+    const el = document.getElementById('gs-results');
+    gsActive = -1; gsItems = [];
+    if (!q) { el.innerHTML = ''; return; }
+    const l = currentLang();
+
+    const nodeHits = gsData.nodes.filter(n =>
+      matches([n.label_en, n.label_fr, n.description_en, n.description_fr, n.category], q)
+    ).slice(0, 6);
+
+    const glossHits = gsData.glossary.filter(g =>
+      matches([g.label_en, g.label_fr, g.description_en, g.description_fr, ...(g.aliases||[])], q)
+    ).slice(0, 4);
+
+    const topicHits = gsData.topics.filter(t =>
+      matches([t.title_en, t.title_fr, t.summary_en, t.summary_fr, ...(t.tags||[])], q)
+    ).slice(0, 4);
+
+    if (!nodeHits.length && !glossHits.length && !topicHits.length) {
+      el.innerHTML = `<div class="gs-empty">${l === 'fr' ? 'Aucun résultat' : 'No results'}</div>`;
+      return;
+    }
+
+    let html = '';
+    const CAT_COLORS = {
+      org:'#58D68D', provider:'#58D68D', model:'#D5F5E3', model_family:'#A9CCE3',
+      persona:'#9B59B6', usecase:'#1ABC9C', pattern:'#E67E22', component:'#3498DB',
+      stage:'#58D68D', tool:'#85C1E9', block:'#F4D03F', framework:'#85C1E9',
+      default:'#7f8c8d'
+    };
+
+    function color(cat) { return CAT_COLORS[cat] || CAT_COLORS.default; }
+
+    if (nodeHits.length) {
+      html += `<div class="gs-section">${l==='fr'?'Cartes':'Maps'}</div>`;
+      nodeHits.forEach(n => {
+        const label = (l==='fr'?n.label_fr:n.label_en) || n.label_en;
+        const desc  = (l==='fr'?n.description_fr:n.description_en) || n.description_en;
+        const map   = (l==='fr'?n.map_title_fr:n.map_title_en) || n.map_id;
+        gsItems.push({ url: n.map_url + '#' + n.id, label });
+        html += `<div class="gs-item" data-url="${n.map_url}#${n.id}" onclick="gsGo(this)">
+          <div class="gs-dot" style="background:${color(n.category)}"></div>
+          <div class="gs-body">
+            <div class="gs-label">${label}</div>
+            <div class="gs-excerpt">${excerpt(desc, raw)}</div>
+          </div>
+          <span class="gs-badge">${map}</span>
+        </div>`;
+      });
+    }
+
+    if (glossHits.length) {
+      html += `<div class="gs-section">${l==='fr'?'Glossaire':'Glossary'}</div>`;
+      glossHits.forEach(g => {
+        const label = (l==='fr'?g.label_fr:g.label_en) || g.label_en;
+        const desc  = (l==='fr'?g.description_fr:g.description_en) || g.description_en;
+        const glossUrl = INDEX_PATH.replace('search-index.json','') + 'glossary.html#' + g.id;
+        gsItems.push({ url: glossUrl, label });
+        html += `<div class="gs-item" data-url="${glossUrl}" onclick="gsGo(this)">
+          <div class="gs-dot" style="background:#95A5A6"></div>
+          <div class="gs-body">
+            <div class="gs-label">${label}</div>
+            <div class="gs-excerpt">${excerpt(desc, raw)}</div>
+          </div>
+          <span class="gs-badge">Glossary</span>
+        </div>`;
+      });
+    }
+
+    if (topicHits.length) {
+      html += `<div class="gs-section">${l==='fr'?'Articles':'Articles'}</div>`;
+      topicHits.forEach(tp => {
+        const label = (l==='fr'?tp.title_fr:tp.title_en) || tp.title_en;
+        const desc  = (l==='fr'?tp.summary_fr:tp.summary_en) || tp.summary_en;
+        const tUrl  = INDEX_PATH.replace('search-index.json','') + tp.url;
+        gsItems.push({ url: tUrl, label });
+        html += `<div class="gs-item" data-url="${tUrl}" onclick="gsGo(this)">
+          <div class="gs-dot" style="background:#E74C3C"></div>
+          <div class="gs-body">
+            <div class="gs-label">${label}</div>
+            <div class="gs-excerpt">${excerpt(desc, raw)}</div>
+          </div>
+          <span class="gs-badge">Article</span>
+        </div>`;
+      });
+    }
+
+    el.innerHTML = html;
+  };
+
+  window.gsGo = function(el) {
+    const url = el.dataset.url;
+    const hashIdx = url.indexOf('#');
+    // If navigating to a hash on the same page, force hashchange even if hash is identical
+    if (hashIdx !== -1) {
+      const page = url.slice(0, hashIdx) || location.pathname;
+      const samePage = location.pathname.endsWith(page) || page === location.pathname;
+      if (samePage) {
+        const newHash = url.slice(hashIdx);
+        if (location.hash === newHash) {
+          // Same hash — dispatch manually since browser won't fire hashchange
+          window.dispatchEvent(new HashChangeEvent('hashchange'));
+        } else {
+          location.hash = newHash;
+        }
+        gsClose();
+        return;
+      }
+    }
+    window.location.href = url;
+    gsClose();
+  };
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault(); gsOpen(); return;
+    }
+    if (!document.getElementById('gs-overlay').classList.contains('open')) return;
+    if (e.key === 'Escape') { gsClose(); return; }
+    const items = document.querySelectorAll('.gs-item');
+    if (!items.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      gsActive = Math.min(gsActive + 1, items.length - 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      gsActive = Math.max(gsActive - 1, 0);
+    } else if (e.key === 'Enter' && gsActive >= 0) {
+      e.preventDefault();
+      items[gsActive].click(); return;
+    }
+    items.forEach((el, i) => el.classList.toggle('active', i === gsActive));
+    if (gsActive >= 0) items[gsActive].scrollIntoView({block:'nearest'});
+  });
+})();
+</script>
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <main>
+    <div class="article-header">
+      <div class="article-meta">
+        <span class="status-badge">stable</span>
+        <span class="date">2026-04-26</span>
+      </div>
+      <h1 class="article-title" data-en="Meta-Reasoning: Teaching AI Agents to Know When They're Stuck" data-fr="Méta-raisonnement : Apprendre aux agents IA à reconnaître quand ils bloquent">Meta-Reasoning: Teaching AI Agents to Know When They're Stuck</h1>
+      <p class="article-summary" data-en="A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most." data-fr="Une étude de 2026 montre que les agents capables de surveiller leur raisonnement et de changer de stratégie surpassent les agents standard de 31 % — les modèles open-source en bénéficiant le plus.">A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most.</p>
+      <div class="tags"><span class="tag">ai-agents</span><span class="tag">meta-reasoning</span><span class="tag">autonomous-agents</span><span class="tag">react</span><span class="tag">reflexion</span><span class="tag">self-reflection</span><span class="tag">architecture</span><span class="tag">benchmarks</span></div>
+    </div>
+
+    <div class="article-body" id="article-body">
+      <h2 id="the-problem-nobody-talks-about">The problem nobody talks about</h2>
+<p>There's a failure mode that anyone who has used AI agents for long tasks has encountered: the agent gets stuck, and instead of stopping or asking for help, it just keeps going. It retries the same failed tool call. It pursues the same unproductive path. It generates plausible-looking steps without making progress.</p>
+<p>Standard agentic frameworks based on <strong>ReAct</strong> (Reason + Act) don't have a mechanism for recognizing this. They chain thoughts and actions until a result is found or a step limit is hit. There's no "am I making progress?" check. The agent has no view of its own trajectory.</p>
+<p>A March 2026 paper from researchers at AWS, ServiceNow, and Confluent took this problem seriously and built something to address it — what they call <strong>meta-reasoning</strong>.</p>
+<h2 id="what-meta-reasoning-is">What meta-reasoning is</h2>
+<p>Meta-reasoning is a control layer on top of standard agent operation. While the agent works on a task, a parallel monitoring system tracks four signals in real time:</p>
+<ul><li><strong>Progress rate</strong>: is the task actually advancing?</li><li><strong>Coherence score</strong>: are consecutive steps logically consistent?</li><li><strong>Confidence calibration</strong>: does the agent's expressed confidence match its actual accuracy?</li><li><strong>Resource consumption</strong>: how many tokens and how much latency is being spent?</li></ul>
+<p>These are combined into a composite score. When the score drops below a threshold, the system doesn't just flag a problem — it switches the agent into a different <strong>reasoning mode</strong>.</p>
+<p>There are four modes, implemented as a finite state machine:</p>
+<ul><li><strong>Normal</strong>: standard ReAct</li><li><strong>Careful</strong>: more chain-of-thought depth, slower deliberation</li><li><strong>Exploratory</strong>: broader sampling of possible actions</li><li><strong>Reflective</strong>: explicit self-critique of the current approach</li></ul>
+<p>The key distinction from earlier work (Reflexion, Self-Refine) is that reflection is <strong>triggered by detected degradation</strong>, not on a fixed schedule. The agent doesn't pause to reflect every N steps. It reflects when the monitoring system says something is going wrong.</p>
+<h2 id="the-numbers">The numbers</h2>
+<p>The study evaluated five models across 1,165 tasks on two established benchmarks (GAIA and AgentBench). Comparing baseline ReAct agents against the full meta-reasoning framework:</p>
+<table><thead><tr><th>Metric</th><th>Baseline</th><th>Meta-Reasoning</th><th>Change</th></tr></thead><tbody><tr><td>Task completion rate</td><td>48.3%</td><td>63.4%</td><td><strong>+31.2%</strong></td></tr><tr><td>Decision quality (5-pt scale)</td><td>3.21</td><td>4.00</td><td><strong>+24.7%</strong></td></tr><tr><td>Tokens per task</td><td>4,847</td><td>3,931</td><td><strong>−18.9%</strong></td></tr><tr><td>Error recovery rate</td><td>28.4%</td><td>71.2%</td><td><strong>+150.7%</strong></td></tr><tr><td>Latency</td><td>18.4s</td><td>21.7s</td><td>+17.9%</td></tr></tbody></table>
+<p>The error recovery figure is the one worth pausing on. An agent that previously recovered from detected failures 28% of the time now does so 71% of the time. That's not a marginal improvement — it's a qualitatively different class of behavior.</p>
+<p>Token consumption goes <em>down</em> despite better performance. Meta-reasoning interrupts unproductive loops before they burn through context, which more than offsets the overhead of the monitoring layer.</p>
+<h2 id="the-model-gap-finding">The model gap finding</h2>
+<p>One of the most practically useful findings concerns which models benefit most.</p>
+<table><thead><tr><th>Model</th><th>Baseline TCR</th><th>Meta-Reasoning TCR</th><th>Gain</th></tr></thead><tbody><tr><td>GPT-4o</td><td>54.2%</td><td>68.7%</td><td>+26.8%</td></tr><tr><td>Claude 3.5 Sonnet</td><td>52.8%</td><td>69.1%</td><td>+30.9%</td></tr><tr><td>Llama 3.3 70B</td><td>44.1%</td><td>59.2%</td><td>+34.2%</td></tr><tr><td>Qwen 2.5 72B</td><td>41.2%</td><td>55.3%</td><td>+34.2%</td></tr></tbody></table>
+<p>Open-source models gain more in relative terms than proprietary models. The researchers interpret this as meta-reasoning <strong>partially compensating for gaps in base model capability</strong> — weaker models have more room for improvement, and the scaffolding provides structure that the base model lacks.</p>
+<p>The implication is concrete: the architecture around the model matters as much as the model itself for complex agentic tasks. A weaker model in a good framework can match or approach a stronger model operating alone.</p>
+<h2 id="when-it-matters-most">When it matters most</h2>
+<p>The gains aren't uniform across task difficulty:</p>
+<ul><li>GAIA Level 1 (simple, single-step): <strong>+18.7%</strong></li><li>GAIA Level 3 (complex, 5+ steps): <strong>+42.1%</strong></li><li>AgentBench single-tool tasks: <strong>+24.1%</strong></li><li>AgentBench multi-tool tasks: <strong>+38.4%</strong></li></ul>
+<p>Meta-reasoning is most valuable exactly when tasks are most difficult. For straightforward tasks, standard ReAct already performs adequately and the overhead isn't worth it. For complex multi-step workflows — the kind where agents are actually deployed for meaningful work — the gains exceed 40%.</p>
+<h2 id="the-synergy-question">The synergy question</h2>
+<p>The paper includes an ablation study that reveals something architecturally interesting:</p>
+<ul><li>Monitoring alone: +11.2%</li><li>Reflection alone: +14.8%</li><li>Expected sum: +26.0%</li><li>Full framework (both): +31.2%</li></ul>
+<p>The actual result <strong>exceeds</strong> the additive expectation by 5.2 percentage points. The monitoring and reflection components are synergistic: monitoring without adaptation only identifies problems without resolving them; reflection without monitoring triggers self-critique at arbitrary moments rather than when it's needed.</p>
+<p>This has a design implication: deploying either component alone leaves value on the table. The closed-loop integration is what generates the synergy.</p>
+<h2 id="what-this-is-and-what-it-isnt">What this is — and what it isn't</h2>
+<p>It's worth being precise about what meta-reasoning actually is, because the name could be misleading.</p>
+<p>The agent is not developing a new theory of mind about itself. It's not acquiring genuine self-awareness. What's happening is that an <strong>external monitoring system</strong> — implemented in Python, running alongside the agent — observes the agent's behavior, computes statistics, and injects different system prompts or strategy instructions based on those statistics.</p>
+<p>From the agent's perspective, it just receives different instructions. The "reflection" mode tells it to explicitly critique its current approach. The "exploratory" mode tells it to consider alternative paths. The agent doesn't know these modes exist or that it's been switched.</p>
+<p>That said, the functional result is real: agents that have this scaffolding behave as if they're better at recognizing failure. Whether we call that "metacognition" is a philosophical question. The performance improvement is not.</p>
+<h2 id="the-honest-limitations">The honest limitations</h2>
+<p>The paper is rigorous about what it hasn't tested. Three limitations stand out:</p>
+<p><strong>Production conditions</strong>: All results come from controlled benchmark settings. Real deployments have distribution shift, adversarial inputs, partial tool failures, and users who don't behave like benchmark tasks. The 31% gain on GAIA may not translate directly.</p>
+<p><strong>Safety dimensions</strong>: The study didn't assess hallucination rates under meta-reasoning, refusal appropriateness, or susceptibility to prompt injection. A "Reflective" mode that helps a capable agent recover from confusion could also help a less aligned one recover from safety guardrails.</p>
+<p><strong>Long-term memory</strong>: Experience Memory (ChromaDB storing past episodes for retrieval) wasn't deeply evaluated over time. Whether episodic memory accumulates productively or degrades over many sessions remains open.</p>
+<h2 id="the-architectural-takeaway">The architectural takeaway</h2>
+<p>The paper frames meta-reasoning as an addition to the agent architecture, not a replacement for capability. It sits on top of whatever LLM you're using and works across architectures — the results held consistently across five very different models.</p>
+<p>The practical design principle it validates: <strong>don't just make the model better, build better feedback loops around the model</strong>. For complex agentic tasks, continuous monitoring of progress, coherence, and confidence — with adaptive strategy switching when things go wrong — produces larger gains than increasing the baseline model size alone.</p>
+<p>That's a meaningful result for anyone building agents: the investment in observability infrastructure isn't just for debugging. It's a performance lever.</p>
+<hr>
+<p><em>Source: Talukdar, W. et al., "Meta-Reasoning in Autonomous Agents: Performance Gains across Benchmarks and Models." Academia AI and Applications, Vol. 2, Issue 1 (March 31, 2026). DOI: 10.20935/AcadAI8229</em></p>
+    </div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="toc-label" data-en="On this page" data-fr="Sur cette page">On this page</div>
+    <nav class="toc" id="toc-nav">
+      <nav class="toc"><a href="#the-problem-nobody-talks-about" class="toc-h2">The problem nobody talks about</a>
+<a href="#what-meta-reasoning-is" class="toc-h2">What meta-reasoning is</a>
+<a href="#the-numbers" class="toc-h2">The numbers</a>
+<a href="#the-model-gap-finding" class="toc-h2">The model gap finding</a>
+<a href="#when-it-matters-most" class="toc-h2">When it matters most</a>
+<a href="#the-synergy-question" class="toc-h2">The synergy question</a>
+<a href="#what-this-is-and-what-it-isnt" class="toc-h2">What this is — and what it isn't</a>
+<a href="#the-honest-limitations" class="toc-h2">The honest limitations</a>
+<a href="#the-architectural-takeaway" class="toc-h2">The architectural takeaway</a></nav>
+    </nav>
+  </aside>
+</div>
+
+<script src="../mermaid.min.js"></script>
+<script>
+mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+
+const CONTENT = {
+  en: '<h2 id="the-problem-nobody-talks-about">The problem nobody talks about</h2>\n<p>There\'s a failure mode that anyone who has used AI agents for long tasks has encountered: the agent gets stuck, and instead of stopping or asking for help, it just keeps going. It retries the same failed tool call. It pursues the same unproductive path. It generates plausible-looking steps without making progress.</p>\n<p>Standard agentic frameworks based on <strong>ReAct</strong> (Reason + Act) don\'t have a mechanism for recognizing this. They chain thoughts and actions until a result is found or a step limit is hit. There\'s no "am I making progress?" check. The agent has no view of its own trajectory.</p>\n<p>A March 2026 paper from researchers at AWS, ServiceNow, and Confluent took this problem seriously and built something to address it — what they call <strong>meta-reasoning</strong>.</p>\n<h2 id="what-meta-reasoning-is">What meta-reasoning is</h2>\n<p>Meta-reasoning is a control layer on top of standard agent operation. While the agent works on a task, a parallel monitoring system tracks four signals in real time:</p>\n<ul><li><strong>Progress rate</strong>: is the task actually advancing?</li><li><strong>Coherence score</strong>: are consecutive steps logically consistent?</li><li><strong>Confidence calibration</strong>: does the agent\'s expressed confidence match its actual accuracy?</li><li><strong>Resource consumption</strong>: how many tokens and how much latency is being spent?</li></ul>\n<p>These are combined into a composite score. When the score drops below a threshold, the system doesn\'t just flag a problem — it switches the agent into a different <strong>reasoning mode</strong>.</p>\n<p>There are four modes, implemented as a finite state machine:</p>\n<ul><li><strong>Normal</strong>: standard ReAct</li><li><strong>Careful</strong>: more chain-of-thought depth, slower deliberation</li><li><strong>Exploratory</strong>: broader sampling of possible actions</li><li><strong>Reflective</strong>: explicit self-critique of the current approach</li></ul>\n<p>The key distinction from earlier work (Reflexion, Self-Refine) is that reflection is <strong>triggered by detected degradation</strong>, not on a fixed schedule. The agent doesn\'t pause to reflect every N steps. It reflects when the monitoring system says something is going wrong.</p>\n<h2 id="the-numbers">The numbers</h2>\n<p>The study evaluated five models across 1,165 tasks on two established benchmarks (GAIA and AgentBench). Comparing baseline ReAct agents against the full meta-reasoning framework:</p>\n<table><thead><tr><th>Metric</th><th>Baseline</th><th>Meta-Reasoning</th><th>Change</th></tr></thead><tbody><tr><td>Task completion rate</td><td>48.3%</td><td>63.4%</td><td><strong>+31.2%</strong></td></tr><tr><td>Decision quality (5-pt scale)</td><td>3.21</td><td>4.00</td><td><strong>+24.7%</strong></td></tr><tr><td>Tokens per task</td><td>4,847</td><td>3,931</td><td><strong>−18.9%</strong></td></tr><tr><td>Error recovery rate</td><td>28.4%</td><td>71.2%</td><td><strong>+150.7%</strong></td></tr><tr><td>Latency</td><td>18.4s</td><td>21.7s</td><td>+17.9%</td></tr></tbody></table>\n<p>The error recovery figure is the one worth pausing on. An agent that previously recovered from detected failures 28% of the time now does so 71% of the time. That\'s not a marginal improvement — it\'s a qualitatively different class of behavior.</p>\n<p>Token consumption goes <em>down</em> despite better performance. Meta-reasoning interrupts unproductive loops before they burn through context, which more than offsets the overhead of the monitoring layer.</p>\n<h2 id="the-model-gap-finding">The model gap finding</h2>\n<p>One of the most practically useful findings concerns which models benefit most.</p>\n<table><thead><tr><th>Model</th><th>Baseline TCR</th><th>Meta-Reasoning TCR</th><th>Gain</th></tr></thead><tbody><tr><td>GPT-4o</td><td>54.2%</td><td>68.7%</td><td>+26.8%</td></tr><tr><td>Claude 3.5 Sonnet</td><td>52.8%</td><td>69.1%</td><td>+30.9%</td></tr><tr><td>Llama 3.3 70B</td><td>44.1%</td><td>59.2%</td><td>+34.2%</td></tr><tr><td>Qwen 2.5 72B</td><td>41.2%</td><td>55.3%</td><td>+34.2%</td></tr></tbody></table>\n<p>Open-source models gain more in relative terms than proprietary models. The researchers interpret this as meta-reasoning <strong>partially compensating for gaps in base model capability</strong> — weaker models have more room for improvement, and the scaffolding provides structure that the base model lacks.</p>\n<p>The implication is concrete: the architecture around the model matters as much as the model itself for complex agentic tasks. A weaker model in a good framework can match or approach a stronger model operating alone.</p>\n<h2 id="when-it-matters-most">When it matters most</h2>\n<p>The gains aren\'t uniform across task difficulty:</p>\n<ul><li>GAIA Level 1 (simple, single-step): <strong>+18.7%</strong></li><li>GAIA Level 3 (complex, 5+ steps): <strong>+42.1%</strong></li><li>AgentBench single-tool tasks: <strong>+24.1%</strong></li><li>AgentBench multi-tool tasks: <strong>+38.4%</strong></li></ul>\n<p>Meta-reasoning is most valuable exactly when tasks are most difficult. For straightforward tasks, standard ReAct already performs adequately and the overhead isn\'t worth it. For complex multi-step workflows — the kind where agents are actually deployed for meaningful work — the gains exceed 40%.</p>\n<h2 id="the-synergy-question">The synergy question</h2>\n<p>The paper includes an ablation study that reveals something architecturally interesting:</p>\n<ul><li>Monitoring alone: +11.2%</li><li>Reflection alone: +14.8%</li><li>Expected sum: +26.0%</li><li>Full framework (both): +31.2%</li></ul>\n<p>The actual result <strong>exceeds</strong> the additive expectation by 5.2 percentage points. The monitoring and reflection components are synergistic: monitoring without adaptation only identifies problems without resolving them; reflection without monitoring triggers self-critique at arbitrary moments rather than when it\'s needed.</p>\n<p>This has a design implication: deploying either component alone leaves value on the table. The closed-loop integration is what generates the synergy.</p>\n<h2 id="what-this-is-and-what-it-isnt">What this is — and what it isn\'t</h2>\n<p>It\'s worth being precise about what meta-reasoning actually is, because the name could be misleading.</p>\n<p>The agent is not developing a new theory of mind about itself. It\'s not acquiring genuine self-awareness. What\'s happening is that an <strong>external monitoring system</strong> — implemented in Python, running alongside the agent — observes the agent\'s behavior, computes statistics, and injects different system prompts or strategy instructions based on those statistics.</p>\n<p>From the agent\'s perspective, it just receives different instructions. The "reflection" mode tells it to explicitly critique its current approach. The "exploratory" mode tells it to consider alternative paths. The agent doesn\'t know these modes exist or that it\'s been switched.</p>\n<p>That said, the functional result is real: agents that have this scaffolding behave as if they\'re better at recognizing failure. Whether we call that "metacognition" is a philosophical question. The performance improvement is not.</p>\n<h2 id="the-honest-limitations">The honest limitations</h2>\n<p>The paper is rigorous about what it hasn\'t tested. Three limitations stand out:</p>\n<p><strong>Production conditions</strong>: All results come from controlled benchmark settings. Real deployments have distribution shift, adversarial inputs, partial tool failures, and users who don\'t behave like benchmark tasks. The 31% gain on GAIA may not translate directly.</p>\n<p><strong>Safety dimensions</strong>: The study didn\'t assess hallucination rates under meta-reasoning, refusal appropriateness, or susceptibility to prompt injection. A "Reflective" mode that helps a capable agent recover from confusion could also help a less aligned one recover from safety guardrails.</p>\n<p><strong>Long-term memory</strong>: Experience Memory (ChromaDB storing past episodes for retrieval) wasn\'t deeply evaluated over time. Whether episodic memory accumulates productively or degrades over many sessions remains open.</p>\n<h2 id="the-architectural-takeaway">The architectural takeaway</h2>\n<p>The paper frames meta-reasoning as an addition to the agent architecture, not a replacement for capability. It sits on top of whatever LLM you\'re using and works across architectures — the results held consistently across five very different models.</p>\n<p>The practical design principle it validates: <strong>don\'t just make the model better, build better feedback loops around the model</strong>. For complex agentic tasks, continuous monitoring of progress, coherence, and confidence — with adaptive strategy switching when things go wrong — produces larger gains than increasing the baseline model size alone.</p>\n<p>That\'s a meaningful result for anyone building agents: the investment in observability infrastructure isn\'t just for debugging. It\'s a performance lever.</p>\n<hr>\n<p><em>Source: Talukdar, W. et al., "Meta-Reasoning in Autonomous Agents: Performance Gains across Benchmarks and Models." Academia AI and Applications, Vol. 2, Issue 1 (March 31, 2026). DOI: 10.20935/AcadAI8229</em></p>',
+  fr: '<h2 id="le-problème-dont-personne-ne-parle">Le problème dont personne ne parle</h2>\n<p>Il y a un mode d\'échec que quiconque a utilisé des agents IA sur des tâches longues a forcément rencontré : l\'agent bloque, et au lieu de s\'arrêter ou de demander de l\'aide, il continue. Il retente le même appel d\'outil qui a échoué. Il suit la même piste improductive. Il génère des étapes plausibles sans avancer.</p>\n<p>Les frameworks agentiques standard basés sur <strong>ReAct</strong> (Raisonnement + Action) n\'ont pas de mécanisme pour détecter ça. Ils enchaînent pensées et actions jusqu\'à trouver un résultat ou atteindre une limite de pas. Il n\'y a pas de vérification "est-ce que je progresse ?". L\'agent n\'a aucune vue sur sa propre trajectoire.</p>\n<p>Un article de mars 2026 de chercheurs chez AWS, ServiceNow et Confluent a pris ce problème au sérieux et construit quelque chose pour y répondre — ce qu\'ils appellent le <strong>méta-raisonnement</strong>.</p>\n<h2 id="ce-quest-le-méta-raisonnement">Ce qu\'est le méta-raisonnement</h2>\n<p>Le méta-raisonnement est une couche de contrôle au-dessus du fonctionnement standard d\'un agent. Pendant que l\'agent travaille sur une tâche, un système de monitoring parallèle suit quatre signaux en temps réel :</p>\n<ul><li><strong>Taux de progression</strong> : la tâche avance-t-elle vraiment ?</li><li><strong>Score de cohérence</strong> : les étapes consécutives sont-elles logiquement cohérentes ?</li><li><strong>Calibration de confiance</strong> : la confiance exprimée par l\'agent correspond-elle à sa précision réelle ?</li><li><strong>Consommation de ressources</strong> : combien de tokens et quelle latence sont utilisés ?</li></ul>\n<p>Ces signaux sont combinés en un score composite. Quand le score chute sous un seuil, le système ne se contente pas de signaler un problème — il fait passer l\'agent dans un <strong>mode de raisonnement différent</strong>.</p>\n<p>Il existe quatre modes, implémentés comme une machine à états finis :</p>\n<ul><li><strong>Normal</strong> : ReAct standard</li><li><strong>Prudent</strong> : davantage de raisonnement en chaîne, délibération plus lente</li><li><strong>Exploratoire</strong> : échantillonnage plus large des actions possibles</li><li><strong>Réflexif</strong> : auto-critique explicite de l\'approche actuelle</li></ul>\n<p>La distinction clé avec les travaux antérieurs (Reflexion, Self-Refine) est que la réflexion est <strong>déclenchée par une dégradation détectée</strong>, pas selon un calendrier fixe. L\'agent ne s\'arrête pas pour réfléchir tous les N pas. Il réfléchit quand le système de monitoring indique que quelque chose ne va pas.</p>\n<h2 id="les-chiffres">Les chiffres</h2>\n<p>L\'étude a évalué cinq modèles sur 1 165 tâches avec deux benchmarks établis (GAIA et AgentBench). Comparaison entre agents ReAct de base et le framework complet de méta-raisonnement :</p>\n<table><thead><tr><th>Métrique</th><th>Baseline</th><th>Méta-raisonnement</th><th>Variation</th></tr></thead><tbody><tr><td>Taux de complétion</td><td>48,3 %</td><td>63,4 %</td><td><strong>+31,2 %</strong></td></tr><tr><td>Qualité de décision (échelle 5 pts)</td><td>3,21</td><td>4,00</td><td><strong>+24,7 %</strong></td></tr><tr><td>Tokens par tâche</td><td>4 847</td><td>3 931</td><td><strong>−18,9 %</strong></td></tr><tr><td>Taux de récupération sur erreur</td><td>28,4 %</td><td>71,2 %</td><td><strong>+150,7 %</strong></td></tr><tr><td>Latence</td><td>18,4 s</td><td>21,7 s</td><td>+17,9 %</td></tr></tbody></table>\n<p>Le chiffre de récupération sur erreur mérite qu\'on s\'y arrête. Un agent qui récupérait auparavant d\'une défaillance 28 % du temps le fait maintenant 71 % du temps. Ce n\'est pas une amélioration marginale — c\'est une classe de comportement qualitativement différente.</p>\n<p>La consommation de tokens <em>baisse</em> malgré de meilleures performances. Le méta-raisonnement interrompt les boucles improductives avant qu\'elles épuisent le contexte, ce qui compense largement la charge du système de monitoring.</p>\n<h2 id="le-résultat-sur-lécart-entre-modèles">Le résultat sur l\'écart entre modèles</h2>\n<p>L\'une des conclusions les plus pratiquement utiles concerne quels modèles bénéficient le plus du méta-raisonnement.</p>\n<table><thead><tr><th>Modèle</th><th>TCR baseline</th><th>TCR méta-raisonnement</th><th>Gain</th></tr></thead><tbody><tr><td>GPT-4o</td><td>54,2 %</td><td>68,7 %</td><td>+26,8 %</td></tr><tr><td>Claude 3.5 Sonnet</td><td>52,8 %</td><td>69,1 %</td><td>+30,9 %</td></tr><tr><td>Llama 3.3 70B</td><td>44,1 %</td><td>59,2 %</td><td>+34,2 %</td></tr><tr><td>Qwen 2.5 72B</td><td>41,2 %</td><td>55,3 %</td><td>+34,2 %</td></tr></tbody></table>\n<p>Les modèles open-source gagnent plus en termes relatifs que les modèles propriétaires. Les chercheurs interprètent cela comme le méta-raisonnement <strong>compensant partiellement les écarts de capacité de base</strong> — les modèles plus faibles ont plus de marge de progression, et le scaffolding fournit une structure que le modèle de base n\'a pas.</p>\n<p>L\'implication est concrète : l\'architecture autour du modèle compte autant que le modèle lui-même pour les tâches agentiques complexes. Un modèle plus faible dans un bon framework peut égaler ou approcher un modèle plus fort opérant seul.</p>\n<h2 id="quand-ça-compte-vraiment">Quand ça compte vraiment</h2>\n<p>Les gains ne sont pas uniformes selon la difficulté des tâches :</p>\n<ul><li>GAIA Niveau 1 (simple, une étape) : <strong>+18,7 %</strong></li><li>GAIA Niveau 3 (complexe, 5+ étapes) : <strong>+42,1 %</strong></li><li>AgentBench tâches mono-outil : <strong>+24,1 %</strong></li><li>AgentBench tâches multi-outils : <strong>+38,4 %</strong></li></ul>\n<p>Le méta-raisonnement est le plus précieux exactement là où les tâches sont les plus difficiles. Pour les tâches simples, le ReAct standard fonctionne déjà correctement et la charge ne vaut pas la peine. Pour les workflows complexes multi-étapes — ceux où les agents sont réellement déployés pour un travail significatif — les gains dépassent 40 %.</p>\n<h2 id="la-question-de-la-synergie">La question de la synergie</h2>\n<p>L\'article inclut une étude d\'ablation qui révèle quelque chose d\'architecturalement intéressant :</p>\n<ul><li>Monitoring seul : +11,2 %</li><li>Réflexion seule : +14,8 %</li><li>Somme attendue : +26,0 %</li><li>Framework complet (les deux) : +31,2 %</li></ul>\n<p>Le résultat réel <strong>dépasse</strong> l\'expectation additive de 5,2 points de pourcentage. Les composantes de monitoring et de réflexion sont synergiques : le monitoring sans adaptation ne fait qu\'identifier les problèmes sans les résoudre ; la réflexion sans monitoring déclenche l\'auto-critique à des moments arbitraires plutôt que quand c\'est nécessaire.</p>\n<p>Cela a une implication de conception : déployer l\'un ou l\'autre composant seul laisse de la valeur sur la table. C\'est l\'intégration en boucle fermée qui génère la synergie.</p>\n<h2 id="ce-que-cest-et-ce-que-ce-nest-pas">Ce que c\'est — et ce que ce n\'est pas</h2>\n<p>Il vaut la peine d\'être précis sur ce qu\'est réellement le méta-raisonnement, car le nom pourrait induire en erreur.</p>\n<p>L\'agent ne développe pas une nouvelle théorie de l\'esprit sur lui-même. Il n\'acquiert pas une véritable conscience de soi. Ce qui se passe, c\'est qu\'un <strong>système de monitoring externe</strong> — implémenté en Python, fonctionnant à côté de l\'agent — observe le comportement de l\'agent, calcule des statistiques, et injecte différents prompts système ou instructions de stratégie selon ces statistiques.</p>\n<p>Du point de vue de l\'agent, il reçoit simplement des instructions différentes. Le mode "réflexif" lui demande de critiquer explicitement son approche actuelle. Le mode "exploratoire" lui demande de considérer des chemins alternatifs. L\'agent ne sait pas que ces modes existent ni qu\'il a été changé de mode.</p>\n<p>Cela dit, le résultat fonctionnel est réel : les agents ayant ce scaffolding se comportent comme s\'ils étaient meilleurs pour reconnaître l\'échec. Appeler ça "métacognition" est une question philosophique. L\'amélioration de performance, elle, ne l\'est pas.</p>\n<h2 id="les-limites-honnêtes">Les limites honnêtes</h2>\n<p>L\'article est rigoureux sur ce qu\'il n\'a pas testé. Trois limitations se distinguent :</p>\n<p><strong>Conditions de production</strong> : Tous les résultats proviennent de benchmarks contrôlés. Les déploiements réels comportent des distributions changeantes, des entrées adversariales, des défaillances partielles d\'outils, et des utilisateurs qui ne se comportent pas comme des tâches de benchmark. Le gain de 31 % sur GAIA peut ne pas se transposer directement.</p>\n<p><strong>Dimensions de sécurité</strong> : L\'étude n\'a pas évalué les taux d\'hallucination sous méta-raisonnement, la pertinence des refus, ni la susceptibilité aux injections de prompt. Un mode "réflexif" qui aide un agent capable à se sortir d\'une confusion pourrait aussi aider un agent moins aligné à contourner des garde-fous de sécurité.</p>\n<p><strong>Mémoire à long terme</strong> : La mémoire d\'expérience (ChromaDB stockant les épisodes passés) n\'a pas été évaluée en profondeur dans le temps. La question de savoir si la mémoire épisodique s\'accumule de façon productive ou se dégrade sur de nombreuses sessions reste ouverte.</p>\n<h2 id="le-takeaway-architectural">Le takeaway architectural</h2>\n<p>L\'article présente le méta-raisonnement comme un ajout à l\'architecture de l\'agent, pas un remplacement à la capacité. Il se pose au-dessus de n\'importe quel LLM utilisé et fonctionne sur toutes les architectures — les résultats ont tenu de façon cohérente sur cinq modèles très différents.</p>\n<p>Le principe de conception pratique qu\'il valide : <strong>ne pas se contenter d\'améliorer le modèle, construire de meilleures boucles de rétroaction autour du modèle</strong>. Pour les tâches agentiques complexes, le monitoring continu de la progression, de la cohérence et de la confiance — avec un changement de stratégie adaptatif quand les choses tournent mal — produit des gains plus importants qu\'augmenter seul la taille du modèle de base.</p>\n<p>C\'est un résultat significatif pour quiconque construit des agents : l\'investissement dans l\'infrastructure d\'observabilité n\'est pas seulement pour le débogage. C\'est un levier de performance.</p>\n<hr>\n<p><em>Source : Talukdar, W. et al., "Meta-Reasoning in Autonomous Agents: Performance Gains across Benchmarks and Models." Academia AI and Applications, Vol. 2, Issue 1 (31 mars 2026). DOI: 10.20935/AcadAI8229</em></p>',
+};
+const TOC = {
+  en: '<nav class="toc"><a href="#the-problem-nobody-talks-about" class="toc-h2">The problem nobody talks about</a>\n<a href="#what-meta-reasoning-is" class="toc-h2">What meta-reasoning is</a>\n<a href="#the-numbers" class="toc-h2">The numbers</a>\n<a href="#the-model-gap-finding" class="toc-h2">The model gap finding</a>\n<a href="#when-it-matters-most" class="toc-h2">When it matters most</a>\n<a href="#the-synergy-question" class="toc-h2">The synergy question</a>\n<a href="#what-this-is-and-what-it-isnt" class="toc-h2">What this is — and what it isn\'t</a>\n<a href="#the-honest-limitations" class="toc-h2">The honest limitations</a>\n<a href="#the-architectural-takeaway" class="toc-h2">The architectural takeaway</a></nav>',
+  fr: '<nav class="toc"><a href="#le-problème-dont-personne-ne-parle" class="toc-h2">Le problème dont personne ne parle</a>\n<a href="#ce-quest-le-méta-raisonnement" class="toc-h2">Ce qu\'est le méta-raisonnement</a>\n<a href="#les-chiffres" class="toc-h2">Les chiffres</a>\n<a href="#le-résultat-sur-lécart-entre-modèles" class="toc-h2">Le résultat sur l\'écart entre modèles</a>\n<a href="#quand-ça-compte-vraiment" class="toc-h2">Quand ça compte vraiment</a>\n<a href="#la-question-de-la-synergie" class="toc-h2">La question de la synergie</a>\n<a href="#ce-que-cest-et-ce-que-ce-nest-pas" class="toc-h2">Ce que c\'est — et ce que ce n\'est pas</a>\n<a href="#les-limites-honnêtes" class="toc-h2">Les limites honnêtes</a>\n<a href="#le-takeaway-architectural" class="toc-h2">Le takeaway architectural</a></nav>',
+};
+let lang = 'en';
+
+function renderMermaid() {
+  mermaid.run({ querySelector: '.mermaid' });
+}
+
+function setLang(newLang) {
+  lang = newLang;
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  document.getElementById('toc-nav').innerHTML = TOC[lang] || TOC.en;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.en;
+  });
+  renderMermaid();
+}
+
+document.addEventListener('DOMContentLoaded', renderMermaid);
+</script>
+</body>
+</html>
