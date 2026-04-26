@@ -2,6 +2,16 @@ news:
   - date: 2026-04-23
     type: update
     title:
+      en: "Anthropic publishes Claude Code post-mortem (March–April 2026)"
+      fr: "Anthropic publie un post-mortem Claude Code (mars–avril 2026)"
+    description:
+      en: "Anthropic publishes Claude Code post-mortem covering three regressions between March and April 2026: reduced reasoning effort (default changed to 'medium'), a cache-clearing bug that caused Claude to forget context, and an over-strict prompt instruction that degraded code quality. Usage limits reset for all subscribers as compensation."
+      fr: "Anthropic publie un post-mortem Claude Code couvrant trois régressions entre mars et avril 2026 : effort de raisonnement réduit (défaut passé à 'medium'), un bug de cache qui faisait oublier le contexte à Claude, et une instruction de prompt trop stricte qui dégradait la qualité du code. Les limites d'usage ont été réinitialisées pour tous les abonnés en compensation."
+    link: https://www.anthropic.com/engineering/april-23-postmortem
+
+  - date: 2026-04-23
+    type: update
+    title:
       en: "OpenAI releases GPT-5.5"
       fr: "OpenAI lance GPT-5.5"
     description:
