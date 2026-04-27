@@ -1,4 +1,14 @@
 news:
+  - date: 2026-04-27
+    type: update
+    title:
+      en: "Graphify: turn any codebase into a queryable knowledge graph"
+      fr: "Graphify : transformez n'importe quelle base de code en knowledge graph requêtable"
+    description:
+      en: "Open-source Python tool (36,000 ⭐, MIT) that converts folders of code, docs, papers, images, and video into a queryable NetworkX knowledge graph. Three-pass pipeline: local AST extraction for 25+ languages via tree-sitter, Whisper-based audio/video transcription, and Claude subagents for semantic relationship extraction. Produces an interactive HTML visualization, a queryable JSON graph, and an audit report — with a claimed 71.5× token reduction per query vs. reading raw files. Integrates as a persistent skill with Claude Code, Cursor, Codex, Gemini CLI, and GitHub Copilot."
+      fr: "Outil Python open-source (36 000 ⭐, MIT) qui convertit des dossiers de code, docs, papers, images et vidéos en un knowledge graph NetworkX requêtable. Pipeline en trois passes : extraction AST locale pour 25+ langages via tree-sitter, transcription audio/vidéo avec Whisper, et sous-agents Claude pour l'extraction de relations sémantiques. Produit une visualisation HTML interactive, un graphe JSON requêtable et un rapport d'audit — avec une réduction de 71,5× des tokens par requête par rapport à la lecture des fichiers bruts. S'intègre en skill persistant avec Claude Code, Cursor, Codex, Gemini CLI et GitHub Copilot."
+    link: https://github.com/safishamsi/graphify
+
   - date: 2026-04-24
     type: update
     title:
