@@ -28,9 +28,43 @@ Add a news item to `data/news.yaml` from a URL.
     link: <url>
 ```
 
-5. **Regenerate** `web/index.html`:
-```bash
-python scripts/generate_home.py
+5. **Create a LinkedIn draft** in English.
+
+Create a Markdown file under `social/linkedin/` named:
+
+```text
+YYYY-MM-DD-<slug>.md
 ```
 
-6. **Confirm** to the user: title added, date, and type.
+Use the news date and a short slug derived from the English title. Create the directory if it does not exist.
+
+The LinkedIn post must be written in **English** and should be professional, accessible, and non-hypey. It should include:
+- a strong opening hook;
+- 2–4 short paragraphs;
+- up to 3 bullet points;
+- why this matters for the AI ecosystem, developers, builders, or learners;
+- the source URL;
+- 3–6 relevant hashtags.
+
+Do **not** publish automatically. Create a draft only.
+
+Recommended format:
+
+```markdown
+# LinkedIn post — <English title>
+
+Date: YYYY-MM-DD
+Source: <url>
+Related news: data/news.yaml
+
+---
+
+<English LinkedIn post draft>
+```
+
+6. **Regenerate** `web/index.html`:
+```bash
+python3 scripts/generate_home.py
+```
+
+7. **Confirm** to the user: title added, date, type, and LinkedIn draft path.
