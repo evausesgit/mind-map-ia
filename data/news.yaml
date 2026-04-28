@@ -1,4 +1,14 @@
 news:
+  - date: 2026-04-28
+    type: update
+    title:
+      en: "Symphony: OpenAI's open-source spec for Codex orchestration"
+      fr: "Symphony : la spec open-source d'OpenAI pour orchestrer Codex"
+    description:
+      en: "OpenAI open-sources Symphony, a minimal agent orchestrator that turns a Linear project board into a control plane for Codex coding agents. Every open task gets a dedicated agent that runs continuously; if an agent stalls, Symphony restarts it automatically. Internal teams at OpenAI reported a 500% increase in merged PRs within three weeks. Symphony is released as a reference implementation — not a maintained product — and v1.1.0 adds support for alternative runtimes including Claude Code and Gemini via the Kata CLI."
+      fr: "OpenAI publie en open-source Symphony, un orchestrateur d'agents minimal qui transforme un tableau Linear en panneau de contrôle pour les agents de code Codex. Chaque tâche ouverte reçoit un agent dédié qui tourne en continu ; si un agent se bloque, Symphony le redémarre automatiquement. Des équipes internes d'OpenAI ont rapporté +500 % de PRs mergées en trois semaines. Symphony est publié comme implémentation de référence — non maintenu en tant que produit — et la v1.1.0 ajoute le support de runtimes alternatifs dont Claude Code et Gemini via le Kata CLI."
+    link: https://openai.com/index/open-source-codex-orchestration-symphony/
+
   - date: 2026-04-27
     type: update
     title:
