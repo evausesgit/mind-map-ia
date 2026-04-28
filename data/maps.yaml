@@ -138,3 +138,12 @@ links:
       en: "Official Anthropic account for Claude developers — API updates, tips and community news"
       fr: "Compte Anthropic officiel pour les développeurs Claude — mises à jour API, conseils et actualités communautaires"
     url: "https://x.com/ClaudeDevs"
+  - id: openai-developers
+    icon: "🧰"
+    title:
+      en: "OpenAI Developers"
+      fr: "OpenAI Developers"
+    description:
+      en: "Official OpenAI developer resources — docs, guides, examples, and platform updates"
+      fr: "Ressources officielles OpenAI pour développeurs — docs, guides, exemples et actualités de la plateforme"
+    url: "https://developers.openai.com/"
