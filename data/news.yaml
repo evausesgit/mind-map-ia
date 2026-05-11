@@ -1,4 +1,13 @@
 news:
+  - date: 2026-05-11
+    type: update
+    title:
+      en: "Artificial Analysis launches Coding Agent Index"
+      fr: "Artificial Analysis lance le Coding Agent Index"
+    description:
+      en: "Artificial Analysis introduced a Coding Agent Index that benchmarks combinations of agent harnesses and models across SWE-bench Pro-Hard, Terminal-Bench v2, and SWE-Lancer. In the first results, Cursor CLI with Opus 4.1 leads with a score of 61, while Codex with GPT-5.5 and Claude Code with Opus 4.1 both score 60. The cost view highlights large efficiency differences: Cursor CLI with Composer 2 scores 48 at roughly $0.10 per task, versus about $2.20 per task for Codex with GPT-5.5."
+      fr: "Artificial Analysis présente le Coding Agent Index, un benchmark qui évalue les combinaisons entre harnais d'agent et modèles sur SWE-bench Pro-Hard, Terminal-Bench v2 et SWE-Lancer. Dans les premiers résultats, Cursor CLI avec Opus 4.1 arrive en tête avec un score de 61, tandis que Codex avec GPT-5.5 et Claude Code avec Opus 4.1 atteignent tous deux 60. La vue coût met en évidence de forts écarts d'efficacité : Cursor CLI avec Composer 2 score 48 pour environ 0,10 $ par tâche, contre environ 2,20 $ par tâche pour Codex avec GPT-5.5."
+    link: https://x.com/ArtificialAnlys/status/2053865095076438427?s=20
   - date: 2026-04-30
     type: update
     title:
