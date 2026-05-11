@@ -1,4 +1,14 @@
 news:
+  - date: 2026-04-30
+    type: update
+    title:
+      en: "Google makes Gemini Embedding 2 generally available"
+      fr: "Google rend Gemini Embedding 2 disponible au grand public"
+    description:
+      en: "Google AI says Gemini Embedding 2, its first natively multimodal embedding model, is now available to the general public. Developers are already using it for video analysis tools, visual shopping assistants, and other applications that need to connect text, images, and video in a shared semantic space."
+      fr: "Google AI indique que Gemini Embedding 2, son premier modèle d'embedding nativement multimodal, est désormais disponible au grand public. Des développeurs l'utilisent déjà pour créer des outils d'analyse vidéo, des assistants de shopping visuel et d'autres applications qui relient texte, images et vidéo dans un même espace sémantique."
+    link: https://x.com/googleai/status/2049903687016063456?s=46
+
   - date: 2026-04-28
     type: update
     title:
