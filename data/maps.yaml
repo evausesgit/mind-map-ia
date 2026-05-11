@@ -102,6 +102,15 @@ maps:
     data: data/rag-pattern.yaml
 
 links:
+  - id: laude
+    icon: "🚢"
+    title:
+      en: "Laude"
+      fr: "Laude"
+    description:
+      en: "Ship Your Research — put research into production and into people’s hands"
+      fr: "Ship Your Research — mettre sa recherche en production et dans les mains des gens"
+    url: "https://www.laude.org/"
   - id: artificial-analysis
     icon: "📊"
     title:
