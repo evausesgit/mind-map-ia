@@ -787,6 +787,40 @@ def main():
     margin-bottom: 3px;
     line-height: 1.4;
   }}
+  @media (max-width: 640px) {{
+    header {{ padding: 10px 12px; flex-wrap: wrap; align-items: flex-start; }}
+    .header-left, .header-right {{ width: 100%; flex-wrap: wrap; gap: 6px; }}
+    .header-right {{ justify-content: space-between; }}
+    .nav-btn, .glossary-btn, .lang-btn {{ min-height: 34px; font-size: 12px; padding: 5px 9px; }}
+    .nav-btn {{ min-width: 92px; }}
+    .nav-dropdown {{
+      position: fixed;
+      top: 92px;
+      left: 8px;
+      right: 8px;
+      min-width: 0;
+      max-height: calc(100dvh - 110px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }}
+    .nav-item {{ padding: 12px 14px; }}
+    .nav-item-desc {{ display: none; }}
+    main {{ padding: 20px 14px 40px; }}
+    .main-layout {{ gap: 24px; }}
+    .site-intro {{ font-size: 13px; text-align: left; }}
+    .card-featured {{ padding: 22px 18px; border-radius: 16px; }}
+    .card-featured-body {{ align-items: flex-start; gap: 14px; }}
+    .card-featured-icon {{ font-size: 36px; }}
+    .card-featured .card-title {{ font-size: 18px; }}
+    .cards {{ grid-template-columns: minmax(0, 1fr); }}
+    .card, .topic-card {{ padding: 18px 16px; align-items: flex-start; }}
+    .card-icon {{ font-size: 26px; }}
+    .section-sep {{ margin: 24px 0 18px; gap: 10px; }}
+    .section-sep-label {{ font-size: 10px; white-space: normal; text-align: center; }}
+    .news-item {{ grid-template-columns: 20px 1fr auto; padding: 14px 10px; gap: 8px; }}
+    .news-share {{ opacity: 0.6; }}
+    .news-sidebar {{ width: 100%; }}
+  }}
   .news-desc {{
     font-size: 11px;
     color: #7F8C8D;

@@ -351,6 +351,40 @@
     margin-bottom: 3px;
     line-height: 1.4;
   }
+  @media (max-width: 640px) {
+    header { padding: 10px 12px; flex-wrap: wrap; align-items: flex-start; }
+    .header-left, .header-right { width: 100%; flex-wrap: wrap; gap: 6px; }
+    .header-right { justify-content: space-between; }
+    .nav-btn, .glossary-btn, .lang-btn { min-height: 34px; font-size: 12px; padding: 5px 9px; }
+    .nav-btn { min-width: 92px; }
+    .nav-dropdown {
+      position: fixed;
+      top: 92px;
+      left: 8px;
+      right: 8px;
+      min-width: 0;
+      max-height: calc(100dvh - 110px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .nav-item { padding: 12px 14px; }
+    .nav-item-desc { display: none; }
+    main { padding: 20px 14px 40px; }
+    .main-layout { gap: 24px; }
+    .site-intro { font-size: 13px; text-align: left; }
+    .card-featured { padding: 22px 18px; border-radius: 16px; }
+    .card-featured-body { align-items: flex-start; gap: 14px; }
+    .card-featured-icon { font-size: 36px; }
+    .card-featured .card-title { font-size: 18px; }
+    .cards { grid-template-columns: minmax(0, 1fr); }
+    .card, .topic-card { padding: 18px 16px; align-items: flex-start; }
+    .card-icon { font-size: 26px; }
+    .section-sep { margin: 24px 0 18px; gap: 10px; }
+    .section-sep-label { font-size: 10px; white-space: normal; text-align: center; }
+    .news-item { grid-template-columns: 20px 1fr auto; padding: 14px 10px; gap: 8px; }
+    .news-share { opacity: 0.6; }
+    .news-sidebar { width: 100%; }
+  }
   .news-desc {
     font-size: 11px;
     color: #7F8C8D;
@@ -784,6 +818,19 @@
       </div>
       <div class="news-feed">
         
+    <a href="https://openai.com/index/malta-chatgpt-plus-partnership/" id="news-2026-05-17-openai-and-malta-bring-chatgpt-plus-to-all-citizens" class="news-item">
+      <div class="news-icon">🔄</div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-type" data-en="Update" data-fr="Mise à jour">Update</span>
+          <span class="news-date">2026-05-17</span>
+        </div>
+        <div class="news-title" data-en="OpenAI and Malta bring ChatGPT Plus to all citizens" data-fr="OpenAI et Malte offrent ChatGPT Plus à tous les citoyens">OpenAI and Malta bring ChatGPT Plus to all citizens</div>
+        <div class="news-desc" data-en="OpenAI and the Government of Malta announced a partnership to offer ChatGPT Plus for one year at no cost to Maltese citizens who complete the national AI for All literacy course developed by the University of Malta. The first phase launches in May, with the Malta Digital Innovation Authority managing distribution, as part of OpenAI for Countries and a broader national AI adoption push." data-fr="OpenAI et le gouvernement de Malte annoncent un partenariat pour offrir ChatGPT Plus pendant un an, sans frais, aux citoyens maltais qui terminent le cours national d'initiation AI for All développé par l'Université de Malte. La première phase démarre en mai, avec une distribution gérée par la Malta Digital Innovation Authority, dans le cadre d'OpenAI for Countries et d'une stratégie nationale d'adoption de l'IA.">OpenAI and the Government of Malta announced a partnership to offer ChatGPT Plus for one year at no cost to Maltese citizens who complete the national AI for All literacy course developed by the University of Malta. The first phase launches in May, with the Malta Digital Innovation Authority managing distribution, as part of OpenAI for Countries and a broader national AI adoption push.</div>
+      </div>
+      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-05-17-openai-and-malta-bring-chatgpt-plus-to-all-citizens');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
+    </a>
+
     <a href="https://x.com/ArtificialAnlys/status/2053865095076438427?s=20" id="news-2026-05-11-artificial-analysis-launches-coding-agent-index" class="news-item">
       <div class="news-icon">🔄</div>
       <div class="news-body">
@@ -875,7 +922,7 @@
       <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#news-2026-04-23-openai-releases-gpt-5-5');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
     </a>
 
-    <a href="https://x.com/kimmonismus/status/2046328535573475779?s=20" id="news-2026-04-21-anthropic-secures-5-gw-of-compute-via-expanded-aws-deal" class="news-item">
+    <a href="https://x.com/kimmonismus/status/2046328535573475779?s=20" id="news-2026-04-21-anthropic-secures-5-gw-of-compute-via-expanded-aws-deal" class="news-item news-hidden">
       <div class="news-icon">🔄</div>
       <div class="news-body">
         <div class="news-meta">

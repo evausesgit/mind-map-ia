@@ -444,6 +444,29 @@ def generate_html(data, maps, topics=None, links=None):
     text-underline-offset: 3px;
     font-weight: 500;
   }}
+  @media (max-width: 640px) {{
+    header {{ padding: 10px 12px; flex-wrap: wrap; align-items: flex-start; gap: 8px; }}
+    header h1 {{ width: 100%; font-size: 17px; line-height: 1.25; }}
+    .nav-btn, .lang-btn {{ min-height: 34px; font-size: 12px; padding: 5px 9px; }}
+    .nav-btn {{ min-width: 92px; }}
+    .nav-dropdown {{
+      position: fixed;
+      top: 92px;
+      left: 8px;
+      right: 8px;
+      min-width: 0;
+      max-height: calc(100dvh - 110px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }}
+    .nav-item {{ padding: 12px 14px; }}
+    .nav-item-desc {{ display: none; }}
+    .alphabet-index {{ padding: 10px 12px; gap: 5px; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }}
+    .idx-letter {{ flex: 0 0 30px; }}
+    .content {{ margin: 20px auto; padding: 0 12px; gap: 12px; }}
+    .term-card {{ padding: 16px 14px; scroll-margin-top: 120px; }}
+    .term-label {{ font-size: 17px; }}
+  }}
   .gloss-link:hover {{ color: #3498DB; text-decoration-style: solid; }}
   .see-also {{ margin-top: 10px; font-size: 13px; color: #555; }}
   .see-also-link {{ color: #1A1A2E; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }}

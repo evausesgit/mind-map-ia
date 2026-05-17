@@ -950,6 +950,51 @@ def generate_html(data, elements, maps=None, current_output=""):
     z-index: 100;
   }}
   .ctrl-btn {{ position: relative; }}
+
+  @media (max-width: 760px) {{
+    body {{ height: 100dvh; overflow: hidden; }}
+    header {{ padding: 10px 12px; gap: 8px; align-items: flex-start; }}
+    header h1 {{ font-size: 15px; line-height: 1.25; max-width: 58vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+    header .meta {{ font-size: 10px; }}
+    header > div:first-child {{ flex: 1 1 100%; order: 0; }}
+    header > div:nth-child(2) {{ width: 100%; order: 1; justify-content: space-between; flex-wrap: wrap; gap: 6px; }}
+    .hint-bar {{ display: none; }}
+    .glossary-header-btn, .nav-btn, .lang-btn {{ min-height: 34px; font-size: 12px; padding: 5px 9px; }}
+    .nav-btn {{ min-width: 92px; }}
+    .nav-dropdown {{
+      position: fixed;
+      top: 92px;
+      left: 8px;
+      right: 8px;
+      min-width: 0;
+      max-height: calc(100dvh - 110px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }}
+    .nav-item {{ padding: 12px 14px; }}
+    .nav-item-desc {{ display: none; }}
+    .main {{ flex-direction: column; }}
+    #cy-area {{ min-height: 0; flex: 1 1 auto; }}
+    #cy-wrapper {{ min-height: 320px; }}
+    body.drilldown-active #drilldown-section {{ flex-basis: 38%; }}
+    #drilldown-label-box {{ max-width: calc(100vw - 90px); overflow: hidden; text-overflow: ellipsis; }}
+    #panel {{
+      width: 100%;
+      height: 38dvh;
+      max-height: 46dvh;
+      min-height: 190px;
+      border-left: 0;
+      border-top: 1px solid #E0E0E0;
+    }}
+    #panel-header {{ padding: 14px 52px 12px 16px; }}
+    #panel-header .node-label {{ font-size: 17px; }}
+    #panel-body {{ padding: 14px 16px 18px; }}
+    #legend {{ display: none; }}
+    #controls {{ left: 10px; bottom: 10px; flex-direction: row; gap: 5px; }}
+    .ctrl-btn {{ width: 34px; height: 34px; font-size: 16px; }}
+    .ctrl-btn[data-tip]:hover::after {{ display: none; }}
+    .empty-panel .arrow {{ transform: rotate(90deg); }}
+  }}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>

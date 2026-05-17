@@ -178,6 +178,30 @@ def generate_html(data, maps, links=None):
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     max-width: 100%;
   }}
+  @media (max-width: 640px) {{
+    body {{ height: 100dvh; }}
+    header {{ padding: 10px 12px; flex-wrap: wrap; align-items: flex-start; gap: 8px; }}
+    header > div:first-child {{ width: 100%; min-width: 0; gap: 8px !important; }}
+    header h1 {{ font-size: 16px; line-height: 1.25; }}
+    .meta {{ font-size: 10px; }}
+    .nav-btn, .lang-btn {{ min-height: 34px; font-size: 12px; padding: 5px 9px; }}
+    .nav-dropdown {{
+      position: fixed;
+      top: 92px;
+      left: 8px;
+      right: 8px;
+      min-width: 0;
+      max-height: calc(100dvh - 110px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }}
+    .nav-dropdown a {{ padding: 12px 14px; }}
+    .nav-dropdown a .nav-desc {{ display: none; }}
+    .diagram-container {{ padding: 18px 12px; align-items: stretch; justify-content: flex-start; }}
+    .diagram-desc {{ font-size: 13px; text-align: left; margin-bottom: 14px; }}
+    #mermaid-diagram {{ padding: 18px; overflow-x: auto; -webkit-overflow-scrolling: touch; }}
+    #mermaid-diagram svg {{ max-width: none; }}
+  }}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>

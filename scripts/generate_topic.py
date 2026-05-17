@@ -439,8 +439,28 @@ def generate_html(topic, maps, topics=None, links=None):
     align-items: start;
   }}
   @media (max-width: 768px) {{
-    .page-layout {{ grid-template-columns: 1fr; }}
+    header {{ padding: 10px 12px; flex-wrap: wrap; align-items: flex-start; gap: 8px; }}
+    header h1 {{ width: 100%; font-size: 17px; line-height: 1.25; }}
+    .nav-btn, .lang-btn {{ min-height: 34px; font-size: 12px; padding: 5px 9px; }}
+    .nav-dropdown {{
+      position: fixed;
+      top: 92px;
+      left: 8px;
+      right: 8px;
+      min-width: 0;
+      max-height: calc(100dvh - 110px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }}
+    .nav-item {{ padding: 12px 14px; }}
+    .nav-item-desc {{ display: none; }}
+    .page-layout {{ grid-template-columns: 1fr; padding: 24px 14px 40px; gap: 24px; }}
     .sidebar {{ display: none; }}
+    .article-header {{ margin-bottom: 24px; }}
+    .article-title {{ font-size: clamp(24px, 8vw, 32px); }}
+    .article-summary {{ font-size: 15px; }}
+    .article-body h2 {{ font-size: 20px; margin-top: 30px; }}
+    .callout, .related-box {{ padding: 14px; }}
   }}
 
   .article-header {{ margin-bottom: 32px; }}
