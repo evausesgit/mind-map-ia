@@ -1,4 +1,24 @@
 news:
+  - date: 2026-05-28
+    type: update
+    title:
+      en: "Anthropic introduces Claude Opus 4.8"
+      fr: "Anthropic présente Claude Opus 4.8"
+    description:
+      en: "Anthropic released Claude Opus 4.8, an upgrade to its Opus model line with stronger coding, agentic-task, and professional-work performance at the same regular price as Opus 4.7 ($5 per million input tokens and $25 per million output tokens). The launch also adds effort control in claude.ai and Cowork, Claude Code dynamic workflows for hundreds of parallel subagents, and a fast mode that runs at 2.5× speed while being three times cheaper than previous fast-mode pricing."
+      fr: "Anthropic lance Claude Opus 4.8, une mise à jour de sa gamme Opus avec de meilleures performances en code, tâches agentiques et travail professionnel, au même prix standard qu'Opus 4.7 (5 $ par million de tokens en entrée et 25 $ en sortie). Le lancement ajoute aussi le contrôle d'effort dans claude.ai et Cowork, les dynamic workflows de Claude Code pour orchestrer des centaines de sous-agents en parallèle, et un mode rapide à 2,5× la vitesse dont le prix est divisé par trois par rapport aux précédentes offres fast mode."
+    link: https://www.anthropic.com/news/claude-opus-4-8
+
+  - date: 2026-05-18
+    type: update
+    title:
+      en: "Dell and NVIDIA update AI Factory for enterprise agents"
+      fr: "Dell et NVIDIA mettent à jour l'AI Factory pour les agents d'entreprise"
+    description:
+      en: "At Dell Technologies World, Dell and NVIDIA announced updates to the Dell AI Factory with NVIDIA for secure enterprise agentic AI, spanning deskside workstations, on-premises data centers, and confidential computing. Key figures include AI infrastructure spending potentially reaching $3–4T by 2030, token consumption growing 3,400%, a Vera Rubin NVL72-based Dell PowerEdge XE9812 promising up to 10× lower cost per token than Blackwell for large-scale agentic inference, and Vera CPU systems completing agentic workloads 50% faster than x86 processors."
+      fr: "Lors de Dell Technologies World, Dell et NVIDIA ont annoncé des mises à jour du Dell AI Factory with NVIDIA pour l'IA agentique sécurisée en entreprise, des stations de travail aux datacenters on-premise en passant par le confidential computing. Les chiffres clés : les dépenses d'infrastructure IA pourraient atteindre 3 à 4 billions de dollars d'ici 2030, la consommation de tokens augmenter de 3 400 %, le Dell PowerEdge XE9812 basé sur Vera Rubin NVL72 promet jusqu'à 10× de coût par token en moins que Blackwell pour l'inférence agentique à grande échelle, et les systèmes Vera CPU exécutent les workloads agentiques 50 % plus vite que les processeurs x86."
+    link: https://blogs.nvidia.com/blog/dell-technologies-agent-enterprise-ai/
+
   - date: 2026-05-17
     type: update
     title:
