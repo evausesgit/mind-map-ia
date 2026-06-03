@@ -1,4 +1,14 @@
 news:
+  - date: 2026-06-02
+    type: update
+    title:
+      en: "Anthropic details dynamic workflows in Claude Code"
+      fr: "Anthropic détaille les dynamic workflows dans Claude Code"
+    description:
+      en: "Anthropic published a Claude Code article explaining dynamic workflows: JavaScript-based task harnesses that Claude can create on the fly to spawn and coordinate subagents with separate context windows. The article highlights patterns such as fan-out-and-synthesize, adversarial verification, tournament selection, and loop-until-done workflows for coding, research, security analysis, triage, sorting, and claim verification, while noting that workflows can use more tokens and are not needed for every task."
+      fr: "Anthropic publie un article Claude Code sur les dynamic workflows : des harnais de tâches en JavaScript que Claude peut créer à la volée pour lancer et coordonner des sous-agents avec des fenêtres de contexte séparées. L'article met en avant des patterns comme fan-out-and-synthesize, vérification adversariale, tournoi de sélection et loop-until-done pour le code, la recherche, l'analyse sécurité, le triage, le classement et la vérification de claims, tout en rappelant que ces workflows peuvent consommer plus de tokens et ne sont pas nécessaires pour toutes les tâches."
+    link: https://claude.com/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code
+
   - date: 2026-05-28
     type: update
     title:
