@@ -1,4 +1,14 @@
 news:
+  - date: 2026-06-09
+    type: update
+    title:
+      en: "Anthropic introduces Claude Fable 5"
+      fr: "Anthropic présente Claude Fable 5"
+    description:
+      en: "Anthropic announced Claude Fable 5, a new Mythos-class Claude model described as safe for general use. The company says its capabilities exceed any Claude model it has previously made generally available, but the X announcement does not include benchmark scores, pricing, or API availability details."
+      fr: "Anthropic annonce Claude Fable 5, un nouveau modèle Claude de classe Mythos présenté comme sûr pour un usage général. L'entreprise indique que ses capacités dépassent celles de tout modèle Claude qu'elle avait jusqu'ici rendu disponible au grand public, mais l'annonce sur X ne précise pas les scores de benchmark, les tarifs ni la disponibilité API."
+    link: https://x.com/claudeai/status/2064394146916229443?s=20
+
   - date: 2026-06-02
     type: update
     title:
