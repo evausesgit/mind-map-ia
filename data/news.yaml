@@ -1,4 +1,54 @@
 news:
+  - date: 2026-08-24
+    type: update
+    title:
+      en: "Z.ai highlights GLM-5.3 for cybersecurity coding tasks"
+      fr: "Z.ai met GLM-5.3 en avant sur les tâches de cybersécurité"
+    description:
+      en: "Z.ai's GLM-5.3, released the week before 24 August, is being presented as an open-weight/open-source model with strong performance on software-vulnerability detection and CyberGym-style security benchmarks. Specialist coverage cites API pricing around $1.40 per million input tokens and $4.40 per million output tokens, positioning it as another low-cost challenger to proprietary coding and security models."
+      fr: "Z.ai présente GLM-5.3, publié la semaine précédant le 24 août, comme un modèle open-weight/open-source très performant sur la détection de vulnérabilités logicielles et des benchmarks de type CyberGym. La presse spécialisée cite un prix API d'environ 1,40 $ par million de tokens en entrée et 4,40 $ en sortie, ce qui en fait un nouveau concurrent à bas coût des modèles propriétaires de code et de sécurité."
+    link: https://news.google.com/rss/articles/CBMijgFBVV95cUxNMFR6bW50VXpUSUN4WjF4SDN6aEIzX0lWeE5iXzBfT0dqQk1ZS0pzalRpbEJNVWFDX2F6UkFFY0dzOE5mb0RKNEZTVERGSDVlcmVLSWlINll2VjlKeHVURnlaMGJhZWhYbUFuc1E3Uk5fOExZMFVOajhCU0tyT1dlVTNaMDR3Zk14MmE4NzRR?oc=5
+
+  - date: 2026-08-24
+    type: update
+    title:
+      en: "OpenAI warns that AI-assisted cyberattacks are becoming persistent"
+      fr: "OpenAI alerte sur des cyberattaques assistées par IA plus persistantes"
+    description:
+      en: "OpenAI's global affairs lead Chris Lehane warned that AI-assisted cyberattacks are moving from episodic experimentation to a more persistent operating pattern. The concern is that coding models and agents can lower the cost of reconnaissance, phishing, exploit scripting, and vulnerability exploitation at scale."
+      fr: "Chris Lehane, responsable des affaires globales d'OpenAI, avertit que les cyberattaques assistées par IA passent d'expérimentations ponctuelles à un mode opératoire plus permanent. Le risque est que les modèles de code et les agents abaissent le coût de la reconnaissance, du phishing, de la génération de scripts d'exploitation et de l'exploitation de vulnérabilités à grande échelle."
+    link: https://news.google.com/rss/articles/CBMilgFBVV95cUxQTU9VbHZPQ2czTUlfNVZMVk53TkZRbUhPTTJJQ3o3SjE4VEpiZWx2UHBpWG5MZkN6aG9ZVWsycTk1ME9pNFNmaWFybG1oMmxlY2NoZEEyZlZwT09SY2dxdWZIYjFmSGRLNG91dkJLU1ZrYV8yRHY0eHc5TnR1UktESUpUR1l6SlRueXlIbU9aeW5TYTZqR0E?oc=5
+
+  - date: 2026-08-24
+    type: update
+    title:
+      en: "Hugging Face reportedly draws M&A interest at a $13B+ valuation"
+      fr: "Hugging Face attirerait de l'intérêt M&A à plus de 13 Md$"
+    description:
+      en: "Business Insider, followed by specialist outlets, reports that Hugging Face has attracted takeover interest at a valuation of at least $13 billion. The story matters because Hugging Face remains a central infrastructure layer for open models, datasets, evaluations, and model-distribution workflows used by developers and enterprises."
+      fr: "Business Insider, repris par des médias spécialisés, rapporte que Hugging Face aurait reçu de l'intérêt pour une acquisition à une valorisation d'au moins 13 milliards de dollars. Le sujet est important car Hugging Face reste une couche d'infrastructure centrale pour les modèles ouverts, les datasets, l'évaluation et la distribution de modèles utilisés par les développeurs et les entreprises."
+    link: https://news.google.com/rss/articles/CBMihwFBVV95cUxOanUzRFJXLTNSVlAwcGVTaS00WHhpY1dJNFBLazMxcVM0QVRDMWI0ZTRvS01iaUxDOHFUaW5aaHh3QXJ5aHhkbkJiX0llcGo2REZCM2hQXzlROHZOQ3lBX1hsMkFUUGo4M2JUMmpaYUt1M1h6b19yVkRla2xOS09wRzhCZ3RGc1E?oc=5
+
+  - date: 2026-08-24
+    type: update
+    title:
+      en: "Nvidia reportedly explores a $6B Poolside deal"
+      fr: "Nvidia préparerait un accord d'environ 6 Md$ avec Poolside"
+    description:
+      en: "Reports from the Wall Street Journal and market outlets say Nvidia is exploring an approximately $6 billion agreement with Poolside to build a powerful US alternative to Chinese models such as DeepSeek and Kimi. The story illustrates a tighter coupling between compute suppliers, model labs, and enterprise AI demand."
+      fr: "Le Wall Street Journal et des médias de marché rapportent que Nvidia étudierait un accord d'environ 6 milliards de dollars avec Poolside pour construire une alternative américaine puissante à des modèles chinois comme DeepSeek et Kimi. L'histoire illustre l'intégration croissante entre fournisseurs de calcul, laboratoires de modèles et demande d'IA en entreprise."
+    link: https://news.google.com/rss/articles/CBMitgFBVV95cUxPWHdVbW56NVZvU3ZwQTRIcmdRUVVZWjBVc1J4TFhhVUs2VE5RY21CNEpSdHA2NUJLa0daUVhYcGJwaGh6bERReE5fcFdFdHJ5bWpXa1dPTkFweDVVS3AycGxMa3VqS2JDS0VTZDNIb2RYLVVYcmdxT2xQUUpRSXNFbHhTTVozVjVyUkVYRmItTzc5SlIwS2M0NVZseUtUWFZDX3V6azMxTHJhdHJwYm5XU28yUmlzUQ?oc=5
+
+  - date: 2026-08-24
+    type: update
+    title:
+      en: "AI agents push incident response toward machine-initiated access"
+      fr: "Les agents IA déplacent l'incident response vers l'accès initié par machine"
+    description:
+      en: "SC Media analyzes how AI-agent failures create a new incident-response problem: not only a compromised human account, but an authorized machine identity that can make a wrong decision, propagate an action, or expose data. The operational focus shifts toward agent identities, scoped privileges, human approval for sensitive actions, kill switches, and audit-ready logs."
+      fr: "SC Media analyse comment les défaillances d'agents IA créent un nouveau problème d'incident response : non seulement un compte humain compromis, mais une identité machine autorisée qui peut prendre une mauvaise décision, propager une action ou exposer des données. L'enjeu opérationnel se déplace vers l'identité des agents, les privilèges limités, l'approbation humaine pour les actions sensibles, les kill switches et des logs auditables."
+    link: https://news.google.com/rss/articles/CBMiqgFBVV95cUxPOG9rLUJ5SWgxeEJ4WG15U0pXc3RreUp1YjdHbUtBcHFYWU5yQXh6akM3S3pzUW5XVWp0bkZfMGd2aHc3ZEJiZmVkWnNUODNKUU1rME5UTWttcTI3OEN5OW5fY29BTmlaY0xNd09aZ1RJSkx3dlNRNHNud1ZRV2FYYy1kWG01YnR1bk5zc0tPVlVFTGp5Z1Z3NjZGWWVMMm9DV0haRXVacXhCdw?oc=5
+
   - date: 2026-06-09
     type: update
     title:
