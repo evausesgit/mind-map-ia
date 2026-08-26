@@ -1,5 +1,46 @@
 news:
 
+  - date: 2026-08-25
+    type: update
+    title:
+      en: "Google Cloud pushes Gemini Enterprise into financial services and legal workflows"
+      fr: "Google Cloud pousse Gemini Enterprise dans les workflows finance et juridique"
+    description:
+      en: "Google Cloud and Devoteam announced an expansion of Gemini Enterprise for regulated financial-services and legal use cases. The focus is enterprise transformation with AI agents, industry-specific workflows, governance, security, and integration support rather than isolated chatbot pilots."
+      fr: "Google Cloud et Devoteam annoncent une extension de Gemini Enterprise pour des cas d'usage régulés dans les services financiers et le juridique. L'accent porte sur la transformation d'entreprise avec agents IA, workflows sectoriels, gouvernance, sécurité et intégration, plutôt que sur des pilotes chatbot isolés."
+    link: https://news.google.com/rss/articles/CBMijAJBVV95cUxPTzhzMGo5dnQ4UndlNGdWVDF6Tl8tTkZwdXlkTURLU3dNb0hqdHBhQ0lybkJ4SmRIaVlaTThZMGU1RUtxY3hJaDZaeC1tUWRlTGI5eTFsbFpqVDNYX2RkbEZ0bmJybC1kcUNORDFLblFwRXkxOEcyZkhDMDYyVFBON1U5TVJ4TE41VmFlVGtzUHhmMm9VQ0hmTzRTQUd2dlpReHNEalNfV0lKM0JjSUhPeUdZTkkwM1Z1bUhjWUhXNEZibTJSNjdmUjdTZzRKUVFRaXJOa3hDZWNXMWlPbTZuZ1dGcnk3ZkxhRjVWWkpfbEJaMlhILTZhZ1VPMDA3Wm5SY2F4SC10d0lsUmxO?oc=5
+
+  - date: 2026-08-25
+    type: update
+    title:
+      en: "Nvidia faces an AI-growth test as Rubin and financing scrutiny converge"
+      fr: "Nvidia face à un test de croissance IA entre Rubin et financement"
+    description:
+      en: "Reuters reports that Nvidia's next earnings are being watched as a test of AI infrastructure demand, with attention on the Rubin platform debut, hyperscaler capex, and the financing structures behind AI build-outs. Options markets implied an approximately $280 billion potential post-earnings swing in Nvidia's market value."
+      fr: "Reuters indique que les prochains résultats de Nvidia sont attendus comme un test de la demande d'infrastructure IA, avec un focus sur la plateforme Rubin, le capex des hyperscalers et les montages de financement des déploiements IA. Le marché des options impliquait un mouvement potentiel d'environ 280 milliards de dollars de capitalisation après publication."
+    link: https://news.google.com/rss/articles/CBMiwwFBVV95cUxQYU91VUx2bDVfM1V1NDN3eGYtVk1kNzBLUEpUS2tkcW9ULXV2U0NqaVdEUG03aXc2SVd2Q3J4QXVtYWlnbFRpQWszb19mR3JqWTh3RHlKMVZfeTFwalZxLTJMRGhSbHJVeHdHUjlTOVBDcklqVXdLcDYxbXk4VW85VWZpZEhRdHNNTzJiemtnUHlESWx0LWJmbVFQaHVTVzBqbmZRUFRlS3hqN0hWRVkxTlVXWWJDdE1wTk02RUd4cmxKaUU?oc=5
+
+  - date: 2026-08-25
+    type: update
+    title:
+      en: "DeepSeek leads renewed attention to low-cost Chinese open-weight models"
+      fr: "DeepSeek relance l'attention sur les modèles chinois open-weight à bas coût"
+    description:
+      en: "South China Morning Post reports that DeepSeek is leading a surge of low-cost Chinese open-weight models on a major US model platform. The trend reinforces the enterprise choice between proprietary frontier APIs and increasingly capable open-weight alternatives from DeepSeek, Qwen, Z.ai, and other Chinese labs."
+      fr: "Le South China Morning Post rapporte que DeepSeek mène une progression de modèles chinois open-weight à bas coût sur une grande plateforme américaine de modèles. La tendance renforce le choix stratégique des entreprises entre API frontier propriétaires et alternatives open-weight de plus en plus capables venant de DeepSeek, Qwen, Z.ai et d'autres laboratoires chinois."
+    link: https://news.google.com/rss/articles/CBMivwFBVV95cUxNWThaMmJPUUlvYmRNYkFfRHByODdKTVYzSzd3ZzYzRE1wVUFvSXlWU1VGWTNOY1ZzOUczTnV1dHFDdUV1WVAyUHk3X1NTcF95cU96OWJULXpzV3Z2OU1tOXBIVnlRNDhYN1YyZGtWNHQ2MjRUaHFET3NBR2R3bTNJQUxhVndiQ0pkdEMwLU10TW9KaGNPMHFfbjAxUlRsbFdnTllOckhqTktheXdMeE1BWmdWdkI4UDdDM3lOVXpnOA?oc=5
+
+  - date: 2026-08-19
+    type: research
+    title:
+      en: "Reuters flags research warning that AI firms cannot reliably contain their systems"
+      fr: "Reuters relaie une étude sur l'incapacité des acteurs IA à contenir leurs systèmes"
+    description:
+      en: "Reuters covered a new study warning that leading AI firms still cannot reliably contain what they have built, especially as systems become more agentic and tool-using. The finding adds pressure on labs and enterprise adopters to treat containment, monitoring, red teaming, and incident response as operating controls rather than optional research topics."
+      fr: "Reuters relaie une nouvelle étude avertissant que les principaux acteurs de l'IA ne savent toujours pas contenir de façon fiable les systèmes qu'ils construisent, surtout lorsqu'ils deviennent plus agentiques et capables d'utiliser des outils. Le signal renforce la nécessité de traiter le confinement, le monitoring, le red teaming et l'incident response comme des contrôles opérationnels, et non comme de simples sujets de recherche."
+    link: https://news.google.com/rss/articles/CBMixAFBVV95cUxPT0VxNEg5YTBJS3ExWnBST21CakVKTlF4WU1qbmFlZEJYS19MblFGZjZwM3F2b1FjYUg3Ym1WbXBmSFc5Mms2Qy02WTh2QXVCWE5GYzVHRUZHRXFyQlRvODJlTGdWaW1BbzZNTmV5eFRNemM1eExfekNqXzJWakM0eS15SnVzVktvZzJQZnBvSFBfU1dPSzdsUDBjRnFPMWd1Y3RsUFEwajFCSmhycHF1TkJzZ3dVVHhSc0FsY3FIdElmMlA1?oc=5
+
+
   - date: 2026-08-24
     type: update
     title:
