@@ -1,6 +1,48 @@
 news:
 
 
+  - date: 2026-08-28
+    type: update
+    title:
+      en: "US judge says Pentagon unlawfully blacklisted Anthropic"
+      fr: "Une juge américaine juge illégal le blacklistage d'Anthropic par le Pentagone"
+    description:
+      en: "BBC reports that US district judge Rita Lin ruled the Department of Defense acted unlawfully when it designated Anthropic a supply-chain risk after the company refused some military uses of its models, including surveillance or autonomous weapons. The ruling says national security is not a blank cheque for retaliation, making AI procurement and acceptable-use policies a board-level governance issue."
+      fr: "La BBC rapporte que la juge fédérale Rita Lin a estimé que le Department of Defense avait agi illégalement en qualifiant Anthropic de risque de supply chain après son refus de certains usages militaires, dont la surveillance ou les armes autonomes. La décision rappelle que la sécurité nationale ne peut pas servir de blanc-seing à des représailles et transforme les politiques d'usage acceptable et d'achat IA en enjeu de gouvernance."
+    link: https://www.bbc.co.uk/news/articles/cm2q7z5mlrmo
+
+  - date: 2026-08-27
+    type: update
+    title:
+      en: "Google, Microsoft, OpenAI and 100 firms warn AI will raise cyber-attack sophistication within months"
+      fr: "Google, Microsoft, OpenAI et 100 entreprises alertent sur des cyberattaques IA plus sophistiquées d'ici quelques mois"
+    description:
+      en: "A BBC report says 100 firms, including Google, Microsoft, Anthropic, OpenAI, Capital One, Mastercard and Visa, signed an open letter urging governments and organisations to strengthen cyber defences. The signatories warn that AI-enabled cyber-attacks will become more widespread and sophisticated in a matter of months, especially around critical infrastructure."
+      fr: "Selon la BBC, 100 entreprises dont Google, Microsoft, Anthropic, OpenAI, Capital One, Mastercard et Visa ont signé une lettre ouverte demandant aux gouvernements et organisations de renforcer leurs défenses cyber. Les signataires préviennent que les cyberattaques appuyées par l'IA deviendront plus répandues et sophistiquées d'ici quelques mois, notamment sur les infrastructures critiques."
+    link: https://www.bbc.co.uk/news/articles/cwyz11475l1o
+
+  - date: 2026-08-27
+    type: new-feature
+    title:
+      en: "Google AI Mode moves toward agentic travel planning"
+      fr: "Google AI Mode se rapproche d'un agent de planification de voyage"
+    description:
+      en: "TechCrunch reports that Google AI Mode can now track flight prices, help book hotels, and support more trip-planning tasks. The update is a consumer feature, but it shows how search experiences are shifting from information retrieval to semi-agentic workflows that execute parts of a process."
+      fr: "TechCrunch rapporte que Google AI Mode peut désormais suivre les prix des vols, aider à réserver des hôtels et prendre en charge davantage de tâches de planification de voyage. La nouveauté est grand public, mais elle illustre le passage de la recherche d'information vers des workflows semi-agentiques qui exécutent une partie du processus."
+    link: https://techcrunch.com/2026/08/27/googles-ai-mode-can-now-track-flight-prices-help-book-hotels-and-more/
+
+  - date: 2026-08-27
+    type: update
+    title:
+      en: "Hugging Face unveils $399 open-source Microduck robot"
+      fr: "Hugging Face dévoile Microduck, un robot open source à 399 $"
+    description:
+      en: "TechCrunch reports that Hugging Face unveiled Microduck, a $399 duck-like robot described by CEO Clem Delangue as an open-source robot that can be taught new tricks with reinforcement learning. The launch keeps open-source AI visible beyond language models, connecting model tooling, robotics, and developer education."
+      fr: "TechCrunch rapporte que Hugging Face a dévoilé Microduck, un robot en forme de canard vendu 399 $, que son CEO Clem Delangue décrit comme un robot open source pouvant apprendre de nouveaux comportements par reinforcement learning. Le lancement montre que l'open-source IA dépasse les seuls LLM et relie outillage modèle, robotique et formation développeur."
+    link: https://techcrunch.com/2026/08/27/hugging-face-is-selling-a-cute-399-open-source-duck-robot-microduck/
+
+
+
   - date: 2026-08-26
     type: update
     title:
