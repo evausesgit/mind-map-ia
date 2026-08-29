@@ -1,6 +1,57 @@
 news:
 
 
+  - date: 2026-08-27
+    type: update
+    title:
+      en: "OpenAI and more than 100 organisations call for collective cyber defence"
+      fr: "OpenAI et plus de 100 organisations appellent à une cyberdéfense collective"
+    description:
+      en: "OpenAI published a collective-action call backed by more than 100 organisations, including major AI labs, technology firms and financial-services names, warning that AI will raise the scale and sophistication of cyber attacks within months. The letter urges governments and enterprises to harden identity, software supply chains, critical infrastructure and incident sharing before offensive capabilities diffuse further."
+      fr: "OpenAI a publié un appel à l'action collective soutenu par plus de 100 organisations, dont de grands laboratoires IA, acteurs technologiques et entreprises financières, avertissant que l'IA va accroître l'échelle et la sophistication des cyberattaques dans les prochains mois. Le texte appelle les États et les entreprises à renforcer identité, supply chain logicielle, infrastructures critiques et partage d'incidents avant une diffusion plus large des capacités offensives."
+    link: https://openai.com/index/a-call-for-collective-action-on-cyber-defense/
+
+  - date: 2026-08-27
+    type: update
+    title:
+      en: "Nvidia expands support for Chinese open AI models"
+      fr: "Nvidia renforce son support des modèles IA ouverts chinois"
+    description:
+      en: "CNBC reports that Nvidia is increasing support for Chinese open-weight models such as Qwen and DeepSeek while warning that US restrictions could accelerate a split in AI infrastructure ecosystems. The move highlights how open models are becoming a strategic route to developer adoption, local deployment and hardware pull-through, even amid geopolitical constraints."
+      fr: "CNBC rapporte que Nvidia renforce son support de modèles open-weight chinois comme Qwen et DeepSeek tout en avertissant que les restrictions américaines pourraient accélérer une fragmentation des écosystèmes d'infrastructure IA. Cette dynamique montre que les modèles ouverts deviennent un levier stratégique d'adoption développeur, de déploiement local et de demande matériel, malgré les contraintes géopolitiques."
+    link: https://www.cnbc.com/2026/08/27/nvidia-is-bolstering-support-for-chinese-open-ai-models.html
+
+  - date: 2026-08-25
+    type: update
+    title:
+      en: "Google Cloud launches Gemini Enterprise for Financial Services"
+      fr: "Google Cloud lance Gemini Enterprise for Financial Services"
+    description:
+      en: "Google Cloud announced Gemini Enterprise for Financial Services, a vertical AI platform shaped with industry partners including Deutsche Bank and designed around regulated workflows, agents and decision-grade information. The announcement targets the gap between generic copilots and bank-grade deployment requirements such as controls, auditability, data governance and domain-specific integration."
+      fr: "Google Cloud a annoncé Gemini Enterprise for Financial Services, une plateforme IA verticale conçue avec des partenaires du secteur dont Deutsche Bank et orientée vers les workflows régulés, les agents et l'information décisionnelle. L'annonce vise l'écart entre les copilotes génériques et les exigences de déploiement bancaire : contrôles, auditabilité, gouvernance des données et intégration métier."
+    link: https://www.googlecloudpresscorner.com/press-releases/google-cloud-launches-gemini-enterprise-for-financial-services/
+
+  - date: 2026-08-24
+    type: update
+    title:
+      en: "Mistral AI and HUMAIN partner on sovereign AI in Saudi Arabia"
+      fr: "Mistral AI et HUMAIN s'allient sur l'IA souveraine en Arabie saoudite"
+    description:
+      en: "Mistral AI announced a partnership with Saudi AI company HUMAIN focused on sovereign AI, combining regional infrastructure, model deployment and enterprise use cases. The deal extends the sovereign-AI trend beyond Europe and shows how model providers are pairing open and commercial models with local compute and governance commitments."
+      fr: "Mistral AI a annoncé un partenariat avec l'entreprise saoudienne HUMAIN autour de l'IA souveraine, combinant infrastructure régionale, déploiement de modèles et cas d'usage entreprise. L'accord prolonge la tendance de l'IA souveraine au-delà de l'Europe et montre comment les fournisseurs de modèles associent modèles ouverts et commerciaux à des engagements locaux de calcul et de gouvernance."
+    link: https://mistral.ai/news/mistral-x-humain/
+
+  - date: 2026-08-02
+    type: update
+    title:
+      en: "EU AI Act GPAI obligations start applying to general-purpose AI models"
+      fr: "Les obligations GPAI de l'AI Act européen s'appliquent aux modèles d'IA généralistes"
+    description:
+      en: "The European Commission says new AI Act rules for general-purpose AI models started applying on 2 August 2026, adding transparency and safety expectations for providers of models that can be integrated into many downstream systems. For enterprises, the practical issue is evidence: inventories, provider documentation, risk classification and controls must now connect model selection to regulated use cases."
+      fr: "La Commission européenne indique que les nouvelles règles de l'AI Act pour les modèles d'IA à usage général s'appliquent depuis le 2 août 2026, avec des attentes de transparence et de sécurité pour les fournisseurs de modèles intégrables dans de nombreux systèmes. Pour les entreprises, l'enjeu pratique devient la preuve : inventaires, documentation fournisseur, classification des risques et contrôles doivent relier le choix des modèles aux usages régulés."
+    link: https://commission.europa.eu/news/safer-and-more-transparent-ai-2026-08-02_en
+
+
   - date: 2026-08-28
     type: update
     title:
