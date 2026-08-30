@@ -1,6 +1,47 @@
 news:
 
 
+  - date: 2026-08-29
+    type: research
+    title:
+      en: "Waterloo researchers flag security weaknesses in leading open-weight LLMs"
+      fr: "Des chercheurs de Waterloo signalent des faiblesses de sécurité dans de grands LLM open-weight"
+    description:
+      en: "The University of Waterloo reported major security weaknesses in leading open-weight language models, highlighting that model availability and enterprise adoption can outpace systematic red-teaming. The finding is a reminder that open-weight deployment needs its own controls: model provenance, evaluation gates, prompt-injection testing and monitoring after release."
+      fr: "L'Université de Waterloo a signalé des faiblesses de sécurité importantes dans de grands modèles de langage open-weight, soulignant que la disponibilité des modèles et leur adoption en entreprise peuvent dépasser les pratiques de red-teaming. Ce point rappelle que le déploiement de modèles ouverts exige des contrôles dédiés : provenance, seuils d'évaluation, tests d'injection de prompt et monitoring après mise en production."
+    link: https://news.google.com/rss/articles/CBMijwFBVV95cUxQdjVHSWU1OEJPOG5LdUkyRHJZZkU4dXF1UXZLc1A2R1lLRThod3JpT2w2LTZyRmVqQ19?oc=5
+
+  - date: 2026-08-29
+    type: update
+    title:
+      en: "OpenAI details pacing for cyber-critical AI capabilities"
+      fr: "OpenAI détaille le rythme de développement des capacités IA cyber-critiques"
+    description:
+      en: "OpenAI published an update on how it intends to pace model development as systems approach cyber-critical capabilities. The post frames cyber evaluation, staged deployment and defensive readiness as governance issues for frontier models rather than purely technical benchmarks."
+      fr: "OpenAI a publié une mise à jour sur la manière dont l'entreprise veut rythmer le développement de ses modèles à l'approche de capacités cyber-critiques. Le texte présente l'évaluation cyber, le déploiement progressif et la préparation défensive comme des sujets de gouvernance des modèles frontière, au-delà de simples benchmarks techniques."
+    link: https://openai.com/index/pacing-model-development-in-an-era-of-cyber-critical-capabilities/
+
+  - date: 2026-08-25
+    type: update
+    title:
+      en: "Devoteam packages Google Cloud Gemini Enterprise for financial services and legal workflows"
+      fr: "Devoteam décline Google Cloud Gemini Enterprise pour la finance et le juridique"
+    description:
+      en: "Devoteam and Google Cloud announced work around Gemini Enterprise for regulated financial-services and legal use cases, including industry-specific transformation programmes. The announcement reflects a broader shift from generic copilots toward controlled agentic workflows, integration patterns and governance services tailored to regulated sectors."
+      fr: "Devoteam et Google Cloud ont annoncé des travaux autour de Gemini Enterprise pour des cas d'usage financiers et juridiques régulés, avec des programmes de transformation sectoriels. L'annonce illustre le passage des copilotes génériques vers des workflows agentiques contrôlés, des schémas d'intégration et des services de gouvernance adaptés aux secteurs régulés."
+    link: https://www.googlecloudpresscorner.com/press-releases/devoteam-accelerates-enterprise-ai-transformation-with-google-clouds-gemini-enterprise-for-financial-services-and-legal-industries/
+
+  - date: 2026-08-25
+    type: update
+    title:
+      en: "Enterprise AI agents spread faster than their operating rules"
+      fr: "Les agents IA d'entreprise se diffusent plus vite que leurs règles d'exploitation"
+    description:
+      en: "The New Stack reports that AI agents are moving quickly into enterprise software while accountability, permissioning and incident-handling rules remain immature. The issue is becoming operational: agent autonomy creates new questions for change management, audit trails, human approval and liability when actions affect production systems."
+      fr: "The New Stack rapporte que les agents IA se diffusent rapidement dans les logiciels d'entreprise alors que les règles de responsabilité, de permissions et de gestion d'incidents restent immatures. Le sujet devient opérationnel : l'autonomie des agents pose de nouvelles questions de change management, de traçabilité, de validation humaine et de responsabilité lorsqu'ils agissent sur des systèmes de production."
+    link: https://thenewstack.io/ai-agents-are-spreading-fast-their-rules-are-still-catching-up/
+
+
   - date: 2026-08-27
     type: update
     title:
