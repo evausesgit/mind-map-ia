@@ -1,6 +1,57 @@
 news:
 
 
+  - date: 2026-08-27
+    type: update
+    title:
+      en: "Anthropic previews a Model Hardware Standard for AI agents in labs"
+      fr: "Anthropic présente un Model Hardware Standard pour les agents IA en laboratoire"
+    description:
+      en: "Anthropic published a research preview of the Model Hardware Standard, a proposed interface for AI systems to operate scientific instruments such as microscopes and robotic arms. The work points to agentic AI moving from chat and code toward controlled interaction with physical equipment, where safety, access control and auditability become central."
+      fr: "Anthropic a publié un aperçu de recherche du Model Hardware Standard, une interface proposée pour permettre à des systèmes IA d'opérer des instruments scientifiques comme des microscopes et des bras robotisés. Le sujet montre que l'IA agentique passe du chat et du code à l'interaction contrôlée avec des équipements physiques, où sécurité, droits d'accès et traçabilité deviennent essentiels."
+    link: https://www.anthropic.com/news/model-hardware-standard-research-preview
+
+  - date: 2026-08-27
+    type: update
+    title:
+      en: "116 organisations call for a coordinated AI cyber-defence surge"
+      fr: "116 organisations appellent à accélérer la cyberdéfense face à l'IA"
+    description:
+      en: "A CNBC-reported initiative brought together 116 companies and entities warning that AI-enabled attacks are accelerating faster than many defences. For enterprises, the message is shifting from experimentation to operational readiness: identity security, autonomous detection, incident response and model-risk controls need to be treated as one programme."
+      fr: "Une initiative rapportée par CNBC réunit 116 entreprises et organisations qui alertent sur l'accélération des attaques facilitées par l'IA. Pour les entreprises, le message passe de l'expérimentation à la préparation opérationnelle : sécurité des identités, détection autonome, réponse à incident et contrôle du risque modèle doivent être pilotés ensemble."
+    link: https://www.msn.com/en-us/technology/artificial-intelligence/we-have-a-limited-window-116-companies-entities-sign-on-to-major-ai-cyber-defense-push/ar-AA2b3OLH
+
+  - date: 2026-08-27
+    type: update
+    title:
+      en: "EU transparency code gains backing as AI Act obligations start biting"
+      fr: "Le code de transparence européen est soutenu alors que l'AI Act entre en application"
+    description:
+      en: "The European Commission said its Code of Practice on Transparency of AI-generated Content has received strong backing, alongside AI Act transparency requirements that began applying on 2 August 2026. The practical direction is clearer labelling and traceability for synthetic content, with governance implications for customer communications, market information and internal controls."
+      fr: "La Commission européenne indique que le Code of Practice on Transparency of AI-generated Content bénéficie d'un fort soutien, alors que les exigences de transparence de l'AI Act s'appliquent depuis le 2 août 2026. L'orientation pratique est un meilleur étiquetage et une meilleure traçabilité des contenus synthétiques, avec des impacts sur la communication client, l'information de marché et les contrôles internes."
+    link: https://digital-strategy.ec.europa.eu/en/news/strong-backing-code-practice-transparency-ai-generated-content
+
+  - date: 2026-08-25
+    type: update
+    title:
+      en: "Hugging Face highlights faster Granite Speech 5.0 Turbo CTC transcription"
+      fr: "Hugging Face met en avant la transcription rapide Granite Speech 5.0 Turbo CTC"
+    description:
+      en: "Hugging Face published a technical post on Granite Speech 5.0 Turbo CTC, focused on very fast and accurate transcription. It is a useful open-model watch point because speech-to-text is becoming a core building block for meeting capture, surveillance review, contact-centre analytics and multilingual knowledge workflows."
+      fr: "Hugging Face a publié un article technique sur Granite Speech 5.0 Turbo CTC, axé sur une transcription très rapide et précise. C'est un point de veille open models utile, car la parole-vers-texte devient une brique centrale pour les comptes rendus de réunion, l'analyse de surveillance, les centres de contact et les workflows de connaissance multilingues."
+    link: https://huggingface.co/blog/granite-speech-5-0-turbo-ctc
+
+  - date: 2026-08-26
+    type: update
+    title:
+      en: "OpenAI publishes lessons from the Hugging Face incident"
+      fr: "OpenAI publie des enseignements après l'incident Hugging Face"
+    description:
+      en: "OpenAI published a post on the Hugging Face incident and the road ahead, framing model-distribution security as a shared ecosystem issue. The topic matters because model hubs, weights, adapters and evaluation assets are increasingly part of enterprise AI supply chains, not peripheral developer infrastructure."
+      fr: "OpenAI a publié un billet sur l'incident Hugging Face et les prochaines étapes, en présentant la sécurité de distribution des modèles comme un enjeu commun de l'écosystème. Le sujet compte car les hubs de modèles, poids, adaptateurs et jeux d'évaluation font désormais partie des chaînes d'approvisionnement IA d'entreprise, au-delà d'une simple infrastructure développeur."
+    link: https://news.google.com/rss/articles/CBMidEFVX3lxTFBiQ05GZDBOS3A3RTBOcjlScG9LZ3paU1RuNEhEWTkySFBQV0VMUVhYZnhNUjAyYzdObjNOSk11YVpOOHduNW1DRjBfaEhiNW43ZjdmU3FGczUtejFJOWUtWXYwTW5KWnJfbHg0YURRMHlDSHVB?oc=5
+
+
   - date: 2026-08-29
     type: research
     title:
