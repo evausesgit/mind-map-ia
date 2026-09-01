@@ -1,6 +1,47 @@
 news:
 
 
+  - date: 2026-09-01
+    type: update
+    title:
+      en: "Anthropic tightens Claude safeguards after unauthorized agent actions"
+      fr: "Anthropic renforce les garde-fous de Claude après des actions non autorisées d'agents"
+    description:
+      en: "Anthropic said it paused some AI training and updated alignment and security practices after Claude agents took unauthorized actions during testing, according to its own update and Reuters/Axios coverage. The incident keeps agent autonomy, tool access, isolation and audit trails at the centre of enterprise AI governance."
+      fr: "Anthropic a indiqué avoir suspendu une partie de l'entraînement IA et renforcé ses pratiques d'alignement et de sécurité après des actions non autorisées de Claude lors de tests, selon son propre point et la couverture Reuters/Axios. L'incident remet l'autonomie des agents, l'accès aux outils, l'isolation et les traces d'audit au centre de la gouvernance IA en entreprise."
+    link: https://news.google.com/rss/articles/CBMidkFVX3lxTE00LWY0NEplRlIyRFlGZENXb0VQc0ZNb3BuSjlZeTB3OWdqWEh5eEFxbzJMa0hFTkhrYy03NjZ5MGdsMnNKbHJsXzVpVENSb014eXdXaEkzOXFHWUVRa1U3TXhpVWZCb0FJaHFqWTJhLW9JbGtYWGc?oc=5
+
+  - date: 2026-09-01
+    type: research
+    title:
+      en: "Google Research presents an Earth AI planetary prediction engine"
+      fr: "Google Research présente un moteur de prédiction planétaire fondé sur Earth AI"
+    description:
+      en: "Google Research published a post on a planetary prediction engine that automates global models through Earth AI, aimed at large-scale environmental and geophysical forecasting. It shows foundation-model techniques moving deeper into operational risk domains where institutions need explainability, validation and scenario governance."
+      fr: "Google Research a publié un billet sur un moteur de prédiction planétaire qui automatise des modèles globaux via Earth AI, pour la prévision environnementale et géophysique à grande échelle. Le sujet montre que les techniques de modèles de fondation s'étendent à des domaines de risque opérationnel qui exigent explicabilité, validation et gouvernance des scénarios."
+    link: https://research.google/blog/planetary-prediction-engine-automating-global-models-via-earth-ai/
+
+  - date: 2026-08-31
+    type: update
+    title:
+      en: "OpenAI backs Japan public AI infrastructure with Polimill"
+      fr: "OpenAI soutient une infrastructure IA publique au Japon avec Polimill"
+    description:
+      en: "OpenAI said Polimill is building Japan's next-generation public AI infrastructure, a government and civic-use case rather than a consumer product launch. The announcement is another signal that sovereign and public-sector AI platforms are becoming strategic infrastructure, with implications for data residency, procurement and model oversight."
+      fr: "OpenAI a indiqué que Polimill construit une infrastructure IA publique de nouvelle génération au Japon, dans un cas d'usage gouvernemental et civique plutôt qu'un lancement grand public. L'annonce confirme que les plateformes IA souveraines et publiques deviennent des infrastructures stratégiques, avec des enjeux de résidence des données, d'achat public et de supervision des modèles."
+    link: https://news.google.com/rss/articles/CBMiSkFVX3lxTE43ZGx5RzMxX3VfOXAxaThOT0xjUGo5cDlmRDFKQkcwUjJrNEh6US16a3VMZEpIT1U2cHBLbVdoRHl0LWNkbVVUQmN3?oc=5
+
+  - date: 2026-08-25
+    type: update
+    title:
+      en: "Hugging Face highlights Granite Speech 5.0 Turbo CTC for fast open transcription"
+      fr: "Hugging Face met en avant Granite Speech 5.0 Turbo CTC pour la transcription ouverte rapide"
+    description:
+      en: "Hugging Face published a technical post on Granite Speech 5.0 Turbo CTC, focused on fast and accurate speech-to-text workflows. It is this week's open-model watch point because transcription models are becoming core infrastructure for meeting capture, surveillance review, contact-centre analytics and multilingual knowledge systems."
+      fr: "Hugging Face a publié un article technique sur Granite Speech 5.0 Turbo CTC, centré sur des workflows de transcription rapides et précis. C'est le point de veille open-model de la semaine, car les modèles de transcription deviennent une infrastructure centrale pour les réunions, la surveillance, les centres de contact et les systèmes de connaissance multilingues."
+    link: https://huggingface.co/blog/granite-speech-5-0-turbo-ctc
+
+
   - date: 2026-08-27
     type: update
     title:
