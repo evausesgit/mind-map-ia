@@ -1,5 +1,56 @@
 news:
 
+  - date: 2026-09-01
+    type: update
+    title:
+      en: "Anthropic launches Claude Fable 5.1 and Mythos 5.1"
+      fr: "Anthropic lance Claude Fable 5.1 et Mythos 5.1"
+    description:
+      en: "Anthropic launched Claude Fable 5.1 and Mythos 5.1, with The Verge reporting the company says Fable is up to 45% cheaper for agentic work. The release is positioned around lower agent costs, data-retention controls and less overzealous safeguards, all relevant to enterprise deployment reviews."
+      fr: "Anthropic a lancé Claude Fable 5.1 et Mythos 5.1, The Verge indiquant que l’entreprise affirme que Fable peut coûter jusqu’à 45 % moins cher pour les usages agentiques. Le lancement met l’accent sur la baisse des coûts d’agents, les contrôles de rétention des données et des garde-fous moins excessifs, des points clés pour les revues de déploiement en entreprise."
+    link: https://www.theverge.com/ai-artificial-intelligence/987830/anthropic-claude-fable-mythos-5-1
+
+  - date: 2026-09-01
+    type: update
+    title:
+      en: "OpenAI prepares Astra with extra cyber safeguards"
+      fr: "OpenAI prépare Astra avec des garde-fous cyber renforcés"
+    description:
+      en: "TechCrunch reports that OpenAI previewed precautions for Astra, an unreleased model described as strong at breaking into computer systems, and The Verge says development was delayed after the Hugging Face hack. The story keeps cyber-critical model capability, release gating and secure tool access high on the enterprise AI-risk agenda."
+      fr: "TechCrunch rapporte qu’OpenAI a présenté les précautions prévues pour Astra, un modèle non encore publié décrit comme très performant pour pénétrer des systèmes informatiques, et The Verge indique que son développement a été retardé après le piratage de Hugging Face. Le sujet remet les capacités cyber-critiques, les seuils de publication et la sécurisation de l’accès aux outils au cœur de la gestion des risques IA en entreprise."
+    link: https://techcrunch.com/2026/09/01/open-ais-astra-model-is-on-the-way-and-very-good-at-breaking-into-computer-systems/
+
+  - date: 2026-09-01
+    type: update
+    title:
+      en: "Hugging Face releases 200+ WebGPU kernels for local AI"
+      fr: "Hugging Face publie plus de 200 kernels WebGPU pour l’IA locale"
+    description:
+      en: "Hugging Face introduced @huggingface/kernels, a set of more than 200 WebGPU kernels intended to make local AI workloads faster and easier to run in browsers and client environments. For open-weight and on-device deployments, this points to a maturing software stack beyond model weights alone."
+      fr: "Hugging Face a présenté @huggingface/kernels, un ensemble de plus de 200 kernels WebGPU visant à accélérer et simplifier l’exécution de charges IA locales dans les navigateurs et environnements clients. Pour les déploiements open-weight et on-device, cela montre que la pile logicielle mûrit au-delà des seuls poids de modèles."
+    link: https://huggingface.co/blog/webgpu-kernels
+
+  - date: 2026-09-01
+    type: new-feature
+    title:
+      en: "Google brings Pics image creation and editing to Workspace"
+      fr: "Google ajoute Pics, création et édition d’images, à Workspace"
+    description:
+      en: "Google said Pics, an image creation and editing tool built on its latest Nano Banana model, is now available in Google Workspace. The launch brings generative media closer to everyday productivity flows, raising practical questions around approvals, branding, copyright and data controls."
+      fr: "Google a annoncé que Pics, un outil de création et d’édition d’images fondé sur son dernier modèle Nano Banana, est désormais disponible dans Google Workspace. Le lancement rapproche les médias génératifs des flux bureautiques quotidiens, avec des questions pratiques d’approbation, de marque, de droit d’auteur et de contrôle des données."
+    link: https://blog.google/products-and-platforms/products/workspace/google-pics/
+
+  - date: 2026-09-01
+    type: update
+    title:
+      en: "Bank of England warns G20 on AI-related macro volatility"
+      fr: "La Banque d’Angleterre alerte le G20 sur la volatilité macro liée à l’IA"
+    description:
+      en: "BBC reports that Bank of England governor Andrew Bailey warned the G20 that AI could contribute to a global economic downturn, pointing to volatility linked to energy shocks from the US-Iran war. The warning connects AI infrastructure demand with macro, energy and financial-stability risk rather than treating AI only as a productivity story."
+      fr: "La BBC rapporte que le gouverneur de la Banque d’Angleterre, Andrew Bailey, a averti le G20 que l’IA pourrait contribuer à un ralentissement économique mondial, en évoquant une volatilité liée aux chocs énergétiques de la guerre États-Unis–Iran. L’alerte relie la demande d’infrastructure IA aux risques macro, énergétiques et de stabilité financière, au-delà du seul récit de productivité."
+    link: https://www.bbc.co.uk/news/articles/c99dym3prl1o
+
+
 
   - date: 2026-09-01
     type: update
