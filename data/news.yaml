@@ -1,5 +1,55 @@
 news:
 
+  - date: 2026-09-02
+    type: update
+    title:
+      en: "Google launches Fairwind for proactive cyber defence"
+      fr: "Google lance Fairwind pour la cyberdéfense proactive"
+    description:
+      en: "Google announced Fairwind, a programme for governments and enterprises that packages AI-supported threat intelligence, vulnerability discovery and response practices. The announcement is framed around proactive cyber defence as attackers also automate reconnaissance and exploitation."
+      fr: "Google a annoncé Fairwind, un programme destiné aux gouvernements et aux entreprises qui combine renseignement cyber, découverte de vulnérabilités et pratiques de réponse assistés par l’IA. L’annonce s’inscrit dans un contexte où les attaquants automatisent eux aussi la reconnaissance et l’exploitation."
+    link: https://blog.google/innovation-and-ai/technology/safety-security/fairwind-program/
+
+  - date: 2026-09-02
+    type: update
+    title:
+      en: "US government backs OpenAI in NYT copyright case"
+      fr: "Le gouvernement américain soutient OpenAI dans l’affaire copyright du New York Times"
+    description:
+      en: "The Financial Times reports that the Trump administration backed OpenAI in its copyright dispute with the New York Times, while open reporting from the New York Times and Reuters-linked coverage says the Justice Department warned that overly broad discovery or liability theories could affect AI development. The case remains one of the key tests for training data, fair use and enterprise AI legal risk."
+      fr: "Le Financial Times rapporte que l’administration Trump a soutenu OpenAI dans son litige de copyright avec le New York Times, tandis que des sources ouvertes indiquent que le Department of Justice met en garde contre des demandes ou théories de responsabilité trop larges pouvant peser sur le développement de l’IA. Le dossier reste un test majeur pour les données d’entraînement, le fair use et le risque juridique de l’IA en entreprise."
+    link: https://www.ft.com/content/d5d6e4c9-718a-4d98-b094-97157565f336
+
+  - date: 2026-09-02
+    type: update
+    title:
+      en: "IBM Granite time-series models arrive in Confluent Cloud"
+      fr: "Les modèles temporels IBM Granite arrivent dans Confluent Cloud"
+    description:
+      en: "IBM and Confluent described native inference for IBM Granite Time Series models inside Apache Flink on Confluent Cloud, initially on AWS, for forecasting and anomaly detection on streaming data. For open-model adoption, the move shows specialised Granite models being packaged closer to governed enterprise data flows rather than only exposed as standalone model artefacts."
+      fr: "IBM et Confluent ont présenté l’inférence native des modèles IBM Granite Time Series dans Apache Flink sur Confluent Cloud, d’abord sur AWS, pour la prévision et la détection d’anomalies sur données en streaming. Côté adoption des modèles ouverts, le signal important est le rapprochement de modèles Granite spécialisés avec les flux de données gouvernés des entreprises, au-delà du simple artefact de modèle."
+    link: https://huggingface.co/blog/ibm-research/real-time-intelligence
+
+  - date: 2026-09-01
+    type: update
+    title:
+      en: "NVIDIA and CrowdStrike deepen agentic cybersecurity partnership"
+      fr: "NVIDIA et CrowdStrike renforcent leur partenariat en cybersécurité agentique"
+    description:
+      en: "NVIDIA and CrowdStrike announced an expanded collaboration around agentic cybersecurity at Fal.Con 2026, combining NVIDIA AI infrastructure with CrowdStrike’s security platform. The announcement highlights a broader shift from AI copilots for analysts toward autonomous detection, triage and response workflows."
+      fr: "NVIDIA et CrowdStrike ont annoncé à Fal.Con 2026 un partenariat renforcé autour de la cybersécurité agentique, combinant l’infrastructure IA de NVIDIA avec la plateforme de sécurité de CrowdStrike. L’annonce illustre le passage de copilotes pour analystes vers des workflows plus autonomes de détection, triage et réponse."
+    link: https://blogs.nvidia.com/blog/nvidia-crowdstrike-fal-con-2026/
+
+  - date: 2026-09-01
+    type: update
+    title:
+      en: "OpenAI frames AI-native workflows as operating capability"
+      fr: "OpenAI présente les workflows AI-native comme une capacité opérationnelle"
+    description:
+      en: "OpenAI published guidance on how AI-native companies turn workflows into operating capability, focusing on redesigning processes rather than adding chatbots on top of existing tools. The piece is useful as a management signal: enterprise AI value is increasingly measured through workflow ownership, controls and adoption loops, not isolated model demos."
+      fr: "OpenAI a publié un guide sur la manière dont les entreprises AI-native transforment les workflows en capacité opérationnelle, en mettant l’accent sur la refonte des processus plutôt que sur l’ajout de chatbots aux outils existants. Le signal managérial est clair : la valeur de l’IA en entreprise se mesure de plus en plus via la maîtrise des workflows, les contrôles et les boucles d’adoption, pas via des démos isolées."
+    link: https://openai.com/index/ai-native-company-workflows
+
   - date: 2026-09-01
     type: update
     title:
