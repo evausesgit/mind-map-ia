@@ -1,5 +1,46 @@
 news:
 
+  - date: 2026-09-04
+    type: update
+    title:
+      en: "OpenAI rolls out GPT-6 Astra under tighter safety scrutiny"
+      fr: "OpenAI déploie GPT-6 Astra sous surveillance accrue"
+    description:
+      en: "OpenAI announced GPT-6 Astra, described in live coverage as a new generation model for more capable agentic workflows, while Reuters and CNBC reported scrutiny around advanced cyber capabilities and agent safety. The rollout highlights the gap between frontier-model capability gains and the controls enterprises need before production deployment."
+      fr: "OpenAI a annoncé GPT-6 Astra, présenté dans la couverture du jour comme une nouvelle génération de modèle pour des workflows agentiques plus capables, tandis que Reuters et CNBC signalent une attention accrue aux capacités cyber avancées et à la sûreté des agents. Ce lancement illustre l’écart entre les gains de capacité des modèles frontier et les contrôles nécessaires avant un déploiement en production."
+    link: https://openai.com/
+
+  - date: 2026-09-03
+    type: update
+    title:
+      en: "OpenAI and Anthropic outages put AI resilience back in focus"
+      fr: "Des pannes OpenAI et Anthropic remettent la résilience IA au premier plan"
+    description:
+      en: "WIRED and Axios reported widespread AI-service disruption affecting OpenAI and Anthropic on September 3, with limited public explanation at the time of reporting. For enterprises, the incident is a reminder that multi-model routing, graceful degradation and incident communications are now core AI platform controls."
+      fr: "WIRED et Axios ont rapporté une perturbation étendue de services IA touchant OpenAI et Anthropic le 3 septembre, avec peu d’explications publiques au moment de la publication. Pour les entreprises, l’incident rappelle que le routage multi-modèles, la dégradation maîtrisée et la communication d’incident font désormais partie des contrôles essentiels d’une plateforme IA."
+    link: https://www.wired.com/
+
+  - date: 2026-08-28
+    type: update
+    title:
+      en: "Tencent releases a new open-source AI model for coding and research"
+      fr: "Tencent publie un nouveau modèle IA open source pour le code et la recherche"
+    description:
+      en: "Reuters reported that Tencent released a new open-source AI model aimed at coding and research tasks, adding to the rapid expansion of Chinese open-weight model families. Recent Tencent model listings on Hugging Face also show continued activity around Hunyuan and ContextPilot-style releases for developers."
+      fr: "Reuters a rapporté que Tencent a publié un nouveau modèle IA open source destiné aux tâches de code et de recherche, renforçant l’expansion rapide des familles de modèles open-weight chinoises. Les dépôts Tencent récents sur Hugging Face montrent aussi une activité soutenue autour de modèles de type Hunyuan et ContextPilot pour les développeurs."
+    link: https://huggingface.co/tencent
+
+  - date: 2026-09-03
+    type: update
+    title:
+      en: "Deloitte launches an Open Model Engineering practice"
+      fr: "Deloitte lance une pratique d’ingénierie des modèles ouverts"
+    description:
+      en: "Deloitte announced an Open Model Engineering practice focused on helping organisations adapt, evaluate and govern open models in enterprise settings. The move signals that open-weight adoption is becoming a services-and-governance market, not only a model-release race."
+      fr: "Deloitte a annoncé une pratique Open Model Engineering destinée à aider les organisations à adapter, évaluer et gouverner des modèles ouverts en contexte entreprise. Le signal important est que l’adoption open-weight devient un marché de services et de gouvernance, pas seulement une course aux sorties de modèles."
+    link: https://www.deloitte.com/
+
+
   - date: 2026-09-02
     type: update
     title:
