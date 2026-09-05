@@ -1,5 +1,46 @@
 news:
 
+
+  - date: 2026-09-02
+    type: update
+    title:
+      en: "Google, Anthropic and OpenAI tighten access to advanced cyber AI"
+      fr: "Google, Anthropic et OpenAI resserrent l’accès aux modèles cyber avancés"
+    description:
+      en: "The Hacker News reported that Google introduced Gemini 3.8 Flash Cyber through a trusted-defender Fairwind programme, while Anthropic and OpenAI described new safeguards and restricted-access programmes for frontier cyber capabilities. The common pattern is capability release with tighter segmentation, monitoring and misuse controls rather than broad self-service access."
+      fr: "The Hacker News rapporte que Google a présenté Gemini 3.8 Flash Cyber via le programme Fairwind réservé à des défenseurs de confiance, tandis qu’Anthropic et OpenAI décrivent de nouveaux garde-fous et programmes d’accès restreint pour des capacités cyber de pointe. Le signal commun est une diffusion des capacités avec segmentation, supervision et contrôles d’abus renforcés plutôt qu’un accès libre-service généralisé."
+    link: https://thehackernews.com/2026/09/google-anthropic-and-openai-unveil.html
+
+  - date: 2026-08-17
+    type: update
+    title:
+      en: "Alibaba pushes Qwen open-weight models toward laptop-scale deployment"
+      fr: "Alibaba rapproche les modèles open-weight Qwen du déploiement sur laptop"
+    description:
+      en: "CNBC reported that Alibaba released laptop-ready Qwen open-weight models positioned against Meta’s open AI strategy, reinforcing China’s fast-moving open-model ecosystem. For enterprises, the important trend is not only benchmark competition but smaller deployable models that can run closer to controlled environments."
+      fr: "CNBC rapporte qu’Alibaba a publié des modèles Qwen open-weight adaptés à des déploiements sur laptop et positionnés face à la stratégie open AI de Meta, ce qui confirme la dynamique rapide de l’écosystème chinois des modèles ouverts. Pour les entreprises, le signal clé n’est pas seulement la compétition de benchmarks, mais l’arrivée de modèles plus petits déployables près d’environnements contrôlés."
+    link: https://www.cnbc.com/2026/08/17/alibaba-meta-qwen-open-weight-ai-laptop-models.html
+
+  - date: 2026-08-03
+    type: update
+    title:
+      en: "EU AI Act enforcement puts general-purpose AI models under scrutiny"
+      fr: "L’application de l’AI Act place les modèles généralistes sous surveillance"
+    description:
+      en: "Open reporting on the EU AI Act enforcement phase says providers of general-purpose AI models now face stronger transparency, documentation and supervisory expectations, with possible inspections, market-access limits and fines. The practical effect is to turn model governance evidence into a board-level and procurement requirement."
+      fr: "La couverture ouverte de la phase d’application de l’AI Act indique que les fournisseurs de modèles d’IA à usage général font face à des attentes renforcées en transparence, documentation et supervision, avec inspections, restrictions d’accès au marché et amendes possibles. L’effet pratique est de transformer les preuves de gouvernance modèle en exigence de direction et d’achats."
+    link: https://thenextweb.com/news/eu-ai-act-enforcement-powers-inspect-fine-models
+
+  - date: 2026-09-04
+    type: update
+    title:
+      en: "DeepSeek reportedly expands use of Huawei AI chips in China"
+      fr: "DeepSeek étendrait l’usage de puces IA Huawei en Chine"
+    description:
+      en: "Livemint reported that DeepSeek plans a large Huawei AI-chip rollout at an Inner Mongolia data centre, a sign of China’s effort to reduce dependence on Nvidia-class imported accelerators. The story is still developing, but it underlines that model strategy, compute supply and geopolitics are now tightly linked."
+      fr: "Livemint rapporte que DeepSeek prévoit un déploiement massif de puces IA Huawei dans un data center en Mongolie intérieure, signe des efforts chinois pour réduire la dépendance aux accélérateurs importés de type Nvidia. L’information reste à suivre, mais elle souligne que stratégie modèle, accès au calcul et géopolitique sont désormais étroitement liés."
+    link: https://www.livemint.com/ai/chinas-nvidia-alternative-deepseek-plans-massive-huawei-ai-chip-rollout-at-inner-mongolia-data-centre-11788538917086.html
+
   - date: 2026-09-04
     type: update
     title:
