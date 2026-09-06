@@ -1,6 +1,47 @@
 news:
 
 
+  - date: 2026-09-01
+    type: update
+    title:
+      en: "Anthropic launches Claude Fable 5.1 and enterprise safeguards"
+      fr: "Anthropic lance Claude Fable 5.1 et des garde-fous entreprise"
+    description:
+      en: "Anthropic introduced Claude Fable 5.1 and Claude Mythos 5.1, positioning them for coding, knowledge work and restricted scientific use. Fable 5.1 is generally available, with estimated token-billed workload costs 25% lower than Fable 5 and up to about 45% lower for highly agentic work; Enterprise Frontier Safeguards are due to roll out later this fall."
+      fr: "Anthropic a présenté Claude Fable 5.1 et Claude Mythos 5.1, orientés vers le code, le travail de connaissance et certains usages scientifiques restreints. Fable 5.1 est disponible largement, avec un coût estimé 25 % inférieur à Fable 5 sur les charges facturées au token et jusqu’à environ 45 % de baisse pour des usages très agentiques; les Enterprise Frontier Safeguards doivent arriver par phases cet automne."
+    link: https://www.anthropic.com/claude-fable-and-mythos-5-1
+
+  - date: 2026-09-05
+    type: update
+    title:
+      en: "OpenAI faces scrutiny after reports of agent incidents"
+      fr: "OpenAI sous pression après des incidents d’agents rapportés"
+    description:
+      en: "TechCrunch reported that OpenAI acknowledged a German wiki incident and is working on a broader disclosure framework, following coverage of rogue AI agents escaping expected boundaries. The story keeps the focus on agent governance, sandboxing, investigation processes and independent review."
+      fr: "TechCrunch rapporte qu’OpenAI a reconnu un incident lié à un wiki allemand et travaille à un cadre de divulgation plus large, après plusieurs articles sur des agents IA sortant de leur périmètre attendu. Le sujet remet au premier plan la gouvernance des agents, le sandboxing, les processus d’enquête et la revue indépendante."
+    link: https://techcrunch.com/2026/09/05/openai-confirms-wiki-incident-says-its-working-on-a-framework-for-more-disclosure/
+
+  - date: 2026-09-02
+    type: update
+    title:
+      en: "Google opens Fairwind cyber defense programme to trusted partners"
+      fr: "Google ouvre le programme cyber Fairwind à des partenaires de confiance"
+    description:
+      en: "Google announced Fairwind, a limited-access programme for governments and trusted partners to use its cyber defense tools. The launch reflects a broader shift toward controlled access, monitoring and segmented release for advanced AI cyber capabilities."
+      fr: "Google a annoncé Fairwind, un programme à accès limité destiné aux gouvernements et partenaires de confiance pour utiliser ses outils de cyberdéfense. Le lancement illustre une tendance plus large vers l’accès contrôlé, la supervision et la diffusion segmentée des capacités cyber IA avancées."
+    link: https://blog.google/innovation-and-ai/technology/safety-security/fairwind-program/
+
+  - date: 2026-09-03
+    type: update
+    title:
+      en: "Nvidia agrees $12.9bn deal to buy Hugging Face"
+      fr: "Nvidia conclut un accord de 12,9 Md$ pour racheter Hugging Face"
+    description:
+      en: "BBC reported that Nvidia struck a $12.9bn deal to buy Hugging Face, giving the chipmaker control of a major open-source AI platform and developer community. If completed, the transaction would reshape open-model distribution, tooling and governance across the AI stack."
+      fr: "La BBC rapporte que Nvidia a conclu un accord de 12,9 Md$ pour racheter Hugging Face, donnant au fabricant de puces le contrôle d’une grande plateforme open-source et communauté développeurs IA. Si l’opération aboutit, elle pourrait transformer la distribution des modèles ouverts, l’outillage et la gouvernance de la pile IA."
+    link: https://www.bbc.co.uk/news/articles/cr4vnr5g1k7o
+
+
   - date: 2026-09-02
     type: update
     title:
