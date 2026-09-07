@@ -1,5 +1,46 @@
 news:
 
+  - date: 2026-09-06
+    type: update
+    title:
+      en: "Authors push back on claims to Anthropic settlement payments"
+      fr: "Des auteurs contestent le partage du règlement Anthropic"
+    description:
+      en: "TechCrunch reported that authors are pushing back as publishers and agents seek shares of settlement payments tied to Anthropic's copyright case. The dispute shows that AI training-data settlements can create complex downstream allocation, rights and governance questions even after headline agreements are reached."
+      fr: "TechCrunch rapporte que des auteurs contestent les demandes de maisons d’édition et d’agents sur une partie des paiements liés au règlement du dossier copyright d’Anthropic. Le sujet montre que les règlements sur les données d’entraînement IA peuvent ouvrir des questions complexes de répartition, de droits et de gouvernance même après l’accord principal."
+    link: https://techcrunch.com/2026/09/06/authors-push-back-as-publishers-and-agents-seek-share-of-anthropic-settlement/
+
+  - date: 2026-09-03
+    type: research
+    title:
+      en: "H Company releases NeoMME multimodal multilingual encoders on Hugging Face"
+      fr: "H Company publie NeoMME, des encodeurs multimodaux et multilingues sur Hugging Face"
+    description:
+      en: "H Company introduced NeoMME, a family of 260M and 800M multilingual multimodal encoders for retrieval and visual RAG. The release targets compact, practical retrieval over images and text, with dense and late-interaction variants available through the Hugging Face ecosystem."
+      fr: "H Company a présenté NeoMME, une famille d’encodeurs multimodaux et multilingues de 260M et 800M de paramètres pour le retrieval et le visual RAG. La publication vise un retrieval compact et exploitable sur images et texte, avec des variantes denses et late-interaction disponibles via l’écosystème Hugging Face."
+    link: https://huggingface.co/blog/Hcompany/neomme
+
+  - date: 2026-09-04
+    type: update
+    title:
+      en: "M&T Bank deploys AI copilots to more than 15,000 employees"
+      fr: "M&T Bank déploie des copilotes IA auprès de plus de 15 000 employés"
+    description:
+      en: "AI News reported that M&T Bank has rolled out AI copilots to more than 15,000 employees after a multi-year technology overhaul. Use cases include customer service, software development, report drafting and risk-management workflows, making it a useful benchmark for enterprise AI adoption in banking."
+      fr: "AI News rapporte que M&T Bank a déployé des copilotes IA auprès de plus de 15 000 employés après plusieurs années de modernisation technologique. Les cas d’usage couvrent le service client, le développement logiciel, la rédaction de rapports et des flux de gestion des risques, ce qui en fait un repère utile pour l’adoption IA en banque."
+    link: https://www.artificialintelligence-news.com/news/mt-bank-enterprise-ai-15000-employees/
+
+  - date: 2026-09-04
+    type: update
+    title:
+      en: "Nscale seeks $3.5bn in pre-IPO financing amid AI compute demand"
+      fr: "Nscale vise 3,5 Md$ de financement pré-IPO face à la demande de calcul IA"
+    description:
+      en: "TechCrunch reported that UK AI infrastructure provider Nscale is seeking $3.5bn in pre-IPO financing and has recently been linked to a $45bn Anthropic compute deal. The financing effort highlights how frontier AI capacity is increasingly shaped by capital access, long-term power and data-centre contracts, and supplier concentration."
+      fr: "TechCrunch rapporte que le fournisseur britannique d’infrastructure IA Nscale cherche 3,5 Md$ de financement pré-IPO et a récemment été associé à un accord de calcul de 45 Md$ avec Anthropic. Cette levée illustre le rôle croissant de l’accès au capital, des contrats énergie/data centers de long terme et de la concentration fournisseurs dans la capacité IA frontier."
+    link: https://techcrunch.com/2026/09/04/ai-compute-provider-nscale-is-looking-for-3-5b-in-pre-ipo-financing/
+
+
 
   - date: 2026-09-01
     type: update
