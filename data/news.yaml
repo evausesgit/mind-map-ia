@@ -1,5 +1,97 @@
 news:
 
+
+  - date: 2026-09-09
+    type: update
+    title:
+      en: "OpenAI announces GPT-6 Astra"
+      fr: "OpenAI annonce GPT-6 Astra"
+    description:
+      en: "OpenAI announced GPT-6 Astra on 9 September 2026, positioning it as a new generation of frontier intelligence. For regulated enterprises, the launch renews the need to benchmark capability gains against cost, latency, data controls and model-risk governance before broad adoption."
+      fr: "OpenAI a annoncé GPT-6 Astra le 9 septembre 2026, en le présentant comme une nouvelle génération d’intelligence frontier. Pour les entreprises régulées, ce lancement impose de comparer les gains de capacité aux coûts, à la latence, aux contrôles de données et à la gouvernance du risque modèle avant tout déploiement large."
+    link: https://openai.com/index/gpt-6-astra/
+
+  - date: 2026-09-08
+    type: update
+    title:
+      en: "Mistral raises €3B as sovereign AI demand accelerates"
+      fr: "Mistral lève 3 Md€ sur fond d’accélération de l’IA souveraine"
+    description:
+      en: "TechCrunch reported that Mistral raised €3B, underlining investor demand for European and sovereign AI infrastructure. The round strengthens Mistral’s position as a strategic alternative for organizations that need model optionality, regional control and reduced dependence on a small set of US providers."
+      fr: "TechCrunch rapporte que Mistral a levé 3 Md€, signe d’un fort appétit pour l’infrastructure IA européenne et souveraine. L’opération renforce Mistral comme alternative stratégique pour les organisations qui recherchent de l’optionalité modèle, un contrôle régional et moins de dépendance à quelques fournisseurs américains."
+    link: https://techcrunch.com/2026/09/08/mistral-raises-e3b-as-sovereign-ai-becomes-big-business/
+
+  - date: 2026-09-08
+    type: update
+    title:
+      en: "Qualcomm and Amazon strike AI chip deal with stock-purchase right"
+      fr: "Qualcomm et Amazon signent un accord puces IA avec option sur actions"
+    description:
+      en: "Reuters reported that Qualcomm signed an AI chip deal with Amazon and gave Amazon the right to buy about $4B of Qualcomm stock. The agreement points to continuing diversification of AI compute supply as hyperscalers seek alternatives and leverage beyond the dominant GPU stack."
+      fr: "Reuters rapporte que Qualcomm a conclu un accord de puces IA avec Amazon, assorti d’un droit pour Amazon d’acheter environ 4 Md$ d’actions Qualcomm. L’accord illustre la diversification de l’offre de calcul IA, les hyperscalers cherchant des alternatives et du levier au-delà de la pile GPU dominante."
+    link: https://www.reuters.com/technology/qualcomm-strikes-ai-chip-deal-with-amazon-offers-right-buy-about-4-billion-stock-2026-09-08/
+
+  - date: 2026-09-08
+    type: update
+    title:
+      en: "Meta launches an AI agent that can act across other apps"
+      fr: "Meta lance un agent IA capable d’agir dans d’autres applications"
+    description:
+      en: "Reuters reported that Meta launched an AI agent able to access other apps to send emails and make payments. The announcement moves consumer agents closer to transactional workflows, increasing the importance of authorization, audit trails, fraud controls and clear liability boundaries."
+      fr: "Reuters rapporte que Meta a lancé un agent IA capable d’accéder à d’autres applications pour envoyer des emails et effectuer des paiements. Cette annonce rapproche les agents grand public de workflows transactionnels, ce qui renforce l’importance des autorisations, des traces d’audit, des contrôles fraude et des frontières de responsabilité."
+    link: https://www.reuters.com/technology/meta-launches-ai-agent-that-can-access-other-apps-send-emails-make-payments-2026-09-08/
+
+  - date: 2026-09-04
+    type: update
+    title:
+      en: "Open-weight AI shifts from rented access to owned infrastructure"
+      fr: "L’IA open-weight passe de l’accès loué à l’infrastructure possédée"
+    description:
+      en: "The World Economic Forum argued on 4 September 2026 that open-weight AI is turning model access into infrastructure organizations can own, adapt and govern. The trend is relevant for banks evaluating private deployment, data residency, auditability and resilience against supplier concentration."
+      fr: "Le World Economic Forum a soutenu le 4 septembre 2026 que l’IA open-weight transforme l’accès modèle en infrastructure que les organisations peuvent posséder, adapter et gouverner. La tendance est clé pour les banques qui évaluent le déploiement privé, la résidence des données, l’auditabilité et la résilience face à la concentration fournisseurs."
+    link: https://www.weforum.org/stories/2026/09/open-weight-ai-owned-infrastructure/
+
+
+  - date: 2026-09-03
+    type: update
+    title:
+      en: "NVIDIA agrees to acquire Hugging Face for $12.93B"
+      fr: "NVIDIA annonce l’acquisition de Hugging Face pour 12,93 Md$"
+    description:
+      en: "NVIDIA announced an agreement to acquire Hugging Face for $12.93B while saying the platform will remain open, multi-cloud and multi-accelerator. The announcement cites more than 18M developers, 3M models, 500,000 datasets, 1M applications and 200,000 companies using Hugging Face."
+      fr: "NVIDIA a annoncé un accord d’acquisition de Hugging Face pour 12,93 Md$, en indiquant que la plateforme restera ouverte, multi-cloud et multi-accélérateurs. L’annonce cite plus de 18 M de développeurs, 3 M de modèles, 500 000 jeux de données, 1 M d’applications et 200 000 entreprises utilisatrices."
+    link: https://blogs.nvidia.com/blog/nvidia-to-acquire-hugging-face/
+
+  - date: 2026-09-01
+    type: update
+    title:
+      en: "Anthropic introduces Enterprise Frontier Safeguards"
+      fr: "Anthropic présente Enterprise Frontier Safeguards"
+    description:
+      en: "Anthropic announced Enterprise Frontier Safeguards, combining zero data retention with misuse-detection safeguards by storing monitoring data in customer-controlled cloud infrastructure. The phased rollout starts later this fall and was developed with more than 100 customers across sectors including financial services."
+      fr: "Anthropic a annoncé Enterprise Frontier Safeguards, qui combine zero data retention et détection des abus en stockant les données de supervision dans une infrastructure cloud contrôlée par le client. Le déploiement progressif démarre cet automne et a été conçu avec plus de 100 clients, notamment dans les services financiers."
+    link: https://www.anthropic.com/news/enterprise-frontier-safeguards
+
+  - date: 2026-09-03
+    type: update
+    title:
+      en: "OpenAI commits $1B to Daybreak for frontline cyber defenders"
+      fr: "OpenAI engage 1 Md$ dans Daybreak pour la cybersécurité essentielle"
+    description:
+      en: "OpenAI announced Daybreak for Frontline Defenders, a $1B initiative to help protect essential services and community institutions from cyber threats. For financial institutions, the signal is that frontier AI providers are moving from model access to sector-specific security programs."
+      fr: "OpenAI a annoncé Daybreak for Frontline Defenders, une initiative de 1 Md$ destinée à aider les services essentiels et institutions de proximité face aux menaces cyber. Pour les acteurs financiers, le signal est que les fournisseurs d’IA frontier se déplacent de l’accès modèle vers des programmes sectoriels de sécurité."
+    link: https://openai.com/index/daybreak-for-frontline-defenders/
+
+  - date: 2026-09-03
+    type: update
+    title:
+      en: "Hugging Face highlights owned memory for coding agents"
+      fr: "Hugging Face met en avant une mémoire contrôlée pour les agents de code"
+    description:
+      en: "Hugging Face published guidance on giving coding agents a memory layer that teams can own, instead of leaving context only inside a vendor session. The topic matters as agent deployments mature from demos to governed software-engineering workflows."
+      fr: "Hugging Face a publié un guide sur la mise en place d’une couche de mémoire possédée par les équipes pour les agents de code, plutôt qu’un contexte enfermé dans une session fournisseur. Le sujet devient important à mesure que les agents passent des démonstrations aux workflows d’ingénierie logicielle gouvernés."
+    link: https://huggingface.co/blog
+
   - date: 2026-09-06
     type: update
     title:
