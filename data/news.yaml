@@ -1,5 +1,56 @@
 news:
 
+  - date: 2026-09-09
+    type: research
+    title:
+      en: "IBM releases open Granite model for zero-shot time-series forecasting"
+      fr: "IBM publie un modèle Granite ouvert pour la prévision zero-shot de séries temporelles"
+    description:
+      en: "IBM released Granite Time Series PatchTST-FM-r2, a roughly 385M-parameter model with open weights, architecture, inference code and reproducible benchmarks. Dual-licensed under Apache 2.0 and OpenMDW 1.0, it ranks second overall among replicable zero-shot models on GIFT-Eval and first among those with a permissive commercial license."
+      fr: "IBM a publié Granite Time Series PatchTST-FM-r2, un modèle d’environ 385 M de paramètres avec poids, architecture, code d’inférence et benchmarks reproductibles ouverts. Sous double licence Apache 2.0 et OpenMDW 1.0, il se classe deuxième parmi les modèles zero-shot reproductibles sur GIFT-Eval et premier parmi ceux dotés d’une licence commerciale permissive."
+    link: https://huggingface.co/blog/ibm-research/ibm-releases-sota-granite-time-series
+
+  - date: 2026-09-09
+    type: update
+    title:
+      en: "OpenAI calls for mandatory national frontier-AI safety rules"
+      fr: "OpenAI appelle à des règles nationales obligatoires pour la sécurité de l’IA frontier"
+    description:
+      en: "OpenAI called for capability-based US regulation covering common testing, independent assessments, cybersecurity, incident reporting and thresholds for slowing or stopping development. It also endorsed four California bills on independent assessments, auditor standards, youth safety and safeguards against AI-enabled biological threats."
+      fr: "OpenAI appelle à une réglementation américaine fondée sur les capacités, couvrant tests communs, évaluations indépendantes, cybersécurité, déclaration d’incidents et seuils de ralentissement ou d’arrêt du développement. L’entreprise soutient aussi quatre textes californiens sur les évaluations indépendantes, les auditeurs, la protection des jeunes et les risques biologiques facilités par l’IA."
+    link: https://openai.com/index/ai-policy-window/
+
+  - date: 2026-09-09
+    type: update
+    title:
+      en: "Massachusetts makes large data centers bring clean power"
+      fr: "Le Massachusetts impose aux grands data centers d’apporter une énergie propre"
+    description:
+      en: "A Massachusetts executive order requires data centers above 25 MW of peak demand to bring or fund new clean generation, or pay into a ratepayer protection fund; the governor’s office says they must match 100% of electricity demand with clean energy. The state also paused new sales-tax exemption applications while rules are implemented."
+      fr: "Un décret du Massachusetts impose aux data centers dépassant 25 MW de pointe d’apporter ou de financer une nouvelle production propre, ou de contribuer à un fonds de protection des usagers ; le gouverneur précise que 100 % de leur demande électrique devra être couverte par une énergie propre. L’État suspend aussi les nouvelles demandes d’exonération de taxe pendant la mise en œuvre."
+    link: https://www.mass.gov/info-details/healey-driscoll-administration-statement-of-expectations-for-responsible-data-center-development-and-operations-in-massachusetts
+
+  - date: 2026-09-09
+    type: update
+    title:
+      en: "OpenAI appoints alignment researcher Paul Christiano to Foundation Board"
+      fr: "OpenAI nomme le chercheur en alignement Paul Christiano à son Foundation Board"
+    description:
+      en: "OpenAI appointed former alignment lead and Alignment Research Center founder Paul Christiano to its Foundation Board and Safety and Security Committee; he will also be a non-voting observer on the commercial PBC board. The appointment adds an independent voice focused on catastrophic-risk scenarios and frontier-model evaluation to formal governance."
+      fr: "OpenAI a nommé Paul Christiano, ancien responsable de l’alignement et fondateur de l’Alignment Research Center, à son Foundation Board et à son comité Safety and Security ; il sera aussi observateur sans droit de vote au conseil de la PBC commerciale. Cette nomination intègre à la gouvernance une voix indépendante centrée sur les risques catastrophiques et l’évaluation des modèles frontier."
+    link: https://openai.com/index/paul-christiano-joins-openai-foundation-board/
+
+  - date: 2026-09-09
+    type: update
+    title:
+      en: "NVIDIA and Australian partners target 2 GW of AI infrastructure by 2027"
+      fr: "NVIDIA et ses partenaires australiens visent 2 GW d’infrastructure IA d’ici 2027"
+    description:
+      en: "NVIDIA announced a potential 2 GW Australian AI-factory buildout by 2027 with eight cloud and data-center partners, including Firmus, IREN, NEXTDC and AirTrunk. Sharon AI plans up to 68,000 NVIDIA GPUs, while the program links sovereign compute capacity with NVIDIA’s Nemotron open models."
+      fr: "NVIDIA a annoncé un déploiement potentiel de 2 GW d’usines IA en Australie d’ici 2027 avec huit partenaires cloud et data centers, dont Firmus, IREN, NEXTDC et AirTrunk. Sharon AI prévoit jusqu’à 68 000 GPU NVIDIA, tandis que le programme relie capacité de calcul souveraine et modèles ouverts Nemotron."
+    link: https://nvidianews.nvidia.com/news/nvidia-expands-ai-infrastructure-capacity-in-partnership-with-australias-data-center-ecosystem
+
+
 
   - date: 2026-09-09
     type: update
