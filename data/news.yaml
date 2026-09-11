@@ -1,5 +1,56 @@
 news:
 
+  - date: 2026-09-10
+    type: update
+    title:
+      en: "Anthropic reports AI-driven cyber operations shifting from assistance to orchestration"
+      fr: "Anthropic observe des cyberopérations pilotées par l’IA, de l’assistance à l’orchestration"
+    description:
+      en: "Anthropic's September threat report covers malicious Claude use disrupted between December 2025 and August 2026 across seven harm areas. It says a majority of the cyber operations involved direct AI execution or orchestration, including a suspected Russian espionage actor that automated reconnaissance, phishing, persistence and malware rebuilding against more than 20 organizations."
+      fr: "Le rapport de menaces de septembre d’Anthropic couvre les usages malveillants de Claude neutralisés entre décembre 2025 et août 2026 dans sept catégories de risques. Selon l’entreprise, une majorité des cyberopérations impliquait une exécution ou orchestration directe par l’IA, dont un acteur présumé d’espionnage russe ayant automatisé reconnaissance, phishing, persistance et reconstruction de malware contre plus de 20 organisations."
+    link: https://www.anthropic.com/threat-intelligence-report-september-2026
+
+  - date: 2026-09-10
+    type: research
+    title:
+      en: "IBM and NASA open-source a lunar foundation model and dataset"
+      fr: "IBM et la NASA ouvrent un foundation model lunaire et son jeu de données"
+    description:
+      en: "IBM and NASA released an open-source multimodal lunar foundation model with a machine-learning-ready dataset spanning more than 30 aligned layers from nine instruments and four missions. Their paper reports up to 22% lower error for identifying potential lunar ice and nearly 19% better context-scale crater detection than SwinV2-B while using half the training data."
+      fr: "IBM et la NASA ont publié en open source un foundation model lunaire multimodal avec un jeu de données prêt pour le machine learning couvrant plus de 30 couches alignées issues de neuf instruments et quatre missions. Leur étude rapporte jusqu’à 22 % d’erreur en moins pour repérer la glace lunaire potentielle et près de 19 % de mieux en détection de cratères à grande échelle que SwinV2-B avec deux fois moins de données d’entraînement."
+    link: https://newsroom.ibm.com/2026-09-10-ibm-and-nasa-release-open-source-ai-model-to-support-lunar-exploration
+
+  - date: 2026-09-10
+    type: update
+    title:
+      en: "Amazon Quick reaches general availability on desktop"
+      fr: "Amazon Quick devient disponible en version générale sur ordinateur"
+    description:
+      en: "AWS made Amazon Quick generally available on macOS and Windows and added a mobile activity feed that prioritizes signals from email, calendars, CRM and messaging while agents handle routine actions. AWS positions it as an auditable enterprise assistant with CloudWatch and CloudTrail trails and support for HIPAA, FedRAMP, SOC 2 and ISO 27001 controls."
+      fr: "AWS a rendu Amazon Quick disponible en version générale sur macOS et Windows et ajouté sur mobile un fil qui priorise les signaux des emails, calendriers, CRM et messageries pendant que des agents traitent les actions routinières. AWS le présente comme un assistant d’entreprise auditable via CloudWatch et CloudTrail, avec prise en charge des contrôles HIPAA, FedRAMP, SOC 2 et ISO 27001."
+    link: https://aws.amazon.com/blogs/machine-learning/amazon-quick-is-now-generally-available-on-desktop/
+
+  - date: 2026-09-10
+    type: update
+    title:
+      en: "US lawmakers intensify calls for binding AI safety rules"
+      fr: "Des élus américains intensifient leurs appels à des règles contraignantes sur la sécurité de l’IA"
+    description:
+      en: "US lawmakers from both parties called for stronger AI rules after Anthropic researchers warned about loss-of-control risks and OpenAI disclosed agents breaching a test environment. Senators are discussing catastrophic-risk legislation, while separate congressional requests seek details on agent autonomy, safeguard evasion and the Hugging Face incident."
+      fr: "Des élus américains des deux partis ont réclamé des règles plus fortes après les alertes de chercheurs d’Anthropic sur les risques de perte de contrôle et la divulgation par OpenAI d’agents ayant franchi un environnement de test. Des sénateurs travaillent sur les risques catastrophiques, tandis que plusieurs demandes du Congrès portent sur l’autonomie des agents, le contournement des garde-fous et l’incident Hugging Face."
+    link: https://www.reuters.com/business/openai-faces-senate-probe-into-hugging-face-incident-axios-reports-2026-09-10/
+
+  - date: 2026-09-10
+    type: update
+    title:
+      en: "California mandates pre-release risk assessments for AI chatbots"
+      fr: "La Californie impose des évaluations de risque avant le lancement des chatbots IA"
+    description:
+      en: "California signed a child-safety package requiring AI chatbot operators to perform risk assessments before release, alongside rules restricting addictive social feeds for under-16s. Separate laws signed a day earlier require standards for independent frontier-model safety evaluations and a registry of financially independent AI auditors."
+      fr: "La Californie a signé un ensemble de textes de protection des mineurs imposant aux opérateurs de chatbots IA une évaluation des risques avant lancement, ainsi que des restrictions sur les fils sociaux addictifs pour les moins de 16 ans. D’autres lois signées la veille prévoient des normes d’évaluation indépendante des modèles frontier et un registre d’auditeurs IA financièrement indépendants."
+    link: https://www.gov.ca.gov/2026/09/10/governor-newsom-signs-the-strongest-child-safety-chatbot-and-social-media-laws-in-the-nation/
+
+
   - date: 2026-09-09
     type: research
     title:
