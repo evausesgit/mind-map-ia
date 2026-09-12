@@ -1,5 +1,36 @@
 news:
 
+
+  - date: 2026-09-11
+    type: update
+    title:
+      en: "UAE redesigns 5 GW AI data-center project after Iranian attacks"
+      fr: "Les Émirats redessinent un projet de data centers IA de 5 GW après les attaques iraniennes"
+    description:
+      en: "Reuters reports that the UAE is revising a planned 5 GW AI data-center campus in Abu Dhabi after the Iran war exposed physical-concentration risk. The likely design would distribute facilities across the country and may add air defenses or underground construction to protect critical compute infrastructure."
+      fr: "Reuters rapporte que les Émirats arabes unis revoient un campus de data centers IA de 5 GW prévu à Abou Dhabi, la guerre avec l’Iran ayant révélé le risque de concentration physique. Le projet serait réparti entre plusieurs sites dans le pays et pourrait intégrer des défenses aériennes ou des installations souterraines pour protéger cette infrastructure critique."
+    link: https://www.reuters.com/world/middle-east/uae-revises-ai-data-center-plan-after-iranian-attacks-sources-say-2026-09-11/
+
+  - date: 2026-09-11
+    type: update
+    title:
+      en: "US senators debate a duty of care and release controls for frontier AI"
+      fr: "Des sénateurs américains débattent d’un devoir de diligence et de contrôles de lancement pour l’IA frontier"
+    description:
+      en: "US Senate negotiators are discussing a duty of care requiring AI developers to design against catastrophic risks, including AI-enabled nuclear or biological weapons. The proposal could let the federal government block releases deemed unsafe, subject to court challenge, while pre-empting some state rules; its exact scope remains under negotiation."
+      fr: "Des négociateurs du Sénat américain discutent d’un devoir de diligence obligeant les développeurs à prévenir les risques catastrophiques, notamment la conception d’armes nucléaires ou biologiques facilitée par l’IA. Le texte pourrait permettre au gouvernement fédéral de bloquer un lancement jugé dangereux, avec recours devant les tribunaux, tout en préemptant certaines règles des États ; son périmètre reste en négociation."
+    link: https://www.reuters.com/legal/litigation/us-senate-negotiators-consider-requiring-ai-firms-mitigate-known-major-risks-2026-09-11/
+
+  - date: 2026-09-10
+    type: update
+    title:
+      en: "OpenAI launches ChatGPT for Financial Services"
+      fr: "OpenAI lance ChatGPT for Financial Services"
+    description:
+      en: "OpenAI launched a finance-specific ChatGPT Work offering built with Morgan Stanley and Evercore, using GPT-6 Astra and hosted data from providers including Daloopa, PitchBook, LSEG News and Crunchbase. It adds role-based app permissions, configurable retention, audit-log exports and Office templates; customer data is not used for training by default."
+      fr: "OpenAI lance une offre ChatGPT Work dédiée à la finance, conçue avec Morgan Stanley et Evercore, reposant sur GPT-6 Astra et des données hébergées provenant notamment de Daloopa, PitchBook, LSEG News et Crunchbase. Elle ajoute permissions par rôle, rétention configurable, export des journaux d’audit et modèles Office ; les données clients ne servent pas à l’entraînement par défaut."
+    link: https://openai.com/index/introducing-chatgpt-financial-services/
+
   - date: 2026-09-10
     type: update
     title:
