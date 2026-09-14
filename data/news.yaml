@@ -1,5 +1,45 @@
 news:
 
+  - date: 2026-09-14
+    type: update
+    title:
+      en: "OpenAI says Perplexity is giving GPT-6 Astra end-to-end operational work"
+      fr: "OpenAI affirme que Perplexity confie à GPT-6 Astra des tâches opérationnelles de bout en bout"
+    description:
+      en: "OpenAI says Perplexity uses GPT-6 Astra to draft communications, modify software and monitor production systems, with less frequent human check-ins than earlier models. The customer case provides no comparative metrics, but illustrates the shift from coding assistance to agents acting across production workflows."
+      fr: "OpenAI indique que Perplexity utilise GPT-6 Astra pour rédiger des communications, modifier des logiciels et surveiller des systèmes de production, avec des validations humaines moins fréquentes qu’avec les modèles précédents. Ce retour client ne fournit pas de métriques comparatives, mais illustre le passage de l’assistance au code à des agents actifs dans les workflows de production."
+    link: https://openai.com/index/perplexity-improving-accuracy-with-astra
+
+  - date: 2026-09-14
+    type: update
+    title:
+      en: "UK parliamentary committee calls for a risk-based AI bill and independent oversight body"
+      fr: "Une commission parlementaire britannique réclame une loi IA fondée sur les risques et un superviseur indépendant"
+    description:
+      en: "The UK Parliament’s Joint Committee on Human Rights says the current fragmented framework leaves protection gaps and proposes a dedicated AI bill. Its recommendations include lifecycle obligations, stricter duties for higher-risk systems, an independent statutory oversight body and bans on uses incompatible with human rights."
+      fr: "La commission mixte des droits humains du Parlement britannique estime que le cadre fragmenté actuel laisse des lacunes et propose une loi dédiée à l’IA. Elle recommande des obligations sur tout le cycle de vie, des exigences renforcées pour les systèmes à haut risque, un superviseur légal indépendant et l’interdiction des usages incompatibles avec les droits humains."
+    link: https://www.bbc.co.uk/news/articles/cwyzvgj70y4o
+
+  - date: 2026-09-13
+    type: update
+    title:
+      en: "Mistral raises €3 billion to scale sovereign, open-weight AI"
+      fr: "Mistral lève 3 milliards d’euros pour industrialiser une IA souveraine et open-weight"
+    description:
+      en: "Mistral raised a €3 billion Series D led by Samsung Electronics at a post-money valuation above €21 billion, with BNP Paribas CIB among the participating existing investors. The company says the capital will expand frontier research, compute and international growth; it now operates in 20 countries and supports more than 125 enterprises."
+      fr: "Mistral a levé 3 milliards d’euros en série D, menée par Samsung Electronics, pour une valorisation post-money supérieure à 21 milliards d’euros ; BNP Paribas CIB figure parmi les investisseurs existants participants. Les fonds doivent renforcer la recherche frontier, le calcul et l’expansion internationale ; Mistral indique être présent dans 20 pays et accompagner plus de 125 entreprises."
+    link: https://mistral.ai/news/mistral-makes-sovereign-open-weight-ai-to-frontier/
+
+  - date: 2026-09-13
+    type: new-feature
+    title:
+      en: "Salesforce introduces an enterprise AI harness and unified control plane"
+      fr: "Salesforce présente un AI Harness d’entreprise et un plan de contrôle unifié"
+    description:
+      en: "Salesforce unveiled a composable Enterprise AI Harness spanning context, agency, action, governance, security and model routing. A new AI Control Plane is intended to register agents, apply identity and policy, observe outcomes and control costs across Salesforce and third-party models and systems."
+      fr: "Salesforce a présenté un Enterprise AI Harness composable couvrant contexte, agentivité, action, gouvernance, sécurité et routage des modèles. Un nouveau plan de contrôle doit enregistrer les agents, appliquer identité et politiques, observer les résultats et maîtriser les coûts sur les modèles et systèmes Salesforce comme tiers."
+    link: https://www.salesforce.com/news/stories/enterprise-ai-harness/
+
   - date: 2026-09-12
     type: update
     title:
