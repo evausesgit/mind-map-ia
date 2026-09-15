@@ -3,6 +3,46 @@ news:
   - date: 2026-09-14
     type: update
     title:
+      en: "OpenAI, Anthropic and Google discuss a joint AI safety standards body"
+      fr: "OpenAI, Anthropic et Google discutent d’un organisme commun de standards de sécurité IA"
+    description:
+      en: "Representatives of the three frontier labs have reportedly met regularly since July about an industry body for model testing and auditing, while governments develop formal rules. The initiative could resemble FINRA-style self-regulation, but its independence, enforcement powers and transparency remain undecided."
+      fr: "Des représentants des trois laboratoires frontier se réuniraient régulièrement depuis juillet autour d’un organisme sectoriel chargé des tests et audits de modèles, en attendant des règles publiques. L’initiative pourrait s’inspirer de l’autorégulation de type FINRA, mais son indépendance, ses pouvoirs de sanction et sa transparence restent indéterminés."
+    link: https://www.pymnts.com/news/artificial-intelligence/2026/google-openai-and-anthropic-float-idea-of-ai-standards-body/
+
+  - date: 2026-09-14
+    type: update
+    title:
+      en: "China formalises safeguards against loss of control by advanced AI agents"
+      fr: "La Chine formalise des garde-fous contre la perte de contrôle des agents IA avancés"
+    description:
+      en: "China’s AI safety frameworks explicitly address systems acquiring resources, self-replicating or seeking power, while May guidelines require agent developers to detect, block and recover from improper behaviour. The rules also preserve final user authority over autonomous decisions, although China has not adopted embedded independent monitors inside AI labs."
+      fr: "Les cadres chinois de sécurité IA traitent explicitement des systèmes susceptibles d’acquérir des ressources, de s’autorépliquer ou de rechercher du pouvoir ; des lignes directrices de mai imposent aux développeurs d’agents de détecter, bloquer et corriger les comportements inappropriés. Elles maintiennent aussi l’autorité finale de l’utilisateur sur les décisions autonomes, sans prévoir à ce stade de contrôleurs indépendants intégrés aux laboratoires."
+    link: https://www.reuters.com/legal/litigation/how-china-is-preparing-risk-ai-escaping-human-control-2026-09-14/
+
+  - date: 2026-09-14
+    type: research
+    title:
+      en: "BIS warns that AI investment is shifting from cash flows to debt"
+      fr: "La BRI alerte sur le financement croissant des investissements IA par la dette"
+    description:
+      en: "The BIS says the five largest technology companies are set to spend more than $1 trillion on AI-related capex across 2025–2026, while global investment could rise from about $500 billion today to $3–4 trillion by 2030. As financing shifts toward debt and private credit, financial stability increasingly depends on AI projects meeting high earnings expectations."
+      fr: "La BRI estime que les cinq plus grandes entreprises technologiques devraient consacrer plus de 1 000 milliards de dollars aux dépenses IA en 2025–2026, tandis que l’investissement mondial pourrait passer d’environ 500 milliards aujourd’hui à 3 000–4 000 milliards d’ici 2030. Le recours croissant à la dette et au private credit rend la stabilité financière plus dépendante de la réalisation d’attentes de revenus élevées."
+    link: https://www.reuters.com/markets/europe/global-markets-bis-pix-2026-09-14/
+
+  - date: 2026-09-14
+    type: research
+    title:
+      en: "CSIS frames Chinese open-weight models as a strategic cyber capability"
+      fr: "Le CSIS présente les modèles open-weight chinois comme une capacité cyber stratégique"
+    description:
+      en: "CSIS estimates open-weight systems are only four to six months behind advanced closed frontier models and highlights Hugging Face’s use of Z.AI’s GLM-5.2 during a recent intrusion investigation. It argues that inspectable, locally adaptable models can strengthen cyber defence even as unrestricted redistribution also expands misuse risk."
+      fr: "Le CSIS estime que les modèles open-weight ne sont plus qu’à quatre à six mois des modèles frontier fermés les plus avancés et souligne l’utilisation de GLM-5.2 de Z.AI par Hugging Face lors d’une récente investigation cyber. Selon l’analyse, des modèles inspectables et adaptables localement peuvent renforcer la défense, tout en augmentant le risque de détournement lorsqu’ils sont librement redistribués."
+    link: https://www.csis.org/analysis/chinas-open-weight-challenge-us-ai-leadership
+
+  - date: 2026-09-14
+    type: update
+    title:
       en: "OpenAI says Perplexity is giving GPT-6 Astra end-to-end operational work"
       fr: "OpenAI affirme que Perplexity confie à GPT-6 Astra des tâches opérationnelles de bout en bout"
     description:
