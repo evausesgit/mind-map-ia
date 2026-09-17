@@ -1,5 +1,45 @@
 news:
 
+  - date: 2026-09-17
+    type: update
+    title:
+      en: "Huawei targets a 2027 launch for new AI chips and larger compute systems"
+      fr: "Huawei vise 2027 pour de nouvelles puces IA et des systèmes de calcul élargis"
+    description:
+      en: "Huawei plans to introduce new AI chips and high-speed systems connecting large numbers of accelerators in 2027 as China seeks to reduce its dependence on Nvidia. The announcement makes scale-out architecture and domestic supply capacity central to the competition, while key performance and production details remain to be demonstrated."
+      fr: "Huawei prévoit de lancer en 2027 de nouvelles puces IA et des systèmes à haut débit reliant un grand nombre d’accélérateurs, alors que la Chine cherche à réduire sa dépendance à Nvidia. L’annonce place l’architecture distribuée et la capacité de production locale au cœur de la compétition, mais les performances et volumes réels restent à démontrer."
+    link: https://www.reuters.com/world/china/chinas-huawei-sets-2027-launch-new-ai-chips-it-targets-nvidia-2026-09-17/
+
+  - date: 2026-09-16
+    type: update
+    title:
+      en: "UN chief warns that advanced AI risks require international guardrails"
+      fr: "Le chef de l’ONU appelle à des garde-fous internationaux face aux risques de l’IA avancée"
+    description:
+      en: "UN Secretary-General António Guterres warned that advanced AI creates systemic risks that cannot be managed by voluntary commitments alone, contrasting with President Donald Trump’s dismissal of prominent safety warnings. The disagreement highlights a widening policy gap over oversight as autonomous capabilities and misuse concerns increase."
+      fr: "Le secrétaire général de l’ONU António Guterres estime que l’IA avancée crée des risques systémiques que les engagements volontaires ne suffisent pas à maîtriser, à rebours du rejet par Donald Trump des principales alertes de sécurité. Ce désaccord révèle un écart politique croissant sur la supervision, alors que progressent l’autonomie des systèmes et les risques de détournement."
+    link: https://www.reuters.com/world/un-chief-sounds-alarm-ai-risk-after-trump-plays-it-down-2026-09-16/
+
+  - date: 2026-09-16
+    type: update
+    title:
+      en: "AIUC raises $40 million to build audits and certification for enterprise AI agents"
+      fr: "AIUC lève 40 millions de dollars pour auditer et certifier les agents IA d’entreprise"
+    description:
+      en: "Artificial Intelligence Underwriting Company raised a $40 million Series A led by Ribbit Capital to expand AIUC-1, its agent risk-testing and certification standard, and related insurance infrastructure. The project aims to turn agent controls into auditable evidence for enterprises rather than relying only on vendor assurances."
+      fr: "Artificial Intelligence Underwriting Company a levé 40 millions de dollars en série A, menée par Ribbit Capital, pour développer AIUC-1, son standard de test et de certification des risques liés aux agents, ainsi que l’infrastructure d’assurance associée. L’objectif est de transformer les contrôles des agents en preuves auditables pour les entreprises, au-delà des seules assurances des fournisseurs."
+    link: https://www.securityweek.com/aiuc-raises-40-million-to-certify-enterprise-ai-agents/
+
+  - date: 2026-09-14
+    type: research
+    title:
+      en: "Open-weight models narrow the frontier gap and reshape cyber defense"
+      fr: "Les modèles open-weight réduisent l’écart avec la frontière et transforment la cyberdéfense"
+    description:
+      en: "A CSIS analysis says open-weight models are estimated to trail leading closed systems by only four to six months while running at a fraction of the cost. It cites the ability to adapt models to a specific network as valuable for cyber defense, but warns that the same accessibility can scale offensive misuse."
+      fr: "Une analyse du CSIS estime que les modèles open-weight ne suivent les meilleurs systèmes fermés que de quatre à six mois, pour une fraction de leur coût. Leur adaptation à un réseau précis peut renforcer la cyberdéfense, mais cette même accessibilité peut aussi amplifier les usages offensifs."
+    link: https://www.csis.org/analysis/chinas-open-weight-challenge-us-ai-leadership
+
   - date: 2026-09-16
     type: update
     title:
