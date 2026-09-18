@@ -3,6 +3,56 @@ news:
   - date: 2026-09-17
     type: update
     title:
+      en: "Anthropic says Claude now performs a quarter of the work on its successor"
+      fr: "Anthropic affirme que Claude réalise désormais un quart du travail sur son successeur"
+    description:
+      en: "Anthropic says Claude is leading about 25% of the work involved in building its next generation of models, a concrete sign that frontier-model development is becoming partially self-referential. The gain is operationally significant, but it also raises the bar for review, traceability and human accountability in AI-assisted model engineering."
+      fr: "Anthropic affirme que Claude pilote environ 25 % du travail nécessaire à la prochaine génération de ses modèles, signe concret que le développement des modèles frontier devient en partie autoréférentiel. Le gain opérationnel est important, mais il renforce aussi les exigences de revue, de traçabilité et de responsabilité humaine dans l’ingénierie assistée par IA."
+    link: https://apnews.com/article/anthropic-claude-ai-model-self-improvement-4d3a7430f57cbc7c39e1c5f2b7d7e132
+
+  - date: 2026-09-17
+    type: update
+    title:
+      en: "OpenAI launches Astra for Law with a 230-million-source legal index"
+      fr: "OpenAI lance Astra for Law avec un index juridique de 230 millions de sources"
+    description:
+      en: "OpenAI introduced Astra for Law, a legal configuration of GPT-6 Astra with domain instructions and a search index spanning more than 230 million URLs. Initial access targets selected Am Law 200 firms and API partners, with zero data retention for the API and no OpenAI human review of ChatGPT Enterprise content."
+      fr: "OpenAI a présenté Astra for Law, une configuration juridique de GPT-6 Astra dotée d’instructions métier et d’un index couvrant plus de 230 millions d’URL. L’accès initial vise certaines firmes de l’Am Law 200 et des partenaires API, avec rétention zéro côté API et absence de revue humaine par OpenAI du contenu ChatGPT Enterprise."
+    link: https://openai.com/index/introducing-astra-for-law/
+
+  - date: 2026-09-17
+    type: update
+    title:
+      en: "US Federal Register removes Qwen-based search modes"
+      fr: "Le Federal Register américain retire ses modes de recherche fondés sur Qwen"
+    description:
+      en: "The US Federal Register removed two search modes built on Alibaba’s Apache-2.0-licensed Qwen3-0.6B model after their use drew public attention. The episode shows how easily open-weight components can enter public-sector stacks and why model inventories, provenance checks and explicit approval gates matter."
+      fr: "Le Federal Register américain a retiré deux modes de recherche fondés sur Qwen3-0.6B d’Alibaba, sous licence Apache 2.0, après que leur utilisation a attiré l’attention. L’épisode illustre la facilité avec laquelle des composants open-weight peuvent entrer dans les systèmes publics, et l’importance des inventaires de modèles, des contrôles de provenance et des validations explicites."
+    link: https://www.reuters.com/legal/litigation/us-government-website-used-ai-search-tool-china-that-fbi-said-copied-anthropic-2026-09-17/
+
+  - date: 2026-09-17
+    type: update
+    title:
+      en: "Baseten, Hugging Face and Goodfire partner on open-weight AI safety"
+      fr: "Baseten, Hugging Face et Goodfire s’allient sur la sécurité de l’IA open-weight"
+    description:
+      en: "Baseten’s Base Labs, Hugging Face and Goodfire plan to develop transparent safety evaluation and monitoring infrastructure for open-weight models. The initiative responds to the spread of ‘abliteration’ techniques that remove safeguards; Hugging Face currently lists more than 6,000 models described as abliterated."
+      fr: "Base Labs de Baseten, Hugging Face et Goodfire veulent développer une infrastructure transparente d’évaluation et de surveillance pour les modèles open-weight. L’initiative répond à la diffusion des techniques d’« abliteration » qui retirent les garde-fous ; Hugging Face référence actuellement plus de 6 000 modèles présentés comme abliterated."
+    link: https://techcrunch.com/2026/09/17/base-labs-launches-an-open-weight-ai-safety-partnership-with-hugging-face-and-goodfire/
+
+  - date: 2026-09-17
+    type: update
+    title:
+      en: "Anthropic opens a verified access program for advanced life-sciences use"
+      fr: "Anthropic ouvre un programme d’accès vérifié pour les usages avancés en sciences du vivant"
+    description:
+      en: "Anthropic launched the beta Life Sciences Verification Program, giving approved teams more permissive biology safeguards across Mythos, Opus and Sonnet for drug discovery, clinical development and manufacturing. Dozens of organizations joined early access, but the beta is not yet available for BAA-enabled organizations handling protected health information."
+      fr: "Anthropic lance en bêta son Life Sciences Verification Program, qui assouplit certains garde-fous biologiques de Mythos, Opus et Sonnet pour les équipes approuvées travaillant sur la découverte de médicaments, le développement clinique et la production. Des dizaines d’organisations ont rejoint l’accès anticipé, mais la bêta n’est pas encore disponible pour les entités sous BAA traitant des données de santé protégées."
+    link: https://www.anthropic.com/news/life-sciences-verification-program
+
+  - date: 2026-09-17
+    type: update
+    title:
       en: "Huawei targets a 2027 launch for new AI chips and larger compute systems"
       fr: "Huawei vise 2027 pour de nouvelles puces IA et des systèmes de calcul élargis"
     description:
