@@ -1,5 +1,54 @@
 news:
 
+  - date: 2026-09-19
+    type: update
+    title:
+      en: "Trump announces an AI Force and plans to name a new AI czar"
+      fr: "Trump annonce une AI Force et la nomination prochaine d’un nouveau responsable IA"
+    description:
+      en: "President Donald Trump said he will create an AI Force and appoint an AI czar, while promising not to slow industry growth and relying largely on existing criminal and civil law to address harms. The group’s mandate, membership and timetable have not yet been specified, as AI and data-centre policy becomes a US midterm and US-China issue."
+      fr: "Donald Trump annonce la création d’une « AI Force » et la nomination prochaine d’un responsable IA, tout en promettant de ne pas freiner la croissance du secteur et en privilégiant les lois pénales et civiles existantes face aux risques. Le mandat, la composition et le calendrier restent à préciser, alors que l’IA et les data centers deviennent des enjeux électoraux et sino-américains."
+    link: https://www.reuters.com/world/us/trump-says-he-will-create-ai-force-name-ai-czar-2026-09-19/
+
+  - date: 2026-09-18
+    type: update
+    title:
+      en: "Anthropic and Accenture commit at least $2 billion to embedded frontier-AI evaluation"
+      fr: "Anthropic et Accenture engagent au moins 2 milliards de dollars dans l’évaluation intégrée de l’IA frontier"
+    description:
+      en: "Anthropic and Accenture each expect to invest at least $1 billion over five years in an embedded-evaluation partnership led by Faculty. Evaluators will receive employee-like access to observe training, red-team models, assess alignment and safeguards, and report incidents, although reporting and access standards are still undefined."
+      fr: "Anthropic et Accenture prévoient chacun d’investir au moins 1 milliard de dollars sur cinq ans dans un partenariat d’évaluation intégrée piloté par Faculty. Des évaluateurs disposeront d’un accès comparable à celui des employés pour observer l’entraînement, red-teamer les modèles, évaluer alignement et garde-fous et signaler les incidents, mais les standards d’accès et de publication restent à définir."
+    link: https://www.anthropic.com/news/accenture-embedded-evaluation
+
+  - date: 2026-09-19
+    type: research
+    title:
+      en: "IMF says AI could lift European productivity by about 1% in five years"
+      fr: "Le FMI estime que l’IA pourrait relever la productivité européenne d’environ 1 % en cinq ans"
+    description:
+      en: "An IMF note for EU finance ministers estimates that AI could lift European productivity by roughly 1% over five years, while about 60% of workers in advanced European economies hold highly exposed occupations. It also flags inequality, foreign-technology dependence and data centres already consuming around 3% of Europe’s electricity."
+      fr: "Une note du FMI destinée aux ministres des Finances de l’UE estime que l’IA pourrait relever la productivité européenne d’environ 1 % sur cinq ans, tandis qu’environ 60 % des travailleurs des économies européennes avancées occupent des emplois fortement exposés. Elle souligne aussi les risques d’inégalités, de dépendance technologique et la consommation des data centers, déjà proche de 3 % de l’électricité européenne."
+    link: https://www.reuters.com/business/imf-tells-eu-ministers-ai-could-boost-growth-increase-economic-strains-2026-09-19/
+
+  - date: 2026-09-19
+    type: update
+    title:
+      en: "Vals raises $40 million to benchmark AI on real industry work"
+      fr: "Vals lève 40 millions de dollars pour évaluer l’IA sur des tâches métier réelles"
+    description:
+      en: "Vals raised a $40 million Series A led by Andreessen Horowitz and says its revenue is eight times last year’s level. Its private evaluations test models on real tasks in law, finance and coding rather than only public academic benchmarks, and the company has launched an evaluation program for US federal agencies."
+      fr: "Vals a levé 40 millions de dollars en série A menée par Andreessen Horowitz et affirme avoir multiplié son chiffre d’affaires par huit en un an. Ses évaluations privées testent les modèles sur des tâches réelles en droit, finance et code plutôt que sur les seuls benchmarks académiques publics ; l’entreprise a aussi lancé un programme destiné aux agences fédérales américaines."
+    link: https://techcrunch.com/2026/09/19/vals-backed-by-andreessen-horowitz-is-looking-to-become-the-gold-standard-for-ai-benchmarking/
+
+  - date: 2026-09-19
+    type: research
+    title:
+      en: "Linkup releases the 149M-parameter SPARSEUP retriever under Apache 2.0"
+      fr: "Linkup publie le retriever SPARSEUP de 149 millions de paramètres sous Apache 2.0"
+    description:
+      en: "Linkup released SPARSEUP, an open-weight 149M-parameter sparse retrieval model based on ModernBERT, under Apache 2.0. Its model card reports 56.4 nDCG@10 on BEIR-13 excluding MS MARCO—the strongest public vocabulary-based sparse encoder under 150M parameters in Linkup’s comparison—while dense and late-interaction siblings remain slightly ahead overall."
+      fr: "Linkup publie SPARSEUP, un modèle open-weight de recherche sparse de 149 millions de paramètres fondé sur ModernBERT, sous licence Apache 2.0. Sa fiche annonce 56,4 nDCG@10 sur BEIR-13 hors MS MARCO — le meilleur encodeur sparse public de moins de 150 millions de paramètres dans sa comparaison — tandis que les variantes dense et late-interaction restent légèrement devant au global."
+    link: https://huggingface.co/Linkup-Platform/linkup-sparseup-embed-v1
 
   - date: 2026-09-18
     type: update
