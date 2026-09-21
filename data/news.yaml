@@ -1,5 +1,35 @@
 news:
 
+  - date: 2026-09-20
+    type: update
+    title:
+      en: "US proposes an AI incident alert mechanism with China"
+      fr: "Les États-Unis proposent à la Chine un mécanisme d’alerte sur les incidents IA"
+    description:
+      en: "US Treasury Secretary Scott Bessent says Washington proposed a notification mechanism for AI incidents that could affect national security during talks with Chinese Vice Premier He Lifeng. The proposal, still without public scope or thresholds, seeks greater transparency between the world’s two leading AI powers ahead of the Trump-Xi meeting on September 24."
+      fr: "Le secrétaire américain au Trésor Scott Bessent indique que Washington a proposé un mécanisme de notification des incidents IA susceptibles d’affecter la sécurité nationale, lors d’échanges avec le vice-Premier ministre chinois He Lifeng. Encore dépourvue de périmètre et de seuils publics, l’initiative vise davantage de transparence entre les deux premières puissances IA avant la rencontre Trump-Xi du 24 septembre."
+    link: https://apnews.com/article/bessent-ai-xi-trump-china-trade-2c7f54f07e755f506d9db9b91df282bd
+
+  - date: 2026-09-18
+    type: update
+    title:
+      en: "Moonshot AI's 2.8T-parameter Kimi K3 arrives on Amazon Bedrock"
+      fr: "Kimi K3 de Moonshot AI, fort de 2 800 milliards de paramètres, arrive sur Amazon Bedrock"
+    description:
+      en: "AWS made Moonshot AI’s open-weight Kimi K3 available on Bedrock. Moonshot describes it as a 2.8-trillion-parameter multimodal model with a 1-million-token context window; Bedrock adds explicit prompt caching, zero data retention and US or global cross-region inference profiles."
+      fr: "AWS rend disponible sur Bedrock Kimi K3, le modèle open-weight de Moonshot AI. Moonshot le présente comme un modèle multimodal de 2 800 milliards de paramètres avec une fenêtre de contexte d’un million de tokens ; Bedrock ajoute cache explicite des prompts, absence de conservation des données et profils d’inférence multirégion américains ou mondiaux."
+    link: https://aws.amazon.com/blogs/machine-learning/introducing-kimi-k3-on-amazon-bedrock/
+
+  - date: 2026-09-19
+    type: update
+    title:
+      en: "AI labs face antitrust lawsuit over coordinated slowdown discussions"
+      fr: "Des laboratoires d’IA visés par une action antitrust sur leurs discussions de ralentissement coordonné"
+    description:
+      en: "Four paid subscribers filed a proposed US class action alleging that Anthropic, OpenAI, SpaceXAI and Google illegally coordinated plans to slow AI development after public safety discussions on September 12. The companies had not commented when AP published; the complaint is an allegation, not a finding, and highlights why cross-lab safety coordination may require a government-mediated antitrust safe harbor."
+      fr: "Quatre abonnés payants ont déposé aux États-Unis un projet d’action collective affirmant qu’Anthropic, OpenAI, SpaceXAI et Google ont coordonné illégalement un ralentissement du développement de l’IA après leurs échanges publics du 12 septembre sur la sécurité. Les entreprises n’avaient pas réagi lors de la publication de l’AP ; il s’agit d’allégations, non d’un jugement, qui illustrent le besoin possible d’un cadre public d’exemption antitrust pour coopérer sur la sécurité."
+    link: https://apnews.com/article/antitrust-lawsuit-ai-slowdown-anthropic-openai-spacexai-google-960af4308161eaf4ed13c383b0ce1c1b
+
   - date: 2026-09-19
     type: update
     title:
