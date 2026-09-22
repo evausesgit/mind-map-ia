@@ -1,5 +1,45 @@
 news:
 
+  - date: 2026-09-21
+    type: update
+    title:
+      en: "SpaceXAI releases Grok 4.7 for coding and knowledge work"
+      fr: "SpaceXAI publie Grok 4.7 pour le code et le travail de connaissance"
+    description:
+      en: "SpaceXAI launched Grok 4.7, a 500,000-token frontier model for coding, agentic tasks and knowledge work, priced at $2 per million input tokens and $6 per million output tokens. In the company's tests, it scored 46.3% on CursorBench 4.0 and allowed 3.3% of risky dual-use prompts through HackerBench v0.3."
+      fr: "SpaceXAI lance Grok 4.7, un modèle frontier doté de 500 000 tokens de contexte pour le code, les tâches agentiques et le travail de connaissance, facturé 2 $ par million de tokens en entrée et 6 $ en sortie. Dans les tests de l'entreprise, il obtient 46,3 % sur CursorBench 4.0 et laisse passer 3,3 % des prompts à double usage risqué de HackerBench v0.3."
+    link: https://x.ai/news/grok-4-7
+
+  - date: 2026-09-21
+    type: update
+    title:
+      en: "US and China schedule follow-up talks on AI safety protocols"
+      fr: "Les États-Unis et la Chine préparent de nouveaux échanges sur les protocoles de sécurité IA"
+    description:
+      en: "Senior US and Chinese officials will meet in Shenzhen in about two months to discuss AI dangers and communication protocols for safety incidents, US Treasury Secretary Scott Bessent said. The talks now have a time horizon, but public thresholds and enforcement rules remain unspecified."
+      fr: "Des responsables américains et chinois se réuniront à Shenzhen dans environ deux mois pour discuter des dangers de l'IA et de protocoles de communication en cas d'incident, selon le secrétaire américain au Trésor Scott Bessent. Les échanges ont désormais un horizon temporel, mais les seuils et mécanismes d'application restent à préciser."
+    link: https://www.reuters.com/world/asia-pacific/us-china-meet-again-ai-safety-two-months-shenzhen-bessent-says-2026-09-21/
+
+  - date: 2026-09-21
+    type: update
+    title:
+      en: "EU proposes energy and water efficiency disclosures for data centres"
+      fr: "L'UE propose des indicateurs d'efficacité énergétique et hydrique pour les data centers"
+    description:
+      en: "The European Commission proposed rules requiring European data centres to disclose energy and water efficiency as AI demand puts resource use under stronger scrutiny. The proposal would turn infrastructure efficiency into a reportable compliance metric rather than a voluntary sustainability claim."
+      fr: "La Commission européenne propose d'obliger les data centers européens à publier leur efficacité énergétique et hydrique, alors que la demande liée à l'IA renforce la surveillance des ressources. Le texte ferait de l'efficacité des infrastructures un indicateur de conformité publié, plutôt qu'une simple allégation volontaire."
+    link: https://www.reuters.com/business/environment/eu-require-data-centres-disclose-energy-water-efficiency-2026-09-21/
+
+  - date: 2026-09-21
+    type: research
+    title:
+      en: "OpenAI creates an independent mathematics advisory group"
+      fr: "OpenAI crée un groupe consultatif indépendant sur les mathématiques"
+    description:
+      en: "OpenAI created a nine-member group of mathematicians hosted by the Institute for Advanced Study to advise on mathematics-focused AI research. The lab also says an internal model helped resolve more than 100 open mathematical problems, but has not yet published the full list for external verification."
+      fr: "OpenAI crée un collège de neuf mathématiciens, hébergé par l'Institute for Advanced Study, pour conseiller ses recherches d'IA en mathématiques. Le laboratoire affirme aussi qu'un modèle interne a contribué à résoudre plus de 100 problèmes mathématiques ouverts, mais n'a pas encore publié la liste complète permettant une vérification externe."
+    link: https://openai.com/index/advisory-group-on-mathematics-and-artificial-intelligence/
+
   - date: 2026-09-20
     type: update
     title:
