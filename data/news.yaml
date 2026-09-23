@@ -1,5 +1,45 @@
 news:
 
+  - date: 2026-09-22
+    type: update
+    title:
+      en: "Xiaomi open-sources the MiMo-V2.6 multimodal model family"
+      fr: "Xiaomi ouvre la famille de modèles multimodaux MiMo-V2.6"
+    description:
+      en: "Xiaomi released MiMo-V2.6 Pro and Flash under the MIT licence, with native text, image, video and audio support and a 1-million-token context window. The sparse-MoE Pro has 1.02 trillion total parameters with 42 billion active, while Flash has 309 billion total and 15 billion active; Xiaomi also released a 9B Qwen-based distillation checkpoint for agentic research."
+      fr: "Xiaomi publie MiMo-V2.6 Pro et Flash sous licence MIT, avec prise en charge native du texte, de l’image, de la vidéo et de l’audio et un contexte d’un million de tokens. Le MoE clairsemé Pro compte 1 020 milliards de paramètres, dont 42 milliards actifs, contre 309 milliards et 15 milliards actifs pour Flash ; Xiaomi propose aussi un checkpoint distillé de 9 milliards fondé sur Qwen pour la recherche agentique."
+    link: https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL
+
+  - date: 2026-09-22
+    type: update
+    title:
+      en: "Bond investors demand a higher premium for the AI buildout"
+      fr: "Les investisseurs obligataires exigent une prime accrue pour financer l’IA"
+    description:
+      en: "AI hyperscalers issued $220 billion of debt in 2026 through August 10, versus $12.5 billion over the comparable 2025 period, according to BNP Paribas data cited by Reuters. Amazon’s recent $25 billion long-dated sale priced around 120 basis points over Treasuries, as investors increasingly distinguish strong credit quality from the supply and concentration risk created by repeated issuance."
+      fr: "Les hyperscalers IA ont émis 220 milliards de dollars de dette en 2026 au 10 août, contre 12,5 milliards sur la période comparable de 2025, selon des données BNP Paribas citées par Reuters. La récente émission longue de 25 milliards de dollars d’Amazon a été placée autour de 120 points de base au-dessus des Treasuries : les investisseurs distinguent désormais la qualité de crédit du risque d’offre et de concentration créé par les émissions répétées."
+    link: https://www.zawya.com/en/business/bonds/us-corporate-ai-debt-surge-tests-investor-limits-as-fatigue-emerges-463480
+
+  - date: 2026-09-22
+    type: update
+    title:
+      en: "Darktrace makes enterprise AI monitoring product generally available"
+      fr: "Darktrace généralise son produit de surveillance de l’IA en entreprise"
+    description:
+      en: "Darktrace made SECURE AI generally available to discover shadow AI, scan sessions for jailbreaks, sensitive-data exposure and indirect prompt injection, and map agents to their users and permissions. Across roughly 8,200 monitored deployments, more than 80% of customer accounts used generative AI services in August and the average organisation used five providers."
+      fr: "Darktrace généralise SECURE AI pour détecter la shadow AI, analyser les sessions à la recherche de jailbreaks, d’exposition de données sensibles et d’injections indirectes, et relier les agents à leurs utilisateurs et permissions. Sur environ 8 200 déploiements surveillés, plus de 80 % des comptes clients ont utilisé des services d’IA générative en août et l’organisation moyenne recourait à cinq fournisseurs."
+    link: https://siliconangle.com/2026/09/22/exclusive-darktrace-makes-secure-ai-generally-available-to-monitor-enterprise-ai-use/
+
+  - date: 2026-09-22
+    type: research
+    title:
+      en: "Reuters/Ipsos poll finds US public trust in AI self-regulation is weakening"
+      fr: "Un sondage Reuters/Ipsos révèle un recul de la confiance américaine dans l’autorégulation de l’IA"
+    description:
+      en: "A Reuters/Ipsos poll of 1,277 US adults found 73% worry AI companies have not done enough to prevent serious societal harm; 55% favour slowing development for stronger oversight, against 13% opposed. The four-day poll ended September 20 and has a three-percentage-point margin of error."
+      fr: "Un sondage Reuters/Ipsos auprès de 1 277 adultes américains montre que 73 % craignent que les entreprises d’IA n’en fassent pas assez pour prévenir de graves dommages sociétaux ; 55 % souhaitent ralentir le développement pour renforcer la supervision, contre 13 % d’avis opposé. L’enquête de quatre jours s’est achevée le 20 septembre, avec une marge d’erreur de trois points."
+    link: https://www.reuters.com/world/us/three-out-four-americans-say-ai-firms-not-doing-enough-prevent-disaster-reutersipsos-poll-finds-2026-09-22/
+
   - date: 2026-09-21
     type: update
     title:
