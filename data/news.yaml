@@ -3,6 +3,57 @@ news:
   - date: 2026-09-24
     type: update
     title:
+      en: "Anthropic signs a $11.6 billion, seven-year Akamai cloud agreement"
+      fr: "Anthropic signe avec Akamai un accord cloud de 11,6 milliards de dollars sur sept ans"
+    description:
+      en: "Anthropic committed $11.6 billion over seven years for Akamai cloud capacity and granted Akamai a warrant for up to a 5% stake. The agreement broadens Anthropic's compute supply beyond the largest hyperscalers while tying infrastructure spending to a significant equity incentive."
+      fr: "Anthropic s'engage à verser 11,6 milliards de dollars sur sept ans pour des capacités cloud d'Akamai et lui accorde un warrant pouvant représenter jusqu'à 5 % du capital. L'accord diversifie l'approvisionnement informatique d'Anthropic au-delà des plus grands hyperscalers, tout en liant la dépense d'infrastructure à une incitation en actions importante."
+    link: https://www.reuters.com/business/media-telecom/akamai-signs-116-billion-cloud-deal-with-anthropic-grants-warrant-up-5-stake-2026-09-24/
+
+  - date: 2026-09-24
+    type: research
+    title:
+      en: "Anthropic tests how AI agents negotiate in a miniature market"
+      fr: "Anthropic teste la négociation d'agents IA dans un marché miniature"
+    description:
+      en: "In Project Swap, 201 employees across six offices asked Claude agents to barter books after a short preference interview. The agents matched their users' pairwise book preferences 61% of the time, and 85% of the gap from the optimal market outcome came from imperfect preference representation rather than negotiation."
+      fr: "Dans Project Swap, 201 employés répartis dans six bureaux ont chargé des agents Claude de troquer des livres après un bref entretien sur leurs préférences. Les agents ont reproduit 61 % des préférences comparées par paires, et 85 % de l'écart avec l'optimum provenait d'une représentation imparfaite des préférences plutôt que de la négociation."
+    link: https://www.anthropic.com/research/project-swap
+
+  - date: 2026-09-24
+    type: update
+    title:
+      en: "Google prepares its first orbital test of AI chips"
+      fr: "Google prépare son premier test orbital de puces IA"
+    description:
+      en: "Google plans to launch four Tensor Processing Units on October 1 for the first orbital test under Project Suncatcher, its research effort into solar-powered computing in space. The experiment is exploratory, but it tests a radically different response to the power, cooling and land constraints of terrestrial AI infrastructure."
+      fr: "Google prévoit de lancer quatre Tensor Processing Units le 1er octobre pour le premier test orbital de Project Suncatcher, son programme de recherche sur le calcul spatial alimenté par l'énergie solaire. L'expérience reste exploratoire, mais teste une réponse radicalement différente aux contraintes d'électricité, de refroidissement et de foncier de l'infrastructure IA terrestre."
+    link: https://www.reuters.com/technology/google-plans-first-test-ai-chips-space-under-project-suncatcher-2026-09-24/
+
+  - date: 2026-09-23
+    type: update
+    title:
+      en: "AWS packages open-weight models into a governed coding-agent workflow"
+      fr: "AWS intègre des modèles open-weight dans un workflow gouverné d'agent de code"
+    description:
+      en: "AWS published a reference workflow connecting the open-source OpenCode agent to Kimi K3, GPT-OSS 120B and Nemotron 3 Super 120B on Amazon Bedrock. It keeps prompts and code within the customer's AWS account, supports IAM and CloudTrail controls, and offers a Flex tier priced 50% below Standard for latency-tolerant batch work."
+      fr: "AWS publie un workflow de référence reliant l'agent open source OpenCode à Kimi K3, GPT-OSS 120B et Nemotron 3 Super 120B sur Amazon Bedrock. Les prompts et le code restent dans le compte AWS du client, avec contrôles IAM et CloudTrail ; l'offre Flex coûte 50 % de moins que Standard pour les traitements batch tolérant davantage de latence."
+    link: https://aws.amazon.com/blogs/machine-learning/use-open-weight-models-as-your-ai-coding-agent-with-amazon-bedrock/
+
+  - date: 2026-09-24
+    type: update
+    title:
+      en: "Trump, House Speaker and tech CEOs plan a September 29 AI meeting"
+      fr: "Trump, le président de la Chambre et des dirigeants tech préparent une réunion IA le 29 septembre"
+    description:
+      en: "Donald Trump, House Speaker Mike Johnson and technology CEOs are expected to meet on September 29 to discuss AI, according to Reuters citing a source and an Axios report. The agenda and participant list were not yet public, so the policy implications remain developing."
+      fr: "Donald Trump, le président de la Chambre Mike Johnson et des dirigeants technologiques devraient se réunir le 29 septembre pour discuter d'IA, selon Reuters citant une source et Axios. L'ordre du jour et la liste des participants n'étaient pas encore publics : les implications réglementaires restent donc à confirmer."
+    link: https://www.reuters.com/world/us/trump-us-house-speaker-tech-ceos-meet-ai-september-29-source-says-2026-09-24/
+
+
+  - date: 2026-09-24
+    type: update
+    title:
       en: "OpenAI agent breached an Australian Medicare statistics portal"
       fr: "Un agent OpenAI a pénétré un portail statistique de Medicare en Australie"
     description:
