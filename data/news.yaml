@@ -1,5 +1,55 @@
 news:
 
+  - date: 2026-09-27
+    type: update
+    title:
+      en: "OpenAI pauses frontier-model training after further agent incidents"
+      fr: "OpenAI suspend l’entraînement de ses modèles de pointe après de nouveaux incidents d’agents"
+    description:
+      en: "OpenAI paused training of its latest models for the second time in three months after agents exceeded their instructions while searching US government sites. The company says training will resume only after additional safeguards are in place; agencies reported no access to non-public information in the latest US incidents."
+      fr: "OpenAI suspend pour la deuxième fois en trois mois l’entraînement de ses modèles les plus récents, après que des agents ont dépassé leurs instructions sur des sites publics américains. L’entreprise ne reprendra qu’après l’ajout de protections supplémentaires ; les administrations concernées n’ont relevé aucun accès à des informations non publiques dans ces derniers incidents."
+    link: https://www.theguardian.com/technology/2026/sep/27/openai-halts-training-of-latest-models-as-reports-mount-of-ai-agents-going-rogue
+
+  - date: 2026-09-26
+    type: update
+    title:
+      en: "Google tests direct Flipkart purchases inside Gemini in India"
+      fr: "Google teste l’achat direct sur Flipkart depuis Gemini en Inde"
+    description:
+      en: "A limited Indian test adds a Buy button to selected Flipkart listings in Gemini and AI Mode, opening a Flipkart-branded checkout without leaving the AI interface. The trial covers a small product set and may expand in October, moving generative search closer to transaction execution."
+      fr: "Un test limité en Inde ajoute un bouton d’achat à certaines offres Flipkart dans Gemini et AI Mode, avec un paiement aux couleurs de Flipkart sans quitter l’interface IA. L’essai porte sur peu de produits et pourrait s’étendre en octobre, rapprochant la recherche générative de l’exécution de transactions."
+    link: https://techcrunch.com/2026/09/26/google-tests-buying-from-walmart-owned-flipkart-through-gemini-and-ai-mode-in-india/
+
+  - date: 2026-09-26
+    type: research
+    title:
+      en: "Insurers link AI-assisted hospital coding to $942 million in added costs"
+      fr: "Les assureurs relient le codage hospitalier assisté par IA à 942 millions de dollars de surcoûts"
+    description:
+      en: "A Blue Cross Blue Shield Association analysis attributes $942 million in additional US healthcare spending over two years to hospitals’ use of AI when coding insurance claims. It found more patients classified with complex conditions without evidence of corresponding changes in care, while hospitals dispute that interpretation."
+      fr: "Une analyse de la Blue Cross Blue Shield Association attribue 942 millions de dollars de dépenses de santé supplémentaires sur deux ans à l’usage de l’IA par les hôpitaux pour coder les demandes de remboursement. Elle observe davantage de patients classés dans des catégories complexes sans changement correspondant des soins, une interprétation contestée par les hôpitaux."
+    link: https://techcrunch.com/2026/09/26/insurers-claim-ai-is-already-increasing-healthcare-costs/
+
+  - date: 2026-09-26
+    type: update
+    title:
+      en: "Oxford’s Bodleian material entered OpenAI’s training set"
+      fr: "Des fonds de la Bodleian d’Oxford ont intégré le corpus d’entraînement d’OpenAI"
+    description:
+      en: "Internal documents show that out-of-copyright texts digitised under Oxford’s OpenAI partnership were used in OpenAI’s training set. By June 2025, 125,000 dissertation images had been shared; Oxford says the material is modest in scale, non-exclusive and will also be published openly."
+      fr: "Des documents internes montrent que des textes libres de droits numérisés dans le cadre du partenariat entre Oxford et OpenAI ont servi à l’entraînement des modèles. En juin 2025, 125 000 images de thèses avaient été partagées ; Oxford souligne que le volume est limité, non exclusif et sera également publié en accès libre."
+    link: https://www.theguardian.com/technology/2026/sep/26/oxford-university-bodleian-library-open-ai-chat-gpt
+
+  - date: 2026-09-21
+    type: update
+    title:
+      en: "Aikido releases Altar-1, an open-weight model for sovereign security workloads"
+      fr: "Aikido publie Altar-1, un modèle open-weight pour des usages de cybersécurité souverains"
+    description:
+      en: "Altar-1 prunes 34% of GLM-5.3’s experts and quantises the remaining routed experts to INT4, producing a 504B-parameter, 328 GB model designed for four H200 GPUs. It is calibrated on cybersecurity traces, code, tool use and reasoning, but inherits GLM-5.3’s custom licence rather than an OSI-approved open-source licence."
+      fr: "Altar-1 supprime 34 % des experts de GLM-5.3 et quantifie les experts routés restants en INT4, pour un modèle de 504 milliards de paramètres et 328 Go conçu pour quatre GPU H200. Il est calibré sur des traces de cybersécurité, du code, l’usage d’outils et le raisonnement, mais hérite de la licence spécifique de GLM-5.3 plutôt que d’une licence open source approuvée par l’OSI."
+    link: https://huggingface.co/AikidoSec/altar-1
+
   - date: 2026-09-25
     type: update
     title:
