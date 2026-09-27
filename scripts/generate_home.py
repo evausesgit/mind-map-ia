@@ -295,6 +295,12 @@ def build_nav_html(maps, topics, links=None):
         '<span class="nav-item-title" data-en="Animation — How an LLM Works" data-fr="Animation — Comment fonctionne un LLM">Animation — How an LLM Works</span>'
         '<span class="nav-item-desc" data-en="Tokenisation, embeddings, self-attention and generation — animated" data-fr="Tokenisation, embeddings, self-attention et génération — animés">Tokenisation, embeddings, self-attention and generation — animated</span>'
         '</span></a>'
+        '<a href="animations/mcp-agentic-architecture.html" class="nav-item">'
+        '<span class="nav-item-icon">🎬</span>'
+        '<span class="nav-item-info">'
+        '<span class="nav-item-title" data-en="Animation — MCP &amp; Agentic Architecture" data-fr="Animation — MCP &amp; architecture agentique">Animation — MCP &amp; Agentic Architecture</span>'
+        '<span class="nav-item-desc" data-en="Agent, orchestrator and MCP connecting AI to enterprise data — animated" data-fr="Agent, orchestrateur et MCP reliant l’IA aux données de l’entreprise — animés">Agent, orchestrator and MCP connecting AI to enterprise data — animated</span>'
+        '</span></a>'
     )
     dive_items = anim_item + _build_topic_nav_items(deep_dives)
     reflexion_items = _build_topic_nav_items(reflexions)
