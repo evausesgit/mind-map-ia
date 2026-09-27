@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<title>MCP Agentic Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05070B; --text: #EEF2F7; --muted: #8B94A5; --line: rgba(255,255,255,0.12); --accent: #3DD6C6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  .player { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  #stage { width: 100vw; height: 100vh; }
+  #stage svg { width: 100%; height: 100%; display: block; }
+
+  .hud { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%);
+    width: min(960px, calc(100vw - 32px)); padding: 10px 14px; border-radius: 14px;
+    background: rgba(10,14,21,0.78); border: 1px solid var(--line); backdrop-filter: blur(14px);
+    display: flex; align-items: center; gap: 12px; transition: opacity .4s, transform .4s; z-index: 5; }
+  .hud.hidden { opacity: 0; transform: translate(-50%, 8px); pointer-events: none; }
+  .hud button { background: none; border: 0; color: var(--text); cursor: pointer; width: 32px; height: 32px;
+    border-radius: 8px; display: grid; place-items: center; flex: none; }
+  .hud button:hover { background: rgba(255,255,255,0.08); }
+  .hud button:focus-visible { outline: 2px solid var(--accent); }
+  .time { font: 500 12px 'JetBrains Mono', ui-monospace, monospace; color: var(--muted); flex: none; min-width: 86px; text-align: center; }
+  .track { position: relative; flex: 1; height: 28px; cursor: pointer; touch-action: none; }
+  .track .rail { position: absolute; left: 0; right: 0; top: 13px; height: 2px; background: rgba(255,255,255,0.12); border-radius: 1px; }
+  .track .fill { position: absolute; left: 0; top: 13px; height: 2px; background: var(--accent); border-radius: 1px; }
+  .track .mark { position: absolute; top: 9px; width: 2px; height: 10px; background: rgba(255,255,255,0.35); border-radius: 1px; transform: translateX(-1px); }
+  .track .knob { position: absolute; top: 8px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: var(--text); box-shadow: 0 0 12px var(--accent); }
+  .chapter { font: 500 11px 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); flex: none; width: 190px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tip { position: absolute; bottom: 30px; transform: translateX(-50%); padding: 4px 8px; border-radius: 6px; white-space: nowrap;
+    background: #111723; border: 1px solid var(--line); font: 500 11px 'JetBrains Mono', monospace; color: var(--text); pointer-events: none; display: none; }
+  .back { position: fixed; top: 18px; right: 20px; z-index: 5; font: 500 12px 'Inter', sans-serif; color: var(--muted);
+    text-decoration: none; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; transition: opacity .4s; }
+  .back:hover { color: var(--text); }
+  .back.hidden { opacity: 0; pointer-events: none; }
+  @media (max-width: 640px) { .chapter { display: none; } }
+  body.bare .hud, body.bare .back { display: none; }
+</style>
+</head>
+<body>
+<div class="player"><div id="stage"></div></div>
+<a class="back" href="../index.html">← Home</a>
+<div class="hud" id="hud">
+  <button id="play" aria-label="Play / pause"></button>
+  <button id="restart" aria-label="Restart" title="Restart (R)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.5v2.8h2.8"/></svg>
+  </button>
+  <div class="time" id="time">0:00 / 0:00</div>
+  <div class="track" id="track"><div class="rail"></div><div class="fill" id="fill"></div><div class="knob" id="knob"></div><div class="tip" id="tip"></div></div>
+  <div class="chapter" id="chapter"></div>
+  <button id="fs" aria-label="Fullscreen" title="Fullscreen (F)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg>
+  </button>
+</div>
+
+<script src="mcp-explainer/gsap.min.js"></script>
+<script src="mcp-explainer/config.js"></script>
+<script src="mcp-explainer/explainer.js"></script>
+<script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const record = params.has("record");
+  const bare = record || params.get("chrome") === "0";
+  if (bare) document.body.classList.add("bare");
+
+  const ICON_PLAY = '<svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>';
+  const ICON_PAUSE = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="3.5" y="2.5" width="3" height="11" rx="1"/><rect x="9.5" y="2.5" width="3" height="11" rx="1"/></svg>';
+
+  const fontsReady = Promise.race([
+    Promise.all(["500 16px Inter", "600 16px Inter", "700 16px Inter", "500 13px 'JetBrains Mono'"].map((f) => document.fonts.load(f))),
+    new Promise((r) => setTimeout(r, 2500)),
+  ]);
+
+  fontsReady.then(() => {
+    const ex = MCPExplainer.mount(document.getElementById("stage"), window.MCP_EXPLAINER_CONFIG);
+    const tl = ex.timeline;
+    window.__explainer = ex;
+    if (record) { document.body.dataset.ready = "1"; return; }
+
+    const $ = (id) => document.getElementById(id);
+    const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+    const track = $("track");
+    ex.scenes.forEach((sc) => {
+      if (sc.time <= 0) return;
+      const m = document.createElement("div");
+      m.className = "mark";
+      m.style.left = (sc.time / ex.duration) * 100 + "%";
+      track.appendChild(m);
+    });
+    const chapterAt = (time) => ex.scenes.filter((s) => s.time <= time + 0.01).pop() || ex.scenes[0];
+    function refresh() {
+      const p = tl.time() / ex.duration;
+      $("fill").style.width = p * 100 + "%";
+      $("knob").style.left = p * 100 + "%";
+      $("time").textContent = `${fmt(tl.time())} / ${fmt(ex.duration)}`;
+      $("chapter").textContent = chapterAt(tl.time()).label;
+      $("play").innerHTML = tl.isActive() ? ICON_PAUSE : ICON_PLAY;
+    }
+    gsap.ticker.add(refresh);
+
+    const seek = (time) => tl.seek(Math.max(0, Math.min(ex.duration, time)), false);
+    const toggle = () => {
+      if (tl.isActive()) tl.pause();
+      else { if (tl.time() >= ex.duration - 0.05) seek(0); tl.play(); }
+    };
+    const jump = (dir) => {
+      const now = tl.time();
+      const idx = ex.scenes.indexOf(chapterAt(now));
+      let target = dir < 0 && now - ex.scenes[idx].time > 1.5 ? idx : idx + dir;
+      target = Math.max(0, Math.min(ex.scenes.length - 1, target));
+      seek(ex.scenes[target].time);
+    };
+    $("play").onclick = toggle;
+    $("restart").onclick = () => { seek(0); tl.play(); };
+    $("fs").onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+
+    let dragging = false, wasPlaying = false;
+    const timeAt = (e) => { const r = track.getBoundingClientRect(); return ((e.clientX - r.left) / r.width) * ex.duration; };
+    track.addEventListener("pointerdown", (e) => { dragging = true; wasPlaying = tl.isActive(); tl.pause(); track.setPointerCapture(e.pointerId); seek(timeAt(e)); });
+    track.addEventListener("pointermove", (e) => {
+      const tip = $("tip"), r = track.getBoundingClientRect();
+      const tt = Math.max(0, Math.min(ex.duration, timeAt(e)));
+      tip.style.display = "block"; tip.style.left = ((tt / ex.duration) * r.width) + "px";
+      tip.textContent = `${fmt(tt)} · ${chapterAt(tt).label}`;
+      if (dragging) seek(tt);
+    });
+    track.addEventListener("pointerleave", () => { $("tip").style.display = "none"; });
+    track.addEventListener("pointerup", () => { dragging = false; if (wasPlaying) tl.play(); });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === " " || e.key === "k") { e.preventDefault(); toggle(); }
+      else if (e.key === "ArrowRight") jump(1);
+      else if (e.key === "ArrowLeft") jump(-1);
+      else if (e.key === "r" || e.key === "R") { seek(0); tl.play(); }
+      else if (e.key === "f" || e.key === "F") $("fs").click();
+      else if (/^[1-8]$/.test(e.key) && ex.scenes[+e.key - 1]) seek(ex.scenes[+e.key - 1].time);
+    });
+
+    // auto-hide the controls while playing
+    let idle;
+    const wake = () => {
+      $("hud").classList.remove("hidden"); document.querySelector(".back").classList.remove("hidden");
+      clearTimeout(idle);
+      idle = setTimeout(() => { if (tl.isActive()) { $("hud").classList.add("hidden"); document.querySelector(".back").classList.add("hidden"); } }, 2200);
+    };
+    document.addEventListener("pointermove", wake);
+    document.addEventListener("keydown", wake);
+
+    const start = parseFloat(params.get("t") || "0");
+    const sceneParam = params.get("scene");
+    if (sceneParam && ex.scenes[+sceneParam - 1]) seek(ex.scenes[+sceneParam - 1].time);
+    else if (start) seek(start);
+    refresh();
+    if (params.get("autoplay") !== "0") setTimeout(() => { tl.play(); wake(); }, 600);
+    else wake();
+  });
+})();
+</script>
+</body>
+</html>
