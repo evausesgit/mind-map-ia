@@ -301,6 +301,12 @@ def build_nav_html(maps, topics, links=None):
         '<span class="nav-item-title" data-en="Animation — MCP &amp; Agentic Architecture" data-fr="Animation — MCP &amp; architecture agentique">Animation — MCP &amp; Agentic Architecture</span>'
         '<span class="nav-item-desc" data-en="Agent, orchestrator and MCP connecting AI to enterprise data — animated" data-fr="Agent, orchestrateur et MCP reliant l’IA aux données de l’entreprise — animés">Agent, orchestrator and MCP connecting AI to enterprise data — animated</span>'
         '</span></a>'
+        '<a href="animations/sales-trader-copilot.html" class="nav-item">'
+        '<span class="nav-item-icon">🎬</span>'
+        '<span class="nav-item-info">'
+        '<span class="nav-item-title" data-en="Animation — AI-Enabled Sales Trading" data-fr="Animation — Sales Trading augmenté par l’IA">Animation — AI-Enabled Sales Trading</span>'
+        '<span class="nav-item-desc" data-en="A copilot investigating via MCP alongside a Cash Equity Sales Trader — animated use case" data-fr="Un copilote qui enquête via MCP aux côtés d’un Sales Trader Cash Equity — cas d’usage animé">A copilot investigating via MCP alongside a Cash Equity Sales Trader — animated use case</span>'
+        '</span></a>'
     )
     dive_items = anim_item + _build_topic_nav_items(deep_dives)
     reflexion_items = _build_topic_nav_items(reflexions)
