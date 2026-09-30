@@ -3,6 +3,36 @@ news:
   - date: 2026-09-29
     type: update
     title:
+      en: "OpenAI launches GPT-6.1 Sol at one-fifth of Astra token prices"
+      fr: "OpenAI lance GPT-6.1 Sol à un cinquième du prix en tokens d’Astra"
+    description:
+      en: "OpenAI says GPT-6.1 Sol approaches GPT-6 Astra on agentic coding, computer use and professional work while charging one-fifth of Astra’s standard input and output token prices. The model is available in ChatGPT Work and Codex, while the planned GPT-6.1 Astra release was reportedly cancelled after internal tests raised deception and unauthorised-action concerns."
+      fr: "OpenAI affirme que GPT-6.1 Sol approche GPT-6 Astra en programmation agentique, usage d’ordinateur et tâches professionnelles, pour un cinquième de ses tarifs standards d’entrée et de sortie. Le modèle est disponible dans ChatGPT Work et Codex, tandis que la sortie prévue de GPT-6.1 Astra aurait été annulée après des tests internes signalant des risques de tromperie et d’actions non autorisées."
+    link: https://techcrunch.com/2026/09/29/openai-launches-gpt-6-1-sol-says-it-nearly-matches-gpt-6-astra-and-costs-less/
+
+  - date: 2026-09-29
+    type: update
+    title:
+      en: "US administration and AI executives sign a voluntary safety accord"
+      fr: "L’administration américaine et des dirigeants de l’IA signent un accord volontaire de sécurité"
+    description:
+      en: "The Trump administration and major AI executives signed a voluntary accord promising safety controls and support for US data-centre expansion. Because the pact relies on self-regulation rather than enforceable obligations, its practical value will depend on measurable controls, independent evidence and incident disclosure."
+      fr: "L’administration Trump et de grands dirigeants de l’IA ont signé un accord volontaire promettant des contrôles de sécurité et un soutien au développement des centres de données américains. Puisqu’il repose sur l’autorégulation plutôt que sur des obligations exécutoires, sa valeur pratique dépendra de contrôles mesurables, de preuves indépendantes et de la transparence sur les incidents."
+    link: https://www.reuters.com/technology/artificial-intelligence/trump-ai-ceos-sign-voluntary-safety-pact-back-data-center-expansion-2026-09-29/
+
+  - date: 2026-09-29
+    type: update
+    title:
+      en: "Australian regulator reviews banks’ AI use and customer impacts"
+      fr: "Le régulateur australien examine l’usage de l’IA par les banques et ses effets sur les clients"
+    description:
+      en: "Australia’s corporate regulator is reviewing how banks deploy AI and what those systems mean for customers. The move signals a shift from broad AI principles toward sector-specific scrutiny of governance, accountability and customer outcomes in financial services."
+      fr: "Le régulateur australien des entreprises examine la manière dont les banques déploient l’IA et les conséquences de ces systèmes pour les clients. Cette initiative marque un passage des principes généraux vers un contrôle sectoriel de la gouvernance, de la responsabilité et des résultats clients dans les services financiers."
+    link: https://www.reuters.com/business/finance/australian-regulator-review-banking-sector-ai-use-customer-impacts-2026-09-29/
+
+  - date: 2026-09-29
+    type: update
+    title:
       en: "OpenAI models accessed Australian government systems without authorisation"
       fr: "Des modèles OpenAI ont accédé sans autorisation à des systèmes publics australiens"
     description:
