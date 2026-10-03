@@ -1,5 +1,45 @@
 news:
 
+  - date: 2026-10-02
+    type: update
+    title:
+      en: "Apple tightens macOS full-disk access as AI agents raise privacy risks"
+      fr: "Apple renforce l’accès complet au disque de macOS face aux risques des agents IA"
+    description:
+      en: "Apple will add controls requiring very explicit user action before apps receive Full Disk Access, which can expose files, mail, messages and browsing history. The change reflects the growing security impact of desktop agents with broad local permissions."
+      fr: "Apple ajoutera des contrôles exigeant une action utilisateur très explicite avant d’accorder l’accès complet au disque, qui peut exposer fichiers, courriels, messages et historique de navigation. Cette évolution illustre le risque croissant des agents de bureau disposant de droits locaux étendus."
+    link: https://developer.apple.com/news/?id=p6zjojqw
+
+  - date: 2026-10-02
+    type: update
+    title:
+      en: "Trump is expected to appoint intelligence chief Jay Clayton as AI czar"
+      fr: "Trump devrait nommer le chef du renseignement Jay Clayton comme responsable de la politique IA"
+    description:
+      en: "Multiple reports say US President Donald Trump is expected to name Director of National Intelligence Jay Clayton as his top AI adviser. The appointment is not yet formally confirmed and would place national-security considerations at the centre of US AI policy."
+      fr: "Plusieurs médias indiquent que Donald Trump devrait nommer le directeur du renseignement national Jay Clayton comme principal conseiller IA. Cette nomination, pas encore formellement confirmée, placerait les enjeux de sécurité nationale au centre de la politique américaine en matière d’IA."
+    link: https://www.reuters.com/world/us/trump-expected-name-jay-clayton-ai-czar-cnn-reports-2026-10-02/
+
+  - date: 2026-10-01
+    type: update
+    title:
+      en: "Wall Street questions the collateral value behind Nvidia’s AI-financing plan"
+      fr: "Wall Street questionne la valeur des garanties du plan de financement IA de Nvidia"
+    description:
+      en: "Reuters reports that Nvidia’s plan to help finance up to $500 billion of AI infrastructure is meeting investor doubts over the useful life and residual value of chips used as collateral. The debate highlights refinancing, depreciation and concentration risks behind the compute build-out."
+      fr: "Reuters rapporte que le projet de Nvidia visant à faciliter jusqu’à 500 milliards de dollars de financement d’infrastructures IA suscite des doutes sur la durée de vie et la valeur résiduelle des puces données en garantie. Le débat met en lumière les risques de refinancement, de dépréciation et de concentration liés au déploiement du calcul IA."
+    link: https://www.reuters.com/legal/transactional/nvidias-bet-that-its-chips-can-finance-ai-boom-gets-wall-street-reality-check-2026-10-01/
+
+  - date: 2026-09-30
+    type: research
+    title:
+      en: "Runway previews Praxis-1, an open-weight world-action model for robotics"
+      fr: "Runway présente Praxis-1, un modèle open-weight d’action dans le monde réel pour la robotique"
+    description:
+      en: "Praxis-1 applies large-scale video pretraining to robotic control and is being tested with Noble Machines, Standard Bots and Ultra before a public release in the coming months. Runway reports a 0.95 correlation between world-model simulations and real-world policy results, but independent validation and final licence terms remain pending."
+      fr: "Praxis-1 applique le préentraînement vidéo à grande échelle au contrôle robotique et est testé avec Noble Machines, Standard Bots et Ultra avant une publication dans les prochains mois. Runway annonce une corrélation de 0,95 entre ses simulations et les résultats réels, mais une validation indépendante et les conditions finales de licence restent attendues."
+    link: https://runway.com/research/introducing-praxis-1
+
   - date: 2026-09-29
     type: update
     title:
