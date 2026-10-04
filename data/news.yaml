@@ -1,5 +1,45 @@
 news:
 
+  - date: 2026-10-03
+    type: update
+    title:
+      en: "Trump appoints Jay Clayton to lead a 120-day White House AI review"
+      fr: "Trump nomme Jay Clayton à la tête d’un examen de 120 jours sur l’IA"
+    description:
+      en: "US President Donald Trump appointed Director of National Intelligence Jay Clayton as AI czar, according to a Wall Street Journal interview reported by Reuters. A new White House panel is due to report within 120 days on AI risks and opportunities, reinforcing the national-security lens of US AI policy."
+      fr: "Donald Trump a nommé le directeur du renseignement national Jay Clayton responsable de la politique IA, selon un entretien au Wall Street Journal rapporté par Reuters. Un nouveau groupe de la Maison-Blanche doit rendre sous 120 jours un rapport sur les risques et opportunités de l’IA, renforçant le prisme de sécurité nationale."
+    link: https://www.reuters.com/world/us/trump-names-intelligence-chief-clayton-ai-czar-head-task-force-wsj-reports-2026-10-03/
+
+  - date: 2026-10-03
+    type: update
+    title:
+      en: "Former OpenAI safety employee warns its rapid-development culture raises failure risks"
+      fr: "Un ancien responsable de la sûreté d’OpenAI alerte sur les risques d’une culture de développement rapide"
+    description:
+      en: "David Robinson resigned after three and a half years at OpenAI, where he helped draft its preparedness framework and oversaw safety reports for 12 frontier-model launches. He argues that rapid deployment increases failure risk; the criticism is his assessment, not an independently established finding about a specific model."
+      fr: "David Robinson a démissionné après trois ans et demi chez OpenAI, où il a contribué au cadre de préparation et supervisé les rapports de sûreté de 12 lancements de modèles de pointe. Il estime que la rapidité de déploiement augmente le risque d’échec ; il s’agit de son appréciation, et non d’un constat indépendant sur un modèle précis."
+    link: https://www.reuters.com/legal/litigation/openai-safety-employee-quits-says-time-trial-error-is-over-2026-10-03/
+
+  - date: 2026-10-03
+    type: research
+    title:
+      en: "AI infrastructure may require more than $4.2 trillion in new revenue"
+      fr: "L’infrastructure IA pourrait exiger plus de 4 200 milliards de dollars de nouveaux revenus"
+    description:
+      en: "A Reuters analysis says hyperscalers and other AI infrastructure investors may need to generate more than $4.2 trillion in additional revenue to justify the build-out, while economy-wide productivity gains remain difficult to measure. The estimate highlights the gap between capital intensity and proven monetisation rather than predicting an inevitable crash."
+      fr: "Une analyse de Reuters estime que les hyperscalers et autres investisseurs dans l’infrastructure IA pourraient devoir générer plus de 4 200 milliards de dollars de revenus supplémentaires pour justifier les dépenses, alors que les gains de productivité restent difficiles à mesurer. Cette estimation souligne l’écart entre intensité capitalistique et monétisation démontrée, sans prédire un effondrement inévitable."
+    link: https://www.reuters.com/business/retail-consumer/ais-race-transform-world-before-money-runs-out-2026-10-03/
+
+  - date: 2026-09-30
+    type: research
+    title:
+      en: "Chinese open-weight models face a widening transparency test"
+      fr: "Les modèles open-weight chinois face au défi croissant de la transparence"
+    description:
+      en: "Reuters Breakingviews argues that open-weight models from Alibaba, Z.AI and other Chinese labs are gaining overseas traction while their safety disclosures remain less detailed than those of leading US labs. Enterprise adoption will increasingly depend on reproducible evaluations, provenance, licence review and supplier evidence rather than openness of weights alone."
+      fr: "Reuters Breakingviews estime que les modèles open-weight d’Alibaba, Z.AI et d’autres laboratoires chinois gagnent du terrain à l’international, tandis que leurs publications de sûreté restent moins détaillées que celles des principaux laboratoires américains. L’adoption en entreprise dépendra de plus en plus d’évaluations reproductibles, de la provenance, des licences et de preuves fournisseur, et pas seulement de l’ouverture des poids."
+    link: https://www.reuters.com/commentary/breakingviews/chinese-labs-are-wild-cards-ai-governance-2026-09-30/
+
   - date: 2026-10-02
     type: update
     title:
