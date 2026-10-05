@@ -236,6 +236,27 @@
         mk("path", { d: "M-3,-3 V-9 M3,-3 V-9 M0,7 V11" }, g);
       } else if (type === "spark") {
         mk("path", { d: "M0,-11 C1.2,-3 3,-1.2 11,0 C3,1.2 1.2,3 0,11 C-1.2,3 -3,1.2 -11,0 C-3,-1.2 -1.2,-3 0,-11 Z", fill: color, "fill-opacity": 0.9, stroke: "none" }, g);
+      } else if (type === "key") {
+        mk("circle", { cx: -4, cy: -4, r: 5 }, g);
+        mk("path", { d: "M-0.5,-0.5 L9,9 M4.5,4.5 L7,2 M7,7 L9.5,4.5" }, g);
+      } else if (type === "shield") {
+        mk("path", { d: "M0,-10 L8,-6.5 V0 C8,6 4,9 0,11 C-4,9 -8,6 -8,0 V-6.5 Z" }, g);
+        mk("path", { d: "M-3.5,0.5 L-1,3 L4,-2.5", "stroke-linecap": "round" }, g);
+      } else if (type === "doc") {
+        mk("rect", { x: -7, y: -10, width: 14, height: 20, rx: 2 }, g);
+        mk("path", { d: "M-3.5,-4 H3.5 M-3.5,0 H3.5 M-3.5,4 H1", "stroke-linecap": "round" }, g);
+      } else if (type === "code") {
+        mk("path", { d: "M-5,-6 L-11,0 L-5,6 M5,-6 L11,0 L5,6 M2,-9 L-2,9", "stroke-linecap": "round" }, g);
+      } else if (type === "check") {
+        mk("circle", { r: 9.5 }, g);
+        mk("path", { d: "M-4.5,0 L-1.5,3.5 L5,-3.5", "stroke-linecap": "round" }, g);
+      } else if (type === "chain") {
+        mk("rect", { x: -11, y: -5, width: 12, height: 10, rx: 5 }, g);
+        mk("rect", { x: -1, y: -5, width: 12, height: 10, rx: 5 }, g);
+      } else if (type === "deploy") {
+        mk("path", { d: "M0,-10 V5 M-6,-4 L0,-10 L6,-4 M-10,10 H10", "stroke-linecap": "round" }, g);
+      } else if (type === "pulse") {
+        mk("path", { d: "M-12,0 H-6 L-2.5,-8 L2.5,8 L6,0 H12", "stroke-linecap": "round" }, g);
       } else {
         mk("circle", { r: 4, fill: color, stroke: "none" }, g);
       }
@@ -365,6 +386,7 @@
     // Eyebrow (scene label, top-left)
     const eyebrowG = mk("g", {}, screenG);
     const sceneMarks = [];
+    const sceneIdx = (id) => cfg.scenes.findIndex((sc) => sc.id === id);
     function eyebrow(index, at, until) {
       const sc = cfg.scenes[index];
       sceneMarks.push({ id: sc.id, label: sc.label, time: at });
@@ -378,7 +400,7 @@
     }
 
     // ═════════════════════════════════════════════════════════════════════════
-    //  WORLD A — the Cash Equity agent architecture (scenes 1–6)
+    //  WORLD A — the Cash Equity agent architecture (scenes 1–7)
     // ═════════════════════════════════════════════════════════════════════════
     const C = { x: 720, y: 540 };
     const RING_R = 250;
@@ -692,7 +714,7 @@
     }
 
     // ═════════════════════════════════════════════════════════════════════════
-    //  WORLD B — many agents, one MCP layer (scene 7) — screen space
+    //  WORLD B — many agents, one MCP layer (scene 9) — screen space
     // ═════════════════════════════════════════════════════════════════════════
     const B = (() => {
       const root = mk("g", {}, screenG);
@@ -791,6 +813,195 @@
       init(rule, { opacity: 0, scaleX: 0, transformOrigin: "50% 50%" });
       init(root, { opacity: 0 });
       return { root, rows, links, title, subtitle, rule, fx: fxl };
+    })();
+
+    // ═════════════════════════════════════════════════════════════════════════
+    //  WORLD D — inside one MCP server (scene 7) — screen space
+    // ═════════════════════════════════════════════════════════════════════════
+    const srv = cfg.server;
+    const D = (() => {
+      const root = mk("g", {});
+      screenG.insertBefore(root, capLayer);
+      const rails = mk("g", {}, root), nodes = mk("g", {}, root), fxl = mk("g", {}, root);
+      const GY = 458, COL_W = 250, COL_H = 316, COL_Y = 482, GATE_W = 120, GATE_H = 38;
+      const nL = srv.layers.length;
+      const colX = (i) => 960 + (i - (nL - 1) / 2) * 280;
+
+      const head = mk("g", {}, root);
+      txt(head, srv.title, 960, 150, { size: 34, weight: 650, ls: "0.08em" });
+      txt(head, srv.subtitle, 960, 196, { size: 15, mono: true, fill: th.mcp, ls: "0.12em" });
+      init(head, { opacity: 0, y: 12 });
+
+      // the server envelope = its runtime boundary
+      const ex1 = colX(0) - COL_W / 2 - 26, ex2 = colX(nL - 1) + COL_W / 2 + 26, ey1 = 262, ey2 = 668;
+      const env = mk("g", {}, rails);
+      mk("rect", { x: ex1 - 60, y: ey1 - 60, width: ex2 - ex1 + 120, height: ey2 - ey1 + 120, rx: 90, fill: halo(th.mcp), opacity: 0.35 }, env);
+      mk("rect", { x: ex1, y: ey1, width: ex2 - ex1, height: ey2 - ey1, rx: 28, fill: th.mcp, "fill-opacity": 0.03 }, env);
+      const envRect = mk("rect", { x: ex1, y: ey1, width: ex2 - ex1, height: ey2 - ey1, rx: 28, fill: "none", stroke: th.mcp, "stroke-opacity": 0.6, "stroke-width": 1.4 }, rails);
+      const envLabel = txt(rails, srv.envelope, ex1 + 26, ey1 + 26, { size: 12.5, mono: true, fill: th.mcp, anchor: "start", ls: "0.24em" });
+      init(env, { opacity: 0 });
+      init(envLabel, { opacity: 0 });
+
+      // agent ── pipe ── system
+      const agentN = card(nodes, { x: 196, y: GY, w: 200, h: 84, r: 18, label: srv.agent.label, sub: srv.agent.sub, glyph: "spark", color: th.request, size: 15 });
+      const sysN = card(nodes, { x: 1724, y: GY, w: 200, h: 84, r: 18, label: srv.system.label, sub: srv.system.sub, glyph: "dot", color: th.mcp, size: 15 });
+      init(agentN.g, { opacity: 0, x: -16 });
+      init(sysN.g, { opacity: 0, x: 16 });
+      const x0 = agentN.R.x + 4, x1 = sysN.L.x - 4;
+      const pipeD = `M ${x0} ${GY} L ${x1} ${GY}`;
+      const pipe = mk("path", { d: pipeD, stroke: th.mcp, "stroke-opacity": 0.45, "stroke-width": 1.4, fill: "none" }, rails);
+
+      // layers, each with a gate on the request path
+      const cols = {};
+      srv.layers.forEach((ly, i) => {
+        const x = colX(i), color = th[ly.tone] || th.mcp;
+        const n = card(nodes, { x, y: COL_Y, w: COL_W, h: COL_H, r: 18, color });
+        const c = n.content, top = -COL_H / 2, gy = GY - COL_Y;
+        txt(c, String(i + 1).padStart(2, "0"), -COL_W / 2 + 22, top + 28, { size: 12, mono: true, fill: color, anchor: "start" });
+        glyph(c, ly.glyph, COL_W / 2 - 30, top + 28, color);
+        txt(c, ly.label, 0, top + 64, { size: 14.5, weight: 600, ls: "0.12em" });
+        const gate = mk("g", { transform: `translate(0 ${gy})` }, c);
+        const pill = { x: -GATE_W / 2, y: -GATE_H / 2, width: GATE_W, height: GATE_H, rx: GATE_H / 2 };
+        mk("rect", { ...pill, fill: th.bg, stroke: th.line, "stroke-width": 1.2 }, gate);
+        mk("circle", { r: 3, fill: th.faint }, gate);
+        const ok = mk("g", {}, gate);
+        mk("rect", { ...pill, fill: th.positive, "fill-opacity": 0.14, stroke: th.positive, "stroke-width": 1.4 }, ok);
+        mk("path", { d: "M-7,0 L-2,5 L8,-6", stroke: th.positive, "stroke-width": 2.2, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, ok);
+        const no = mk("g", {}, gate);
+        mk("rect", { ...pill, fill: th.warn, "fill-opacity": 0.16, stroke: th.warn, "stroke-width": 1.4 }, no);
+        mk("path", { d: "M-6,-6 L6,6 M6,-6 L-6,6", stroke: th.warn, "stroke-width": 2.2, fill: "none", "stroke-linecap": "round" }, no);
+        init(ok, { opacity: 0 });
+        init(no, { opacity: 0 });
+        const check = (srv.allowed.checks || {})[ly.id];
+        const tagOk = txt(c, check || "", 0, gy - 38, { size: 12.5, mono: true, fill: th.positive, opacity: 0 });
+        const tagNo = txt(c, srv.denied.at === ly.id ? srv.denied.reason : "", 0, gy - 38, { size: 12.5, mono: true, fill: th.warn, opacity: 0 });
+        const items = ly.items.map((s, j) => {
+          const g = mk("g", {}, c);
+          const y = gy + 58 + j * 30;
+          mk("circle", { cx: -COL_W / 2 + 26, cy: y, r: 2.4, fill: color }, g);
+          txt(g, s, -COL_W / 2 + 38, y, { size: 13.5, fill: th.muted, anchor: "start" });
+          init(g, { opacity: 0, x: -8 });
+          return g;
+        });
+        init(n.g, { opacity: 0, y: 16 });
+        cols[ly.id] = { ...n, x, items, ok, no, tagOk, tagNo };
+      });
+
+      // runtime: what the server runs on
+      const runtime = srv.runtime.map((s, i) => {
+        const x = 960 + (i - (srv.runtime.length - 1) / 2) * 262;
+        const tick = mk("path", { d: `M ${x} ${ey2 + 2} L ${x} 713`, stroke: th.mcp, "stroke-opacity": 0.45, "stroke-width": 1.2, fill: "none" }, rails);
+        const n = card(nodes, { x, y: 736, w: 236, h: 46, r: 12, label: s, color: th.mcp, size: 12.5, ls: "0.14em" });
+        init(n.g, { opacity: 0, y: 8 });
+        return { ...n, tick };
+      });
+      const runtimeLabel = txt(root, srv.runtimeLabel, 960, 792, { size: 12, mono: true, fill: th.muted, ls: "0.26em" });
+      init(runtimeLabel, { opacity: 0 });
+
+      // call labels (under the agent) + returned data
+      const allowLabel = txt(root, srv.allowed.call, agentN.x, GY + 72, { size: 12.5, mono: true, fill: th.mcp, opacity: 0 });
+      const denyLabel = txt(root, srv.denied.call, agentN.x, GY + 72, { size: 12.5, mono: true, fill: th.warn, opacity: 0 });
+      const chip = dataChip(fxl, srv.allowed.returns, th.data);
+
+      init(root, { opacity: 0, scale: 1.12, transformOrigin: "50% 50%" });
+      return { root, head, env, envRect, envLabel, agent: agentN, sys: sysN, pipe, pipeD, x0, x1, GY, GATE_W, GATE_H, cols, runtime, runtimeLabel, allowLabel, denyLabel, chip, fx: fxl };
+    })();
+
+    // ═════════════════════════════════════════════════════════════════════════
+    //  WORLD E — the MCP server lifecycle (scene 8) — screen space
+    // ═════════════════════════════════════════════════════════════════════════
+    const lc = cfg.lifecycle;
+    const E = (() => {
+      const root = mk("g", {});
+      screenG.insertBefore(root, capLayer);
+      const rails = mk("g", {}, root), nodes = mk("g", {}, root), fxl = mk("g", {}, root);
+      const SY = 400, R = 46, n = lc.stages.length;
+      const maxItems = Math.max(...lc.stages.map((st) => st.items.length));
+      const sx = (i) => 960 + (i - (n - 1) / 2) * 340;
+
+      const head = mk("g", {}, root);
+      txt(head, lc.title, 960, 140, { size: 34, weight: 650, ls: "0.08em" });
+      txt(head, lc.subtitle, 960, 184, { size: 15, mono: true, fill: th.mcp, ls: "0.12em" });
+      init(head, { opacity: 0, y: 12 });
+
+      const line = mk("path", { d: `M ${sx(0) + R + 8} ${SY} L ${sx(n - 1) - R - 8} ${SY}`, stroke: th.muted, "stroke-opacity": 0.45, "stroke-width": 1.3, fill: "none" }, rails);
+      const segD = [];
+      for (let i = 0; i < n - 1; i++) segD.push(`M ${sx(i) + R + 8} ${SY} L ${sx(i + 1) - R - 8} ${SY}`);
+
+      const stages = lc.stages.map((st, i) => {
+        const x = sx(i);
+        const outer = mk("g", { transform: `translate(${x} ${SY})` }, nodes);
+        const g = mk("g", {}, outer);
+        const glow = mk("g", { opacity: 0 }, g);
+        mk("circle", { r: 120, fill: halo(th.mcp) }, glow);
+        mk("circle", { r: R + 5, fill: "none", stroke: th.mcp, "stroke-opacity": 0.25, "stroke-width": 8 }, glow);
+        mk("circle", { r: R, fill: "url(#mcpx-card)", stroke: th.line, "stroke-width": 1.2 }, g);
+        mk("circle", { r: R, fill: "none", stroke: th.mcp, "stroke-width": 1.4 }, glow);
+        glyph(g, st.glyph, 0, 0, th.mcp).setAttribute("transform", "scale(1.5)");
+        txt(g, st.label, 0, R + 32, { size: 15, weight: 600, ls: "0.14em" });
+        const items = st.items.map((s, j) => {
+          const it = txt(g, s, 0, R + 70 + j * 28, { size: 14, fill: th.muted });
+          init(it, { opacity: 0, y: 6 });
+          return it;
+        });
+        const statusG = mk("g", {}, g);
+        const sy = R + 70 + maxItems * 28 + 16;
+        const sw = measure(st.status, { size: 12, mono: true }) + 30;
+        mk("rect", { x: -sw / 2, y: sy - 14, width: sw, height: 28, rx: 14, fill: th.positive, "fill-opacity": 0.1, stroke: th.positive, "stroke-opacity": 0.7 }, statusG);
+        txt(statusG, st.status, 0, sy, { size: 12, mono: true, fill: th.positive });
+        init(statusG, { opacity: 0, scale: 0.8, transformOrigin: "50% 50%" });
+        init(g, { opacity: 0, y: 10 });
+        return { g, glow, items, status: statusG, x };
+      });
+
+      // feedback loop: monitor → build
+      const loopD = `M ${sx(n - 1)} ${SY - R - 8} C ${sx(n - 1)} 236, ${sx(0)} 236, ${sx(0)} ${SY - R - 8}`;
+      const loop = mk("path", { d: loopD, stroke: th.data, "stroke-opacity": 0.55, "stroke-width": 1.4, fill: "none" }, rails);
+      const loopArrow = mk("path", { d: `M ${sx(0) - 6} ${SY - R - 18} L ${sx(0)} ${SY - R - 8} L ${sx(0) + 6} ${SY - R - 18}`, stroke: th.data, "stroke-width": 1.6, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, rails);
+      const loopLabel = txt(root, lc.loopLabel, 960, 240, { size: 12, mono: true, fill: th.data, ls: "0.26em" });
+      init(loopArrow, { opacity: 0 });
+      init(loopLabel, { opacity: 0 });
+
+      // production dashboard
+      const dash = (() => {
+        const Dc = lc.dashboard;
+        const px1 = 470, px2 = 1450, py1 = 668, py2 = 900;
+        const g = mk("g", {}, root);
+        mk("rect", { x: px1, y: py1, width: px2 - px1, height: py2 - py1, rx: 18, fill: "#0B1018", stroke: th.line, "stroke-width": 1.2 }, g);
+        txt(g, Dc.title, px1 + 24, py1 + 28, { size: 12, mono: true, fill: th.muted, anchor: "start", ls: "0.2em" });
+        const liveW = measure(Dc.live, { size: 12, mono: true, ls: "0.2em" });
+        txt(g, Dc.live, px2 - 24, py1 + 28, { size: 12, mono: true, fill: th.positive, anchor: "end", ls: "0.2em" });
+        const liveDot = mk("circle", { cx: px2 - 24 - liveW - 14, cy: py1 + 28, r: 4.5, fill: th.positive }, g);
+        const nK = Dc.kpis.length, gap = 16;
+        const tw = (px2 - px1 - 48 - gap * (nK - 1)) / nK;
+        let warnTile = null;
+        const tiles = Dc.kpis.map((kp, i) => {
+          const tx = px1 + 24 + i * (tw + gap);
+          const tg = mk("g", {}, g);
+          mk("rect", { x: tx, y: py1 + 48, width: tw, height: 76, rx: 12, fill: th.surface, stroke: th.line }, tg);
+          if (kp.tone === "warn") warnTile = mk("rect", { x: tx, y: py1 + 48, width: tw, height: 76, rx: 12, fill: th.warn, "fill-opacity": 0.08, stroke: th.warn, "stroke-width": 1.4, opacity: 0 }, tg);
+          txt(tg, kp.label, tx + 16, py1 + 70, { size: 11, mono: true, fill: th.muted, anchor: "start", ls: "0.18em" });
+          txt(tg, kp.value, tx + 16, py1 + 104, { size: 26, weight: 650, anchor: "start", fill: kp.tone ? th[kp.tone] : th.text });
+          init(tg, { opacity: 0, y: 8 });
+          return tg;
+        });
+        txt(g, Dc.spark, px1 + 24, py1 + 146, { size: 11, mono: true, fill: th.muted, anchor: "start", ls: "0.18em" });
+        const rnd = mulberry32(11);
+        const sx1 = px1 + 24, sx2 = px2 - 24, syTop = py1 + 160, syBot = py2 - 18;
+        const pts = [];
+        for (let i = 0; i <= 64; i++) {
+          const f = i / 64;
+          const v = 0.5 + 0.22 * Math.sin(f * 9) + 0.12 * Math.sin(f * 23 + 1) + (rnd() - 0.5) * 0.22;
+          pts.push(`${(sx1 + f * (sx2 - sx1)).toFixed(1)},${(syBot - clamp01(v) * (syBot - syTop)).toFixed(1)}`);
+        }
+        mk("line", { x1: sx1, y1: syBot, x2: sx2, y2: syBot, stroke: th.line }, g);
+        const spark = mk("path", { d: "M " + pts.join(" L "), stroke: th.mcp, "stroke-width": 1.8, fill: "none", "stroke-linejoin": "round" }, g);
+        init(g, { opacity: 0, y: 16 });
+        return { g, tiles, warnTile, spark, liveDot };
+      })();
+
+      init(root, { opacity: 0 });
+      return { root, head, line, segD, stages, loop, loopD, loopArrow, loopLabel, dash, fx: fxl, SY, R };
     })();
 
     // ═════════════════════════════════════════════════════════════════════════
@@ -1147,9 +1358,163 @@
     t = tCap6 + s6.hold;
     eyebrow(5, S6, t);
 
-    // ── Scene 7 — why MCP matters ───────────────────────────────────────────
+    // ── Scene 7 — inside one MCP server ─────────────────────────────────────
+    const sd = TM.server;
+    const SD = t;
+    {
+      // zoom into the system's MCP server
+      const focusSys = systems[srv.focusSystem] || sysList[0];
+      to(result.mover, { opacity: 0 }, SD, S(0.6));
+      to(user.g, { opacity: 0.1 }, SD, S(0.6));
+      to(user.glow, { opacity: 0 }, SD, S(0.6));
+      to(focusSys.g, { opacity: 1 }, SD + S(0.2), S(0.5));
+      to(focusSys.glow, { opacity: 1 }, SD + S(0.2), S(0.5));
+      to(mcp.g, { opacity: 0.5 }, SD + S(0.2), S(0.5));
+      camera(focusSys.x, focusSys.y, 3.2, SD + S(0.4), sd.zoom, "power2.in");
+      to(worldA, { opacity: 0 }, SD + S(0.4) + sd.zoom * 0.55, sd.zoom * 0.45);
+      const tIn = SD + S(0.4) + sd.zoom * 0.6;
+      to(D.root, { opacity: 1, scale: 1 }, tIn, S(1.2), "power2.out");
+
+      // the server, between the agent and the system it exposes
+      to(D.head, { opacity: 1, y: 0 }, tIn + S(0.3), S(0.8), "power3.out");
+      to(D.agent.g, { opacity: 1, x: 0 }, tIn + S(0.5), S(0.7), "power3.out");
+      to(D.sys.g, { opacity: 1, x: 0 }, tIn + S(0.6), S(0.7), "power3.out");
+      drawIn(D.pipe, tIn + S(0.8), S(1.0));
+      let tc = caption(srv.captions.intro, tIn + S(0.6), sd.introHold, { size: 28 });
+
+      // architecture: the runtime envelope and what it runs on
+      const tEnv = tc;
+      to(D.env, { opacity: 1 }, tEnv, S(0.8));
+      drawIn(D.envRect, tEnv, sd.envelope);
+      to(D.envLabel, { opacity: 1 }, tEnv + sd.envelope * 0.5, S(0.6));
+      D.runtime.forEach((r, i) => {
+        const ti = tEnv + sd.envelope * 0.6 + i * S(0.15);
+        drawIn(r.tick, ti, S(0.4));
+        to(r.g, { opacity: 1, y: 0 }, ti + S(0.2), S(0.6), "power3.out");
+      });
+      to(D.runtimeLabel, { opacity: 1 }, tEnv + sd.envelope, S(0.6));
+      tc = caption(srv.captions.runtime, tEnv + S(0.3), sd.runtimeHold, { size: 28 });
+
+      // the layers, from the data outwards
+      const tLay = tc;
+      srv.revealOrder.forEach((id, k) => {
+        const col = D.cols[id];
+        if (!col) return;
+        const ti = tLay + k * sd.layer;
+        to(col.g, { opacity: 1, y: 0 }, ti, S(0.7), "power3.out");
+        to(col.glow, { opacity: 1 }, ti + S(0.2), S(0.4));
+        to(col.glow, { opacity: 0.2 }, ti + sd.layer - S(0.4), S(0.6));
+        col.items.forEach((it, j) => to(it, { opacity: 1, x: 0 }, ti + S(0.5) + j * S(0.2), S(0.5), "power3.out"));
+        caption(srv.captions.layers[id], ti + S(0.2), sd.layer - S(1.5), { size: 28 });
+      });
+      to(D.runtimeLabel, { opacity: 0.5 }, tLay, S(0.6));
+
+      // an authorised call crosses every layer
+      const tCall = tLay + srv.revealOrder.length * sd.layer + S(0.2);
+      const tail = 150, L = D.x1 - D.x0;
+      const tGo = tCall + S(0.5);
+      const tHitSys = tGo + (L / (L + tail)) * sd.pass;
+      const tBack = tHitSys + S(0.2);
+      const tHome = tBack + sd.back;
+      win(tCall, S(0.3), tHome - tCall - S(0.3), S(0.4), (a) => D.allowLabel.setAttribute("opacity", a));
+      to(D.agent.glow, { opacity: 1 }, tCall, S(0.3));
+      comet(D.pipeD, th.mcp, tGo, sd.pass, { tail, layer: D.fx, ease: "none" });
+      srv.layers.forEach((ly) => {
+        const col = D.cols[ly.id];
+        const tg = tGo + ((col.x - D.x0) / (L + tail)) * sd.pass;
+        to(col.ok, { opacity: 1 }, tg - S(0.05), S(0.2));
+        pulse(D.fx, col.x, D.GY, { w: D.GATE_W, h: D.GATE_H, rx: D.GATE_H / 2 }, th.positive, tg);
+        win(tg, S(0.25), tHome + S(0.6) - tg, S(0.4), (a) => col.tagOk.setAttribute("opacity", a));
+      });
+      to(D.sys.glow, { opacity: 1 }, tHitSys - S(0.05), S(0.25));
+      pulseNode(D.sys, th.mcp, tHitSys - S(0.05), D.fx);
+      // data comes back, masked on its way through the guardrails
+      carry(D.chip, D.pipeD, tBack, sd.back);
+      comet(D.pipeD, th.data, tBack, sd.back, { tail: 120, layer: D.fx, reverse: true, scale: 0.8 });
+      const maskCol = D.cols[srv.allowed.maskAt];
+      if (maskCol) {
+        const e = 1 - (maskCol.x - D.x0) / L; // eased progress when the chip crosses the gate
+        const v = e < 0.5 ? Math.sqrt(e / 2) : 1 - Math.sqrt(2 * (1 - e)) / 2;
+        pulse(D.fx, maskCol.x, D.GY, { w: D.GATE_W, h: D.GATE_H, rx: D.GATE_H / 2 }, th.data, tBack + v * sd.back);
+      }
+      pulseNode(D.agent, th.data, tHome - S(0.05), D.fx);
+      to(D.sys.glow, { opacity: 0 }, tHome, S(0.5));
+      caption(srv.captions.allowed, tCall, tHome - tCall, { size: 28 });
+
+      // a call outside the user's entitlements is stopped at the gate
+      const tDen = tHome + S(1.8);
+      srv.layers.forEach((ly) => to(D.cols[ly.id].ok, { opacity: 0 }, tDen - S(0.3), S(0.4)));
+      const stop = D.cols[srv.denied.at] || Object.values(D.cols)[0];
+      const denyD = `M ${D.x0} ${D.GY} L ${stop.x} ${D.GY}`;
+      const tStop = tDen + S(0.4) + sd.deny;
+      win(tDen, S(0.3), sd.deny + sd.denyHold, S(0.4), (a) => D.denyLabel.setAttribute("opacity", a));
+      comet(denyD, th.warn, tDen + S(0.4), sd.deny, { tail: 110, layer: D.fx, ease: "power1.in" });
+      to(stop.no, { opacity: 1 }, tStop - S(0.05), S(0.15));
+      pulse(D.fx, stop.x, D.GY, { w: D.GATE_W, h: D.GATE_H, rx: D.GATE_H / 2 }, th.warn, tStop);
+      pulse(D.fx, stop.x, D.GY, { w: D.GATE_W, h: D.GATE_H, rx: D.GATE_H / 2 }, th.warn, tStop + S(0.35));
+      to(stop.glow, { opacity: 1 }, tStop, S(0.3));
+      win(tStop, S(0.2), sd.denyHold - S(0.4), S(0.4), (a) => stop.tagNo.setAttribute("opacity", a));
+      comet(denyD, th.warn, tStop + S(0.15), sd.deny * 0.8, { tail: 90, layer: D.fx, reverse: true, scale: 0.7 });
+      to(stop.glow, { opacity: 0.2 }, tStop + sd.denyHold - S(0.4), S(0.5));
+      to(stop.no, { opacity: 0 }, tStop + sd.denyHold - S(0.2), S(0.4));
+      caption(srv.captions.denied, tDen, sd.deny + sd.denyHold - S(0.2), { size: 28 });
+      t = tStop + sd.denyHold + sd.hold;
+    }
+    eyebrow(sceneIdx("server"), SD, t);
+
+    // ── Scene 8 — from build to run ─────────────────────────────────────────
+    const se = TM.lifecycle;
+    const SE = t;
+    {
+      to(D.root, { opacity: 0, scale: 0.97 }, SE, S(0.8), "power2.in");
+      to(E.root, { opacity: 1 }, SE + S(0.6), S(0.6));
+      to(E.head, { opacity: 1, y: 0 }, SE + S(0.7), S(0.8), "power3.out");
+      E.stages.forEach((st, i) => to(st.g, { opacity: 0.45, y: 0 }, SE + S(1.0) + i * S(0.12), S(0.6), "power3.out"));
+      drawIn(E.line, SE + S(1.2), S(1.0));
+      const caps = [];
+      let ta = SE + S(2.4);
+      const last = E.stages.length - 1;
+      E.stages.forEach((st, i) => {
+        if (i > 0) comet(E.segD[i - 1], th.mcp, ta - se.travel, se.travel, { tail: 90, layer: E.fx });
+        if (lc.stages[i].caption) caps.push({ at: ta, text: lc.stages[i].caption });
+        to(st.g, { opacity: 1 }, ta - S(0.1), S(0.3));
+        to(st.glow, { opacity: 1 }, ta, S(0.3));
+        pulse(E.fx, st.x, E.SY, { r: E.R }, th.mcp, ta);
+        st.items.forEach((it, j) => to(it, { opacity: 1, y: 0 }, ta + S(0.2) + j * S(0.15), S(0.5), "power3.out"));
+        to(st.status, { opacity: 1, scale: 1 }, ta + S(0.9), S(0.4), "back.out(2)");
+        if (i < last) {
+          to(st.glow, { opacity: 0.3 }, ta + se.stage - S(0.2), S(0.5));
+          ta += se.stage + se.travel;
+        }
+      });
+      // production dashboard, fed by the monitor stage
+      const tDash = ta + S(0.8);
+      to(E.dash.g, { opacity: 1, y: 0 }, tDash, S(0.8), "power3.out");
+      E.dash.tiles.forEach((tile, i) => to(tile, { opacity: 1, y: 0 }, tDash + S(0.3) + i * S(0.12), S(0.5), "power3.out"));
+      drawIn(E.dash.spark, tDash + S(0.6), se.spark, "none");
+      if (E.dash.warnTile) win(tDash + S(1.8), S(0.3), S(1.2), S(0.6), (a) => E.dash.warnTile.setAttribute("opacity", a));
+      // feedback loop back to build
+      const tLoop = tDash + se.dashboard;
+      to(E.stages[last].glow, { opacity: 0.3 }, tLoop, S(0.5));
+      to(E.loopLabel, { opacity: 1 }, tLoop + S(0.3), S(0.6));
+      drawIn(E.loop, tLoop, se.loop);
+      comet(E.loopD, th.data, tLoop, se.loop, { tail: 160, layer: E.fx });
+      to(E.loopArrow, { opacity: 1 }, tLoop + se.loop - S(0.2), S(0.3));
+      pulse(E.fx, E.stages[0].x, E.SY, { r: E.R }, th.data, tLoop + se.loop);
+      to(E.stages[0].glow, { opacity: 1 }, tLoop + se.loop, S(0.3));
+      caps.push({ at: tLoop, text: lc.loopCaption });
+      t = tLoop + se.loop + se.hold;
+      caps.forEach((c, i) => {
+        const next = i < caps.length - 1 ? caps[i + 1].at : t;
+        caption(c.text, c.at, Math.max(S(0.6), next - c.at - S(1.4)), { size: 28 });
+      });
+    }
+    eyebrow(sceneIdx("lifecycle"), SE, t);
+
+    // ── Scene 9 — why MCP matters ───────────────────────────────────────────
     const s7 = TM.s7;
     const S7 = t;
+    to(E.root, { opacity: 0 }, S7, S(0.8));
     camera(960, 540, 0.42, S7, s7.zoom, "power2.inOut");
     to(worldA, { opacity: 0 }, S7 + s7.zoom * 0.35, s7.zoom * 0.6);
     to(B.root, { opacity: 1, scale: 1 }, S7 + s7.zoom * 0.55, S(1.4), "power2.out");
@@ -1197,7 +1562,7 @@
     }
     caption(cfg.captions.s7Final, tF + S(0.2), s7.finalHold - S(0.6), { size: 34, weight: 600 });
     t = tF + s7.finalHold + S(0.6);
-    eyebrow(6, S7, t);
+    eyebrow(sceneIdx("why"), S7, t);
 
     // ── Final frame ─────────────────────────────────────────────────────────
     const sf = TM.final;
@@ -1239,7 +1604,7 @@
     to(Cw.title, { opacity: 1, y: 0 }, tTitle + S(0.2), S(1.0), "power3.out");
     to(Cw.subtitle, { opacity: 1, y: 0 }, tTitle + S(0.7), S(1.0), "power3.out");
     t = tTitle + sf.titleHold;
-    eyebrow(7, SF, null);
+    eyebrow(sceneIdx("final"), SF, null);
 
     // ── Ambient motion (a pure function of time) ─────────────────────────────
     const total = t;
@@ -1249,6 +1614,7 @@
       agentHaloC.setAttribute("opacity", 0.8 + 0.2 * Math.sin(tt * 1.7));
       mcp.bus.setAttribute("stroke-dashoffset", -tt * 30);
       B.busB.setAttribute("stroke-dashoffset", -tt * 30);
+      E.dash.liveDot.setAttribute("opacity", 0.55 + 0.45 * Math.sin(tt * 4));
       // orbiter
       const [v0, v1] = orbiter.vis;
       if (tt <= v0 || tt >= v1) { orbiter.g.setAttribute("opacity", 0); }

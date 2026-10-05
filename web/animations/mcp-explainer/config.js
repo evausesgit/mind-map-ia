@@ -44,6 +44,8 @@ window.MCP_EXPLAINER_CONFIG = {
     { id: "mcp",       label: "Enter MCP" },
     { id: "ecosystem", label: "Cash Equity MCP ecosystem" },
     { id: "result",    label: "The result" },
+    { id: "server",    label: "Inside an MCP server" },
+    { id: "lifecycle", label: "From build to run" },
     { id: "why",       label: "Why MCP matters" },
     { id: "final",     label: "Summary" },
   ],
@@ -137,7 +139,90 @@ window.MCP_EXPLAINER_CONFIG = {
     },
   },
 
-  // ── Scene 7: many agents, one MCP layer ───────────────────────────────────
+  // ── Scene 7: inside one MCP server ────────────────────────────────────────
+  // Layers are listed left (agent side) to right (data side); `revealOrder`
+  // introduces them from the data outwards. `tone` picks a theme colour.
+  // `glyph`: key | shield | doc | stack | hex | grid | plug | dot
+  server: {
+    title: "INSIDE AN MCP SERVER",
+    subtitle: "client-intelligence  ·  exposes the CRM",
+    focusSystem: "crm",
+    envelope: "MCP SERVER",
+    agent: { label: "AGENT", sub: "for the trader" },
+    system: { label: "CRM", sub: "Client data" },
+    runtimeLabel: "RUNS INSIDE YOUR ARCHITECTURE",
+    runtime: ["CONTAINER · K8S", "MCP GATEWAY", "SECRETS VAULT", "LOGS · TRACES"],
+    layers: [
+      { id: "identity",   label: "IDENTITY & ACCESS", glyph: "key",    tone: "request",
+        items: ["OAuth · the user’s token", "Acts on behalf of the user", "Entitlements per client"] },
+      { id: "guardrails", label: "GUARDRAILS",        glyph: "shield", tone: "orchestrator",
+        items: ["Input schema validation", "Read-only · rate-limited", "PII masked on output"] },
+      { id: "context",    label: "DATA CONTEXT",      glyph: "doc",    tone: "mcp",
+        items: ["Clear tool descriptions", "Typed schemas · field meaning", "Business glossary · units"] },
+      { id: "access",     label: "DATA ACCESS MODEL", glyph: "stack",  tone: "data",
+        items: ["Approved views, not tables", "Parameterised queries only", "Row-level filtering"] },
+    ],
+    revealOrder: ["access", "context", "guardrails", "identity"],
+    allowed: {
+      call: "crm.clients_exposed(\"NVDA\")",
+      checks: { identity: "✓ trader · 12 clients", guardrails: "✓ read-only · valid", context: "✓ tool understood", access: "✓ v_client_exposure" },
+      maskAt: "guardrails",
+      returns: "2 clients · PII masked",
+    },
+    denied: { call: "crm.export_all_clients()", at: "identity", reason: "✕ not entitled" },
+    captions: {
+      intro: "Behind every tool call sits an MCP server, engineered like any enterprise service.",
+      runtime: "It runs inside your architecture: your network, your gateway, your secrets.",
+      layers: {
+        access: "A data access model defines what can be read, and how.",
+        context: "Context describes the data, so the model knows what it means.",
+        guardrails: "Guardrails bound what goes in and what comes out.",
+        identity: "Every call carries the user’s identity and is checked against their rights.",
+      },
+      allowed: "An authorised call passes every layer, and leaves an audit trail.",
+      denied: "Outside the user’s entitlements? The call stops at the gate.",
+    },
+  },
+
+  // ── Scene 8: from build to run ────────────────────────────────────────────
+  // `glyph`: code | check | chain | deploy | pulse. A stage `caption` stays on
+  // screen until the next stage that has one.
+  lifecycle: {
+    title: "FROM BUILD TO RUN",
+    subtitle: "the lifecycle of an MCP server",
+    stages: [
+      { id: "build", label: "BUILD", glyph: "code", status: "v1.3.0",
+        items: ["Tools, schemas, descriptions", "Access rules & guardrails as code"],
+        caption: "An MCP server is software. It ships like software." },
+      { id: "unit", label: "UNIT TESTS", glyph: "check", status: "148 / 148 passed",
+        items: ["Each tool in isolation", "Schemas, permissions, edge cases", "Mocked data sources"],
+        caption: "Unit-test every tool on its own…" },
+      { id: "integration", label: "INTEGRATION TESTS", glyph: "chain", status: "36 scenarios passed",
+        items: ["Agent ↔ server ↔ real systems", "Entitlements end-to-end", "Evals: right tool, right answer"],
+        caption: "…then test the whole chain, with real identities and rights." },
+      { id: "deploy", label: "DEPLOY", glyph: "deploy", status: "v1.3.0 · live",
+        items: ["CI/CD · versioned releases", "Staging → production", "Registered in the MCP gateway"],
+        caption: "Ship it through CI/CD, like any production service." },
+      { id: "monitor", label: "MONITOR", glyph: "pulse", status: "SLO 99.9% met",
+        items: ["Latency · errors · usage", "Denied calls · audit trail", "Drift & cost alerts"],
+        caption: "Then watch every call in production." },
+    ],
+    loopLabel: "FEEDBACK LOOP",
+    loopCaption: "What you observe feeds the next version.",
+    dashboard: {
+      title: "PRODUCTION  ·  client-intelligence MCP",
+      live: "LIVE",
+      kpis: [
+        { label: "P95 LATENCY",  value: "180 ms" },
+        { label: "CALLS TODAY",  value: "12.4k" },
+        { label: "DENIED CALLS", value: "0.3%", tone: "warn" },
+        { label: "ERROR RATE",   value: "0.1%", tone: "positive" },
+      ],
+      spark: "TOOL CALLS / MIN",
+    },
+  },
+
+  // ── Scene 9: many agents, one MCP layer ───────────────────────────────────
   multiAgent: {
     apps: [
       { id: "sales",    label: "SALES AGENT" },
@@ -159,7 +244,7 @@ window.MCP_EXPLAINER_CONFIG = {
     { items: ["MARKET DATA", "CLIENT DATA", "RESEARCH", "EXECUTION", "INTERNAL SYSTEMS"], viaMcp: true },
   ],
   finalTitle: "FROM AI ASSISTANT TO ENTERPRISE AGENT",
-  finalSubtitle: "MCP connects AI reasoning to enterprise tools and data.",
+  finalSubtitle: "MCP connects AI reasoning to enterprise tools and data: governed, tested, monitored.",
 
   // ── On-screen captions ────────────────────────────────────────────────────
   captions: {
@@ -186,6 +271,8 @@ window.MCP_EXPLAINER_CONFIG = {
     s4: { build: 1.8, ports: 1.0, captionHold: 3.4, connect: 2.2, discover: 1.8 },
     s5: { labels: 1.6, replay: 2.0, planStagger: 0.55, call: 1.25, dataBack: 1.35, callGap: 1.5, combine: 2.4 },
     s6: { build: 3.2, deliver: 1.8, hold: 3.6 },
+    server: { zoom: 2.2, introHold: 2.8, envelope: 1.6, runtimeHold: 3.0, layer: 3.8, pass: 2.6, back: 1.9, deny: 1.0, denyHold: 2.8, hold: 1.0 },
+    lifecycle: { stage: 2.8, travel: 0.7, spark: 2.4, dashboard: 4.2, loop: 1.8, hold: 2.6 },
     s7: { zoom: 2.4, build: 2.0, tangle: 2.0, tangleHold: 2.6, resolve: 2.2, onceHold: 3.4, oneAgent: 4.2, finalHold: 3.4 },
     final: { build: 3.6, titleHold: 6.0 },
   },
