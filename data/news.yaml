@@ -1,5 +1,46 @@
 news:
 
+  - date: 2026-10-04
+    type: update
+    title:
+      en: "OpenAI’s Altman says AI benefits justify accepting some risks"
+      fr: "Sam Altman estime que les bénéfices de l’IA justifient d’accepter certains risques"
+    description:
+      en: "OpenAI CEO Sam Altman told Politico that broad access to powerful AI justifies accepting some harmful outcomes, while rejecting catastrophic risks. For regulated enterprises, the statement highlights the need to define their own risk appetite rather than inherit a provider’s tolerance."
+      fr: "Sam Altman a déclaré à Politico qu’un accès large à une IA puissante justifiait d’accepter certains effets négatifs, tout en rejetant les risques catastrophiques. Pour les entreprises régulées, cette position souligne la nécessité de définir leur propre appétence au risque plutôt que d’hériter de celle du fournisseur."
+    link: https://www.reuters.com/business/openais-altman-says-ai-benefits-warrant-accepting-some-risks-2026-10-04/
+
+  - date: 2026-10-04
+    type: update
+    title:
+      en: "Former AI researchers and major labs face a New York safeguards hearing"
+      fr: "D’anciens chercheurs et les grands laboratoires attendus à une audition new-yorkaise sur les garde-fous"
+    description:
+      en: "Former Anthropic researcher Jacob Coxon is due to testify before the New York City Council alongside representatives from Anthropic, OpenAI, Alphabet and Meta. The hearing illustrates how AI governance is fragmenting across municipal, state and federal levels in the United States."
+      fr: "L’ancien chercheur d’Anthropic Jacob Coxon doit témoigner devant le conseil municipal de New York aux côtés de représentants d’Anthropic, OpenAI, Alphabet et Meta. L’audition illustre la fragmentation croissante de la gouvernance de l’IA entre niveaux municipal, étatique et fédéral aux États-Unis."
+    link: https://www.reuters.com/business/former-anthropic-researcher-coxon-testify-new-york-city-ai-hearing-bloomberg-2026-10-04/
+
+  - date: 2026-10-04
+    type: update
+    title:
+      en: "Reflection prepares an open-weight challenger to Qwen and DeepSeek"
+      fr: "Reflection prépare un modèle open-weight concurrent de Qwen et DeepSeek"
+    description:
+      en: "Axios reports that Nvidia-backed Reflection is preparing its first open-weight model, expected to compete with leading Chinese open models while initially trailing the top US proprietary systems. No weights, licence or independently verifiable benchmarks have been released yet."
+      fr: "Axios rapporte que Reflection, soutenue par Nvidia, prépare son premier modèle open-weight, qui viserait les principaux modèles ouverts chinois tout en restant initialement derrière les meilleurs systèmes propriétaires américains. Aucun poids, licence ou benchmark vérifiable indépendamment n’a encore été publié."
+    link: https://www.axios.com/2026/10/04/reflection-open-weight-ai
+
+  - date: 2026-09-30
+    type: update
+    title:
+      en: "Google targets finance, software and cyber defence with Gemini 4 Argon"
+      fr: "Google cible la finance, le logiciel et la cyberdéfense avec Gemini 4 Argon"
+    description:
+      en: "Google announced Gemini 4 Argon with introductory API pricing of $2 per million input tokens and $10 per million output tokens, plus a 95% discount for cached input. Access is being phased, starting with trusted cyber defenders, and Google’s benchmark claims still require independent validation on enterprise workloads."
+      fr: "Google a annoncé Gemini 4 Argon à un tarif API introductif de 2 dollars par million de tokens en entrée et 10 dollars en sortie, avec 95 % de remise sur les entrées mises en cache. L’accès est progressif, d’abord pour des cyberdéfenseurs de confiance, et les résultats publiés par Google doivent encore être validés indépendamment sur des charges d’entreprise."
+    link: https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/
+
+
   - date: 2026-10-03
     type: update
     title:
