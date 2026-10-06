@@ -1,5 +1,45 @@
 news:
 
+  - date: 2026-10-06
+    type: update
+    title:
+      en: "South Korea investigates suspected AI-assisted bank hacks"
+      fr: "La Corée du Sud enquête sur des cyberattaques bancaires potentiellement assistées par l’IA"
+    description:
+      en: "President Lee Jae Myung said AI models are believed to have been used in recent attacks against South Korean commercial banks, and police have launched a full-scale investigation. The government is calling for cybersecurity methods adapted to the AI era."
+      fr: "Le président Lee Jae Myung a indiqué que des modèles d’IA auraient été utilisés dans de récentes attaques contre des banques commerciales sud-coréennes, tandis que la police a lancé une enquête à grande échelle. Le gouvernement appelle à adapter les méthodes de cybersécurité à l’ère de l’IA."
+    link: https://www.reuters.com/world/south-koreas-lee-says-ai-appears-have-been-used-bank-hacks-2026-10-06/
+
+  - date: 2026-10-06
+    type: update
+    title:
+      en: "South Korea plans a 4.7 trillion-won frontier AI programme"
+      fr: "La Corée du Sud prévoit un programme d’IA de pointe de 4 700 milliards de wons"
+    description:
+      en: "South Korea’s science ministry says a 4.7 trillion-won ($3.5 billion) programme will start in March 2027 to develop a frontier AI model through competitive tenders. The plan underscores the shift from generic AI subsidies toward sovereign compute, data and model capabilities."
+      fr: "Le ministère sud-coréen des Sciences annonce un programme de 4 700 milliards de wons (3,5 milliards de dollars) à partir de mars 2027 pour développer un modèle d’IA de pointe par appels d’offres concurrentiels. Le plan illustre le passage de subventions génériques à l’IA vers des capacités souveraines en calcul, données et modèles."
+    link: https://www.reuters.com/world/asia-pacific/south-korea-plans-develop-35-billion-frontier-ai-model-starting-next-year-2026-10-06/
+
+  - date: 2026-10-05
+    type: update
+    title:
+      en: "Reflection AI releases 501B-parameter Beam as an open-weight model"
+      fr: "Reflection AI publie Beam, un modèle open-weight de 501 milliards de paramètres"
+    description:
+      en: "Nvidia-backed Reflection AI has released Beam, its first open-weight model, targeting coding and agentic workflows. The 501-billion-parameter mixture-of-experts model activates 22 billion parameters per token and is positioned as a Western alternative to leading Chinese open models."
+      fr: "Reflection AI, soutenue par Nvidia, a publié Beam, son premier modèle open-weight, orienté vers le code et les workflows agentiques. Ce modèle à mélange d’experts de 501 milliards de paramètres en active 22 milliards par jeton et se positionne comme une alternative occidentale aux principaux modèles ouverts chinois."
+    link: https://www.reuters.com/technology/nvidia-backed-reflection-unveils-first-ai-model-take-chinese-open-models-2026-10-05/
+
+  - date: 2026-10-05
+    type: update
+    title:
+      en: "Deutsche Telekom targets €2.5 billion in AI and automation savings"
+      fr: "Deutsche Telekom vise 2,5 milliards d’euros d’économies grâce à l’IA et à l’automatisation"
+    description:
+      en: "Deutsche Telekom expects AI and automation to reduce indirect costs by about €2.5 billion by 2030 compared with 2023. The target provides a rare large-enterprise benchmark, but it remains a forward-looking estimate that must be tracked against quality, resilience and workforce outcomes."
+      fr: "Deutsche Telekom prévoit que l’IA et l’automatisation réduiront d’environ 2,5 milliards d’euros ses coûts indirects d’ici 2030 par rapport à 2023. Cette cible constitue un repère rare à l’échelle d’un grand groupe, mais reste une estimation prospective à suivre au regard de la qualité, de la résilience et des effets sur l’emploi."
+    link: https://www.reuters.com/business/media-telecom/deutsche-telekom-sees-25-billion-savings-ai-automation-by-2030-2026-10-05/
+
   - date: 2026-10-04
     type: update
     title:
