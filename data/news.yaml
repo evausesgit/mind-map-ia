@@ -3,6 +3,46 @@ news:
   - date: 2026-10-06
     type: update
     title:
+      en: "Mistral previews the 1-trillion-parameter open-weight Mistral Large 4"
+      fr: "Mistral présente Mistral Large 4, un modèle open-weight de 1 000 milliards de paramètres"
+    description:
+      en: "Mistral has launched an API preview of Mistral Large 4, a natively multimodal mixture-of-experts model with 1 trillion total parameters and 49 billion active parameters. The company says the model was trained on 3,800 Nvidia Grace Blackwell GPUs in European data centres and plans to release the weights by the end of October; its benchmark claims still require broader independent validation."
+      fr: "Mistral a lancé en préversion API Mistral Large 4, un modèle multimodal à mélange d’experts comptant 1 000 milliards de paramètres au total et 49 milliards de paramètres actifs. L’entreprise indique l’avoir entraîné sur 3 800 GPU Nvidia Grace Blackwell dans des centres de données européens et prévoit de publier les poids fin octobre ; ses résultats de benchmark doivent encore être validés plus largement et indépendamment."
+    link: https://mistral.ai/news/mistral-large-4/
+
+  - date: 2026-10-06
+    type: update
+    title:
+      en: "Anthropic expands reduced-safeguard model access for vetted cyber defenders"
+      fr: "Anthropic élargit l’accès à ses modèles avec des garde-fous réduits pour des cyberdéfenseurs vérifiés"
+    description:
+      en: "Anthropic is expanding a programme that lets vetted cybersecurity teams use its most capable models with fewer restrictions for defensive research. Reuters reports that Project Glasswing partners found at least 129,000 verified software vulnerabilities between April and July, while Anthropic’s own open-source scanning found another 5,500 through October."
+      fr: "Anthropic élargit un programme permettant à des équipes de cybersécurité vérifiées d’utiliser ses modèles les plus avancés avec moins de restrictions pour la recherche défensive. Selon Reuters, les partenaires du projet Glasswing ont découvert au moins 129 000 vulnérabilités logicielles vérifiées entre avril et juillet, auxquelles s’ajoutent 5 500 failles trouvées par l’analyse open source d’Anthropic jusqu’en octobre."
+    link: https://tech.yahoo.com/ai/claude/articles/anthropic-opens-most-powerful-ai-190324449.html
+
+  - date: 2026-10-06
+    type: update
+    title:
+      en: "AI investment drives a surge in German startup creation"
+      fr: "L’investissement dans l’IA stimule fortement la création de startups en Allemagne"
+    description:
+      en: "Reuters reports an AI-led startup boom in Germany while the country’s traditional industrial base remains under pressure. Roughly one third of new German companies are now focused on AI, highlighting a possible reallocation of capital and talent rather than an immediate cure for industrial weakness."
+      fr: "Reuters décrit un essor des startups allemandes tiré par l’IA alors que la base industrielle traditionnelle du pays reste sous pression. Environ un tiers des nouvelles entreprises allemandes se consacrent désormais à l’IA, ce qui signale une réallocation possible du capital et des talents plutôt qu’une réponse immédiate aux fragilités industrielles."
+    link: https://www.reuters.com/business/ai-hopes-industrial-malaise-drive-boom-german-startups-2026-10-06/
+
+  - date: 2026-10-06
+    type: update
+    title:
+      en: "World Bank raises Africa’s 2026 growth forecast and urges AI investment"
+      fr: "La Banque mondiale relève la prévision de croissance de l’Afrique et appelle à investir dans l’IA"
+    description:
+      en: "The World Bank raised its 2026 growth forecast for Africa to 4.3%, citing stronger regional performance, and urged governments to invest in artificial intelligence to improve productivity. The recommendation also raises execution questions around digital infrastructure, skills, affordable compute and inclusive access."
+      fr: "La Banque mondiale a relevé à 4,3 % sa prévision de croissance de l’Afrique pour 2026, en raison d’une activité régionale plus robuste, et appelle les gouvernements à investir dans l’intelligence artificielle pour améliorer la productivité. Cette recommandation soulève aussi des enjeux d’infrastructures numériques, de compétences, de calcul abordable et d’accès inclusif."
+    link: https://www.reuters.com/world/africa/world-bank-raises-africas-2026-growth-forecast-urges-ai-investments-2026-10-06/
+
+  - date: 2026-10-06
+    type: update
+    title:
       en: "South Korea investigates suspected AI-assisted bank hacks"
       fr: "La Corée du Sud enquête sur des cyberattaques bancaires potentiellement assistées par l’IA"
     description:
