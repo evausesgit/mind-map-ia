@@ -1,4 +1,44 @@
 news:
+  - date: 2026-10-07
+    type: update
+    title:
+      en: "Windows moves toward governed hybrid AI agents"
+      fr: "Windows évolue vers des agents IA hybrides et gouvernés"
+    description:
+      en: "Microsoft is positioning Windows as a hybrid AI platform where agents can route work between local models and the cloud. Microsoft Execution Containers are now generally available, while MAI Code 1.1 Flash runs locally with 137B total and 6.8B active parameters, 3-bit quantization and a 256K context window."
+      fr: "Microsoft positionne Windows comme une plateforme d'IA hybride où les agents répartissent les tâches entre modèles locaux et cloud. Microsoft Execution Containers est désormais disponible, tandis que MAI Code 1.1 Flash s'exécute localement avec 137 milliards de paramètres au total, 6,8 milliards actifs, une quantification 3 bits et un contexte de 256K."
+    link: https://blogs.windows.com/windowsexperience/2026/10/07/building-windows-for-hybrid-intelligence/
+
+  - date: 2026-10-07
+    type: update
+    title:
+      en: "vLLM lifts DeepSeek V4.1 Flash agentic throughput by 5.3x"
+      fr: "vLLM multiplie par 5,3 le débit agentique de DeepSeek V4.1 Flash"
+    description:
+      en: "Inferact and the vLLM community report a 1.9x low-concurrency speedup and 5.3x throughput gain for the open-weight DeepSeek V4.1 Flash model after three weeks of optimization. The work combines bounded replay, CUDA graphs and open-source DeepSeek kernels, with the global KV footprint reduced to about 890 bytes per token."
+      fr: "Inferact et la communauté vLLM annoncent une accélération de 1,9 fois à faible concurrence et un gain de débit de 5,3 fois pour le modèle open-weight DeepSeek V4.1 Flash après trois semaines d'optimisation. Le travail combine bounded replay, graphes CUDA et kernels open source de DeepSeek, avec une empreinte KV globale ramenée à environ 890 octets par token."
+    link: https://vllm.ai/blog/2026-10-07-deepseek-v41-flash
+
+  - date: 2026-10-07
+    type: update
+    title:
+      en: "US voters push for stronger AI safeguards"
+      fr: "Les électeurs américains demandent davantage de garde-fous sur l'IA"
+    description:
+      en: "A nationwide Reuters/Ipsos survey found that 84% of registered voters see AI as a threat to American workers and bipartisan majorities support stricter regulation. The online poll ran from September 30 to October 5 among 4,506 US adults, including 3,526 registered voters, with a two-point margin of error."
+      fr: "Une enquête nationale Reuters/Ipsos indique que 84 % des électeurs inscrits considèrent l'IA comme une menace pour les travailleurs américains et que des majorités bipartites soutiennent une réglementation plus stricte. Réalisé en ligne du 30 septembre au 5 octobre auprès de 4 506 adultes, dont 3 526 électeurs inscrits, le sondage affiche une marge d'erreur de deux points."
+    link: https://www.reuters.com/world/most-us-voters-say-trump-congress-dont-take-ai-risks-seriously-reutersipsos-poll-2026-10-07/
+
+  - date: 2026-10-07
+    type: update
+    title:
+      en: "Samsung forecasts record profit as AI memory demand surges"
+      fr: "Samsung prévoit un bénéfice record porté par la mémoire pour l'IA"
+    description:
+      en: "Samsung Electronics forecasts third-quarter operating profit above 100 trillion won, roughly $80 billion, nearly nine times the year-earlier result. The preliminary guidance highlights how AI infrastructure demand is flowing through to advanced memory suppliers."
+      fr: "Samsung Electronics prévoit un bénéfice opérationnel trimestriel supérieur à 100 000 milliards de wons, soit environ 80 milliards de dollars, presque neuf fois le niveau d'un an plus tôt. Cette estimation préliminaire illustre la transmission de la demande d'infrastructures IA aux fournisseurs de mémoire avancée."
+    link: https://www.reuters.com/business/samsung-q3-profit-jumps-783-ai-memory-boom-lifts-chip-earnings-2026-10-07/
+
 
   - date: 2026-10-06
     type: update
