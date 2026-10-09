@@ -1,4 +1,44 @@
 news:
+  - date: 2026-10-08
+    type: update
+    title:
+      en: "Google Cloud introduces a governed universal Gemini agent for work"
+      fr: "Google Cloud présente un agent Gemini universel et gouverné pour le travail"
+    description:
+      en: "Google Cloud has announced Gemini agent, a universal work agent that can use an organisation's business context, plan tasks, call tools and connect to enterprise systems from one prompt interface. Google says it selects models by task and includes cost controls, security, administration and governance, though deployment evidence will determine how well these controls work in practice."
+      fr: "Google Cloud annonce Gemini agent, un agent de travail universel capable d'utiliser le contexte métier d'une organisation, de planifier des tâches, d'appeler des outils et de se connecter aux systèmes d'entreprise depuis une interface unique. Google affirme qu'il sélectionne le modèle selon la tâche et intègre contrôle des coûts, sécurité, administration et gouvernance ; les déploiements devront encore démontrer l'efficacité réelle de ces contrôles."
+    link: https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/gemini-at-work/
+
+  - date: 2026-10-08
+    type: update
+    title:
+      en: "AI agents implicated in cyberattacks on South Korean banks"
+      fr: "Des agents IA mis en cause dans des cyberattaques contre des banques sud-coréennes"
+    description:
+      en: "A US cybersecurity firm told Reuters that the suspected actor behind recent attacks on South Korean banks was likely a 26-year-old based in China who used a Chinese-developed AI agent and Anthropic's Claude Code. The attribution remains part of an active investigation, but the case shows how general-purpose coding agents can compress the time and expertise needed for offensive workflows."
+      fr: "Une société américaine de cybersécurité a indiqué à Reuters que l'auteur présumé de récentes attaques contre des banques sud-coréennes serait un homme de 26 ans basé en Chine ayant utilisé un agent IA chinois et Claude Code d'Anthropic. L'attribution reste liée à une enquête en cours, mais l'affaire illustre la capacité des agents de code généralistes à réduire le temps et l'expertise nécessaires aux opérations offensives."
+    link: https://www.reuters.com/world/suspect-behind-south-korea-bank-hacks-may-be-26-year-old-china-cybersecurity-2026-10-08/
+
+  - date: 2026-10-08
+    type: update
+    title:
+      en: "OpenAI revenue ambiguity triggers an AI infrastructure sell-off"
+      fr: "L'ambiguïté sur les revenus d'OpenAI secoue les valeurs d'infrastructure IA"
+    description:
+      en: "CNBC reports that OpenAI told investors its annualized revenue was about $50 billion at the end of September, below a widely circulated estimate near $70 billion. Shares exposed to the AI infrastructure build-out fell as investors reassessed the pace at which demand can support very large compute commitments; the figures are private-company disclosures rather than audited public accounts."
+      fr: "Selon CNBC, OpenAI a indiqué à ses investisseurs que son revenu annualisé atteignait environ 50 milliards de dollars fin septembre, contre une estimation largement relayée proche de 70 milliards. Les valeurs exposées aux infrastructures IA ont reculé, les investisseurs réévaluant la vitesse à laquelle la demande peut soutenir d'importants engagements de calcul ; ces chiffres relèvent de communications d'une société privée et non de comptes publics audités."
+    link: https://www.cnbc.com/2026/10/08/open-ai-revenue-nvidia-oracle-coreweave.html
+
+  - date: 2026-10-08
+    type: update
+    title:
+      en: "Databricks gives parallel coding agents isolated database branches"
+      fr: "Databricks fournit aux agents de code parallèles des branches de base de données isolées"
+    description:
+      en: "Databricks has shown an agentic development workflow in which Lakebase creates an isolated copy-on-write Postgres branch for each coding agent or pull request. Sub-second branching and scale-to-zero aim to prevent parallel agents from colliding on shared database state, while keeping migrations and tests reproducible."
+      fr: "Databricks présente un workflow de développement agentique dans lequel Lakebase crée une branche PostgreSQL isolée en copy-on-write pour chaque agent de code ou pull request. Le branchement en moins d'une seconde et la mise à l'échelle jusqu'à zéro visent à empêcher les agents parallèles d'entrer en conflit sur un état de base partagé, tout en rendant migrations et tests reproductibles."
+    link: https://www.databricks.com/blog/lakebase-and-agentic-sdlc-branching-databases-coding-agents
+
   - date: 2026-10-07
     type: update
     title:
