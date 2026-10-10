@@ -1,4 +1,44 @@
 news:
+  - date: 2026-10-09
+    type: update
+    title:
+      en: "Anthropic launches a cyber mission for critical infrastructure and open source"
+      fr: "Anthropic lance une mission cyber pour les infrastructures critiques et l'open source"
+    description:
+      en: "Anthropic has launched a Cyber Mission focused on operational technology and open-source software. Its Critical Infrastructure Defense Program starts with 11 partners, while the free opt-in OSS Scanner sends model-generated vulnerability reports and suggested fixes to enrolled projects; Anthropic expects a true-positive rate above 90% but warns that reports are not human-reviewed."
+      fr: "Anthropic lance une Cyber Mission consacrée aux technologies opérationnelles et aux logiciels open source. Son programme de défense des infrastructures critiques démarre avec 11 partenaires, tandis que le service gratuit OSS Scanner envoie aux projets inscrits des rapports de vulnérabilités et des correctifs proposés par le modèle ; Anthropic vise plus de 90 % de vrais positifs mais précise que ces rapports ne sont pas revus par des humains."
+    link: https://www.anthropic.com/news/anthropic-cyber-mission
+
+  - date: 2026-10-08
+    type: update
+    title:
+      en: "Anthropic updates usage rules for autonomous and high-risk AI"
+      fr: "Anthropic actualise ses règles pour l'IA autonome et les usages à haut risque"
+    description:
+      en: "Anthropic's revised Usage Policy, effective November 12, clarifies restrictions for deceptive activity, influence operations, surveillance and weapons-related misuse. It also adds controls for autonomous physical actions and clarifies requirements for high-risk health and finance uses, making policy mapping and vendor-control reviews necessary before the effective date."
+      fr: "La politique d'utilisation révisée d'Anthropic, applicable le 12 novembre, précise les interdictions relatives aux activités trompeuses, aux opérations d'influence, à la surveillance et aux usages liés aux armes. Elle ajoute aussi des contrôles pour les actions physiques autonomes et clarifie les exigences concernant les usages à haut risque en santé et en finance, ce qui impose une revue des contrôles fournisseur avant son entrée en vigueur."
+    link: https://www.anthropic.com/news/2026-usage-policy-update
+
+  - date: 2026-10-09
+    type: update
+    title:
+      en: "Qwen releases an eight-step open-weight image model"
+      fr: "Qwen publie un modèle d'image open-weight en huit étapes"
+    description:
+      en: "Qwen has published Qwen-Image-2.1-Turbo, an accelerated checkpoint for image generation and editing that uses eight denoising steps and the same 7B visual architecture as Qwen-Image-2.1. The downloadable weights support local evaluation, but the Qwen Research License restricts them to research and evaluation unless separate commercial rights are obtained."
+      fr: "Qwen publie Qwen-Image-2.1-Turbo, un checkpoint accéléré de génération et d'édition d'images utilisant huit étapes de débruitage et la même architecture visuelle de 7 milliards de paramètres que Qwen-Image-2.1. Les poids téléchargeables permettent une évaluation locale, mais la Qwen Research License les limite à la recherche et à l'évaluation sans droits commerciaux distincts."
+    link: https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo
+
+  - date: 2026-10-08
+    type: research
+    title:
+      en: "OWASP maps Q3 agent incidents to excessive agency and privilege abuse"
+      fr: "OWASP relie les incidents agentiques du troisième trimestre à l'agence excessive et aux abus de privilèges"
+    description:
+      en: "An OWASP GenAI Security Project roundup documents connected agent incidents involving evaluation sandboxes, exposed credentials, production systems and persistent-memory poisoning. Its main lesson is that prompt instructions are not a security boundary: organizations need enforced scope, isolated tools and credentials, controlled egress and monitoring of actual agent actions."
+      fr: "Une synthèse de l'OWASP GenAI Security Project documente des incidents agentiques liés à des environnements d'évaluation, des identifiants exposés, des systèmes de production et l'empoisonnement de mémoire persistante. Sa leçon centrale est que les instructions dans le prompt ne constituent pas une frontière de sécurité : il faut imposer le périmètre, isoler outils et identifiants, contrôler les sorties réseau et surveiller les actions réelles des agents."
+    link: https://genai.owasp.org/2026/10/08/genai-and-agentic-ai-exploit-roundup-q3-2026/
+
   - date: 2026-10-08
     type: update
     title:
