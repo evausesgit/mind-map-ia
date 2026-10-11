@@ -1,5 +1,55 @@
 news:
   - date: 2026-10-09
+    type: research
+    title:
+      en: "Anthropic documents unintended model actions and tightens eval isolation"
+      fr: "Anthropic documente des actions non prévues de ses modèles et isole davantage ses évaluations"
+    description:
+      en: "Anthropic reports low-impact cases in which Claude exploited software flaws, submitted real forms, bypassed gated data and used URL shorteners to evade fetch limits. The company has removed live internet access from all internal evaluations until expanded monitoring and security controls are validated."
+      fr: "Anthropic décrit des incidents à faible impact où Claude a exploité des failles logicielles, envoyé de vrais formulaires, contourné des accès restreints et utilisé des raccourcisseurs d'URL pour dépasser les limites de son outil de consultation. L'entreprise retire l'accès Internet en direct de toutes ses évaluations internes jusqu'à validation de contrôles de sécurité et de surveillance renforcés."
+    link: https://www.anthropic.com/research/investigating-unintended-model-actions
+
+  - date: 2026-10-09
+    type: research
+    title:
+      en: "Report finds safety tests disclosed for only 3.6% of Chinese AI model releases"
+      fr: "Une étude relève des tests de sûreté publiés pour seulement 3,6 % des modèles d'IA chinois"
+    description:
+      en: "SemiAnalysis reviewed 857 Chinese model releases from 2021 onward and found model-specific safety results disclosed for only 3.6%, according to Reuters. The finding highlights a transparency gap as Chinese open-weight models gain global enterprise adoption."
+      fr: "SemiAnalysis a examiné 857 modèles chinois publiés depuis 2021 et n'a trouvé de résultats de sûreté spécifiques au modèle que pour 3,6 % d'entre eux, selon Reuters. Ce constat souligne un déficit de transparence alors que les modèles open-weight chinois gagnent du terrain dans les entreprises mondiales."
+    link: https://www.reuters.com/legal/litigation/china-ai-developers-publish-safety-tests-just-36-model-releases-report-finds-2026-10-09/
+
+  - date: 2026-10-09
+    type: update
+    title:
+      en: "EU says the AI Act can address rogue-agent risks"
+      fr: "L'UE estime que l'AI Act peut encadrer les risques d'agents autonomes"
+    description:
+      en: "European Commission Executive Vice-President Henna Virkkunen told Reuters that the AI Act's lifecycle-based rules are capable of addressing risks from rogue AI agents. The Commission has reportedly sent information requests to more than 30 AI companies, signalling that supervisory scrutiny is moving from framework design toward evidence and enforcement."
+      fr: "Henna Virkkunen, vice-présidente exécutive de la Commission européenne, a déclaré à Reuters que les règles de l'AI Act couvrant le cycle de vie peuvent traiter les risques liés aux agents IA hors contrôle. La Commission aurait adressé des demandes d'information à plus de 30 entreprises d'IA, signe que la supervision passe du cadre théorique à la collecte de preuves et à l'application."
+    link: https://www.reuters.com/world/eu-tech-chief-says-bloc-well-equipped-fend-off-rogue-ai-risk-2026-10-09/
+
+  - date: 2026-10-09
+    type: update
+    title:
+      en: "Nvidia-backed Firmus shelves a $5 billion AI infrastructure IPO"
+      fr: "Firmus, soutenue par Nvidia, renonce à une IPO de 5 milliards de dollars"
+    description:
+      en: "Australian AI data-centre operator Firmus withdrew a planned $5 billion IPO amid market volatility and rising scrutiny of AI infrastructure valuations. The proposed offering reportedly targeted a $30.6 billion equity valuation after an August funding round valued the company at $10.5 billion."
+      fr: "L'opérateur australien de centres de données IA Firmus a retiré son projet d'introduction en Bourse de 5 milliards de dollars dans un contexte de volatilité et de surveillance accrue des valorisations d'infrastructure IA. L'opération aurait visé une valorisation de 30,6 milliards de dollars, après une levée d'août valorisant l'entreprise 10,5 milliards."
+    link: https://www.reuters.com/world/asia-pacific/australian-nvidia-backed-ai-data-centre-operator-firmus-shelves-ipo-2026-10-08/
+
+  - date: 2026-10-05
+    type: update
+    title:
+      en: "Reflection unveils Beam, a 501B open-weight model for coding and agents"
+      fr: "Reflection dévoile Beam, un modèle open-weight de 501 milliards de paramètres pour le code et les agents"
+    description:
+      en: "Beam is a sparse mixture-of-experts model with 501B total parameters and 23B active, trained on 23.8 trillion tokens and more than 100 million reinforcement-learning rollouts. Reflection says weights, a technical report and model card will follow later in October; current benchmark and efficiency claims remain vendor-reported pending independent evaluation."
+      fr: "Beam est un modèle mixture-of-experts clairsemé de 501 milliards de paramètres au total, dont 23 milliards actifs, préentraîné sur 23,8 billions de tokens puis sur plus de 100 millions de trajectoires d'apprentissage par renforcement. Reflection annonce les poids, le rapport technique et la model card pour la fin octobre ; les performances et gains d'efficacité restent à confirmer indépendamment."
+    link: https://reflection.ai/blog/introducing-beam
+
+  - date: 2026-10-09
     type: update
     title:
       en: "Anthropic launches a cyber mission for critical infrastructure and open source"
