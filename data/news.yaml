@@ -1,4 +1,54 @@
 news:
+  - date: 2026-10-12
+    type: update
+    title:
+      en: "TSMC forecast to post a sixth straight record quarterly profit"
+      fr: "TSMC attendu sur un sixième bénéfice trimestriel record consécutif"
+    description:
+      en: "Analysts expect TSMC to report net income of about T$746 billion for the quarter, up roughly 65% year on year, as demand for advanced AI chips remains strong. The results, due Thursday, will test whether infrastructure spending continues to translate into semiconductor earnings."
+      fr: "Les analystes anticipent pour TSMC un bénéfice net trimestriel d'environ 746 milliards de dollars taïwanais, en hausse d'environ 65 % sur un an, porté par la demande de puces IA avancées. Les résultats attendus jeudi testeront la conversion des investissements d'infrastructure en bénéfices semi-conducteurs."
+    link: https://www.reuters.com/world/china/tsmc-expected-report-sixth-straight-quarter-record-profit-thanks-ai-boom-2026-10-12/
+
+  - date: 2026-10-11
+    type: update
+    title:
+      en: "Amazon reportedly in talks to acquire Decart for about $7 billion"
+      fr: "Amazon serait en négociation pour acquérir Decart pour environ 7 milliards de dollars"
+    description:
+      en: "Amazon is reportedly discussing an acquisition of generative-video startup Decart at a valuation of about $7 billion, according to the Wall Street Journal as relayed by Reuters. The talks are not a completed transaction, but they illustrate hyperscalers' push to acquire scarce model and real-time media capabilities."
+      fr: "Amazon discuterait de l'acquisition de la start-up de vidéo générative Decart pour une valorisation d'environ 7 milliards de dollars, selon le Wall Street Journal cité par Reuters. L'opération n'est pas conclue, mais illustre la course des hyperscalers aux capacités rares en modèles et médias temps réel."
+    link: https://www.reuters.com/business/retail-consumer/amazon-talks-buy-ai-startup-decart-around-7-billion-wsj-reports-2026-10-11/
+
+  - date: 2026-10-08
+    type: research
+    title:
+      en: "OpenAI disrupts two AI-assisted false-front influence operations"
+      fr: "OpenAI démantèle deux opérations d'influence sous fausse couverture assistées par IA"
+    description:
+      en: "OpenAI says it banned Russian- and Iranian-origin operations that used ChatGPT alongside traditional tactics to support fake journalists and a purported think tank. The company rated the Russian operation Category 5 and the Iranian operation Category 4 on the six-level IO Breakout Scale, showing that external publications—not only social media—can amplify AI-assisted influence."
+      fr: "OpenAI affirme avoir banni deux opérations d'origine russe et iranienne utilisant ChatGPT avec des méthodes classiques pour soutenir de faux journalistes et un prétendu groupe de réflexion. L'entreprise classe l'opération russe en catégorie 5 et l'iranienne en catégorie 4 sur l'échelle IO Breakout à six niveaux, soulignant le rôle amplificateur des publications externes au-delà des réseaux sociaux."
+    link: https://openai.com/index/disrupting-ai-enabled-false-front-operations/
+
+  - date: 2026-10-08
+    type: update
+    title:
+      en: "LightOn releases open-weight LightOnOCR-3 for document intelligence"
+      fr: "LightOn publie LightOnOCR-3 en open-weight pour l'intelligence documentaire"
+    description:
+      en: "LightOnOCR-3 is available in 0.8B, 1B and 4B parameter sizes and combines OCR with layout detection, image description and chart or scientific-figure extraction. The Apache 2.0 family offers local deployment options for document workflows, while vendor benchmarks still require independent validation on enterprise data."
+      fr: "LightOnOCR-3 est proposé en versions de 0,8, 1 et 4 milliards de paramètres et combine OCR, détection de mise en page, description d'images et extraction de graphiques ou figures scientifiques. Cette famille sous licence Apache 2.0 permet un déploiement local, mais ses performances doivent encore être validées indépendamment sur les documents d'entreprise."
+    link: https://huggingface.co/blog/lightonai/lightonocr-3
+
+  - date: 2026-10-07
+    type: update
+    title:
+      en: "Anthropic launches Claude Haiku 5.5 for high-volume agent workloads"
+      fr: "Anthropic lance Claude Haiku 5.5 pour les charges agentiques à fort volume"
+    description:
+      en: "Anthropic says Claude Haiku 5.5 costs about 75% less to run than Haiku 4.5 on average, with API pricing from $0.10 per million input tokens and $0.50 per million output tokens for prompts up to 100,000 tokens. The model targets summarisation, classification, browser use and subagent work and is available across major cloud platforms."
+      fr: "Anthropic indique que Claude Haiku 5.5 coûte en moyenne environ 75 % de moins à exécuter que Haiku 4.5, avec un tarif API à partir de 0,10 dollar par million de tokens en entrée et 0,50 dollar en sortie jusqu'à 100 000 tokens de prompt. Le modèle vise résumé, classification, navigation et sous-agents, avec disponibilité sur les principaux clouds."
+    link: https://www.anthropic.com/claude-haiku-5-5
+
   - date: 2026-10-09
     type: research
     title:
