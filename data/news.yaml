@@ -2,6 +2,46 @@ news:
   - date: 2026-10-12
     type: update
     title:
+      en: "Meta launches Muse Wonder frontier models for agents"
+      fr: "Meta lance les modèles frontier Muse Wonder pour les agents"
+    description:
+      en: "Meta introduced Muse Wonder and Muse Wonder Full, proprietary frontier models aimed at personal and professional agentic tasks, memory and long-running coding. Meta says the Full variant leads several agent and coding benchmarks, but those vendor claims still need broader independent validation."
+      fr: "Meta a présenté Muse Wonder et Muse Wonder Full, deux modèles frontier propriétaires destinés aux tâches agentiques personnelles et professionnelles, à la mémoire et au code de longue durée. Meta affirme que la version Full domine plusieurs benchmarks d'agents et de code, des résultats qui demandent encore une validation indépendante plus large."
+    link: https://about.fb.com/news/2026/10/introducing-muse-wonder-models/
+
+  - date: 2026-10-12
+    type: update
+    title:
+      en: "Microsoft plans million-chip scale for Maia 300 inference accelerator"
+      fr: "Microsoft vise une échelle d'un million de puces pour l'accélérateur d'inférence Maia 300"
+    description:
+      en: "Microsoft unveiled Maia 300 and plans production deployments from 2027, with Reuters reporting that the company could deploy more than one million chips next year. Microsoft intends to make Maia its primary inference architecture across its products and services, reducing cost and dependency on external accelerators."
+      fr: "Microsoft a dévoilé Maia 300 et prévoit des déploiements de production à partir de 2027 ; Reuters indique que le groupe pourrait installer plus d'un million de puces l'an prochain. Microsoft veut faire de Maia son architecture principale d'inférence afin de réduire les coûts et sa dépendance aux accélérateurs externes."
+    link: https://blogs.microsoft.com/blog/2026/10/12/microsoft-to-expand-azure-maia-system-to-multi-gigawatt-deployments/
+
+  - date: 2026-10-12
+    type: research
+    title:
+      en: "Anthropic says new defenses cut distillation harvesting by 90% to 99%"
+      fr: "Anthropic affirme réduire de 90 % à 99 % la collecte par distillation"
+    description:
+      en: "Anthropic says three new defenses against illicit model distillation reduced data harvested from Claude by roughly 90% to 99%. The company frames distillation as both an intellectual-property and security problem as frontier-model providers face automated, distributed extraction attempts."
+      fr: "Anthropic affirme que trois nouvelles défenses contre la distillation illicite ont réduit d'environ 90 % à 99 % les données extraites de Claude. L'entreprise présente la distillation comme un risque de propriété intellectuelle et de sécurité face à des tentatives d'extraction automatisées et distribuées."
+    link: https://www.anthropic.com/research/distillation-defenses
+
+  - date: 2026-10-06
+    type: update
+    title:
+      en: "Mistral previews open-weight Large 4 'Le Chonk'"
+      fr: "Mistral présente Large 4 « Le Chonk », annoncé en open-weight"
+    description:
+      en: "Mistral Large 4 is a natively multimodal mixture-of-experts model with about 1.05 trillion total parameters and roughly 49–52 billion active parameters, now available in public preview. Mistral says downloadable weights will follow at the end of October, making licensing, hardware requirements and independent evaluations the next points to verify."
+      fr: "Mistral Large 4 est un modèle multimodal natif en mixture-of-experts d'environ 1 050 milliards de paramètres au total, dont environ 49 à 52 milliards actifs, désormais en préversion publique. Mistral annonce des poids téléchargeables fin octobre ; licence, besoins matériels et évaluations indépendantes seront les prochains points à vérifier."
+    link: https://huggingface.co/mistralai/Mistral-Large-4.0-1T05-A52B
+
+  - date: 2026-10-12
+    type: update
+    title:
       en: "TSMC forecast to post a sixth straight record quarterly profit"
       fr: "TSMC attendu sur un sixième bénéfice trimestriel record consécutif"
     description:
