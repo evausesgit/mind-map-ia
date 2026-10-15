@@ -1,4 +1,54 @@
 news:
+  - date: 2026-10-14
+    type: update
+    title:
+      en: "OpenAI reports rapid growth in agentic AI use across EU businesses"
+      fr: "OpenAI signale une forte progression de l’IA agentique dans les entreprises de l’UE"
+    description:
+      en: "OpenAI says Codex and ChatGPT Work now generate more than half of output tokens in its EU Enterprise and Business sample, while weekly active users at EU businesses with 200 or fewer associated users have grown more than eightfold since May 2026. The vendor's usage data also shows wide variation between countries and should not be treated as a market-wide adoption survey."
+      fr: "OpenAI indique que Codex et ChatGPT Work produisent désormais plus de la moitié des tokens de sortie dans son échantillon Enterprise et Business de l’UE, tandis que les utilisateurs actifs hebdomadaires des entreprises européennes comptant au plus 200 utilisateurs associés ont été multipliés par plus de huit depuis mai 2026. Ces données d’usage de l’éditeur varient fortement selon les pays et ne constituent pas une enquête sur l’ensemble du marché."
+    link: https://openai.com/index/the-eus-next-chapter-in-ai-is-agentic/
+
+  - date: 2026-10-14
+    type: update
+    title:
+      en: "Third Moment runs 10,000 long-duration agents in quantitative research"
+      fr: "Third Moment exécute 10 000 agents de longue durée pour la recherche quantitative"
+    description:
+      en: "An OpenAI customer case says Third Moment Research runs 10,000 agents concurrently for investigations lasting 36 to 48 hours, including quantitative-finance experiments. It reports that a Codex-led optimisation cut an order-level US equity backtest from about three hours to three to five minutes, but the performance claims come from the companies involved rather than an independent audit."
+      fr: "Une étude client d’OpenAI indique que Third Moment Research exécute simultanément 10 000 agents pendant 36 à 48 heures, notamment pour des expériences de finance quantitative. Une optimisation conduite avec Codex aurait réduit un backtest sur données d’ordres actions américaines d’environ trois heures à trois à cinq minutes, mais ces performances ne sont pas issues d’un audit indépendant."
+    link: https://openai.com/index/third-moment-research/
+
+  - date: 2026-10-14
+    type: update
+    title:
+      en: "SentinelOne uses OpenAI Daybreak to accelerate malware analysis"
+      fr: "SentinelOne utilise OpenAI Daybreak pour accélérer l’analyse de logiciels malveillants"
+    description:
+      en: "SentinelOne says OpenAI Daybreak can produce human-level reverse-engineering output in roughly eight hours for work that may take a specialist four to six weeks. The security vendor keeps human accountability for architectural decisions; the figures are a customer case study and do not provide an independent benchmark."
+      fr: "SentinelOne affirme qu’OpenAI Daybreak peut produire en environ huit heures une rétro-ingénierie de niveau humain qui demanderait quatre à six semaines à un spécialiste. L’éditeur de cybersécurité conserve la responsabilité humaine pour les décisions d’architecture ; ces chiffres proviennent d’une étude client et non d’un benchmark indépendant."
+    link: https://openai.com/index/sentinelone/
+
+  - date: 2026-10-14
+    type: research
+    title:
+      en: "Ai2 releases HiRO-ACEv2 for 3 km extreme-weather simulation"
+      fr: "Ai2 publie HiRO-ACEv2 pour simuler les événements météo extrêmes à 3 km"
+    description:
+      en: "Ai2 released HiRO-ACEv2 through Hugging Face, an open climate-model workflow that downscales global simulations to about 3 km resolution for hurricanes, heavy rain and mountain winds. Ai2 estimates global data generation at roughly one three-hundredth of the cost of the storm-resolving X-SHiELD model; operational risk use would still require validation against observed events and regional data."
+      fr: "Ai2 publie via Hugging Face HiRO-ACEv2, un workflow ouvert de modélisation climatique qui affine les simulations mondiales jusqu’à environ 3 km pour les ouragans, pluies intenses et vents de montagne. Ai2 estime le coût de génération mondiale à environ un trois-centième de celui du modèle X-SHiELD ; un usage en gestion des risques exige encore une validation sur observations et données régionales."
+    link: https://huggingface.co/blog/allenai/hiro-acev2
+
+  - date: 2026-10-14
+    type: update
+    title:
+      en: "LSEG partners with Nvidia on historical market-data processing"
+      fr: "LSEG s’associe à Nvidia pour traiter les données de marché historiques"
+    description:
+      en: "LSEG has partnered with Nvidia to help financial institutions process and analyse large volumes of historical market data faster and at scale using accelerated computing. The announcement points to a tighter link between market-data platforms and AI infrastructure, while institutions still need evidence on latency, reproducibility, cost, entitlements and controls before production use."
+      fr: "LSEG s’associe à Nvidia pour aider les institutions financières à traiter et analyser plus rapidement, et à grande échelle, d’importants volumes de données de marché historiques grâce au calcul accéléré. L’annonce rapproche plateformes de données et infrastructure IA, mais latence, reproductibilité, coûts, droits d’accès et contrôles restent à démontrer avant un usage en production."
+    link: https://www.reuters.com/business/lseg-teams-up-with-nvidia-faster-market-data-processing-2026-10-14/
+
   - date: 2026-10-13
     type: update
     title:
