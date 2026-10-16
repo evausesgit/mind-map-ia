@@ -1,4 +1,44 @@
 news:
+  - date: 2026-10-15
+    type: update
+    title:
+      en: "Meta releases Muse Spark Open, an 816B multimodal open-weight model"
+      fr: "Meta publie Muse Spark Open, un modèle multimodal open-weight de 816 milliards de paramètres"
+    description:
+      en: "Meta released Muse Spark Open, a multimodal mixture-of-experts model with about 816B total parameters, 42B active per token and a context window of up to one million tokens. It targets coding and agentic workflows, but the full checkpoint is about 1.5 TB in BF16 and requires substantial infrastructure despite support for Apple MLX and quantised deployment."
+      fr: "Meta publie Muse Spark Open, un modèle multimodal mixture-of-experts d’environ 816 milliards de paramètres au total, dont 42 milliards actifs par token, avec une fenêtre de contexte pouvant atteindre un million de tokens. Destiné au code et aux workflows agentiques, son checkpoint complet pèse environ 1,5 To en BF16 et exige une infrastructure importante malgré la prise en charge d’Apple MLX et du déploiement quantifié."
+    link: https://huggingface.co/blog/meta-muse-spark-open
+
+  - date: 2026-10-15
+    type: update
+    title:
+      en: "Anthropic gives METR employee-level access for independent safety reviews"
+      fr: "Anthropic accorde à METR un accès de niveau employé pour des audits de sécurité indépendants"
+    description:
+      en: "Anthropic is embedding six METR researchers with company laptops, office space and access comparable to its internal risk teams so they can assess models, incidents and risk management. METR may publish without an Anthropic veto, subject to narrow redactions for customer data, privilege and model architecture, creating a stronger but still company-designed audit model."
+      fr: "Anthropic accueille six chercheurs de METR avec des ordinateurs de l’entreprise, des bureaux et un accès comparable à celui de ses équipes internes de risque afin d’évaluer modèles, incidents et gestion des risques. METR pourra publier sans veto d’Anthropic, sous réserve de suppressions limitées concernant les données clients, le secret juridique et l’architecture des modèles : un audit renforcé, mais encore conçu par l’entreprise auditée."
+    link: https://techcrunch.com/2026/10/15/anthropic-is-letting-metr-researchers-look-under-the-hood-with-employee-level-access/
+
+  - date: 2026-10-15
+    type: new-feature
+    title:
+      en: "ChatGPT can inspect and control open Chrome tabs"
+      fr: "ChatGPT peut consulter et piloter les onglets Chrome ouverts"
+    description:
+      en: "OpenAI upgraded its Chrome extension so ChatGPT can inspect tagged browser tabs and, through ChatGPT Work, perform actions such as sending messages, filling forms, downloading files and organising tabs. The feature expands practical agent capabilities but also raises material questions about least-privilege access, data leakage, user confirmation and auditable browser actions."
+      fr: "OpenAI a mis à jour son extension Chrome afin que ChatGPT puisse consulter les onglets désignés et, via ChatGPT Work, exécuter des actions comme envoyer des messages, remplir des formulaires, télécharger des fichiers ou organiser les onglets. Cette évolution renforce les agents pratiques, mais soulève des enjeux importants de moindre privilège, de fuite de données, de confirmation utilisateur et de traçabilité des actions."
+    link: https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs
+
+  - date: 2026-10-15
+    type: update
+    title:
+      en: "Anthropic highlights rapid revenue growth ahead of a potential listing"
+      fr: "Anthropic met en avant sa forte croissance avant une possible introduction en Bourse"
+    description:
+      en: "At an investor event, Anthropic presented figures indicating quarterly revenue of $16.8B for the three months to September, up 45% from $11.6B in the prior quarter, and said it was profitable on an adjusted basis. The privately held company is seeking to demonstrate that revenue can support immense model and infrastructure spending, but the figures reported by the BBC are not public audited accounts."
+      fr: "Lors d’un événement investisseurs, Anthropic a présenté un chiffre d’affaires trimestriel de 16,8 milliards de dollars sur les trois mois achevés en septembre, en hausse de 45 % par rapport aux 11,6 milliards du trimestre précédent, ainsi qu’une rentabilité sur une base ajustée. L’entreprise privée cherche à montrer que ses revenus peuvent soutenir des dépenses considérables en modèles et infrastructure, mais les chiffres rapportés par la BBC ne sont pas des comptes publics audités."
+    link: https://www.bbc.co.uk/news/articles/cqzjx448vxkgo
+
   - date: 2026-10-14
     type: update
     title:
