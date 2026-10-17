@@ -1,4 +1,44 @@
 news:
+  - date: 2026-10-16
+    type: update
+    title:
+      en: "AI infrastructure boom raises the prospect of higher-for-longer interest rates"
+      fr: "Le boom des infrastructures IA renforce le risque de taux durablement plus élevés"
+    description:
+      en: "Reuters reports that investment in chips, data centres, electricity grids and telecom networks is intensifying global demand for capital. Central bankers are considering whether this investment cycle could keep interest rates higher and force governments to make tighter fiscal trade-offs, even if AI later improves productivity."
+      fr: "Reuters rapporte que les investissements dans les puces, centres de données, réseaux électriques et télécoms intensifient la demande mondiale de capitaux. Les banques centrales évaluent si ce cycle peut maintenir les taux plus élevés et durcir les arbitrages budgétaires, même si l’IA améliore ensuite la productivité."
+    link: https://www.reuters.com/business/finance/central-bankers-eye-higher-rates-ai-boom-fuels-scramble-cash-2026-10-16/
+
+  - date: 2026-10-16
+    type: update
+    title:
+      en: "Jev reaches 35% of Vercel AI Gateway paid teams in two weeks"
+      fr: "Jev atteint 35 % des équipes payantes de Vercel AI Gateway en deux semaines"
+    description:
+      en: "Vercel says TypeSafe AI’s decision model Jev reached about 35% of paid AI Gateway teams within its first 14 days, the fastest early adoption measured on that platform. The result signals demand for small, cheap routing and classification models, but it is a platform-specific usage metric rather than a market-wide quality benchmark."
+      fr: "Vercel indique que Jev, le modèle de décision de TypeSafe AI, a atteint environ 35 % des équipes payantes d’AI Gateway en quatorze jours, soit l’adoption initiale la plus rapide mesurée sur cette plateforme. Ce résultat signale un intérêt pour les petits modèles économiques de routage et de classification, mais il ne constitue ni une mesure de marché ni un benchmark général de qualité."
+    link: https://vercel.com/blog/ai-gateway-jev-model-launch
+
+  - date: 2026-10-16
+    type: update
+    title:
+      en: "Replit outlines its vision for the ‘self-driving company’"
+      fr: "Replit présente sa vision de « l’entreprise autonome »"
+    description:
+      en: "Replit CEO Amjad Masad says AI agents can increasingly handle operational tasks while people focus on architecture and higher-level decisions. Replit reports that engineering code output nearly tripled over six months while review times, reversions and incidents did not worsen, but these are company-reported results rather than independent evidence."
+      fr: "Amjad Masad, directeur général de Replit, estime que les agents IA peuvent prendre en charge davantage de tâches opérationnelles pendant que les équipes se concentrent sur l’architecture et les décisions de niveau supérieur. Replit affirme que la production de code a presque triplé en six mois sans dégradation des délais de revue, retours arrière ou incidents ; ces résultats restent déclaratifs et non indépendamment audités."
+    link: https://replit.com/blog/self-driving-company
+
+  - date: 2026-10-13
+    type: update
+    title:
+      en: "GitHub deploys ModernBERT to improve secret detection at far lower cost"
+      fr: "GitHub déploie ModernBERT pour mieux détecter les secrets à bien moindre coût"
+    description:
+      en: "GitHub replaced a heavier LLM pipeline with a fine-tuned ModernBERT classifier for generic secret detection in code. GitHub says the new system cut median post-push scan time by 86% and model-serving cost by more than 98%, while making contextual detection practical in push protection before code is accepted."
+      fr: "GitHub a remplacé une chaîne fondée sur un LLM plus lourd par un classifieur ModernBERT affiné pour détecter les secrets génériques dans le code. Selon GitHub, le nouveau système réduit de 86 % le temps médian d’analyse après push et de plus de 98 % le coût de service, tout en rendant la détection contextuelle utilisable avant l’acceptation du code."
+    link: https://www.helpnetsecurity.com/2026/10/14/github-secret-detection-model/
+
   - date: 2026-10-15
     type: update
     title:
