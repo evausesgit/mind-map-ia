@@ -2,6 +2,46 @@ news:
   - date: 2026-10-16
     type: update
     title:
+      en: "China moves to tighten controls on exports of AI models and agents"
+      fr: "La Chine resserre le contrôle des exportations de modèles et d’agents IA"
+    description:
+      en: "Reuters reports that Beijing has added advanced AI models, agent technologies and related capabilities to a more restrictive export-control framework amid intensifying strategic competition with the United States. For global firms, the practical issue is not only chip access but also whether model weights, agent software and technical know-how can cross borders."
+      fr: "Reuters rapporte que Pékin a ajouté les modèles d’IA avancés, les technologies d’agents et des capacités connexes à un dispositif d’exportation plus restrictif, dans un contexte de rivalité croissante avec les États-Unis. Pour les entreprises mondiales, l’enjeu ne porte plus seulement sur l’accès aux puces, mais aussi sur la circulation transfrontalière des poids, logiciels agentiques et savoir-faire."
+    link: https://www.reuters.com/world/china/beijing-seeks-tighter-grip-ai-exports-amid-us-rivalry-2026-10-16/
+
+  - date: 2026-10-16
+    type: update
+    title:
+      en: "NVIDIA expands Nemotron with open models for local and multimodal agents"
+      fr: "NVIDIA étend Nemotron avec des modèles ouverts pour les agents locaux et multimodaux"
+    description:
+      en: "NVIDIA introduced three Nemotron models aimed at agentic workloads, including Super VL for multimodal reasoning and smaller Bolt variants designed for more local deployment. The release broadens the open-weight stack around NVIDIA hardware, but buyers still need to test task quality, quantisation effects, serving cost and licence conditions in their own environment."
+      fr: "NVIDIA a présenté trois modèles Nemotron destinés aux charges agentiques, dont Super VL pour le raisonnement multimodal et des variantes Bolt plus petites pensées pour un déploiement plus local. L’offre élargit l’écosystème open-weight autour du matériel NVIDIA, mais les entreprises doivent encore tester la qualité métier, les effets de la quantification, le coût de service et les conditions de licence."
+    link: https://blogs.nvidia.com/blog/nemotron-super-vl-bolt-models/
+
+  - date: 2026-10-16
+    type: update
+    title:
+      en: "Eight US states sue OpenAI over alleged consumer and child-safety harms"
+      fr: "Huit États américains poursuivent OpenAI pour des risques allégués envers les consommateurs et les mineurs"
+    description:
+      en: "AP reports that eight US states have sued OpenAI, alleging that ChatGPT violated consumer-protection laws, harmed children and misled adults. The allegations remain to be tested in court, but the case raises the regulatory cost of safety controls, age assurance, product claims and documented risk governance for general-purpose assistants."
+      fr: "Selon AP, huit États américains poursuivent OpenAI, accusant ChatGPT d’avoir enfreint le droit de la consommation, porté préjudice à des mineurs et trompé des adultes. Ces allégations doivent encore être tranchées par la justice, mais l’affaire renforce l’importance des contrôles de sécurité, de la vérification de l’âge, des promesses produit et d’une gouvernance des risques documentée."
+    link: https://apnews.com/article/openai-lawsuits-chatbot-chatgpt-artificial-intelligence-f29fa6c206cfe41d46ba38ee7be78218
+
+  - date: 2026-10-17
+    type: update
+    title:
+      en: "ServiceNow’s AI Control Tower highlights the gap between AI inventory and operational control"
+      fr: "L’AI Control Tower de ServiceNow illustre l’écart entre inventaire IA et contrôle opérationnel"
+    description:
+      en: "ServiceNow is expanding its AI governance offer with an AI Passport and Control Tower capabilities intended to inventory AI assets, policies and evidence across enterprise workflows. The proposition is relevant to regulated firms, but its value depends on connector coverage, enforceable controls, independent evidence and integration with existing model-risk and identity systems—not on a dashboard alone."
+      fr: "ServiceNow étend son offre de gouvernance avec un AI Passport et des fonctions de Control Tower destinées à inventorier actifs IA, politiques et preuves dans les workflows d’entreprise. Pour les acteurs régulés, la valeur dépendra toutefois de la couverture des connecteurs, de contrôles réellement exécutoires, de preuves indépendantes et de l’intégration avec les systèmes de risque modèle et d’identité — pas d’un simple tableau de bord."
+    link: https://www.servicenow.com/company/media/press-room/ai-passport-expanded-governance.html
+
+  - date: 2026-10-16
+    type: update
+    title:
       en: "AI infrastructure boom raises the prospect of higher-for-longer interest rates"
       fr: "Le boom des infrastructures IA renforce le risque de taux durablement plus élevés"
     description:
