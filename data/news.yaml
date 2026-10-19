@@ -1,4 +1,54 @@
 news:
+  - date: 2026-10-18
+    type: update
+    title:
+      en: "Anthropic commits 5% of its shares to a public-benefit fund"
+      fr: "Anthropic affecte 5 % de ses actions à un fonds d’intérêt général"
+    description:
+      en: "Subject to shareholder approval, Anthropic will place 5% of its shares in a wholly owned public-benefit fund, with the board able to add 2% whenever the company’s value rises by 50% above a baseline. Combined with founder and employee pledges, Anthropic says roughly 20% of its shares are now dedicated to public benefit, while detailed governance and valuation milestones remain to be published."
+      fr: "Sous réserve de l’accord des actionnaires, Anthropic placera 5 % de ses actions dans un fonds d’intérêt général détenu par le groupe, le conseil pouvant ajouter 2 % à chaque hausse de 50 % de la valorisation au-dessus d’un seuil de référence. Avec les engagements des fondateurs et salariés, l’entreprise affirme qu’environ 20 % de ses actions sont désormais dédiées à l’intérêt général, mais la gouvernance détaillée et les seuils de valorisation restent à publier."
+    link: https://www.anthropic.com/news/public-benefit-fund
+
+  - date: 2026-10-16
+    type: update
+    title:
+      en: "Anthropic circulates a draft US AI-safety bill"
+      fr: "Anthropic diffuse un projet de loi américain sur la sécurité de l’IA"
+    description:
+      en: "Politico reports that Anthropic has circulated draft federal legislation that would define when the US government may block the release of an advanced model and pre-empt some state safety rules. The text is a company proposal—not enacted law—and highlights the battle over federal versus state authority and the thresholds that could constrain frontier-model deployment."
+      fr: "Politico rapporte qu’Anthropic a diffusé un projet de législation fédérale définissant les cas dans lesquels le gouvernement américain pourrait bloquer la publication d’un modèle avancé et préempter certaines règles des États. Il s’agit d’une proposition d’entreprise, non d’une loi adoptée, qui illustre le débat sur la répartition des compétences et les seuils pouvant contraindre le déploiement des modèles de pointe."
+    link: https://www.politico.com/news/2026/10/16/anthropic-ai-safety-01124654
+
+  - date: 2026-10-16
+    type: update
+    title:
+      en: "Reflection releases Beam, a 501B open-weight model for coding agents"
+      fr: "Reflection publie Beam, un modèle open-weight de 501 milliards de paramètres pour les agents de code"
+    description:
+      en: "Beam is an Apache-2.0 mixture-of-experts model with 501B total parameters, 23B active per token and a one-million-token context window, aimed at coding and agentic workloads. Hugging Face provides BF16, FP8 and NVFP4 checkpoints, but even the roughly 280 GB NVFP4 version calls for several high-end GPUs, so open weights do not mean low infrastructure cost."
+      fr: "Beam est un modèle mixture-of-experts sous licence Apache 2.0, avec 501 milliards de paramètres au total, 23 milliards actifs par token et une fenêtre d’un million de tokens, destiné au code et aux agents. Hugging Face propose des checkpoints BF16, FP8 et NVFP4, mais même la version NVFP4 d’environ 280 Go nécessite plusieurs GPU haut de gamme : poids ouverts ne signifie donc pas infrastructure bon marché."
+    link: https://huggingface.co/blog/reflection-beam
+
+  - date: 2026-10-16
+    type: update
+    title:
+      en: "Itaú scales governed generative AI across customer and legal workflows"
+      fr: "Itaú industrialise l’IA générative gouvernée dans les parcours clients et juridiques"
+    description:
+      en: "Itaú’s ia.i assistant began with roughly 300,000 customers and uses a financial-context layer covering about 70 million people, while its IARA platform governs model access, responsible-AI controls and token cost. In legal operations, the bank reports more than 2 million monthly tasks across 90 million documents and efficiency gains of 20% to 80%; these are vendor and customer-reported figures, not independently audited results."
+      fr: "L’assistant ia.i d’Itaú a démarré auprès d’environ 300 000 clients et s’appuie sur une couche de contexte financier couvrant quelque 70 millions de personnes, tandis que la plateforme IARA gouverne l’accès aux modèles, l’IA responsable et le coût des tokens. Dans les opérations juridiques, la banque annonce plus de 2 millions de tâches mensuelles sur 90 millions de documents et des gains d’efficacité de 20 % à 80 % ; ces chiffres déclaratifs ne sont pas audités indépendamment."
+    link: https://openai.com/index/itau-generative-ai/
+
+  - date: 2026-10-15
+    type: new-feature
+    title:
+      en: "GitHub makes AI Scan for pull requests generally available"
+      fr: "GitHub généralise AI Scan pour les pull requests"
+    description:
+      en: "GitHub’s AI Scan now reviews pull-request changes in languages and frameworks not fully covered by CodeQL, including PHP, Shell, Terraform, Dockerfiles, JSP and Blazor, and can suggest autofixes. Findings are advisory and cannot block merges; private repositories require GitHub Code Security or Advanced Security and usage consumes metered AI credits."
+      fr: "AI Scan de GitHub analyse désormais les modifications des pull requests dans des langages et frameworks encore peu couverts par CodeQL, notamment PHP, Shell, Terraform, Dockerfiles, JSP et Blazor, avec des corrections suggérées. Les alertes restent consultatives et ne peuvent pas bloquer une fusion ; les dépôts privés exigent Code Security ou Advanced Security et l’usage consomme des crédits IA facturés."
+    link: https://github.blog/changelog/2026-10-15-ai-scan-for-pull-requests-generally-available/
+
   - date: 2026-10-16
     type: update
     title:
