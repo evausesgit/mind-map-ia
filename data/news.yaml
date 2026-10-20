@@ -1,4 +1,40 @@
 news:
+  - date: '2026-10-20'
+    type: update
+    title:
+      en: US orders DeepSeek removed from civilian federal IT
+      fr: Les États-Unis ordonnent le retrait de DeepSeek des systèmes informatiques civils fédéraux
+    description:
+      en: A DHS exclusion-and-removal order bars DeepSeek products, affiliated entities and covered third-party services from US civilian federal procurement and systems. The Federal Register notice turns model provenance and supply-chain visibility into operational procurement requirements, not merely acceptable-use policy.
+      fr: Une décision d’exclusion et de retrait du DHS interdit les produits DeepSeek, les entités affiliées et certains services tiers dans les achats et systèmes civils fédéraux américains. L’avis du Federal Register transforme la provenance des modèles et la visibilité sur la chaîne logicielle en exigences opérationnelles d’achat, au-delà d’une simple politique d’usage.
+    link: https://www.federalregister.gov/public-inspection/2026-21447/order-exclusion-and-removal-of-deepseek-products-from-federal-civilian-executive-branch-information
+  - date: '2026-10-19'
+    type: update
+    title:
+      en: OpenAI accelerates fundraising ahead of Anthropic’s expected IPO
+      fr: OpenAI accélère sa levée de fonds avant l’introduction en Bourse attendue d’Anthropic
+    description:
+      en: Reuters reports that OpenAI is seeking rapid investor commitments before Anthropic’s expected mid-November market debut, in a round that could value OpenAI above $1.4 trillion. The figures and timetable come from unnamed sources and are not final, but they highlight the frontier labs’ growing competition for the same pools of capital.
+      fr: Reuters rapporte qu’OpenAI cherche à obtenir rapidement des engagements d’investisseurs avant l’introduction en Bourse d’Anthropic attendue à la mi-novembre, avec une valorisation potentielle supérieure à 1 400 milliards de dollars. Ces chiffres et ce calendrier, issus de sources anonymes, ne sont pas définitifs, mais illustrent la concurrence croissante des laboratoires de pointe pour les mêmes capitaux.
+    link: https://money.usnews.com/investing/news/articles/2026-10-19/exclusive-openai-seeks-to-accelerate-fundraising-ahead-of-anthropic-ipo-sources-say
+  - date: '2026-10-19'
+    type: update
+    title:
+      en: China proposes export controls covering 23 AI technologies
+      fr: La Chine propose des contrôles à l’exportation couvrant 23 technologies d’IA
+    description:
+      en: Draft Chinese rules cover 23 AI-related technologies, including large models, agents, chip designs and training clusters. Public reporting says open-source tools and public research would generally remain exempt, but the proposal could still affect how proprietary weights and advanced Chinese AI systems reach overseas developers and enterprises.
+      fr: Un projet de règles chinoises couvre 23 technologies liées à l’IA, notamment les grands modèles, les agents, les conceptions de puces et les clusters d’entraînement. Selon les informations publiées, les outils open source et la recherche publique resteraient généralement exemptés, mais le texte pourrait modifier l’accès international aux poids propriétaires et aux systèmes chinois avancés.
+    link: https://www.business-standard.com/technology/tech-news/china-ai-export-controls-open-weight-models-126101900723_1.html
+  - date: '2026-10-19'
+    type: update
+    title:
+      en: Emirates NBD adopts UAE-hosted OpenAI inference
+      fr: Emirates NBD adopte l’inférence OpenAI hébergée aux Émirats arabes unis
+    description:
+      en: Emirates NBD says it will become the first MENA bank to run OpenAI GPT models on in-country UAE infrastructure. The deployment targets customer engagement, risk and compliance analytics, knowledge workflows and employee productivity, making data residency a core part of the architecture.
+      fr: Emirates NBD annonce devenir la première banque de la région MENA à exécuter des modèles GPT d’OpenAI sur une infrastructure située aux Émirats arabes unis. Le déploiement vise la relation client, l’analyse des risques et de la conformité, les workflows de connaissance et la productivité, avec la résidence des données au cœur de l’architecture.
+    link: https://gulfnews.com/business/banking/emirates-nbd-becomes-first-mena-bank-to-run-openai-models-in-uae-1.500716240
   - date: 2026-10-18
     type: update
     title:
