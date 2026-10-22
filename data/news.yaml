@@ -1,4 +1,56 @@
 news:
+  - date: '2026-10-21'
+    type: update
+    title:
+      en: OpenAI models enter Google Cloud Model Garden
+      fr: Les modèles OpenAI arrivent dans le Model Garden de Google Cloud
+    description:
+      en: Google Cloud is adding GPT-6 Astra, GPT-6.1 Sol and GPT-6 Luna, plus Codex workflows, in private preview. Marketplace
+        billing, unified identity and audit controls may simplify multi-model deployment, while Zero Data Retention and
+        Confidential Compute are still listed as coming soon.
+      fr: Google Cloud ajoute GPT-6 Astra, GPT-6.1 Sol et GPT-6 Luna, ainsi que les workflows Codex, en préversion privée.
+        La facturation Marketplace et les contrôles unifiés d’identité et d’audit peuvent simplifier le multi-modèle, tandis
+        que Zero Data Retention et Confidential Compute sont encore annoncés pour plus tard.
+    link: https://cloud.google.com/blog/products/ai-machine-learning/google-cloud-brings-openai-models-to-customers
+  - date: '2026-10-21'
+    type: update
+    title:
+      en: AI-assisted discovery of critical PHP flaws triggers global patching
+      fr: Des failles PHP critiques découvertes avec l’aide de l’IA déclenchent une campagne mondiale de correctifs
+    description:
+      en: Critical PHP vulnerabilities led some government sites to go offline while maintainers and cyber agencies coordinated
+        patches and guidance. OpenAI says its models helped surface one flaw and that Patch the Planet supported validation
+        and remediation with expert human review.
+      fr: Des vulnérabilités critiques de PHP ont conduit certains sites publics à être mis hors ligne pendant que mainteneurs
+        et agences cyber coordonnaient correctifs et consignes. OpenAI indique que ses modèles ont aidé à détecter une
+        faille et que Patch the Planet a soutenu validation et remédiation avec revue humaine experte.
+    link: https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/
+  - date: '2026-10-21'
+    type: update
+    title:
+      en: Walmart launches a controlled gateway for AI shopping agents
+      fr: Walmart lance une passerelle contrôlée pour les agents d’achat IA
+    description:
+      en: Walmart’s MCP-based Agent Gateway will let approved agents search inventory and transact, while Agent Profiles
+        will separate agent purchases and enforce per-transaction approval or spending limits. The design gives agents
+        distinct identity, permissions and revocation instead of treating them as invisible user extensions.
+      fr: L’Agent Gateway de Walmart, basé sur MCP, permettra aux agents approuvés de chercher dans le catalogue et de
+        réaliser des achats ; les Agent Profiles sépareront leurs transactions et imposeront validation ou plafonds. Le
+        dispositif attribue aux agents une identité, des droits et une révocation propres.
+    link: https://techcrunch.com/2026/10/21/while-amazon-blocks-ai-agents-walmart-rolls-out-the-welcome-mat/
+  - date: '2026-10-17'
+    type: update
+    title:
+      en: DeepSeek releases MIT-licensed V4.1-Flash-1017 weights
+      fr: DeepSeek publie les poids V4.1-Flash-1017 sous licence MIT
+    description:
+      en: DeepSeek says the V4.1-Flash-1017 update improves reasoning, coding, agentic and vision tasks while shortening
+        outputs and completion time. The open weights are available on Hugging Face under an MIT license, but vendor benchmarks
+        still require independent validation.
+      fr: DeepSeek affirme que V4.1-Flash-1017 améliore raisonnement, code, tâches agentiques et vision tout en réduisant
+        la longueur des sorties et le temps d’exécution. Les poids sont disponibles sur Hugging Face sous licence MIT,
+        mais les benchmarks éditeur doivent encore être validés indépendamment.
+    link: https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017
   - date: '2026-10-20'
     type: update
     title:
