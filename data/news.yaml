@@ -2,6 +2,72 @@ news:
   - date: '2026-10-21'
     type: update
     title:
+      en: Anthropic previews Claude Duet, a proactive background agent
+      fr: Anthropic présente Claude Duet, un agent proactif en arrière-plan
+    description:
+      en: Claude Duet is a research-preview app that monitors connected tools, sends morning briefs and continues tasks in a
+        cloud virtual machine. It asks for approval before messages, payments, signatures or deletions, while trading securities
+        and moving money remain off-limits.
+      fr: Claude Duet est une application en préversion qui surveille les outils connectés, envoie un briefing matinal et poursuit
+        des tâches dans une machine virtuelle cloud. Il demande une validation avant les messages, paiements, signatures ou
+        suppressions ; le trading de titres et les transferts d’argent restent interdits.
+    link: https://claude.com/resources/articles/claude-duet
+  - date: '2026-10-22'
+    type: research
+    title:
+      en: External review finds gaps in OpenAI agent monitoring
+      fr: Une revue externe révèle des failles dans la surveillance des agents d’OpenAI
+    description:
+      en: METR and Redwood Research found vulnerabilities in an OpenAI monitoring system during a pilot review, including a
+        path that could hide hundreds of agent actions. The findings underline that monitoring must itself be adversarially
+        tested, independently reviewed and backed by tamper-resistant logs.
+      fr: METR et Redwood Research ont découvert des vulnérabilités dans un système de surveillance d’OpenAI lors d’une revue
+        pilote, dont un moyen de masquer des centaines d’actions d’agents. Ces résultats montrent que la supervision doit être
+        testée de façon adversariale, revue indépendamment et appuyée par des journaux infalsifiables.
+    link: https://www.reuters.com/business/external-evaluators-find-flaws-openais-ai-monitoring-system-pilot-review-2026-10-22/
+  - date: '2026-10-22'
+    type: update
+    title:
+      en: Agentic AI Foundation adds four open agent-stack projects
+      fr: L’Agentic AI Foundation accueille quatre projets ouverts pour les agents
+    description:
+      en: The Linux Foundation-hosted AAIF added Agent Skills, Open Responses, OpenEnv and OpenSandbox, contributed respectively
+        by Anthropic, OpenAI, Hugging Face and Alibaba. The foundation now hosts 10 projects spanning portable capabilities,
+        multi-provider interfaces, training environments and secure execution.
+      fr: L’AAIF, hébergée par la Linux Foundation, accueille Agent Skills, Open Responses, OpenEnv et OpenSandbox, apportés
+        respectivement par Anthropic, OpenAI, Hugging Face et Alibaba. La fondation compte désormais 10 projets couvrant capacités
+        portables, interfaces multi-fournisseurs, environnements d’entraînement et exécution sécurisée.
+    link: https://www.linuxfoundation.org/press/agentic-ai-foundation-announces-four-new-projects-agent-skills-open-responses-openenv-and-opensandbox
+  - date: '2026-10-23'
+    type: research
+    title:
+      en: Microsoft tests sequential AI diagnosis on complex cases
+      fr: Microsoft teste le diagnostic séquentiel par IA sur des cas complexes
+    description:
+      en: Microsoft introduced SDBench and its multi-agent MAI-DxO diagnostic orchestrator, reporting 83% accuracy on difficult
+        cases versus 36% for physicians in the study setup. The result is a controlled benchmark rather than clinical validation,
+        so prospective trials, workflow safety and accountability remain essential.
+      fr: 'Microsoft présente SDBench et son orchestrateur diagnostique multi-agents MAI-DxO, avec 83 % de précision annoncée
+        sur des cas difficiles contre 36 % pour les médecins dans le protocole étudié. Il s’agit d’un benchmark contrôlé, non
+        d’une validation clinique : essais prospectifs, sécurité du parcours et responsabilité restent indispensables.'
+    link: https://microsoft.ai/news/building-medical-superintelligence/
+  - date: '2026-10-22'
+    type: update
+    title:
+      en: Meta’s AI buildout costs trigger a market repricing
+      fr: Les coûts de l’infrastructure IA de Meta déclenchent une réévaluation boursière
+    description:
+      en: Investors sold Meta and other AI-linked shares after Meta outlined a funding structure for continued data-centre expansion;
+        its credit-risk indicator also reached a record high. The reaction shifts attention from model capability to financing
+        cost, free cash flow and the timing of measurable returns.
+      fr: Les investisseurs ont vendu Meta et d’autres valeurs liées à l’IA après la présentation d’un montage de financement
+        destiné à poursuivre l’expansion des centres de données ; son indicateur de risque de crédit a aussi atteint un record.
+        La réaction déplace l’attention des performances modèles vers le coût du capital, le cash-flow libre et le calendrier
+        des retours mesurables.
+    link: https://www.reuters.com/business/steep-bill-ai-buildout-punishes-meta-other-tech-favorites-2026-10-22/
+  - date: '2026-10-21'
+    type: update
+    title:
       en: OpenAI models enter Google Cloud Model Garden
       fr: Les modèles OpenAI arrivent dans le Model Garden de Google Cloud
     description:
