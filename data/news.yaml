@@ -1,4 +1,40 @@
 news:
+  - date: '2026-10-24'
+    type: update
+    title:
+      en: UK puts AI security, sovereign capability and skills into its Budget plan
+      fr: Le Royaume-Uni inscrit sécurité, souveraineté et compétences IA dans son plan budgétaire
+    description:
+      en: The UK Treasury announced £165 million for an AI biosecurity initiative, another £120 million for the AI Security Institute, £60 million for an agentic cyber-defence programme and £70 million for a vulnerability centre. The package also funds domestic chip design and workforce planning, combining adoption with resilience and strategic autonomy.
+      fr: Le Trésor britannique annonce 165 millions de livres pour une initiative de biosécurité IA, 120 millions supplémentaires pour l’AI Security Institute, 60 millions pour une défense cyber agentique et 70 millions pour un centre de détection des vulnérabilités. Le plan finance aussi la conception nationale de puces et l’anticipation des compétences, en associant adoption, résilience et autonomie stratégique.
+    link: https://www.gov.uk/government/news/chancellor-unveils-britains-ambitious-plan-for-ai
+  - date: '2026-10-24'
+    type: update
+    title:
+      en: Moonshot limits cyber capabilities in Kimi K3.1 Pro
+      fr: Moonshot limite les capacités cyber de Kimi K3.1 Pro
+    description:
+      en: Moonshot AI has introduced Kimi K3.1 Pro with restrictions intended to reduce offensive hacking capability as concern grows over AI-enabled cyberattacks. The company also plans to release model weights by November, making the security trade-off especially relevant to open-weight governance.
+      fr: Moonshot AI présente Kimi K3.1 Pro avec des restrictions visant à réduire ses capacités de piratage offensif, alors que les inquiétudes sur les cyberattaques assistées par IA augmentent. L’entreprise prévoit aussi de publier les poids du modèle d’ici novembre, ce qui rend l’arbitrage sécurité-ouverture particulièrement important.
+    link: https://www.reuters.com/technology/artificial-intelligence/moonshot-curbs-hacking-ability-new-kimi-model-fears-grow-over-ai-powered-cyberattacks-2026-10-24/
+  - date: '2026-10-23'
+    type: update
+    title:
+      en: Nvidia backs AI-video startup Higgsfield
+      fr: Nvidia investit dans la startup de vidéo IA Higgsfield
+    description:
+      en: Nvidia joined an extension of Higgsfield’s Series B alongside TCV, reinforcing its strategy of investing across the application layer that drives demand for accelerated computing. The deal also illustrates the continuing flow of capital into generative video despite broader concerns about AI spending and monetisation.
+      fr: Nvidia rejoint, aux côtés de TCV, une extension de la série B de Higgsfield, poursuivant sa stratégie d’investissement dans les applications qui stimulent la demande de calcul accéléré. L’opération montre aussi que les capitaux continuent d’affluer vers la vidéo générative malgré les interrogations sur les dépenses IA et leur monétisation.
+    link: https://www.bloomberg.com/news/articles/2026-10-23/nvidia-s-huang-reveals-investment-in-ai-video-unicorn-higgsfield
+  - date: '2026-10-24'
+    type: update
+    title:
+      en: AI-enabled attacks are compressing the cyber-defence cycle
+      fr: Les attaques assistées par IA accélèrent le cycle de défense cyber
+    description:
+      en: A Wall Street Journal review describes AI-assisted attacks arriving faster and at greater volume, straining internet defenders and shortening the time available to patch exposed systems. For enterprises, the practical issue is no longer whether attackers use AI, but whether identity controls, telemetry and incident response can operate at machine speed.
+      fr: Une analyse du Wall Street Journal décrit des attaques assistées par IA plus rapides et plus nombreuses, qui saturent les défenseurs et raccourcissent le délai disponible pour corriger les systèmes exposés. Pour les entreprises, la question n’est plus de savoir si les attaquants utilisent l’IA, mais si les contrôles d’identité, la télémétrie et la réponse à incident peuvent suivre un rythme machine.
+    link: https://www.wsj.com/tech/ai/ai-hacks-are-coming-thick-and-fast-and-overwhelming-the-internet
   - date: '2026-10-23'
     type: update
     title:
