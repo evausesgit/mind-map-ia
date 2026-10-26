@@ -1,4 +1,40 @@
 news:
+  - date: '2026-10-25'
+    type: update
+    title:
+      en: SpaceX says it raised $40 billion in debt to fund AI GPUs
+      fr: SpaceX dit avoir levé 40 milliards de dollars de dette pour financer des GPU IA
+    description:
+      en: Elon Musk said SpaceX closed a $40 billion debt financing for GPUs, after earlier reports of talks led by Apollo. Public reporting has not yet disclosed the full lender group, covenants or collateral, making the deal a major test of how AI infrastructure risk is being transferred into credit markets.
+      fr: Elon Musk affirme que SpaceX a conclu un financement par dette de 40 milliards de dollars pour des GPU, après des informations antérieures sur des discussions menées par Apollo. Le groupe de prêteurs, les covenants et les sûretés n’ont pas encore été détaillés publiquement, ce qui en fait un test majeur du transfert du risque d’infrastructure IA vers les marchés du crédit.
+    link: https://www.boursorama.com/bourse/actualites/musk-affirme-que-spacex-a-leve-40-milliards-de-dollars-dans-le-cadre-d-une-operation-d-emprunt-et-prevoit-une-vague-de-restructurations-dans-le-secteur-du-neocloud-2155babdce32392811df708da955f1e3
+  - date: '2026-10-25'
+    type: update
+    title:
+      en: Apollo economist questions AI’s financial payoff outside Big Tech
+      fr: Un économiste d’Apollo questionne le rendement financier de l’IA hors Big Tech
+    description:
+      en: Apollo chief economist Torsten Slok argues that AI has yet to deliver measurable financial payoff for most companies outside the technology sector. The statement is an economist’s assessment rather than a causal study, but it sharpens the need for enterprise baselines, full-cost measurement and business-level evidence.
+      fr: Torsten Slok, économiste en chef d’Apollo, estime que l’IA n’a pas encore produit de rendement financier mesurable pour la plupart des entreprises hors technologie. Il s’agit d’une appréciation, non d’une étude causale, mais elle renforce l’exigence de lignes de base, de coûts complets et de preuves au niveau métier.
+    link: https://news.google.com/rss/articles/CBMingJBVV95cUxONnN4bXFpM05rMjczVjRJOFhZZjJmenlRTXVQWTZKWDgxNWo2U1hrdldpejlTT2drSTA3NzJyeXQycGtjbmc1Z3EzeXlWc3lpZlIwSDRKcmROQWNqZ05qSGJoLXRwVEsxdVdwalBBZkR2OWx3YWhnSlVaUjdVUlp5OFhpOVEtRGNoS0F0UFZubjB4UDFoM20yN3pFS2Y2TjJpWnNtVUVlUkJOOWpndkhpS1RaNGdLZmk0NnVYTFpYbjRDMThrQ0hseTVhQUZ2TWE3ZWpEZEwxeVlBZlpOeXZ5Z25aQnlvRnFXSjR2bWtMNmRoSDJ2dWhYM25ia1BsZHNOeWxmMnBzdUNvYWtKam9VWUJQbDlLaUFBQWJWT2dn?oc=5
+  - date: '2026-10-20'
+    type: update
+    title:
+      en: DeepSeek open-sources its large-scale DeepInfer inference engine
+      fr: DeepSeek ouvre le code de son moteur d’inférence à grande échelle DeepInfer
+    description:
+      en: DeepSeek released DeepInfer, a high-performance framework for serving its models at scale. Opening the inference layer can improve auditability and portability, but enterprise users still need to validate hardware support, software-supply-chain security, observability and total operating cost.
+      fr: DeepSeek publie DeepInfer, un framework haute performance destiné à servir ses modèles à grande échelle. L’ouverture de la couche d’inférence peut améliorer auditabilité et portabilité, mais les entreprises doivent encore valider le support matériel, la sécurité de la chaîne logicielle, l’observabilité et le coût total d’exploitation.
+    link: https://github.com/deepseek-ai/DeepInfer
+  - date: '2026-10-22'
+    type: update
+    title:
+      en: Crédit Agricole brings Mistral into its enterprise AI platform
+      fr: Crédit Agricole intègre Mistral à sa plateforme d’IA d’entreprise
+    description:
+      en: Crédit Agricole is working with Mistral to add European model capabilities to the bank’s AI platform and move from isolated experiments toward industrialised deployment. The public announcement does not yet provide adoption, unit-cost or business-outcome data, so operating governance and measured use cases will be the key evidence to watch.
+      fr: Crédit Agricole travaille avec Mistral pour intégrer des modèles européens à sa plateforme d’IA et passer d’expérimentations isolées à un déploiement industrialisé. L’annonce ne fournit pas encore de données d’adoption, de coût unitaire ou de résultats métier ; la gouvernance opérationnelle et les cas d’usage mesurés seront donc les preuves à suivre.
+    link: https://www.actuia.com/actualite/pourquoi-le-credit-agricole-associe-mistral-a-sa-plateforme-dia/
   - date: '2026-10-24'
     type: update
     title:
