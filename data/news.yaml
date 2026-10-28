@@ -1,4 +1,31 @@
 news:
+  - date: '2026-10-27'
+    type: update
+    title:
+      en: "OpenAI and Oracle bring enterprise applications into ChatGPT"
+      fr: "OpenAI et Oracle intègrent les applications d’entreprise dans ChatGPT"
+    description:
+      en: "Oracle is developing AI Workspace to connect its applications and governed data to ChatGPT, while adding OpenAI-powered security, app-building and SMB offerings. OpenAI says Oracle already has 130,000 active ChatGPT users and more than 95,000 active Codex users; access is intended to follow organisational permissions and approvals."
+      fr: "Oracle développe AI Workspace pour relier ses applications et ses données gouvernées à ChatGPT, tout en ajoutant des offres de sécurité, de création d’applications et pour PME fondées sur OpenAI. Selon OpenAI, Oracle compte déjà 130 000 utilisateurs actifs de ChatGPT et plus de 95 000 de Codex ; les accès doivent respecter les autorisations et validations de l’organisation."
+    link: https://openai.com/index/oracle-apps-in-chatgpt/
+  - date: '2026-10-27'
+    type: research
+    title:
+      en: "CyberStrikeAI coordinates 44 agents in attacks targeting Japanese organisations"
+      fr: "CyberStrikeAI coordonne 44 agents dans des attaques visant des organisations japonaises"
+    description:
+      en: "TrendAI found exposed infrastructure showing CyberStrikeAI automating reconnaissance, exploitation, persistence, exfiltration and reporting through 44 specialised agents. At least 19 identifiable organisations, including 16 in Japan, were subjected to validation activity, illustrating how agentic systems can industrialise otherwise familiar attack techniques."
+      fr: "TrendAI a découvert une infrastructure exposée montrant CyberStrikeAI automatiser reconnaissance, exploitation, persistance, exfiltration et reporting au moyen de 44 agents spécialisés. Au moins 19 organisations identifiables, dont 16 au Japon, ont subi des activités de validation, illustrant comment des systèmes agentiques peuvent industrialiser des techniques d’attaque déjà connues."
+    link: https://thehackernews.com/2026/10/cyberstrikeai-uses-44-ai-agents-to.html
+  - date: '2026-10-27'
+    type: update
+    title:
+      en: "Big Tech earnings face a fresh test of the AI investment thesis"
+      fr: "Les résultats de la Big Tech mettent de nouveau à l’épreuve la thèse d’investissement dans l’IA"
+    description:
+      en: "Upcoming Big Tech earnings are set to test whether revenue growth and adoption are keeping pace with sustained spending on AI infrastructure amid volatile markets. Investors will focus less on model announcements than on capital expenditure, cloud demand, utilisation and evidence that AI products can support durable margins."
+      fr: "Les prochains résultats de la Big Tech doivent montrer si les revenus et l’adoption suivent le rythme des dépenses persistantes dans l’infrastructure IA, dans un marché volatil. Les investisseurs regarderont moins les annonces de modèles que les investissements, la demande cloud, l’utilisation et les preuves que les produits IA peuvent soutenir des marges durables."
+    link: https://news.google.com/rss/articles/CBMingFBVV95cUxNRXF6SzRzQjFlSVJ4Wjk2OEdySTRrS0F3eWlZcXQtRDdXN3hYZ1Z1YmVqbUJzbURWRW9zZHBEcmd3QWNxRGp4QWZuX0VfT1dQNVBJNDNMaXVYSDFHY3NTb2ZvNlJfdjZuUmluNERuS3FIeF92cV9uWVFyQ29zU29ybEFHRU92SDR3ODZvWXpvQU5NZ3dfZGFQcy1iQVhudw?oc=5
   - date: '2026-10-26'
     type: update
     title:
