@@ -11,7 +11,7 @@ from pathlib import Path
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
-from global_search import widget_html as gs_widget
+from site_chrome import head_assets, site_header, chrome_script
 
 ROOT = Path(__file__).parent.parent
 MAPS_FILE = ROOT / "data" / "maps.yaml"
@@ -41,27 +41,6 @@ def load_maps():
     return []
 
 
-def load_links():
-    if MAPS_FILE.exists():
-        with open(MAPS_FILE) as f:
-            return yaml.safe_load(f).get("links", [])
-    return []
-
-
-def load_topics_meta():
-    """Return list of topic frontmatter dicts from data/topics/*.md."""
-    if not TOPICS_DIR.exists():
-        return []
-    topics = []
-    for path in sorted(TOPICS_DIR.glob("*.md")):
-        raw = path.read_text(encoding="utf-8")
-        fm_match = re.match(r"^---\n(.*?)\n---\n", raw, re.DOTALL)
-        if fm_match:
-            topics.append(yaml.safe_load(fm_match.group(1)))
-    topics.sort(key=lambda x: str(x.get("date", "")), reverse=True)
-    return topics
-
-
 # ── Layout constants ──────────────────────────────────────────
 # Horizontal layout: Layer 1 (Foundations) on the RIGHT, Layer 5 (Dev Tools) on the LEFT
 # Layer 2 has two columns: providers (right) and models (left)
@@ -79,10 +58,10 @@ STATUS_BORDER = {
 }
 
 STATUS_LABEL_COLOR = {
-    "stable": "#27AE60",
-    "evolving": "#E67E22",
-    "emerging": "#8E44AD",
-    "deprecated": "#95A5A6",
+    "stable": "#2F8F5B",
+    "evolving": "#B7791F",
+    "emerging": "#6B4FBB",
+    "deprecated": "#7A7D85",
 }
 
 LAYER_LABELS = {
@@ -251,136 +230,6 @@ def build_elements(data, data_file=None):
     return elements
 
 
-def build_nav(maps, current_output, topics=None, links=None):
-    """Build the site-wide nav: logo + Mind Maps dropdown + Deep Dives dropdown + Links dropdown."""
-    current_name = Path(current_output).name
-
-    # ── Mind Maps dropdown ──────────────────────────────────────
-    map_items = ""
-    for m in maps:
-        if m.get("id") == "glossary":
-            continue
-        is_active = m["output"] == current_name
-        title_en = t(m.get("title", ""), "en")
-        title_fr = t(m.get("title", ""), "fr") or title_en
-        desc_en  = t(m.get("description", ""), "en")
-        desc_fr  = t(m.get("description", ""), "fr") or desc_en
-        active_cls = " active" if is_active else ""
-        map_items += (
-            f'<a href="{m["output"]}" class="nav-item{active_cls}">'
-            f'<span class="nav-item-icon">{m.get("icon","📄")}</span>'
-            f'<span class="nav-item-info">'
-            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'</span></a>'
-        )
-
-    # ── Deep Dives / Réflexion dropdowns ──────────────────────────
-    deep_dives = [tp for tp in (topics or []) if tp.get("category") != "reflexion"]
-    reflexions = [tp for tp in (topics or []) if tp.get("category") == "reflexion"]
-
-    def _topic_items(topic_list):
-        items = ""
-        for topic in topic_list:
-            tid = topic.get("id", "")
-            title_en  = t(topic.get("title",   ""), "en")
-            title_fr  = t(topic.get("title",   ""), "fr") or title_en
-            summ_en   = t(topic.get("summary", ""), "en")
-            summ_fr   = t(topic.get("summary", ""), "fr") or summ_en
-            is_active = current_name == f"{tid}.html"
-            active_cls = " active" if is_active else ""
-            items += (
-                f'<a href="topics/{tid}.html" class="nav-item{active_cls}">'
-                f'<span class="nav-item-icon">📝</span>'
-                f'<span class="nav-item-info">'
-                f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-                f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
-                f'</span></a>'
-            )
-        return items
-
-    dive_items = _topic_items(deep_dives)
-    reflexion_items = _topic_items(reflexions)
-
-    # ── Links dropdown ──────────────────────────────────────────
-    link_items = ""
-    for link in (links or []):
-        title_en = t(link.get("title", ""), "en")
-        title_fr = t(link.get("title", ""), "fr") or title_en
-        desc_en  = t(link.get("description", ""), "en")
-        desc_fr  = t(link.get("description", ""), "fr") or desc_en
-        url = link.get("url", "")
-        link_items += (
-            f'<a href="{url}" class="nav-item" target="_blank" rel="noopener">'
-            f'<span class="nav-item-icon">{link.get("icon","🔗")}</span>'
-            f'<span class="nav-item-info">'
-            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'</span></a>'
-        )
-
-    nav = (
-        f'<a href="index.html" class="nav-logo" title="Home">'
-        f'<svg width="44" height="30" viewBox="0 0 120 82" fill="none" xmlns="http://www.w3.org/2000/svg">'
-        f'<line x1="22" y1="34" x2="42" y2="16" stroke="white" stroke-width="1" stroke-opacity="0.55"/>'
-        f'<line x1="42" y1="16" x2="60" y2="10" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.8"/>'
-        f'<line x1="56" y1="38" x2="72" y2="50" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.8"/>'
-        f'<line x1="72" y1="50" x2="94" y2="44" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.8"/>'
-        f'<line x1="94" y1="44" x2="108" y2="60" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.8"/>'
-        f'<line x1="22" y1="34" x2="40" y2="48" stroke="white" stroke-width="1" stroke-opacity="0.55"/>'
-        f'<line x1="40" y1="48" x2="56" y2="38" stroke="white" stroke-width="1" stroke-opacity="0.55"/>'
-        f'<line x1="56" y1="38" x2="76" y2="20" stroke="white" stroke-width="1" stroke-opacity="0.55"/>'
-        f'<circle cx="22"  cy="34" r="5"   fill="#E74C3C"/>'
-        f'<circle cx="42"  cy="16" r="3.5" fill="white"/>'
-        f'<circle cx="40"  cy="48" r="3"   fill="white"/>'
-        f'<circle cx="60"  cy="10" r="4.5" fill="#E74C3C"/>'
-        f'<circle cx="56"  cy="38" r="5"   fill="white"/>'
-        f'<circle cx="76"  cy="20" r="3.5" fill="white"/>'
-        f'<circle cx="72"  cy="50" r="4.5" fill="#E74C3C"/>'
-        f'<circle cx="94"  cy="44" r="3"   fill="white"/>'
-        f'<circle cx="108" cy="26" r="4.5" fill="#E74C3C"/>'
-        f'<circle cx="108" cy="60" r="3.5" fill="white"/>'
-        f'</svg>'
-        f'</a>'
-        f'<div class="nav-group">'
-        f'  <button class="nav-btn">'
-        f'    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾'
-        f'  </button>'
-        f'  <div class="nav-dropdown">{map_items}</div>'
-        f'</div>'
-        f'<div class="nav-group">'
-        f'  <button class="nav-btn">'
-        f'    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾'
-        f'  </button>'
-        f'  <div class="nav-dropdown">{dive_items}</div>'
-        f'</div>'
-    )
-    if reflexion_items:
-        nav += (
-            f'<div class="nav-group">'
-            f'  <button class="nav-btn">'
-            f'    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾'
-            f'  </button>'
-            f'  <div class="nav-dropdown">{reflexion_items}</div>'
-            f'</div>'
-        )
-    if link_items:
-        nav += (
-            f'<div class="nav-group">'
-            f'  <button class="nav-btn">'
-            f'    <span data-en="Links" data-fr="Liens">Links</span> ▾'
-            f'  </button>'
-            f'  <div class="nav-dropdown">{link_items}</div>'
-            f'</div>'
-        )
-    nav += (
-        f'<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
-        f'  <span data-en="News" data-fr="Nouveautés">News</span>'
-        f'</a>'
-    )
-    return nav
-
-
 def load_drilldown_datasets(data, maps):
     """Load sub-map data for all nodes that have a drilldown field."""
     result = {}
@@ -483,9 +332,11 @@ def generate_html(data, elements, maps=None, current_output=""):
     legend_en = legend_items("en")
     legend_fr = legend_items("fr")
 
-    topics = load_topics_meta()
-    links = load_links()
-    nav_html = build_nav(maps or [], current_output, topics=topics, links=links) if maps else ""
+    context_html = (
+        f'<span class="sh-sep">/</span><span class="sh-title" id="main-title">{title_en}</span>'
+        f'<span class="sh-meta">v{meta["version"]} · {meta["date"]}</span>'
+    )
+    header_html = site_header(active="maps", current=Path(current_output).name, context=context_html)
 
     drilldown_datasets = load_drilldown_datasets(data, maps or [])
     drilldown_datasets_js = json.dumps(drilldown_datasets)
@@ -495,150 +346,19 @@ def generate_html(data, elements, maps=None, current_output=""):
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title_en}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>{title_en} — Mind Map IA</title>
 <script src="cytoscape.min.js"></script>
+{head_assets()}
 <style>
-  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-
+  html, body {{ height: 100%; }}
   body {{
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #F8F9FA;
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
   }}
-
-  header {{
-    background: #0D1117;
-    color: white;
-    padding: 14px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    row-gap: 4px;
-    flex-shrink: 0;
-    border-bottom: 1px solid #1E2D4E;
-  }}
-  header h1 {{ font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }}
-  header .meta {{ font-size: 12px; color: #95A5A6; }}
-
-
-  .lang-toggle {{
-    display: flex;
-    gap: 4px;
-    margin-left: 16px;
-  }}
-  .lang-btn {{
-    padding: 4px 10px;
-    border: 1.5px solid #555;
-    border-radius: 6px;
-    background: transparent;
-    color: #95A5A6;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    transition: all 0.15s;
-  }}
-  .lang-btn.active {{
-    background: #E74C3C;
-    border-color: #E74C3C;
-    color: white;
-  }}
-  .lang-btn:hover:not(.active) {{
-    border-color: #aaa;
-    color: white;
-  }}
-  .glossary-header-btn {{
-    padding: 5px 11px;
-    border: 1.5px solid #555;
-    border-radius: 6px;
-    background: transparent;
-    color: #BDC3C7;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: all 0.15s;
-  }}
-  .glossary-header-btn:hover {{
-    border-color: #C39BD3;
-    color: #C39BD3;
-  }}
-  header {{
-    flex-wrap: wrap;
-    row-gap: 4px;
-  }}
-  .hint-bar {{
-    width: 100%;
-    text-align: center;
-    font-size: 12px;
-    color: #95A5A6;
-  }}
-  /* ── Site nav ── */
-  .nav-logo {{
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    margin-right: 4px;
-    opacity: 0.85;
-    transition: opacity 0.15s;
-  }}
-  .nav-logo:hover {{ opacity: 1; }}
-  .nav-group {{
-    position: relative;
-  }}
-  .nav-btn {{
-    padding: 5px 11px;
-    border: 1.5px solid #333;
-    border-radius: 6px;
-    background: transparent;
-    color: #BDC3C7;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    min-width: 110px;
-    text-align: center;
-  }}
-  .nav-btn:hover {{ border-color: #888; color: white; }}
-  .nav-group:hover .nav-dropdown,
-  .nav-group:focus-within .nav-dropdown {{ display: block; }}
-  .nav-dropdown {{
-    display: none;
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    background: #16213E;
-    border: 1px solid #2C3E6E;
-    border-radius: 10px;
-    min-width: 260px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-    z-index: 1000;
-    overflow: hidden;
-  }}
-  .nav-item {{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    color: #BDC3C7;
-    text-decoration: none;
-    font-size: 13px;
-    transition: background 0.12s;
-    border-bottom: 1px solid #1E2D4E;
-  }}
-  .nav-item:last-child {{ border-bottom: none; }}
-  .nav-item:hover {{ background: #1E2D4E; color: white; }}
-  .nav-item.active {{ background: #1E2D4E; color: white; }}
-  .nav-item-icon {{ font-size: 16px; flex-shrink: 0; }}
-  .nav-item-info {{ display: flex; flex-direction: column; }}
-  .nav-item-title {{ font-weight: 600; font-size: 13px; }}
-  .nav-item-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
 
   .main {{
     display: flex;
@@ -650,6 +370,7 @@ def generate_html(data, elements, maps=None, current_output=""):
     display: flex;
     flex-direction: column;
     flex: 1;
+    min-width: 0;
     min-height: 0;
     overflow: hidden;
   }}
@@ -659,252 +380,252 @@ def generate_html(data, elements, maps=None, current_output=""):
     min-height: 0;
     overflow: hidden;
   }}
+  #cy {{
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 1px 1px, var(--line) 1px, transparent 0) 0 0 / 24px 24px,
+      var(--bg);
+  }}
+
+  /* ── Drill-down ── */
   #drilldown-section {{
     flex: 0 0 0;
     min-height: 0;
     overflow: hidden;
     position: relative;
-    border-top: 2px solid #E74C3C;
+    border-top: 1px solid var(--line-strong);
+    background: var(--surface);
     transition: flex-basis 0.35s ease;
   }}
-  body.drilldown-active #drilldown-section {{
-    flex: 0 0 45%;
-  }}
+  body.drilldown-active #drilldown-section {{ flex: 0 0 45%; }}
   #drilldown-label-box {{
     position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1A1A2E;
-    padding: 2px 16px;
-    color: #E74C3C;
-    font-weight: 700;
-    font-size: 12px;
-    border-radius: 3px;
+    top: 12px;
+    left: 16px;
+    padding: 4px 10px;
+    font: 500 11px/1.2 var(--f-mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--sunk);
+    border-radius: 99px;
     z-index: 10;
     white-space: nowrap;
     pointer-events: none;
   }}
   #drilldown-close {{
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 10px;
+    right: 12px;
     z-index: 10;
-    background: rgba(30,30,50,0.85);
-    border: 1px solid #555;
-    border-radius: 4px;
-    color: #BDC3C7;
+    width: 30px; height: 30px;
+    display: grid; place-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink-2);
     cursor: pointer;
-    padding: 2px 8px;
-    font-size: 12px;
+    font-size: 13px;
   }}
-  #drilldown-close:hover {{ background: rgba(231,76,60,0.35); color: white; }}
+  #drilldown-close:hover {{ color: var(--ink); border-color: var(--line-strong); }}
   #cy2 {{ width: 100%; height: 100%; }}
-
-  #cy {{
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: #FAFAFA;
-  }}
 
   /* ── Side panel ── */
   #panel {{
-    width: 320px;
-    background: white;
-    border-left: 1px solid #E0E0E0;
+    width: 360px;
+    background: var(--surface);
+    border-left: 1px solid var(--line);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     flex-shrink: 0;
   }}
-
   #panel-header {{
-    padding: 20px;
-    background: #1A1A2E;
-    color: white;
+    padding: 24px 24px 4px;
     position: relative;
   }}
-  #panel-header .node-label {{
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }}
   #panel-header .node-meta {{
-    font-size: 12px;
-    color: #BDC3C7;
+    font: 500 11px/1.3 var(--f-mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-right: 40px;
+  }}
+  #panel-header .node-label {{
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 10px 0 12px;
+    text-wrap: balance;
   }}
   #panel-header .node-status {{
-    display: inline-block;
-    margin-top: 8px;
-    padding: 2px 10px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 9px;
+    border-radius: 99px;
+    font: 500 11px/1 var(--f-mono);
+    letter-spacing: .02em;
+  }}
+  #panel-header .node-status::before {{
+    content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor;
   }}
   #share-btn {{
     position: absolute;
-    top: 12px;
-    right: 12px;
-    background: none;
-    border: 1px solid #ffffff33;
-    border-radius: 6px;
-    color: #BDC3C7;
-    font-size: 13px;
-    padding: 4px 8px;
+    top: 18px;
+    right: 18px;
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--muted);
     cursor: pointer;
     transition: all 0.15s;
   }}
-  #share-btn:hover {{ border-color: #fff; color: #fff; }}
-  #share-btn.copied {{ border-color: #2ECC71; color: #2ECC71; }}
+  #share-btn svg {{ width: 15px; height: 15px; }}
+  #share-btn:hover {{ color: var(--ink); border-color: var(--line-strong); }}
+  #share-btn.copied {{ color: var(--ok); border-color: var(--ok); }}
 
   #panel-body {{
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: 16px 24px 24px;
   }}
   #panel-body .section-title {{
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font: 500 11px/1 var(--f-mono);
+    letter-spacing: .08em;
     text-transform: uppercase;
-    color: #95A5A6;
-    margin-bottom: 6px;
+    color: var(--muted);
+    margin: 8px 0 10px;
   }}
   #panel-body .description {{
-    font-size: 14px;
-    line-height: 1.6;
-    color: #2C3E50;
-    margin-bottom: 20px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    margin-bottom: 22px;
   }}
-  #panel-body .description p {{
-    margin-bottom: 10px;
-  }}
-  #panel-body .description p:last-child {{
-    margin-bottom: 0;
-  }}
+  #panel-body .description p {{ margin: 0 0 10px; }}
+  #panel-body .description p:last-child {{ margin-bottom: 0; }}
   #panel-body .description ol,
-  #panel-body .description ul {{
-    margin: 8px 0 10px 18px;
-  }}
-  #panel-body .description li {{
-    margin-bottom: 4px;
-  }}
-  #panel-body .description strong {{
-    font-weight: 600;
-    color: #1A1A2E;
-  }}
+  #panel-body .description ul {{ margin: 8px 0 10px 18px; padding: 0; }}
+  #panel-body .description li {{ margin-bottom: 4px; }}
+  #panel-body .description strong {{ font-weight: 600; color: var(--ink); }}
   .gloss-link {{
     text-decoration: underline;
-    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
     text-underline-offset: 3px;
     cursor: pointer;
     color: inherit;
   }}
+  .gloss-link:hover {{ color: var(--accent); }}
   .panel-link {{
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: #3498DB;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
     text-decoration: none;
-    padding: 4px 8px;
-    border: 1px solid #3498DB33;
-    border-radius: 6px;
-    transition: background 0.15s;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    transition: border-color 0.15s, color 0.15s;
   }}
-  .panel-link:hover {{ background: #3498DB11; }}
-  .panel-link .link-icon {{ font-size: 14px; }}
+  .panel-link::after {{ content: "↗"; color: var(--muted); }}
+  .panel-link:hover {{ border-color: var(--line-strong); color: var(--accent); }}
+  .panel-link .link-icon {{ display: none; }}
   .drilldown-hint {{
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    color: #E74C3C;
-    background: #E74C3C11;
-    border: 1px solid #E74C3C44;
-    border-radius: 5px;
-    padding: 3px 8px;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 8px;
+    padding: 7px 11px;
     cursor: zoom-in;
   }}
-  #panel-body .since {{
-    font-size: 12px;
-    color: #7F8C8D;
-  }}
+  #panel-body .since {{ font: 13px var(--f-mono); color: var(--ink-2); }}
 
   .empty-panel {{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    gap: 14px;
     height: 100%;
-    color: #BDC3C7;
-    text-align: center;
-    padding: 20px;
+    color: var(--muted);
+    padding: 8px 4px;
   }}
-  .empty-panel .arrow {{ font-size: 32px; margin-bottom: 12px; }}
-  .empty-panel p {{ font-size: 13px; line-height: 1.5; }}
+  .empty-panel .arrow {{
+    width: 40px; height: 40px; display: grid; place-items: center;
+    border: 1px dashed var(--line-strong); border-radius: 50%;
+    font-size: 16px; color: var(--ink-2);
+  }}
+  .empty-panel p {{ font-size: 15px; line-height: 1.55; max-width: 24em; margin: 0; }}
 
   /* ── Legend ── */
   #legend {{
-    padding: 10px 14px;
-    border-top: 1px solid #F0F0F0;
-    background: #FAFAFA;
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--line);
     display: flex;
-    gap: 12px;
+    gap: 20px;
   }}
-  .legend-col {{
-    flex: 1;
-    min-width: 0;
-  }}
+  .legend-col {{ flex: 1; min-width: 0; }}
   #legend h3 {{
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font: 500 10.5px/1 var(--f-mono);
+    letter-spacing: .08em;
     text-transform: uppercase;
-    color: #95A5A6;
-    margin-bottom: 6px;
+    color: var(--muted);
+    margin: 0 0 10px;
   }}
   .legend-item {{
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: #555;
-    margin-bottom: 3px;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    margin-bottom: 5px;
   }}
   .legend-dot {{
     width: 10px;
     height: 10px;
-    border-radius: 2px;
+    border-radius: 3px;
     flex-shrink: 0;
   }}
   .status-badge {{
-    border: 1.5px solid;
-    border-radius: 10px;
-    padding: 1px 6px;
-    font-size: 9px;
-    font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+    font: 12px var(--f-ui);
+    color: var(--ink-2) !important;
+    border: 0 !important;
+  }}
+  .status-badge::before {{
+    content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--sb, currentColor);
   }}
 
   /* ── Category boxes ── */
   .cat-box {{
     position: absolute;
-    border: 2px solid;
-    border-radius: 12px;
+    border: 1.5px solid;
+    border-radius: 16px;
     pointer-events: none;
     box-sizing: border-box;
   }}
   .cat-box-label {{
     position: absolute;
-    top: -11px;
+    top: -9px;
     left: 14px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font: 500 10.5px/1.2 var(--f-mono);
+    letter-spacing: .08em;
     text-transform: uppercase;
-    background: #F8F9FA;
+    background: var(--bg);
     padding: 1px 7px;
     border-radius: 4px;
     white-space: nowrap;
@@ -913,85 +634,79 @@ def generate_html(data, elements, maps=None, current_output=""):
   /* ── Controls ── */
   #controls {{
     position: absolute;
-    bottom: 16px;
-    left: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    left: max(16px, env(safe-area-inset-left, 0px));
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    gap: 2px;
+    padding: 4px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
     z-index: 10;
   }}
   .ctrl-btn {{
-    width: 36px;
-    height: 36px;
-    background: white;
-    border: 1px solid #E0E0E0;
+    position: relative;
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: 0;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
+    color: var(--ink-2);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: background 0.15s;
+    transition: background 0.15s, color 0.15s;
   }}
-  .ctrl-btn:hover {{ background: #F0F0F0; }}
-  .ctrl-btn.saved {{ border-color: #27AE60; color: #27AE60; }}
+  .ctrl-btn:hover {{ background: var(--sunk); color: var(--ink); }}
+  .ctrl-btn.saved {{ color: var(--ok); }}
   .ctrl-btn[data-tip]:hover::after {{
     content: attr(data-tip);
     position: absolute;
-    left: 48px;
-    background: rgba(30,30,30,0.92);
-    color: #fff;
-    font-size: 11px;
+    bottom: 44px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--surface);
+    font: 12px var(--f-ui);
     white-space: nowrap;
-    padding: 4px 8px;
-    border-radius: 5px;
+    padding: 5px 9px;
+    border-radius: 6px;
     pointer-events: none;
     z-index: 100;
   }}
-  .ctrl-btn {{ position: relative; }}
+  .hint-bar {{
+    position: absolute;
+    right: 16px;
+    bottom: 22px;
+    font: 12px var(--f-mono);
+    color: var(--muted);
+    pointer-events: none;
+    z-index: 5;
+  }}
 
   @media (max-width: 760px) {{
-    body {{ height: 100dvh; overflow: hidden; }}
-    header {{ padding: 10px 12px; gap: 8px; align-items: flex-start; }}
-    header h1 {{ font-size: 15px; line-height: 1.25; max-width: 58vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
-    header .meta {{ font-size: 10px; }}
-    header > div:first-child {{ flex: 1 1 100%; order: 0; }}
-    header > div:nth-child(2) {{ width: 100%; order: 1; justify-content: space-between; flex-wrap: wrap; gap: 6px; }}
     .hint-bar {{ display: none; }}
-    .glossary-header-btn, .nav-btn, .lang-btn {{ min-height: 34px; font-size: 12px; padding: 5px 9px; }}
-    .nav-btn {{ min-width: 92px; }}
-    .nav-dropdown {{
-      position: fixed;
-      top: 92px;
-      left: 8px;
-      right: 8px;
-      min-width: 0;
-      max-height: calc(100dvh - 110px);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }}
-    .nav-item {{ padding: 12px 14px; }}
-    .nav-item-desc {{ display: none; }}
     .main {{ flex-direction: column; }}
     #cy-area {{ min-height: 0; flex: 1 1 auto; }}
-    #cy-wrapper {{ min-height: 320px; }}
+    #cy-wrapper {{ min-height: 300px; }}
     body.drilldown-active #drilldown-section {{ flex-basis: 38%; }}
     #drilldown-label-box {{ max-width: calc(100vw - 90px); overflow: hidden; text-overflow: ellipsis; }}
     #panel {{
       width: 100%;
-      height: 38dvh;
+      height: 40dvh;
       max-height: 46dvh;
-      min-height: 190px;
+      min-height: 200px;
       border-left: 0;
-      border-top: 1px solid #E0E0E0;
+      border-top: 1px solid var(--line);
     }}
-    #panel-header {{ padding: 14px 52px 12px 16px; }}
-    #panel-header .node-label {{ font-size: 17px; }}
-    #panel-body {{ padding: 14px 16px 18px; }}
+    #panel-header {{ padding: 16px 60px 0 16px; }}
+    #panel-header .node-label {{ font-size: 19px; margin: 6px 0 8px; }}
+    #panel-body {{ padding: 12px 16px 18px; }}
     #legend {{ display: none; }}
-    #controls {{ left: 10px; bottom: 10px; flex-direction: row; gap: 5px; }}
-    .ctrl-btn {{ width: 34px; height: 34px; font-size: 16px; }}
+    #controls {{ left: 10px; bottom: 10px; }}
     .ctrl-btn[data-tip]:hover::after {{ display: none; }}
     .empty-panel .arrow {{ transform: rotate(90deg); }}
   }}
@@ -1000,26 +715,7 @@ def generate_html(data, elements, maps=None, current_output=""):
 </head>
 <body>
 
-<header>
-  <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
-    {nav_html}
-    <div style="margin-left:12px;min-width:0;">
-      <h1 id="main-title">{title_en}</h1>
-      <div class="meta">v{meta["version"]} · {meta["date"]}</div>
-    </div>
-  </div>
-  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-    <a href="glossary.html" class="glossary-header-btn">
-      <span data-en="📖 Glossary" data-fr="📖 Glossaire">📖 Glossary</span>
-    </a>
-    {gs_widget('search-index.json')}
-    <div class="lang-toggle">
-      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
-    </div>
-  </div>
-  <div class="meta hint-bar" id="hint-text">Click a node to explore · Scroll to zoom · Drag to pan</div>
-</header>
+{header_html}
 
 <div class="main">
   <div id="cy-area">
@@ -1027,34 +723,35 @@ def generate_html(data, elements, maps=None, current_output=""):
       <div id="cy"></div>
       <div id="cat-boxes" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;"></div>
       <div id="controls">
-        <button class="ctrl-btn" onclick="cy.fit()"
-          data-tip-en="Fit all nodes" data-tip-fr="Tout afficher">⊞</button>
+        <button class="ctrl-btn" onclick="cy.fit(undefined, 40)"
+          data-tip-en="Fit all nodes" data-tip-fr="Tout afficher" aria-label="Fit">⤢</button>
         <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*1.2)"
-          data-tip-en="Zoom in" data-tip-fr="Zoom avant">+</button>
+          data-tip-en="Zoom in" data-tip-fr="Zoom avant" aria-label="Zoom in">+</button>
         <button class="ctrl-btn" onclick="cy.zoom(cy.zoom()*0.8)"
-          data-tip-en="Zoom out" data-tip-fr="Zoom arrière">−</button>
+          data-tip-en="Zoom out" data-tip-fr="Zoom arrière" aria-label="Zoom out">−</button>
         <button class="ctrl-btn" id="reset-btn" onclick="resetLayout()"
-          data-tip-en="Reset positions" data-tip-fr="Réinitialiser">↺</button>
+          data-tip-en="Reset positions" data-tip-fr="Réinitialiser" aria-label="Reset">↺</button>
         <button class="ctrl-btn" onclick="exportLayout()"
-          data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue">⬇</button>
+          data-tip-en="Save layout" data-tip-fr="Sauvegarder la vue" aria-label="Save layout">⤓</button>
         <button class="ctrl-btn" onclick="window.open('{OUTPUT_FILE.stem}-slides.html','_blank')"
-          data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides">▤</button>
+          data-tip-en="Open as slides" data-tip-fr="Ouvrir en slides" aria-label="Slides">▤</button>
       </div>
+      <div class="hint-bar" id="hint-text">Click a node to explore · Scroll to zoom · Drag to pan</div>
     </div>
     <div id="drilldown-section">
       <div id="drilldown-label-box"></div>
-      <button id="drilldown-close" onclick="closeDrilldown()">✕</button>
+      <button id="drilldown-close" onclick="closeDrilldown()" aria-label="Close">✕</button>
       <div id="cy2"></div>
     </div>
   </div>
 
   <div id="panel">
     <div id="panel-header" style="display:none;">
-      <button id="share-btn" onclick="shareNode()" title="Copy link">🔗</button>
-      <div class="node-label" id="ph-label"></div>
+      <button id="share-btn" onclick="shareNode()" title="Copy link" aria-label="Copy link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></button>
       <div class="node-meta" id="ph-meta"></div>
+      <div class="node-label" id="ph-label"></div>
       <span class="node-status" id="ph-status"></span>
-      <div id="ph-drilldown" style="display:none;margin-top:6px;">
+      <div id="ph-drilldown" style="display:none;">
         <span class="drilldown-hint" id="ph-drilldown-hint"></span>
       </div>
     </div>
@@ -1068,7 +765,7 @@ def generate_html(data, elements, maps=None, current_output=""):
         <div class="description" id="pc-desc"></div>
         <div class="section-title">Since</div>
         <div class="since" id="pc-since"></div>
-        <div id="pc-links" style="display:none; margin-top:14px; display:flex; flex-direction:column; gap:6px;"></div>
+        <div id="pc-links" style="display:none; margin-top:18px; display:flex; flex-direction:column; gap:8px;"></div>
       </div>
     </div>
     <div id="legend">
@@ -1084,7 +781,6 @@ def generate_html(data, elements, maps=None, current_output=""):
     </div>
   </div>
 </div>
-
 <script>
 const elements = {elements_json};
 const DRILLDOWN_DATA = {drilldown_datasets_js};
@@ -1219,7 +915,7 @@ function renderStatusLegend() {{
   const sl = STATUS_LABELS[lang];
   document.getElementById('status-legend-items').innerHTML =
     Object.entries(sl).map(([k, v]) =>
-      `<div class="legend-item"><span class="status-badge" style="color:${{STATUS_COLORS[k]}};border-color:${{STATUS_COLORS[k]}}">${{v}}</span></div>`
+      `<div class="legend-item"><span class="status-badge" style="--sb:${{STATUS_COLORS[k]}}">${{v}}</span></div>`
     ).join('');
 }}
 renderStatusLegend();
@@ -1233,7 +929,51 @@ function clearSearch() {{
 }}
 
 
-const CY_STYLE = [
+// ── Theme-aware graph styling ────────────────
+// Category colours come from the YAML; nodes get a soft tint of that colour
+// as fill and a deeper shade as border, recomputed when the theme changes.
+function cssVar(name) {{
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}}
+function hexToRgb(h) {{
+  h = (h || '#999999').replace('#', '');
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  const n = parseInt(h, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}}
+function mix(a, b, t) {{
+  const x = hexToRgb(a), y = hexToRgb(b);
+  return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, '0')).join('');
+}}
+function themeColors() {{
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  return {{
+    dark,
+    bg: cssVar('--bg') || '#FAFAF8',
+    surface: cssVar('--surface') || '#FFFFFF',
+    ink: cssVar('--ink') || '#17181C',
+    muted: cssVar('--muted') || '#7A7D85',
+    edge: cssVar('--line-strong') || '#D2D2CC',
+    accent: cssVar('--accent') || '#D8432E',
+  }};
+}}
+function tintNodes(cyInst, th) {{
+  cyInst.batch(() => {{
+    cyInst.nodes().forEach(n => {{
+      const c = n.data('color') || '#999999';
+      if (th.dark) {{
+        n.data('fill', mix(c, th.bg, 0.72));
+        n.data('stroke', mix(c, '#ffffff', 0.1));
+      }} else {{
+        n.data('fill', mix(c, '#ffffff', 0.72));
+        n.data('stroke', mix(c, '#000000', 0.12));
+      }}
+    }});
+  }});
+}}
+
+function buildCyStyle(th) {{
+  return [
     // Provider nodes — ellipse to distinguish from models
     {{
       selector: "node[node_type='provider']",
@@ -1241,16 +981,17 @@ const CY_STYLE = [
         "width": {node_w},
         "height": {node_h},
         "shape": "ellipse",
-        "background-color": "data(color)",
-        "background-opacity": 0.85,
+        "background-color": "data(fill)",
+        "background-opacity": 1,
         "label": "data(label)",
         "text-valign": "center",
         "text-halign": "center",
+        "font-family": "Geist, system-ui, sans-serif",
         "font-size": "{node_font}px",
-        "font-weight": "700",
-        "color": "#1A1A2E",
-        "border-width": 2,
-        "border-color": "data(color)",
+        "font-weight": "600",
+        "color": th.ink,
+        "border-width": 1.5,
+        "border-color": "data(stroke)",
         "text-wrap": "wrap",
         "text-max-width": "{node_text_max_prov}px",
       }}
@@ -1262,21 +1003,23 @@ const CY_STYLE = [
         "width": {node_w},
         "height": {node_h},
         "shape": "round-rectangle",
-        "background-color": "data(color)",
-        "background-opacity": 0.9,
+        "background-color": "data(fill)",
+        "background-opacity": 1,
         "label": "data(label)",
         "text-valign": "center",
         "text-halign": "center",
+        "font-family": "Geist, system-ui, sans-serif",
         "font-size": "{node_font}px",
-        "font-weight": "600",
-        "color": "#1A1A2E",
-        "border-width": 2,
-        "border-color": "data(color)",
+        "font-weight": "500",
+        "color": th.ink,
+        "border-width": 1.5,
+        "border-color": "data(stroke)",
         "border-opacity": 1,
         "text-wrap": "wrap",
         "text-max-width": "{node_text_max}px",
         "overlay-padding": "6px",
-        "transition-property": "border-color, border-width, background-opacity",
+        "overlay-opacity": 0,
+        "transition-property": "border-color, border-width, opacity",
         "transition-duration": "0.15s",
       }}
     }},
@@ -1288,55 +1031,56 @@ const CY_STYLE = [
         "height": {int(node_h * 1.5)},
         "text-max-width": "{int(node_w * 1.5) - 10}px",
         "font-size": "{int(node_font * 1.5)}px",
+        "font-weight": "600",
       }}
     }},
-    // Status: evolving → orange border
+    // Status: evolving → warm border
     {{
       selector: ".status-evolving",
       style: {{
-        "border-color": "#E67E22",
-        "border-width": 3,
+        "border-color": "{STATUS_LABEL_COLOR['evolving']}",
+        "border-width": 2,
       }}
     }},
-    // Status: emerging → dashed purple border
+    // Status: emerging → dashed violet border
     {{
       selector: ".status-emerging",
       style: {{
-        "border-color": "#8E44AD",
-        "border-width": 3,
+        "border-color": "{STATUS_LABEL_COLOR['emerging']}",
+        "border-width": 2,
         "border-style": "dashed",
       }}
     }},
-    // Nodes with drill-down → visible glow + double border
+    // Nodes with drill-down → accent border + soft halo
     {{
       selector: ".has-drilldown",
       style: {{
-        "border-color": "#E74C3C",
-        "border-width": 3,
-        "border-style": "double",
-        "shadow-blur": 12,
-        "shadow-color": "#E74C3C",
+        "border-color": th.accent,
+        "border-width": 2,
+        "shadow-blur": 14,
+        "shadow-color": th.accent,
         "shadow-offset-x": 0,
         "shadow-offset-y": 0,
-        "shadow-opacity": 0.6,
+        "shadow-opacity": 0.25,
+        "label": ele => ele.data("label") + "  ↗",
       }}
     }},
-    // Status: deprecated → grey, muted
+    // Status: deprecated → muted
     {{
       selector: ".status-deprecated",
       style: {{
-        "background-opacity": 0.4,
-        "color": "#999",
-        "border-color": "#BDC3C7",
+        "background-opacity": 0.5,
+        "color": th.muted,
+        "border-color": th.edge,
+        "border-style": "dotted",
       }}
     }},
-    // Hover
+    // Hover / connected
     {{
       selector: "node:active, node.highlighted",
       style: {{
-        "border-width": 3,
-        "border-color": "#1A1A2E",
-        "background-opacity": 1,
+        "border-width": 2,
+        "border-color": th.ink,
         "z-index": 999,
       }}
     }},
@@ -1344,9 +1088,8 @@ const CY_STYLE = [
     {{
       selector: "node:selected",
       style: {{
-        "border-width": 3,
-        "border-color": "#E74C3C",
-        "background-opacity": 1,
+        "border-width": 2.5,
+        "border-color": th.accent,
       }}
     }},
     // Compound (container / parent) nodes — visual box only, no Cytoscape label.
@@ -1356,12 +1099,11 @@ const CY_STYLE = [
       selector: ":parent",
       style: {{
         "background-color": "data(color)",
-        "background-opacity": 0.06,
-        "border-width": 2,
+        "background-opacity": th.dark ? 0.06 : 0.045,
+        "border-width": 1.5,
         "border-color": "data(color)",
-        "border-opacity": 0.55,
+        "border-opacity": 0.45,
         "border-style": "solid",
-        "border-radius": 12,
         "shape": "round-rectangle",
         "label": "",
         "padding": "26px",
@@ -1373,27 +1115,29 @@ const CY_STYLE = [
     {{
       selector: "edge",
       style: {{
-        "width": 1.5,
-        "line-color": "#BDC3C7",
-        "target-arrow-color": "#BDC3C7",
+        "width": 1.2,
+        "line-color": th.edge,
+        "target-arrow-color": th.edge,
         "target-arrow-shape": "triangle",
         "curve-style": "bezier",
-        "arrow-scale": 1,
+        "arrow-scale": 0.8,
         "label": "",
+        "font-family": "Geist Mono, ui-monospace, monospace",
         "font-size": "9px",
-        "color": "#7F8C8D",
-        "text-background-color": "white",
-        "text-background-opacity": 0.8,
-        "text-background-padding": "2px",
-        "opacity": 0.6,
+        "color": th.muted,
+        "text-background-color": th.bg,
+        "text-background-opacity": 0.9,
+        "text-background-padding": "3px",
+        "text-background-shape": "round-rectangle",
+        "opacity": 0.8,
       }}
     }},
     {{
       selector: "edge.highlighted",
       style: {{
-        "width": 2.5,
-        "line-color": "#E74C3C",
-        "target-arrow-color": "#E74C3C",
+        "width": 2,
+        "line-color": th.accent,
+        "target-arrow-color": th.accent,
         "label": "data(label)",
         "opacity": 1,
         "z-index": 999,
@@ -1403,10 +1147,36 @@ const CY_STYLE = [
     {{
       selector: ".dimmed",
       style: {{
-        "opacity": 0.15,
+        "opacity": 0.18,
       }}
     }},
-];
+  ];
+}}
+
+let THEME = themeColors();
+tintNodesData(elements);
+const CY_STYLE = buildCyStyle(THEME);
+
+// Pre-compute tints on raw element data so the first paint is already right.
+function tintNodesData(els) {{
+  els.forEach(el => {{
+    if (!el.data || el.group === 'edges' || el.data.source) return;
+    const c = el.data.color || '#999999';
+    el.data.fill = THEME.dark ? mix(c, THEME.bg, 0.72) : mix(c, '#ffffff', 0.72);
+    el.data.stroke = THEME.dark ? mix(c, '#ffffff', 0.1) : mix(c, '#000000', 0.12);
+  }});
+}}
+
+window.addEventListener('mmia-themechange', () => {{
+  THEME = themeColors();
+  [cy, cy2].forEach(inst => {{
+    if (!inst) return;
+    tintNodes(inst, THEME);
+    inst.style(buildCyStyle(THEME));
+  }});
+  if (cy2) applyDrilldownSizing(cy2);
+  drawCategoryBoxes();
+}});
 
 const cy = cytoscape({{
   container: document.getElementById("cy"),
@@ -1416,7 +1186,7 @@ const cy = cytoscape({{
     name: "preset",
   }},
   wheelSensitivity: 0.3,
-  minZoom: 0.2,
+  minZoom: 0.08,
   maxZoom: 3,
 }});
 
@@ -1618,6 +1388,8 @@ function resetLayout() {{
 }}
 
 // ── Category bounding boxes ──────────────────
+function groupInk(c) {{ return THEME.dark ? mix(c, '#ffffff', 0.25) : mix(c, '#000000', 0.38); }}
+
 function drawCategoryBoxes() {{
   const container = document.getElementById('cat-boxes');
   if (!container) return;
@@ -1650,7 +1422,7 @@ function drawCategoryBoxes() {{
 
     const lbl = document.createElement('div');
     lbl.className = 'cat-box-label';
-    lbl.style.color = cat.color;
+    lbl.style.color = groupInk(cat.color);
     lbl.textContent = cat['label_' + lang] || cat.label_en;
     box.appendChild(lbl);
     container.appendChild(box);
@@ -1663,7 +1435,7 @@ function drawCategoryBoxes() {{
     lbl.className = 'cat-box-label';
     lbl.style.left  = (rbb.x1 + 14) + 'px';
     lbl.style.top   = (rbb.y1 - 11) + 'px';
-    lbl.style.color = n.data('color');
+    lbl.style.color = groupInk(n.data('color'));
     lbl.textContent = (n.data('label_' + lang) || n.data('label')).toUpperCase();
     container.appendChild(lbl);
   }});
@@ -1677,9 +1449,16 @@ function drawCategoryBoxes() {{
 let currentNode = null;
 
 cy.ready(() => {{
-  if (!loadPositions()) {{
+  const hasSavedPositions = loadPositions();
+  if (!hasSavedPositions) {{
     cy.fit(undefined, 40);
   }}
+  // Fonts and the final container size settle after first paint: refit once loaded.
+  window.addEventListener('load', () => {{
+    cy.resize();
+    if (!hasSavedPositions && !window.location.hash) cy.fit(undefined, 40);
+    drawCategoryBoxes();
+  }});
   // Init tooltips in default language
   document.querySelectorAll('.ctrl-btn[data-tip-en]').forEach(btn => {{
     btn.dataset.tip = btn.dataset.tipEn;
@@ -1713,9 +1492,10 @@ function shareNode() {{
   const url = window.location.href.split('#')[0] + '#' + currentNode.id();
   navigator.clipboard.writeText(url).then(() => {{
     const btn = document.getElementById('share-btn');
+    const icon = btn.innerHTML;
     btn.textContent = '✓';
     btn.classList.add('copied');
-    setTimeout(() => {{ btn.textContent = '🔗'; btn.classList.remove('copied'); }}, 1800);
+    setTimeout(() => {{ btn.innerHTML = icon; btn.classList.remove('copied'); }}, 1800);
   }});
 }}
 
@@ -1736,9 +1516,8 @@ function showPanel(node) {{
 
   const statusEl = document.getElementById("ph-status");
   statusEl.textContent = sl[d.status] || d.status;
-  statusEl.style.background = STATUS_COLORS[d.status] + "33";
+  statusEl.style.background = STATUS_COLORS[d.status] + "1F";
   statusEl.style.color = STATUS_COLORS[d.status];
-  statusEl.style.border = `1px solid ${{STATUS_COLORS[d.status]}}`;
 
   document.getElementById("empty-msg").style.display = "none";
   document.getElementById("panel-content").style.display = "block";
@@ -1820,22 +1599,17 @@ function showDrilldown(dd, label, color) {{
 
   // Wait for CSS transition (350ms) before initializing so the container has its final size
   setTimeout(() => {{
+    tintNodesData(dd.elements);
     cy2 = cytoscape({{
       container: document.getElementById("cy2"),
       elements: dd.elements,
-      style: CY_STYLE,
+      style: buildCyStyle(THEME),
       layout: {{ name: "preset" }},
       wheelSensitivity: 0.3,
       minZoom: 0.1,
       maxZoom: 3,
     }});
-
-    cy2.style()
-      .selector("node")
-      .style({{ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" }})
-      .selector("node[node_type='provider']")
-      .style({{ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" }})
-      .update();
+    applyDrilldownSizing(cy2);
 
     cy2.resize();
     cy2.fit(undefined, 30);
@@ -1870,6 +1644,15 @@ function showDrilldown(dd, label, color) {{
   }}, 380);
 }}
 
+function applyDrilldownSizing(inst) {{
+  inst.style()
+    .selector("node")
+    .style({{ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" }})
+    .selector("node[node_type='provider']")
+    .style({{ "width": 90, "height": 26, "font-size": "9px", "text-max-width": "84px" }})
+    .update();
+}}
+
 function closeDrilldown() {{
   document.body.classList.remove("drilldown-active");
   if (cy2) {{ cy2.destroy(); cy2 = null; }}
@@ -1893,27 +1676,22 @@ const cyContainer = document.getElementById("cy");
 cy.on("mouseover", "node.has-drilldown", () => {{ cyContainer.style.cursor = "zoom-in"; }});
 cy.on("mouseout",  "node.has-drilldown", () => {{ cyContainer.style.cursor = ""; }});
 
-// Append ↗ indicator to label (function style overrides data reference)
-cy.style()
-  .selector(".has-drilldown")
-  .style({{ "label": ele => ele.data("label") + "  ↗" }})
-  .update();
-
-(function pulseDrilldowns() {{
+// Gentle halo breathing on explorable nodes (the ↗ label suffix lives in buildCyStyle)
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{
   cy.nodes(".has-drilldown").forEach(node => {{
     (function pulse(n) {{
       n.animate(
-        {{ style: {{ "shadow-blur": 22, "shadow-opacity": 0.9, "border-width": 4, "border-color": "#FF6B6B" }} }},
-        {{ duration: 950, easing: "ease-in-out", complete: () =>
+        {{ style: {{ "shadow-blur": 20, "shadow-opacity": 0.45 }} }},
+        {{ duration: 1400, easing: "ease-in-out", complete: () =>
           n.animate(
-            {{ style: {{ "shadow-blur": 8, "shadow-opacity": 0.4, "border-width": 2, "border-color": "#E74C3C" }} }},
-            {{ duration: 950, easing: "ease-in-out", complete: () => pulse(n) }}
+            {{ style: {{ "shadow-blur": 10, "shadow-opacity": 0.15 }} }},
+            {{ duration: 1400, easing: "ease-in-out", complete: () => pulse(n) }}
           )
         }}
       );
     }})(node);
   }});
-}})();
+}}
 
 // ── Edge hover → show label ──────────────────
 cy.on("mouseover", "edge", function(evt) {{
@@ -1925,7 +1703,7 @@ cy.on("mouseout", "edge", function(evt) {{
   }}
 }});
 </script>
-
+{chrome_script()}
 </body>
 </html>"""
     return html
@@ -1937,7 +1715,7 @@ def generate_slides_html(data):
     title_en = t(meta.get("title", ""), "en")
     title_fr = t(meta.get("title", ""), "fr") or title_en
 
-    STATUS_EMOJI = {"stable": "🟢", "evolving": "🟡", "emerging": "🔵", "deprecated": "🔴"}
+    STATUS_EMOJI = {k: f'<span class="sd sd-{k}"></span>' for k in ("stable", "evolving", "emerging", "deprecated")}
 
     # Group nodes by layer — skip container (compound) nodes, they're visual groupings only
     by_layer = {}
@@ -2004,45 +1782,51 @@ def generate_slides_html(data):
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>{title_en} — Slides</title>
+{head_assets()}
 <style>
-  * {{ box-sizing:border-box; margin:0; padding:0 }}
-  body {{ background:#0d1117; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; font-family:"Segoe UI",sans-serif; overflow:hidden }}
-  #slide {{ background:#fff; width:min(92vw,960px); aspect-ratio:16/9; border-radius:12px; padding:48px 64px; display:flex; flex-direction:column; justify-content:center; box-shadow:0 20px 60px rgba(0,0,0,.5); position:relative; overflow:hidden }}
-  #slide h1 {{ font-size:2.4em; color:#1a237e; margin-bottom:16px }}
-  #slide h2 {{ font-size:1.6em; color:#283593; border-bottom:2px solid #3949ab; padding-bottom:10px; margin-bottom:20px }}
-  .subtitle {{ font-size:1.2em; color:#555 }}
+  body {{ background:var(--sunk); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; height:100vh; height:100dvh; overflow:hidden; padding:16px }}
+  #slide {{ background:var(--surface); color:var(--ink); width:min(92vw,1000px); aspect-ratio:16/9; border:1px solid var(--line); border-radius:16px; padding:clamp(24px,5vw,56px) clamp(24px,6vw,72px); display:flex; flex-direction:column; justify-content:center; box-shadow:var(--shadow); position:relative; overflow:hidden; font-size:clamp(12px,1.6vw,18px) }}
+  #slide h1 {{ font-size:2.6em; font-weight:600; letter-spacing:-.03em; line-height:1.05; margin:0 0 14px }}
+  #slide h2 {{ font-size:1.7em; font-weight:600; letter-spacing:-.02em; line-height:1.15; margin:0 0 22px; display:flex; align-items:center; gap:.45em }}
+  .subtitle {{ font-family:var(--f-read); font-size:1.3em; color:var(--ink-2); margin:0 }}
   .slide-type-title {{ display:flex; align-items:center; justify-content:center; text-align:center; height:100% }}
-  .slide-title-content {{ display:flex; flex-direction:column; gap:12px }}
-  .slide-layer-num,.slide-node-layer {{ position:absolute; top:20px; right:28px; font-size:.75em; color:#9fa8da; font-weight:600; letter-spacing:1px; text-transform:uppercase }}
-  ul {{ list-style:none; display:flex; flex-direction:column; gap:8px }}
-  li {{ font-size:.9em; color:#333; line-height:1.4 }}
-  li strong {{ color:#1a237e }}
-  .node-desc {{ font-size:.92em; color:#444; line-height:1.7; margin-top:8px }}
-  .slide-status {{ position:absolute; bottom:20px; right:28px; font-size:.72em; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:3px 10px; border-radius:10px; border:1.5px solid }}
-  .status-stable {{ color:#2e7d32; border-color:#2e7d32 }}
-  .status-evolving {{ color:#e65100; border-color:#e65100 }}
-  .status-emerging {{ color:#1565c0; border-color:#1565c0 }}
-  .status-deprecated {{ color:#b71c1c; border-color:#b71c1c }}
-  .stat {{ font-size:1.4em; font-weight:700; color:#3949ab }}
-  .generated-from {{ font-size:.85em; color:#999; margin-top:12px }}
-  #nav {{ display:flex; align-items:center; gap:20px; margin-top:20px }}
-  .nav-btn {{ background:#3949ab; color:#fff; border:none; border-radius:8px; padding:10px 24px; font-size:1em; cursor:pointer; transition:background .15s }}
-  .nav-btn:hover {{ background:#283593 }}
-  .nav-btn:disabled {{ background:#555; cursor:default }}
-  #counter {{ color:#aaa; font-size:.9em; min-width:80px; text-align:center }}
-  #progress {{ position:absolute; bottom:0; left:0; height:3px; background:#3949ab; transition:width .3s; border-radius:0 0 0 12px }}
-  #lang-toggle {{ position:fixed; top:16px; right:16px; display:flex; gap:6px }}
-  .lang-btn {{ background:none; border:1px solid #555; border-radius:4px; color:#aaa; padding:4px 10px; font-size:12px; cursor:pointer }}
-  .lang-btn.active {{ background:white; color:#1a237e; border-color:white }}
+  .slide-title-content {{ display:flex; flex-direction:column; gap:12px; align-items:center }}
+  .slide-layer-num,.slide-node-layer {{ position:absolute; top:24px; left:clamp(24px,6vw,72px); font:500 .7em/1 var(--f-mono); color:var(--muted); letter-spacing:.08em; text-transform:uppercase }}
+  ul {{ list-style:none; display:flex; flex-direction:column; gap:10px; margin:0; padding:0 }}
+  li {{ font-size:.92em; color:var(--ink-2); line-height:1.45; display:flex; gap:10px; align-items:baseline }}
+  li strong {{ color:var(--ink); font-weight:600 }}
+  .sd {{ display:inline-block; width:.5em; height:.5em; border-radius:50%; flex-shrink:0; transform:translateY(-.1em) }}
+  .sd-stable {{ background:var(--ok) }} .sd-evolving {{ background:var(--warn) }}
+  .sd-emerging {{ background:var(--new) }} .sd-deprecated {{ background:var(--muted) }}
+  .node-desc {{ font-family:var(--f-read); font-size:1.15em; color:var(--ink); line-height:1.6; margin:4px 0 0; max-width:38em }}
+  .slide-status {{ position:absolute; bottom:24px; right:clamp(24px,6vw,72px); font:500 .7em/1 var(--f-mono); letter-spacing:.04em; padding:5px 10px; border-radius:99px; border:1px solid currentColor }}
+  .status-stable {{ color:var(--ok) }}
+  .status-evolving {{ color:var(--warn) }}
+  .status-emerging {{ color:var(--new) }}
+  .status-deprecated {{ color:var(--muted) }}
+  .stat {{ font-size:1.5em; font-weight:600; margin:0 }}
+  .generated-from {{ font:.8em var(--f-mono); color:var(--muted); margin-top:12px }}
+  #nav {{ display:flex; align-items:center; gap:14px }}
+  .nav-btn {{ width:44px; height:44px; display:grid; place-items:center; background:var(--surface); color:var(--ink); border:1px solid var(--line-strong); border-radius:12px; font-size:1.1em; cursor:pointer; transition:background .15s, border-color .15s }}
+  .nav-btn:hover {{ border-color:var(--ink) }}
+  .nav-btn:disabled {{ opacity:.35; cursor:default }}
+  #counter {{ color:var(--muted); font:13px var(--f-mono); min-width:80px; text-align:center }}
+  #progress {{ position:absolute; bottom:0; left:0; height:3px; background:var(--accent); transition:width .3s }}
+  .slides-top {{ position:fixed; top:max(16px, env(safe-area-inset-top, 0px)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:10px }}
+  .slides-top a {{ font-size:14px; color:var(--ink-2); text-decoration:none }}
+  .slides-top a:hover {{ color:var(--accent) }}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<div id="lang-toggle">
-  <button class="lang-btn active" onclick="setLang('en')">EN</button>
-  <button class="lang-btn" onclick="setLang('fr')">FR</button>
+<div class="slides-top">
+  <a href="{OUTPUT_FILE.name}">← {title_en}</a>
+  <div class="lang-toggle" id="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+  </div>
 </div>
 <div id="slide"><div id="progress"></div><div id="slide-content"></div></div>
 <div id="nav">
@@ -2075,6 +1859,7 @@ document.addEventListener('keydown', e => {{
 }});
 render();
 </script>
+{chrome_script()}
 </body></html>"""
 
 

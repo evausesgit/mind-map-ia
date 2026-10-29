@@ -1,21 +1,39 @@
 #!/usr/bin/env python3
-"""Generate web/index.html — the landing page listing all available mind maps."""
+"""Generate web/index.html (landing page) and web/news.html (full news feed)."""
 
 import re
 import yaml
-import json
 from pathlib import Path
+from urllib.parse import urlparse
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
-from global_search import widget_html as gs_widget
+from site_chrome import head_assets, site_header, site_footer, chrome_script, load_topics, load_registry
 
 ROOT = Path(__file__).parent.parent
-MAPS_FILE = ROOT / "data" / "maps.yaml"
 GLOSSARY_FILE = ROOT / "data" / "glossary.yaml"
 MACRO_FILE = ROOT / "data" / "ecosystem-macro.yaml"
-TOPICS_DIR = ROOT / "data" / "topics"
 NEWS_FILE = ROOT / "data" / "news.yaml"
 OUTPUT = ROOT / "web" / "index.html"
+NEWS_OUTPUT = ROOT / "web" / "news.html"
+
+HOME_NEWS_COUNT = 8
+
+MONTHS = {
+    "en": ["January", "February", "March", "April", "May", "June", "July",
+           "August", "September", "October", "November", "December"],
+    "fr": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
+           "août", "septembre", "octobre", "novembre", "décembre"],
+}
+MONTHS_SHORT = {
+    "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "fr": ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."],
+}
+NEWS_TYPES = {
+    "update":      {"en": "Industry", "fr": "Actu"},
+    "research":    {"en": "Research", "fr": "Recherche"},
+    "new-content": {"en": "On the site", "fr": "Sur le site"},
+    "new-feature": {"en": "On the site", "fr": "Sur le site"},
+}
 
 
 def t(field, lang):
@@ -24,78 +42,16 @@ def t(field, lang):
     return str(field) if field else ""
 
 
-def build_card(m):
-    icon = m.get("icon", "📄")
-    title_en = t(m.get("title", ""), "en")
-    title_fr = t(m.get("title", ""), "fr") or title_en
-    desc_en  = t(m.get("description", ""), "en")
-    desc_fr  = t(m.get("description", ""), "fr") or desc_en
-    output   = m.get("output", "#")
-    if "nodes" in m:
-        meta_en = f"{m['nodes']} nodes"
-        meta_fr = f"{m['nodes']} nœuds"
-    elif "terms" in m:
-        meta_en = f"{m['terms']} terms"
-        meta_fr = f"{m['terms']} termes"
-    else:
-        meta_en = meta_fr = ""
-    return f"""
-    <a href="{output}" class="card">
-      <div class="card-icon">{icon}</div>
-      <div class="card-body">
-        <div class="card-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</div>
-        <div class="card-desc"  data-en="{desc_en}"  data-fr="{desc_fr}" >{desc_en}</div>
-        <div class="card-meta" data-en="{meta_en}" data-fr="{meta_fr}">{meta_en}</div>
-      </div>
-      <div class="card-arrow">→</div>
-    </a>"""
+def esc(s):
+    return str(s).replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def parse_topic_frontmatter(path):
-    """Extract YAML frontmatter from a topic .md file."""
-    raw = path.read_text(encoding="utf-8")
-    fm_match = re.match(r"^---\n(.*?)\n---\n", raw, re.DOTALL)
-    if not fm_match:
-        return None
-    return yaml.safe_load(fm_match.group(1))
-
-
-def load_topics():
-    """Return list of topic frontmatter dicts, sorted by date desc."""
-    if not TOPICS_DIR.exists():
-        return []
-    topics = []
-    for path in sorted(TOPICS_DIR.glob("*.md")):
-        fm = parse_topic_frontmatter(path)
-        if fm:
-            topics.append(fm)
-    topics.sort(key=lambda x: str(x.get("date", "")), reverse=True)
-    return topics
-
-
-def build_topic_card(topic):
-    tid = topic.get("id", "")
-    title_en = t(topic.get("title", ""), "en")
-    title_fr = t(topic.get("title", ""), "fr") or title_en
-    summary_en = t(topic.get("summary", ""), "en")
-    summary_fr = t(topic.get("summary", ""), "fr") or summary_en
-    tags = topic.get("tags", [])
-    status = topic.get("status", "draft")
-    tags_html = "".join(f'<span class="topic-tag">{tag}</span>' for tag in tags[:4])
-    status_colors = {"stable": "#27AE60", "draft": "#E67E22", "review": "#3498DB"}
-    status_color = status_colors.get(status, "#7F8C8D")
-    return f"""
-    <a href="topics/{tid}.html" class="topic-card">
-      <div class="topic-card-body">
-        <div class="topic-card-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</div>
-        <div class="topic-card-desc" data-en="{summary_en}" data-fr="{summary_fr}">{summary_en}</div>
-        <div class="topic-card-footer">
-          <div class="topic-tags">{tags_html}</div>
-          <span class="topic-status" style="color:{status_color}">{status}</span>
-        </div>
-      </div>
-      <div class="card-arrow">→</div>
-    </a>"""
+def bi(field, tag="span", cls="", fallback=""):
+    """Bilingual element swapped by setLang() through data-en / data-fr."""
+    en = t(field, "en") or fallback
+    fr = t(field, "fr") or en
+    c = f' class="{cls}"' if cls else ""
+    return f'<{tag}{c} data-en="{esc(en)}" data-fr="{esc(fr)}">{esc(en)}</{tag}>'
 
 
 def load_news():
@@ -111,7 +67,6 @@ def load_news():
 
 def _slugify(text):
     """Turn a title into a URL-friendly slug."""
-    import re
     text = text.lower().strip()
     text = re.sub(r'[àáâãäå]', 'a', text)
     text = re.sub(r'[èéêë]', 'e', text)
@@ -123,906 +78,510 @@ def _slugify(text):
     return text.strip('-')[:60]
 
 
-NEWS_INITIAL = 8
-
-def build_news_item(entry, index=0):
-    date = str(entry.get("date", ""))
-    ntype = entry.get("type", "update")
-    title_en = t(entry.get("title", ""), "en")
-    title_fr = t(entry.get("title", ""), "fr") or title_en
-    desc_en = t(entry.get("description", ""), "en")
-    desc_fr = t(entry.get("description", ""), "fr") or desc_en
-    link = entry.get("link", "")
-    type_icons = {"new-content": "📝", "update": "🔄", "new-feature": "✨"}
-    type_labels_en = {"new-content": "New content", "update": "Update", "new-feature": "New feature"}
-    type_labels_fr = {"new-content": "Nouveau contenu", "update": "Mise à jour", "new-feature": "Nouveauté"}
-    icon = type_icons.get(ntype, "📢")
-    label_en = type_labels_en.get(ntype, "News")
-    label_fr = type_labels_fr.get(ntype, "News")
-    anchor = f"news-{date}-{_slugify(title_en)}"
-    hidden_class = " news-hidden" if index >= NEWS_INITIAL else ""
-    tag = f'<a href="{link}" id="{anchor}" class="news-item{hidden_class}">' if link else f'<div id="{anchor}" class="news-item{hidden_class}">'
-    end_tag = '</a>' if link else '</div>'
-    return f"""
-    {tag}
-      <div class="news-icon">{icon}</div>
-      <div class="news-body">
-        <div class="news-meta">
-          <span class="news-type" data-en="{label_en}" data-fr="{label_fr}">{label_en}</span>
-          <span class="news-date">{date}</span>
-        </div>
-        <div class="news-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</div>
-        <div class="news-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</div>
-      </div>
-      <button class="news-share" onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText(location.origin+location.pathname+'#{anchor}');this.textContent='✓';setTimeout(()=>this.textContent='🔗',1200)" title="Copy link">🔗</button>
-    {end_tag}"""
+def news_anchor(entry):
+    return f"news-{entry.get('date', '')}-{_slugify(t(entry.get('title', ''), 'en'))}"
 
 
-def build_search_index():
-    """Build a JSON search index from glossary and all map nodes."""
-    items = []
-
-    # Glossary terms
-    if GLOSSARY_FILE.exists():
-        with open(GLOSSARY_FILE) as f:
-            gdata = yaml.safe_load(f)
-        for term in gdata.get("terms", []):
-            items.append({
-                "type": "glossary",
-                "id": term["id"],
-                "label": term.get("label", {}),
-                "aliases": term.get("aliases", []),
-                "desc": {k: (v or "")[:120] for k, v in (term.get("description") or {}).items()},
-                "url": f"glossary.html#{term['id']}",
-            })
-
-    # Map nodes
-    map_sources = [
-        (MACRO_FILE, "macro.html", {"en": "Big Picture", "fr": "Vue d'Ensemble"}),
-    ]
-    seen_ids = set()
-    for yaml_path, page_url, map_label in map_sources:
-        if not yaml_path.exists():
-            continue
-        with open(yaml_path) as f:
-            mdata = yaml.safe_load(f)
-        for node in mdata.get("nodes", []):
-            nid = node.get("id", "")
-            if nid in seen_ids:
-                continue
-            seen_ids.add(nid)
-            desc_raw = node.get("description") or {}
-            if isinstance(desc_raw, str):
-                desc_raw = {"en": desc_raw}
-            items.append({
-                "type": "node",
-                "id": nid,
-                "label": node.get("label", {}),
-                "aliases": [],
-                "desc": {k: (v or "")[:120] for k, v in desc_raw.items()},
-                "url": page_url,
-                "map": map_label,
-            })
-
-    # Topics
-    for topic in load_topics():
-        tid = topic.get("id", "")
-        summary = topic.get("summary") or {}
-        if isinstance(summary, str):
-            summary = {"en": summary}
-        items.append({
-            "type": "topic",
-            "id": tid,
-            "label": topic.get("title", {}),
-            "aliases": topic.get("tags", []),
-            "desc": {k: (v or "")[:120] for k, v in summary.items()},
-            "url": f"topics/{tid}.html",
-        })
-
-    return items
+def short_date(date):
+    try:
+        y, m, d = (int(x) for x in str(date).split("-"))
+    except ValueError:
+        return {"en": str(date), "fr": str(date)}
+    return {"en": f"{MONTHS_SHORT['en'][m-1]} {d}", "fr": f"{d} {MONTHS_SHORT['fr'][m-1]}"}
 
 
-def _build_topic_nav_items(topics, prefix=""):
-    """Build nav dropdown items for a list of topics."""
-    items = ""
-    for topic in topics:
-        tid = topic.get("id", "")
-        title_en = t(topic.get("title",   ""), "en")
-        title_fr = t(topic.get("title",   ""), "fr") or title_en
-        summ_en  = t(topic.get("summary", ""), "en")
-        summ_fr  = t(topic.get("summary", ""), "fr") or summ_en
-        items += (
-            f'<a href="{prefix}topics/{tid}.html" class="nav-item">'
-            f'<span class="nav-item-icon">📝</span>'
-            f'<span class="nav-item-info">'
-            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
-            f'</span></a>'
-        )
-    return items
+def source_of(link):
+    host = urlparse(link).netloc.lower()
+    return host[4:] if host.startswith("www.") else host
 
 
-def split_topics_by_category(topics):
-    """Split topics into (deep_dives, reflexions) based on category field."""
-    deep_dives = [t for t in topics if t.get("category") != "reflexion"]
-    reflexions = [t for t in topics if t.get("category") == "reflexion"]
-    return deep_dives, reflexions
+def count_glossary_terms():
+    if not GLOSSARY_FILE.exists():
+        return 0
+    with open(GLOSSARY_FILE) as f:
+        return len((yaml.safe_load(f) or {}).get("terms", []))
 
 
-def _build_link_nav_items(links, prefix=""):
-    """Build nav dropdown items for external links."""
-    items = ""
-    for link in links:
-        title_en = t(link.get("title", ""), "en")
-        title_fr = t(link.get("title", ""), "fr") or title_en
-        desc_en  = t(link.get("description", ""), "en")
-        desc_fr  = t(link.get("description", ""), "fr") or desc_en
-        url = link.get("url", "")
-        items += (
-            f'<a href="{url}" class="nav-item" target="_blank" rel="noopener">'
-            f'<span class="nav-item-icon">{link.get("icon","🔗")}</span>'
-            f'<span class="nav-item-info">'
-            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'</span></a>'
-        )
-    return items
+# ── Shared page styles (home + news) ──────────────────────────────────────────
+
+PAGE_CSS = """
+:root {
+  --l1: #F5EBCF; --l1s: #B8913A;
+  --l2: #ECE4F6; --l2s: #7E5DB8;
+  --l3: #E8EAEE; --l3s: #6E7684;
+  --l4: #DFF0E7; --l4s: #3A8F66;
+  --l5: #E0EBF6; --l5s: #4479B3;
+}
+:root[data-theme="dark"] {
+  --l1: #3A3220; --l1s: #D9B45E; --l2: #2E2640; --l2s: #B49AE6; --l3: #26292F; --l3s: #9AA3B2;
+  --l4: #1E3329; --l4s: #6CC79A; --l5: #1E2B3B; --l5s: #7FB0E6;
+}
+body { font-size: 16px; line-height: 1.6; }
+.wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+p { margin: 0; }
+a { color: inherit; }
+
+.sec { padding-block: 56px 0; scroll-margin-top: calc(var(--header-h) + 16px); }
+.sec-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
+}
+.sec-head h2 { font-size: 22px; font-weight: 600; }
+.sec-head .more { font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; }
+.sec-head .more:hover { color: var(--accent); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; padding-block: 64px 8px; }
+.hero h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.04; font-weight: 600; letter-spacing: -0.035em; margin-top: 16px; }
+.hero .lede { font-size: 18px; color: var(--ink-2); margin-top: 18px; max-width: 30em; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.hero .stats { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 28px; font: 13px var(--f-mono); color: var(--muted); }
+.hero .stats b { color: var(--ink); font-weight: 500; }
+.preview {
+  display: block; position: relative; text-decoration: none;
+  aspect-ratio: 16 / 11; max-width: 100%;
+  border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+  background: radial-gradient(circle at 1px 1px, var(--line) 1px, transparent 0) 0 0 / 22px 22px, var(--surface);
+  box-shadow: var(--shadow);
+  transition: transform .25s, box-shadow .25s;
+}
+.preview:hover { transform: translateY(-3px); }
+.preview svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.preview svg text { font-family: var(--f-ui); }
+.preview-cap {
+  position: absolute; left: 16px; right: 16px; bottom: 14px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  font: 12px var(--f-mono); color: var(--muted);
+}
+.preview-cap .go { color: var(--ink); font-family: var(--f-ui); font-size: 14px; font-weight: 500; }
+.preview:hover .preview-cap .go { color: var(--accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .pulse { animation: pulse 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+}
+
+/* Tiles (maps, animations) */
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 28px; }
+.tile {
+  display: grid; gap: 6px; align-content: start;
+  padding-block: 18px 20px; border-bottom: 1px solid var(--line);
+  text-decoration: none; color: var(--ink);
+}
+.tile .k { display: flex; align-items: center; gap: 8px; font: 500 11px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tile .k i { width: 8px; height: 8px; border-radius: 2px; background: var(--l4s); }
+.tile.diagram .k i { background: var(--l1s); }
+.tile.anim .k i { background: var(--l2s); }
+.tile .k .n { margin-left: auto; letter-spacing: 0; text-transform: none; }
+.tile h3 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; transition: color .15s; }
+.tile p { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+.tile:hover h3 { color: var(--accent); }
+
+/* Articles + news */
+.split { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 56px; }
+.art {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 20px;
+  padding-block: 16px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink);
+}
+.art h3 { font-family: var(--f-read); font-size: 21px; font-weight: 500; line-height: 1.25; letter-spacing: -0.01em; transition: color .15s; }
+.art p { font-size: 14px; color: var(--muted); grid-column: 1; line-height: 1.5; }
+.art .m { grid-row: 1; grid-column: 2; font: 12px var(--f-mono); color: var(--muted); white-space: nowrap; padding-top: 5px; }
+.art:hover h3 { color: var(--accent); }
+.nws {
+  display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 2px 14px;
+  padding-block: 13px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink);
+}
+.nws time { grid-row: span 2; font: 12px var(--f-mono); color: var(--muted); padding-top: 2px; white-space: nowrap; }
+.nws h3 { font-size: 14.5px; font-weight: 500; line-height: 1.4; letter-spacing: -0.005em; transition: color .15s; }
+.nws .s { font: 12px var(--f-mono); color: var(--muted); }
+.nws:hover h3 { color: var(--accent); }
+
+/* Resources */
+.res { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; }
+.res a { display: grid; gap: 4px; padding-block: 14px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.res .h { display: flex; justify-content: space-between; gap: 8px; font-size: 15px; font-weight: 500; }
+.res .h span:last-child { color: var(--muted); }
+.res a:hover .h span:first-child { color: var(--accent); }
+.res p { font-size: 13px; color: var(--muted); line-height: 1.45; }
+main { padding-bottom: 88px; }
+
+@media (max-width: 1000px) {
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .res { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 40px 0; }
+  .split { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
+@media (max-width: 560px) {
+  .tiles, .res { grid-template-columns: minmax(0, 1fr); }
+  .art { grid-template-columns: minmax(0, 1fr); }
+  .art .m { grid-row: auto; grid-column: 1; padding-top: 0; }
+  .sec { padding-block: 40px 0; }
+}
+
+/* ── News page ── */
+.nf-hero { padding-block: 56px 28px; display: grid; gap: 14px; }
+.nf-hero h1 { font-size: clamp(34px, 4.5vw, 48px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; }
+.nf-hero p { color: var(--ink-2); font-size: 17px; max-width: 36em; }
+.nf-bar {
+  position: sticky; top: var(--header-h); z-index: 50;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  padding-block: 12px; background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.nf-filter {
+  height: 32px; padding: 0 12px; font: 500 13px var(--f-ui); color: var(--ink-2);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 99px; cursor: pointer;
+}
+.nf-filter:hover { border-color: var(--line-strong); color: var(--ink); }
+.nf-filter.on { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.nf-filter .c { font: 11px var(--f-mono); opacity: .65; margin-left: 4px; }
+.nf-search {
+  margin-left: auto; height: 34px; width: min(280px, 100%); padding: 0 12px;
+  font: 14px var(--f-ui); color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 9px; outline: none;
+}
+.nf-search:focus { border-color: var(--ink-2); }
+.nf-month {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding-block: 40px 10px; border-bottom: 1px solid var(--line);
+  scroll-margin-top: calc(var(--header-h) + 70px);
+}
+.nf-month h2 { font-size: 20px; font-weight: 600; }
+.nf-month span { font: 12px var(--f-mono); color: var(--muted); }
+.nf-item {
+  display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 4px 20px;
+  padding-block: 20px; border-bottom: 1px solid var(--line);
+  scroll-margin-top: calc(var(--header-h) + 70px);
+  transition: background .6s;
+}
+.nf-item.flash { background: var(--accent-soft); }
+.nf-item time { font: 12px var(--f-mono); color: var(--muted); padding-top: 4px; white-space: nowrap; }
+.nf-body { display: grid; gap: 6px; max-width: 760px; }
+.nf-body h3 { font-size: 18px; font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; }
+.nf-body h3 a { text-decoration: none; }
+.nf-body h3 a:hover { color: var(--accent); }
+.nf-body p { font-size: 15px; color: var(--ink-2); line-height: 1.6; }
+.nf-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 4px; font: 12px var(--f-mono); color: var(--muted); }
+.nf-foot a { color: var(--muted); text-decoration: none; }
+.nf-foot a:hover { color: var(--accent); }
+.nf-copy { background: none; border: 0; padding: 0; font: inherit; color: var(--muted); cursor: pointer; }
+.nf-copy:hover { color: var(--ink); }
+.chip.ty-research { color: var(--info); }
+.chip.ty-site { color: var(--accent); }
+.nf-empty { padding: 48px 0; color: var(--muted); text-align: center; }
+@media (max-width: 640px) {
+  .nf-item { grid-template-columns: minmax(0, 1fr); }
+  .nf-search { margin-left: 0; width: 100%; }
+}
+"""
+
+LANG_JS = """
+<script>
+let currentLang = 'en';
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = lang === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
+  });
+  document.querySelectorAll('[data-ph-en]').forEach(el => {
+    el.placeholder = lang === 'fr' ? el.dataset.phFr : el.dataset.phEn;
+  });
+}
+</script>"""
 
 
-def build_nav_html(maps, topics, links=None):
-    """Build the site-wide nav: Mind Maps dropdown + Deep Dives dropdown + Réflexion dropdown + Links dropdown + Glossary link."""
-    map_items = ""
-    for m in maps:
-        if m.get("id") == "glossary":
-            continue
-        title_en = t(m.get("title", ""), "en")
-        title_fr = t(m.get("title", ""), "fr") or title_en
-        desc_en  = t(m.get("description", ""), "en")
-        desc_fr  = t(m.get("description", ""), "fr") or desc_en
-        map_items += (
-            f'<a href="{m["output"]}" class="nav-item">'
-            f'<span class="nav-item-icon">{m.get("icon","📄")}</span>'
-            f'<span class="nav-item-info">'
-            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'</span></a>'
-        )
-    deep_dives, reflexions = split_topics_by_category(topics)
-    anim_item = (
-        '<a href="animations/llm-chatbot.html" class="nav-item">'
-        '<span class="nav-item-icon">🎬</span>'
-        '<span class="nav-item-info">'
-        '<span class="nav-item-title" data-en="Animation — How an LLM Works" data-fr="Animation — Comment fonctionne un LLM">Animation — How an LLM Works</span>'
-        '<span class="nav-item-desc" data-en="Tokenisation, embeddings, self-attention and generation — animated" data-fr="Tokenisation, embeddings, self-attention et génération — animés">Tokenisation, embeddings, self-attention and generation — animated</span>'
-        '</span></a>'
-        '<a href="animations/mcp-agentic-architecture.html" class="nav-item">'
-        '<span class="nav-item-icon">🎬</span>'
-        '<span class="nav-item-info">'
-        '<span class="nav-item-title" data-en="Animation — MCP &amp; Agentic Architecture" data-fr="Animation — MCP &amp; architecture agentique">Animation — MCP &amp; Agentic Architecture</span>'
-        '<span class="nav-item-desc" data-en="Agent, orchestrator and MCP connecting AI to enterprise data — animated" data-fr="Agent, orchestrateur et MCP reliant l’IA aux données de l’entreprise — animés">Agent, orchestrator and MCP connecting AI to enterprise data — animated</span>'
-        '</span></a>'
-        '<a href="animations/trusted-data-agents.html" class="nav-item">'
-        '<span class="nav-item-icon">🎬</span>'
-        '<span class="nav-item-info">'
-        '<span class="nav-item-title" data-en="Animation — Trusted Data for Agents" data-fr="Animation — Des données de confiance pour les agents">Animation — Trusted Data for Agents</span>'
-        '<span class="nav-item-desc" data-en="Data quality, data context, access control, anonymisation and on-prem vs cloud routing behind MCP — animated" data-fr="Qualité et contexte des données, habilitations, anonymisation et routage on-premise / cloud derrière MCP — animés">Data quality, data context, access control, anonymisation and on-prem vs cloud routing behind MCP — animated</span>'
-        '</span></a>'
-        '<a href="animations/sales-trader-copilot.html" class="nav-item">'
-        '<span class="nav-item-icon">🎬</span>'
-        '<span class="nav-item-info">'
-        '<span class="nav-item-title" data-en="Animation — AI-Enabled Sales Trading" data-fr="Animation — Sales Trading augmenté par l’IA">Animation — AI-Enabled Sales Trading</span>'
-        '<span class="nav-item-desc" data-en="A copilot investigating via MCP alongside a Cash Equity Sales Trader — animated use case" data-fr="Un copilote qui enquête via MCP aux côtés d’un Sales Trader Cash Equity — cas d’usage animé">A copilot investigating via MCP alongside a Cash Equity Sales Trader — animated use case</span>'
-        '</span></a>'
-    )
-    dive_items = anim_item + _build_topic_nav_items(deep_dives)
-    reflexion_items = _build_topic_nav_items(reflexions)
-    link_items = _build_link_nav_items(links or [])
-
-    nav = (
-        f'<div class="nav-group">'
-        f'  <button class="nav-btn">'
-        f'    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾'
-        f'  </button>'
-        f'  <div class="nav-dropdown">{map_items}</div>'
-        f'</div>'
-        f'<div class="nav-group">'
-        f'  <button class="nav-btn">'
-        f'    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾'
-        f'  </button>'
-        f'  <div class="nav-dropdown">{dive_items}</div>'
-        f'</div>'
-    )
-    if reflexion_items:
-        nav += (
-            f'<div class="nav-group">'
-            f'  <button class="nav-btn">'
-            f'    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾'
-            f'  </button>'
-            f'  <div class="nav-dropdown">{reflexion_items}</div>'
-            f'</div>'
-        )
-    if link_items:
-        nav += (
-            f'<div class="nav-group">'
-            f'  <button class="nav-btn">'
-            f'    <span data-en="Links" data-fr="Liens">Links</span> ▾'
-            f'  </button>'
-            f'  <div class="nav-dropdown">{link_items}</div>'
-            f'</div>'
-        )
-    nav += (
-        f'<a href="index.html#news" class="nav-btn" style="text-decoration:none;">'
-        f'  <span data-en="News" data-fr="Nouveautés">News</span>'
-        f'</a>'
-    )
-    return nav
-
-
-def main():
-    with open(MAPS_FILE) as f:
-        config = yaml.safe_load(f)
-    maps = config.get("maps", [])
-    links = config.get("links", [])
-    topics = load_topics()
-    news = load_news()
-    # Split: featured (Big Picture) vs rest
-    macro_map   = next((m for m in maps if m.get("id") == "macro"), None)
-    other_maps  = [m for m in maps if m.get("id") not in ("macro", "glossary")]
-    glossary_map = next((m for m in maps if m.get("id") == "glossary"), None)
-
-    # Featured Big Picture card
-    ORGANIC_NET_SVG = """<svg width="80" height="55" viewBox="0 0 120 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <line x1="10" y1="16" x2="24" y2="8"  stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="10" y1="16" x2="22" y2="34" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="10" y1="52" x2="22" y2="34" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="10" y1="52" x2="28" y2="64" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="24" y1="8"  x2="42" y2="16" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="22" y1="34" x2="42" y2="16" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="22" y1="34" x2="40" y2="48" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="28" y1="64" x2="40" y2="48" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="28" y1="64" x2="46" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="42" y1="16" x2="60" y2="10" stroke="#E74C3C" stroke-width="1.4" stroke-opacity="0.9"/>
-      <line x1="42" y1="16" x2="56" y2="38" stroke="#E74C3C" stroke-width="1.4" stroke-opacity="0.9"/>
-      <line x1="40" y1="48" x2="56" y2="38" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="40" y1="48" x2="58" y2="64" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="46" y1="72" x2="58" y2="64" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="60" y1="10" x2="56" y2="38" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="60" y1="10" x2="76" y2="20" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="56" y1="38" x2="72" y2="50" stroke="#E74C3C" stroke-width="1.4" stroke-opacity="0.9"/>
-      <line x1="58" y1="64" x2="72" y2="50" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="58" y1="64" x2="78" y2="72" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="76" y1="20" x2="72" y2="50" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="76" y1="20" x2="92" y2="14" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="72" y1="50" x2="94" y2="44" stroke="#E74C3C" stroke-width="1.4" stroke-opacity="0.9"/>
-      <line x1="78" y1="72" x2="94" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="92" y1="14" x2="94" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="92" y1="14" x2="108" y2="26" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="94" y1="44" x2="108" y2="60" stroke="#E74C3C" stroke-width="1.4" stroke-opacity="0.9"/>
-      <line x1="78" y1="72" x2="108" y2="60" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <line x1="108" y1="26" x2="108" y2="60" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
-      <circle cx="10"  cy="16" r="3.5" fill="white"/>
-      <circle cx="10"  cy="52" r="3"   fill="white"/>
-      <circle cx="24"  cy="8"  r="3"   fill="white"/>
-      <circle cx="22"  cy="34" r="5"   fill="#E74C3C"/>
-      <circle cx="28"  cy="64" r="3"   fill="white"/>
-      <circle cx="42"  cy="16" r="3.5" fill="white"/>
-      <circle cx="40"  cy="48" r="3"   fill="white"/>
-      <circle cx="46"  cy="72" r="3"   fill="white"/>
-      <circle cx="60"  cy="10" r="4.5" fill="#E74C3C"/>
-      <circle cx="56"  cy="38" r="5"   fill="white"/>
-      <circle cx="58"  cy="64" r="3"   fill="white"/>
-      <circle cx="76"  cy="20" r="3.5" fill="white"/>
-      <circle cx="72"  cy="50" r="4.5" fill="#E74C3C"/>
-      <circle cx="78"  cy="72" r="3"   fill="white"/>
-      <circle cx="92"  cy="14" r="3.5" fill="white"/>
-      <circle cx="94"  cy="44" r="3"   fill="white"/>
-      <circle cx="108" cy="26" r="4.5" fill="#E74C3C"/>
-      <circle cx="108" cy="60" r="3.5" fill="white"/>
-    </svg>"""
-
-    def build_featured_card(m):
-        title_en = t(m.get("title", ""), "en")
-        title_fr = t(m.get("title", ""), "fr") or title_en
-        desc_en  = t(m.get("description", ""), "en")
-        desc_fr  = t(m.get("description", ""), "fr") or desc_en
-        nodes    = m.get("nodes", "")
-        meta_en  = f"{nodes} nodes" if nodes else ""
-        meta_fr  = f"{nodes} nœuds" if nodes else ""
-        return f"""
-    <a href="{m['output']}" class="card card-featured">
-      <div class="featured-badge" data-en="Start here · Best entry point" data-fr="Commencer ici · Meilleur point d'entrée">Start here · Best entry point</div>
-      <div class="card-featured-body">
-        <div class="card-featured-icon">{ORGANIC_NET_SVG}</div>
-        <div class="card-body">
-          <div class="card-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</div>
-          <div class="card-desc"  data-en="{desc_en}"  data-fr="{desc_fr}" >{desc_en}</div>
-          <div class="card-meta"  data-en="{meta_en}"  data-fr="{meta_fr}" >{meta_en}</div>
-        </div>
-        <div class="card-arrow">→</div>
-      </div>
-    </a>"""
-
-    featured_html = build_featured_card(macro_map) if macro_map else ""
-    other_cards_html = "\n".join(build_card(m) for m in other_maps)
-    glossary_card_html = build_card(glossary_map) if glossary_map else ""
-    deep_dives, reflexions = split_topics_by_category(topics)
-    topics_html = "\n".join(build_topic_card(topic) for topic in deep_dives)
-    reflexions_html = "\n".join(build_topic_card(topic) for topic in reflexions)
-    news_html = "\n".join(build_news_item(n, i) for i, n in enumerate(news))
-    news_load_more_display = "none" if len(news) <= NEWS_INITIAL else "block"
-    nav_html = build_nav_html(maps, topics, links=links)
-
-    html = f"""<!DOCTYPE html>
+def page(title, body, active, current, extra_js=""):
+    return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LLM & AI Mind Maps</title>
-<style>
-  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  body {{
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #0F0F1A;
-    color: white;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }}
-
-  /* ── Header ── */
-  header {{
-    padding: 14px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid #1E2D4E;
-    background: #0D1117;
-  }}
-  .header-left {{ display: flex; align-items: center; gap: 8px; }}
-  .logo {{
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    margin-right: 4px;
-    opacity: 0.9;
-    transition: opacity 0.15s;
-  }}
-  .logo:hover {{ opacity: 1; }}
-  .header-right {{ display: flex; align-items: center; gap: 8px; }}
-
-  /* ── Nav dropdowns ── */
-  .nav-group {{ position: relative; }}
-  .nav-btn {{
-    padding: 5px 11px;
-    border: 1.5px solid #333;
-    border-radius: 6px;
-    background: transparent;
-    color: #BDC3C7;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    min-width: 110px;
-    text-align: center;
-  }}
-  .nav-btn:hover {{ border-color: #888; color: white; }}
-  .nav-group:hover .nav-dropdown,
-  .nav-group:focus-within .nav-dropdown {{ display: block; }}
-  .nav-dropdown {{
-    display: none;
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    background: #16213E;
-    border: 1px solid #2C3E6E;
-    border-radius: 10px;
-    min-width: 280px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-    z-index: 1000;
-    overflow: hidden;
-  }}
-  .nav-item {{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    color: #BDC3C7;
-    text-decoration: none;
-    font-size: 13px;
-    transition: background 0.12s;
-    border-bottom: 1px solid #1E2D4E;
-  }}
-  .nav-item:last-child {{ border-bottom: none; }}
-  .nav-item:hover {{ background: #1E2D4E; color: white; }}
-  .nav-item-icon {{ font-size: 16px; flex-shrink: 0; }}
-  .nav-item-info {{ display: flex; flex-direction: column; }}
-  .nav-item-title {{ font-weight: 600; font-size: 13px; }}
-  .nav-item-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
-
-  /* ── Glossary button ── */
-  .glossary-btn {{
-    padding: 5px 11px;
-    border: 1.5px solid #555;
-    border-radius: 6px;
-    background: transparent;
-    color: #BDC3C7;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: all 0.15s;
-  }}
-  .glossary-btn:hover {{ border-color: #C39BD3; color: #C39BD3; }}
-
-  /* ── Lang ── */
-  .lang-toggle {{ display: flex; gap: 5px; }}
-  .lang-btn {{
-    padding: 4px 10px;
-    border: 1.5px solid #333;
-    border-radius: 6px;
-    background: transparent;
-    color: #666;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-  }}
-  .lang-btn.active {{ background: #E74C3C; border-color: #E74C3C; color: white; }}
-  .lang-btn:hover:not(.active) {{ border-color: #aaa; color: white; }}
-
-
-  /* ── Main layout ── */
-  main {{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 32px 40px 64px;
-    max-width: 1280px;
-    margin: 0 auto;
-    width: 100%;
-  }}
-  .main-layout {{
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 40px;
-    width: 100%;
-  }}
-  .news-sidebar {{
-    position: sticky;
-    top: 80px;
-    align-self: start;
-    max-height: calc(100vh - 100px);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #1E2D4E transparent;
-  }}
-  .main-content {{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 0;
-  }}
-  @media (max-width: 860px) {{
-    .main-layout {{
-      grid-template-columns: 1fr;
-    }}
-    .news-sidebar {{
-      position: static;
-      max-height: none;
-      order: 1;
-    }}
-    .main-content {{ order: 0; }}
-  }}
-  .site-intro {{
-    width: 100%;
-    font-size: 14px;
-    color: #7F8C8D;
-    line-height: 1.6;
-    margin-bottom: 24px;
-    text-align: center;
-  }}
-  .site-intro strong {{ color: #BDC3C7; font-weight: 700; }}
-
-  /* ── Featured card ── */
-  .card-featured {{
-    width: 100%;
-    background: linear-gradient(135deg, #16213E 60%, #1A2847);
-    border: 2px solid #E74C3C;
-    border-radius: 20px;
-    padding: 32px 36px;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    transition: all 0.2s;
-    margin-bottom: 8px;
-    box-shadow: 0 4px 24px rgba(231,76,60,0.12);
-  }}
-  .card-featured:hover {{
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(231,76,60,0.25);
-    border-color: #FF6B6B;
-  }}
-  .featured-badge {{
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #E74C3C;
-  }}
-  .card-featured-body {{
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }}
-  .card-featured-icon {{ font-size: 52px; flex-shrink: 0; line-height: 0; }}
-  .card-featured .card-title {{ font-size: 22px; margin-bottom: 8px; }}
-  .card-featured .card-desc  {{ font-size: 14px; margin-bottom: 10px; }}
-  .card-featured .card-arrow {{ font-size: 24px; color: #E74C3C; flex-shrink: 0; transition: transform 0.2s; }}
-  .card-featured:hover .card-arrow {{ transform: translateX(6px); }}
-
-  /* ── Section separator ── */
-  .section-sep {{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 32px 0 24px;
-  }}
-  .section-sep-line {{ flex: 1; height: 1px; background: #1E2D4E; }}
-  .section-sep-label {{
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #2C3E6E;
-    white-space: nowrap;
-  }}
-
-  /* ── Regular cards grid ── */
-  .cards {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; width: 100%; }}
-  .card {{
-    background: #16213E;
-    border: 1px solid #1E2D4E;
-    border-radius: 14px;
-    padding: 22px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.2s;
-  }}
-  .card:hover {{
-    border-color: #E74C3C;
-    background: #1A2847;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(231,76,60,0.12);
-  }}
-  .card-icon {{ font-size: 30px; flex-shrink: 0; }}
-  .card-body {{ flex: 1; min-width: 0; }}
-  .card-title {{ font-size: 15px; font-weight: 700; margin-bottom: 5px; color: white; }}
-  .card-desc  {{ font-size: 12px; color: #7F8C8D; line-height: 1.5; margin-bottom: 8px; }}
-  .card-meta  {{ font-size: 10px; color: #E74C3C; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }}
-  .card-arrow {{ font-size: 18px; color: #2C3E6E; flex-shrink: 0; transition: all 0.2s; }}
-  .card:hover .card-arrow {{ color: #E74C3C; transform: translateX(4px); }}
-
-  /* ── Deep Dives ── */
-  .topic-card {{
-    background: #16213E;
-    border: 1px solid #1E2D4E;
-    border-radius: 14px;
-    padding: 20px 22px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.2s;
-  }}
-  .topic-card:hover {{
-    border-color: #C39BD3;
-    background: #1A2047;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(195,155,211,0.12);
-  }}
-  .topic-card:hover .card-arrow {{ color: #C39BD3; transform: translateX(4px); }}
-  .topic-card-body {{ flex: 1; }}
-  .topic-card-title {{ font-size: 15px; font-weight: 700; margin-bottom: 4px; color: white; }}
-  .topic-card-desc  {{ font-size: 12px; color: #7F8C8D; line-height: 1.5; margin-bottom: 8px; }}
-  .topic-card-footer {{ display: flex; align-items: center; justify-content: space-between; gap: 8px; }}
-  .topic-tags {{ display: flex; flex-wrap: wrap; gap: 4px; }}
-  .topic-tag {{
-    font-size: 10px; padding: 1px 6px;
-    background: #3B1F4E; color: #C39BD3;
-    border-radius: 4px; font-weight: 600;
-  }}
-  .topic-status {{
-    font-size: 10px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
-  }}
-
-  /* ── News feed ── */
-  .news-feed {{ display: flex; flex-direction: column; gap: 0; width: 100%; }}
-  .news-item {{
-    display: grid;
-    grid-template-columns: 24px 1fr auto;
-    align-items: start;
-    gap: 10px;
-    padding: 14px 14px;
-    border-left: 2px solid #1E2D4E;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.15s;
-    position: relative;
-    scroll-margin-top: 80px;
-  }}
-  .news-share {{
-    background: none; border: none; cursor: pointer;
-    font-size: 13px; opacity: 0; transition: opacity 0.15s;
-    padding: 3px 5px; border-radius: 4px; align-self: center;
-  }}
-  .news-item:hover .news-share {{ opacity: 0.6; }}
-  .news-share:hover {{ opacity: 1 !important; background: #1E2D4E; }}
-  a.news-item:hover {{
-    background: #16213E;
-    border-left-color: #E74C3C;
-  }}
-  .news-icon {{
-    font-size: 16px;
-    text-align: center;
-    padding-top: 2px;
-  }}
-  .news-body {{ min-width: 0; }}
-  .news-meta {{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-  }}
-  .news-type {{
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #E74C3C;
-  }}
-  .news-date {{
-    font-size: 10px;
-    color: #555;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }}
-  .news-title {{
-    font-size: 13px;
-    font-weight: 600;
-    color: white;
-    margin-bottom: 3px;
-    line-height: 1.4;
-  }}
-  @media (max-width: 640px) {{
-    header {{ padding: 10px 12px; flex-wrap: wrap; align-items: flex-start; }}
-    .header-left, .header-right {{ width: 100%; flex-wrap: wrap; gap: 6px; }}
-    .header-right {{ justify-content: space-between; }}
-    .nav-btn, .glossary-btn, .lang-btn {{ min-height: 34px; font-size: 12px; padding: 5px 9px; }}
-    .nav-btn {{ min-width: 92px; }}
-    .nav-dropdown {{
-      position: fixed;
-      top: 92px;
-      left: 8px;
-      right: 8px;
-      min-width: 0;
-      max-height: calc(100dvh - 110px);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }}
-    .nav-item {{ padding: 12px 14px; }}
-    .nav-item-desc {{ display: none; }}
-    main {{ padding: 20px 14px 40px; }}
-    .main-layout {{ gap: 24px; }}
-    .site-intro {{ font-size: 13px; text-align: left; }}
-    .card-featured {{ padding: 22px 18px; border-radius: 16px; }}
-    .card-featured-body {{ align-items: flex-start; gap: 14px; }}
-    .card-featured-icon {{ font-size: 36px; }}
-    .card-featured .card-title {{ font-size: 18px; }}
-    .cards {{ grid-template-columns: minmax(0, 1fr); }}
-    .card, .topic-card {{ padding: 18px 16px; align-items: flex-start; }}
-    .card-icon {{ font-size: 26px; }}
-    .section-sep {{ margin: 24px 0 18px; gap: 10px; }}
-    .section-sep-label {{ font-size: 10px; white-space: normal; text-align: center; }}
-    .news-item {{ grid-template-columns: 20px 1fr auto; padding: 14px 10px; gap: 8px; }}
-    .news-share {{ opacity: 0.6; }}
-    .news-sidebar {{ width: 100%; }}
-  }}
-  .news-desc {{
-    font-size: 11px;
-    color: #7F8C8D;
-    line-height: 1.5;
-  }}
-  .news-hidden {{ display: none; }}
-  .news-load-more {{
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 4px;
-    background: none;
-    border: 1px solid #1E2D4E;
-    color: #7F8C8D;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    transition: all 0.15s;
-    border-radius: 4px;
-  }}
-  .news-load-more:hover {{ background: #16213E; color: white; border-color: #E74C3C; }}
-
-  footer {{
-    text-align: center;
-    padding: 24px;
-    color: #2C3E6E;
-    font-size: 12px;
-    border-top: 1px solid #1A1A2E;
-  }}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>{title}</title>
+<meta name="description" content="Interactive maps, deep dives and a glossary to understand the LLM and generative AI ecosystem.">
+{head_assets()}
+<style>{PAGE_CSS}</style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-
-<header>
-  <div class="header-left">
-    <a href="index.html" class="logo" title="Home">
-      <svg width="44" height="30" viewBox="0 0 120 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="22" y1="34" x2="42" y2="16" stroke="white" stroke-width="1" stroke-opacity="0.55"/>
-        <line x1="42" y1="16" x2="60" y2="10" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.8"/>
-        <line x1="56" y1="38" x2="72" y2="50" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.8"/>
-        <line x1="72" y1="50" x2="94" y2="44" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.8"/>
-        <line x1="94" y1="44" x2="108" y2="60" stroke="#E74C3C" stroke-width="1.2" stroke-opacity="0.8"/>
-        <line x1="22" y1="34" x2="40" y2="48" stroke="white" stroke-width="1" stroke-opacity="0.55"/>
-        <line x1="40" y1="48" x2="56" y2="38" stroke="white" stroke-width="1" stroke-opacity="0.55"/>
-        <line x1="56" y1="38" x2="76" y2="20" stroke="white" stroke-width="1" stroke-opacity="0.55"/>
-        <circle cx="22"  cy="34" r="5"   fill="#E74C3C"/>
-        <circle cx="42"  cy="16" r="3.5" fill="white"/>
-        <circle cx="40"  cy="48" r="3"   fill="white"/>
-        <circle cx="60"  cy="10" r="4.5" fill="#E74C3C"/>
-        <circle cx="56"  cy="38" r="5"   fill="white"/>
-        <circle cx="76"  cy="20" r="3.5" fill="white"/>
-        <circle cx="72"  cy="50" r="4.5" fill="#E74C3C"/>
-        <circle cx="94"  cy="44" r="3"   fill="white"/>
-        <circle cx="108" cy="26" r="4.5" fill="#E74C3C"/>
-        <circle cx="108" cy="60" r="3.5" fill="white"/>
-      </svg>
-    </a>
-    {nav_html}
-  </div>
-  <div class="header-right">
-    <a href="glossary.html" class="glossary-btn">
-      <span data-en="📖 Glossary" data-fr="📖 Glossaire">📖 Glossary</span>
-    </a>
-    {gs_widget('search-index.json')}
-    <div class="lang-toggle">
-      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
-    </div>
-  </div>
-</header>
-
-<main>
-  <p class="site-intro" id="site-intro">
-    Four ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem,
-    <strong>Deep Dives</strong> for in-depth articles,
-    <strong>Reflection</strong> for essays &amp; perspectives on AI,
-    <strong>Glossary</strong> to understand the terminology.
-  </p>
-
-  {featured_html}
-
-  <div class="main-layout">
-    <aside class="news-sidebar">
-      <div id="news" class="section-sep">
-        <div class="section-sep-line"></div>
-        <span class="section-sep-label" data-en="WHAT'S NEW" data-fr="NOUVEAUTÉS">WHAT'S NEW</span>
-        <div class="section-sep-line"></div>
-      </div>
-      <div class="news-feed">
-        {news_html}
-      </div>
-      <button class="news-load-more" id="news-load-more" data-en="Load more" data-fr="Voir plus" onclick="loadMoreNews()" style="display:{news_load_more_display}">Load more</button>
-    </aside>
-
-    <div class="main-content">
-      <div class="section-sep">
-        <div class="section-sep-line"></div>
-        <span class="section-sep-label" data-en="ALL MAPS" data-fr="TOUTES LES CARTES">ALL MAPS</span>
-        <div class="section-sep-line"></div>
-      </div>
-
-      <div class="cards">
-        {other_cards_html}
-        {glossary_card_html}
-      </div>
-
-      <div class="section-sep" style="margin-top:40px;">
-        <div class="section-sep-line"></div>
-        <span class="section-sep-label" data-en="DEEP DIVES" data-fr="ARTICLES DE FOND">DEEP DIVES</span>
-        <div class="section-sep-line"></div>
-      </div>
-      <div class="cards" style="grid-template-columns:1fr">
-        {topics_html}
-      </div>
-
-      <div class="section-sep" style="margin-top:40px;">
-        <div class="section-sep-line"></div>
-        <span class="section-sep-label" data-en="REFLECTION" data-fr="RÉFLEXION">REFLECTION</span>
-        <div class="section-sep-line"></div>
-      </div>
-      <div class="cards" style="grid-template-columns:1fr">
-        {reflexions_html}
-      </div>
-    </div>
-  </div>
-</main>
-
-<footer>
-  <span id="footer-text">Open source · Built to learn and share · </span>
-  <a href="https://github.com/evausesgit/mind-map-ia" style="color:#E74C3C;text-decoration:none;">GitHub ↗</a>
-</footer>
-
-<script>
-const uiTexts = {{
-  en: {{
-    footer: "Open source · Built to learn and share · ",
-    searchPlaceholder: "Search concepts, models, tools…",
-    intro: "Four ways to learn: <strong>Mind Maps</strong> to visualize the ecosystem, <strong>Deep Dives</strong> for in-depth articles, <strong>Reflection</strong> for essays &amp; perspectives on AI, <strong>Glossary</strong> to understand the terminology."
-  }},
-  fr: {{
-    footer: "Open source · Construit pour apprendre et partager · ",
-    searchPlaceholder: "Rechercher concepts, modèles, outils…",
-    intro: "Quatre façons d'apprendre : <strong>Mind Maps</strong> pour visualiser l'écosystème, <strong>Deep Dives</strong> pour des articles approfondis, <strong>Réflexion</strong> pour des essais et perspectives sur l'IA, <strong>Glossaire</strong> pour comprendre la terminologie."
-  }}
-}};
-let currentLang = 'en';
-function setLang(lang) {{
-  currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
-  document.getElementById('footer-text').textContent = uiTexts[lang].footer;
-  document.getElementById('site-intro').innerHTML = uiTexts[lang].intro;
-  document.querySelectorAll('[data-en]').forEach(el => {{
-    el.textContent = lang === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
-  }});
-}}
-
-// Load more news
-function loadMoreNews() {{
-  document.querySelectorAll('.news-hidden').forEach(el => el.classList.remove('news-hidden'));
-  document.getElementById('news-load-more').style.display = 'none';
-}}
-
-// Highlight news item if URL has a news anchor
-if (location.hash.startsWith('#news-')) {{
-  const el = document.getElementById(location.hash.slice(1));
-  if (el) {{
-    el.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
-    el.style.borderLeftColor = '#E74C3C';
-    el.style.background = '#16213E';
-    setTimeout(() => {{ el.style.borderLeftColor = ''; el.style.background = ''; }}, 3000);
-  }}
-}}
-
-</script>
+{site_header(active=active, current=current)}
+{body}
+{site_footer()}
+{LANG_JS}
+{extra_js}
+{chrome_script()}
 </body>
 </html>"""
 
+
+# ── Home ─────────────────────────────────────────────────────────────────────
+
+HERO_SVG = """<svg viewBox="0 0 480 330" aria-hidden="true">
+  <g stroke="var(--line-strong)" stroke-width="1.2" fill="none">
+    <path d="M92 80 C150 80 160 140 214 140"/><path d="M92 196 C150 196 160 140 214 140"/>
+    <path d="M110 268 C170 268 180 226 236 226"/><path d="M302 140 C340 140 340 92 372 92"/>
+    <path d="M302 140 C340 140 350 186 384 186"/><path d="M290 226 C330 226 350 186 384 186"/>
+    <path d="M412 104 L412 172"/><path d="M412 200 L412 252"/>
+  </g>
+  <g stroke="var(--accent)" stroke-width="1.8" fill="none">
+    <path d="M92 196 C150 196 160 140 214 140"/><path d="M302 140 C340 140 340 92 372 92"/><path d="M302 140 C340 140 350 186 384 186"/>
+  </g>
+  <g font-size="12" font-weight="500" text-anchor="middle" fill="var(--ink)">
+    <rect x="24" y="66" width="128" height="28" rx="14" fill="var(--l5)" stroke="var(--l5s)"/><text x="88" y="84">Coding assistants</text>
+    <rect x="24" y="182" width="128" height="28" rx="14" fill="var(--l4)" stroke="var(--l4s)" stroke-width="1.6"/><text x="88" y="200">AI Agents</text>
+    <rect x="40" y="254" width="128" height="28" rx="14" fill="var(--l4)" stroke="var(--l4s)"/><text x="104" y="272">RAG</text>
+    <rect x="214" y="126" width="88" height="28" rx="14" fill="var(--l3)" stroke="var(--l3s)"/><text x="258" y="144">Public API</text>
+    <rect x="200" y="212" width="90" height="28" rx="14" fill="var(--l4)" stroke="var(--l4s)"/><text x="245" y="230">MCP</text>
+    <rect x="348" y="78" width="120" height="28" rx="14" fill="var(--l1)" stroke="var(--l1s)"/><text x="408" y="96">Transformer</text>
+    <rect x="348" y="172" width="120" height="28" rx="14" fill="var(--l2)" stroke="var(--l2s)"/><text x="408" y="190">Language model</text>
+    <rect x="348" y="252" width="120" height="28" rx="14" fill="var(--l1)" stroke="var(--l1s)"/><text x="408" y="270">Tokens</text>
+  </g>
+  <rect class="pulse" x="17" y="175" width="142" height="42" rx="21" fill="none" stroke="var(--accent)" stroke-width="1.4"/>
+  <g font-family="var(--f-mono)" font-size="10" fill="var(--muted)" letter-spacing="1">
+    <text x="24" y="52">DEV TOOLS · PATTERNS</text><text x="206" y="112">ACCESS</text><text x="348" y="64">FOUNDATIONS</text>
+  </g>
+</svg>"""
+
+
+def build_home(maps, animations, links, topics, news):
+    macro = next((m for m in maps if m.get("id") == "macro"), None)
+    others = [m for m in maps if m.get("id") not in ("macro", "glossary")]
+    n_terms = count_glossary_terms()
+
+    def tile(m, kind_en, kind_fr, cls=""):
+        n = m.get("nodes")
+        count = f'<span class="n">{n}</span>' if n else ""
+        return (
+            f'<a class="tile {cls}" href="{m["output"]}">'
+            f'<div class="k"><i></i>{bi({"en": kind_en, "fr": kind_fr})}{count}</div>'
+            f'{bi(m["title"], "h3")}{bi(m.get("description", ""), "p")}</a>'
+        )
+
+    map_tiles = "".join(
+        tile(m, "Diagram", "Diagramme", "diagram") if m.get("kind") == "diagram" else tile(m, "Map", "Carte")
+        for m in others
+    )
+    anim_tiles = "".join(tile(a, "Animation", "Animation", "anim") for a in animations)
+
+    arts = ""
+    for tp in topics:
+        cat = {"en": "Reflection", "fr": "Réflexion"} if tp.get("category") == "reflexion" else {"en": "Deep dive", "fr": "Article"}
+        arts += (
+            f'<a class="art" href="topics/{tp["id"]}.html">{bi(tp.get("title", ""), "h3")}'
+            f'<span class="m">{bi(cat)} · {tp["_minutes"]} min</span>'
+            f'{bi(tp.get("summary", ""), "p")}</a>'
+        )
+
+    nws = ""
+    for n in news[:HOME_NEWS_COUNT]:
+        href = f"news.html#{news_anchor(n)}"
+        src = source_of(n["link"]) if n.get("link") else "mind-map-ia"
+        nws += (
+            f'<a class="nws" href="{href}"><time>{bi(short_date(n.get("date", "")))}</time>'
+            f'{bi(n.get("title", ""), "h3")}<span class="s">{esc(src)}</span></a>'
+        )
+
+    res = ""
+    for ln in links:
+        res += (
+            f'<a href="{ln["url"]}" target="_blank" rel="noopener">'
+            f'<span class="h">{bi(ln["title"])}<span>↗</span></span>{bi(ln.get("description", ""), "p")}</a>'
+        )
+
+    macro_href = macro["output"] if macro else "macro.html"
+    macro_nodes = macro.get("nodes", 26) if macro else 26
+    body = f"""<main>
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        {bi({"en": "Understand the LLM ecosystem", "fr": "Comprendre l'écosystème des LLM"}, "div", "eyebrow")}
+        {bi({"en": "Generative AI, explained one map at a time.", "fr": "L'IA générative, expliquée une carte à la fois."}, "h1")}
+        {bi({"en": "Interactive maps, deep dives and a glossary to see how models, tools and architecture patterns fit together.",
+             "fr": "Des cartes interactives, des articles de fond et un glossaire pour voir comment les modèles, les outils et les patterns s'articulent."}, "p", "lede")}
+        <div class="ctas">
+          <a class="btn primary" href="{macro_href}">{bi({"en": "Start with the big picture", "fr": "Commencer par la vue d'ensemble"})} <span aria-hidden="true">→</span></a>
+          <a class="btn" href="glossary.html">{bi({"en": "Browse the glossary", "fr": "Parcourir le glossaire"})}</a>
+        </div>
+        <div class="stats">
+          <span><b>{len(maps)}</b> {bi({"en": "maps & diagrams", "fr": "cartes et diagrammes"})}</span>
+          <span><b>{len(topics)}</b> {bi({"en": "articles", "fr": "articles"})}</span>
+          <span><b>{n_terms}</b> {bi({"en": "glossary terms", "fr": "termes"})}</span>
+          <span><b>{len(news)}</b> {bi({"en": "news items", "fr": "actualités"})}</span>
+        </div>
+      </div>
+      <a class="preview" href="{macro_href}" aria-label="Open the big picture map">
+        {HERO_SVG}
+        <div class="preview-cap"><span>{macro_nodes} {bi({"en": "concepts · 5 layers", "fr": "concepts · 5 couches"})}</span>
+        <span class="go">{bi({"en": "Open the map →", "fr": "Ouvrir la carte →"})}</span></div>
+      </a>
+    </section>
+
+    <section class="sec" id="maps">
+      <div class="sec-head">{bi({"en": "Maps & diagrams", "fr": "Cartes et diagrammes"}, "h2")}
+        <a class="more" href="ecosystem.html">{bi({"en": "Full ecosystem map →", "fr": "Carte complète de l'écosystème →"})}</a></div>
+      <div class="tiles">{map_tiles}</div>
+    </section>
+
+    <section class="sec split">
+      <div id="articles" style="scroll-margin-top:calc(var(--header-h) + 16px)">
+        <div class="sec-head">{bi({"en": "Articles", "fr": "Articles"}, "h2")}
+          <span class="more">{len(topics)} {bi({"en": "pieces", "fr": "textes"})}</span></div>
+        {arts}
+      </div>
+      <div id="latest">
+        <div class="sec-head">{bi({"en": "Latest news", "fr": "Actualités"}, "h2")}
+          <a class="more" href="news.html">{bi({"en": f"All {len(news)} →", "fr": f"Voir les {len(news)} →"})}</a></div>
+        {nws}
+      </div>
+    </section>
+
+    <section class="sec" id="animations">
+      <div class="sec-head">{bi({"en": "Animations", "fr": "Animations"}, "h2")}</div>
+      <div class="tiles">{anim_tiles}</div>
+    </section>
+
+    <section class="sec" id="resources">
+      <div class="sec-head">{bi({"en": "Resources elsewhere", "fr": "Ressources ailleurs"}, "h2")}</div>
+      <div class="res">{res}</div>
+    </section>
+  </div>
+</main>"""
+
+    # Old news anchors (index.html#news-…) now live on news.html
+    redirect = """<script>
+if (location.hash === '#news' || location.hash.indexOf('#news-') === 0) location.replace('news.html' + (location.hash === '#news' ? '' : location.hash));
+</script>"""
+    return page("Mind Map IA — Understand the LLM & AI ecosystem", body, "", "index.html", redirect)
+
+
+# ── News page ────────────────────────────────────────────────────────────────
+
+def build_news_page(news):
+    def kind(n):
+        ty = n.get("type", "update")
+        return "site" if ty in ("new-content", "new-feature") else ty
+
+    counts = {"all": len(news)}
+    for n in news:
+        counts[kind(n)] = counts.get(kind(n), 0) + 1
+
+    filters = [("all", {"en": "All", "fr": "Tout"}), ("update", NEWS_TYPES["update"]),
+               ("research", NEWS_TYPES["research"]), ("site", NEWS_TYPES["new-content"])]
+    filter_html = "".join(
+        f'<button class="nf-filter{" on" if k == "all" else ""}" data-k="{k}" onclick="nfFilter(\'{k}\')">'
+        f'{bi(lbl)}<span class="c">{counts.get(k, 0)}</span></button>'
+        for k, lbl in filters if counts.get(k)
+    )
+
+    items, month = "", None
+    for n in news:
+        date = str(n.get("date", ""))
+        ym = date[:7]
+        if ym != month:
+            month = ym
+            try:
+                y, m = int(ym[:4]), int(ym[5:7])
+                label = {"en": f"{MONTHS['en'][m-1]} {y}", "fr": f"{MONTHS['fr'][m-1].capitalize()} {y}"}
+            except ValueError:
+                label = {"en": ym, "fr": ym}
+            month_count = sum(1 for x in news if str(x.get("date", ""))[:7] == ym)
+            items += f'<div class="nf-month" data-month="{ym}">{bi(label, "h2")}<span>{month_count}</span></div>'
+        k = kind(n)
+        anchor = news_anchor(n)
+        link = n.get("link", "")
+        title = bi(n.get("title", ""))
+        title_html = f'<a href="{link}" target="_blank" rel="noopener">{title}</a>' if link else title
+        type_lbl = NEWS_TYPES.get(n.get("type", "update"), NEWS_TYPES["update"])
+        chip_cls = {"research": " ty-research", "site": " ty-site"}.get(k, "")
+        src = f'<a href="{link}" target="_blank" rel="noopener">{esc(source_of(link))} ↗</a>' if link else ""
+        search_txt = esc((t(n.get("title", ""), "en") + " " + t(n.get("title", ""), "fr") + " " +
+                          t(n.get("description", ""), "en") + " " + t(n.get("description", ""), "fr")).lower())
+        items += f"""
+<article class="nf-item" id="{anchor}" data-k="{k}" data-month="{ym}" data-q="{search_txt}">
+  <time datetime="{date}">{bi(short_date(date))}</time>
+  <div class="nf-body">
+    <h3>{title_html}</h3>
+    {bi(n.get("description", ""), "p")}
+    <div class="nf-foot"><span class="chip{chip_cls}">{bi(type_lbl)}</span>{src}
+      <button class="nf-copy" onclick="nfCopy(this,'{anchor}')">{bi({"en": "Copy link", "fr": "Copier le lien"})}</button></div>
+  </div>
+</article>"""
+
+    body = f"""<main>
+  <div class="wrap">
+    <section class="nf-hero">
+      {bi({"en": "News", "fr": "Actualités"}, "div", "eyebrow")}
+      {bi({"en": "What changed in AI, and on this site", "fr": "Ce qui bouge dans l'IA, et sur ce site"}, "h1")}
+      {bi({"en": "Daily briefings on models, labs and enterprise AI, plus every new map and article published here.",
+           "fr": "Des brèves quotidiennes sur les modèles, les labos et l'IA en entreprise, et chaque nouvelle carte ou article publié ici."}, "p")}
+    </section>
+    <div class="nf-bar">
+      {filter_html}
+      <input class="nf-search" id="nf-q" type="search" placeholder="Filter news…" data-ph-en="Filter news…" data-ph-fr="Filtrer les actualités…" oninput="nfApply()">
+    </div>
+    <div id="nf-list">{items}</div>
+    <div class="nf-empty" id="nf-empty" hidden>{bi({"en": "No news matches this filter.", "fr": "Aucune actualité ne correspond à ce filtre."})}</div>
+  </div>
+</main>"""
+
+    js = """<script>
+let nfKind = 'all';
+function nfFilter(k) {
+  nfKind = k;
+  document.querySelectorAll('.nf-filter').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  nfApply();
+}
+function nfApply() {
+  const q = document.getElementById('nf-q').value.trim().toLowerCase();
+  const seen = {};
+  let shown = 0;
+  document.querySelectorAll('.nf-item').forEach(el => {
+    const ok = (nfKind === 'all' || el.dataset.k === nfKind) && (!q || el.dataset.q.indexOf(q) !== -1);
+    el.hidden = !ok;
+    if (ok) { seen[el.dataset.month] = (seen[el.dataset.month] || 0) + 1; shown++; }
+  });
+  document.querySelectorAll('.nf-month').forEach(m => {
+    m.hidden = !seen[m.dataset.month];
+    const c = m.querySelector('span:last-child'); if (c) c.textContent = seen[m.dataset.month] || '';
+  });
+  document.getElementById('nf-empty').hidden = shown > 0;
+}
+function nfCopy(btn, anchor) {
+  const url = location.origin + location.pathname + '#' + anchor;
+  const done = () => { const old = btn.innerHTML; btn.textContent = '✓'; setTimeout(() => { btn.innerHTML = old; }, 1200); };
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, done); else done();
+}
+if (location.hash.indexOf('#news-') === 0) {
+  const el = document.getElementById(location.hash.slice(1));
+  if (el) {
+    el.scrollIntoView({ block: 'center' });
+    el.classList.add('flash');
+    setTimeout(() => el.classList.remove('flash'), 2600);
+  }
+}
+</script>"""
+    return page("News — Mind Map IA", body, "news", "news.html", js)
+
+
+def main():
+    config = load_registry()
+    maps = config.get("maps", [])
+    animations = config.get("animations", [])
+    links = config.get("links", [])
+    topics = list(load_topics())
+    news = load_news()
+
     OUTPUT.parent.mkdir(exist_ok=True)
-    with open(OUTPUT, "w") as f:
-        f.write(html)
+    OUTPUT.write_text(build_home(maps, animations, links, topics, news), encoding="utf-8")
     print(f"✓ Generated {OUTPUT} ({len(maps)} maps)")
+    NEWS_OUTPUT.write_text(build_news_page(news), encoding="utf-8")
+    print(f"✓ Generated {NEWS_OUTPUT} ({len(news)} news)")
 
 
 if __name__ == "__main__":

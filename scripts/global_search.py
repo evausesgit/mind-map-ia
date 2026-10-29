@@ -13,69 +13,70 @@ def widget_html(index_path: str) -> str:
 <style>
 #gs-trigger {{
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 14px; border-radius: 8px; min-width: 180px;
-  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
-  color: #aaa; font-size: 13px; cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  height: 34px; padding: 0 8px 0 10px; border-radius: 9px; min-width: 220px;
+  background: var(--bg, #FAFAF8); border: 1px solid var(--line, #E6E6E2);
+  color: var(--muted, #7A7D85); font: 13px var(--f-ui, system-ui); cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
 }}
-#gs-trigger:hover {{ background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.3); color: #fff; }}
-#gs-trigger .gs-placeholder {{ flex: 1; text-align: left; }}
+#gs-trigger:hover {{ border-color: var(--line-strong, #ccc); color: var(--ink, #17181C); }}
+#gs-trigger .gs-placeholder {{ flex: 1; text-align: left; white-space: nowrap; }}
 #gs-trigger .gs-kbd {{
-  font-size: 11px; opacity: 0.5;
-  background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+  font: 11px var(--f-mono, monospace); color: var(--muted, #7A7D85);
+  border: 1px solid var(--line, #E6E6E2); padding: 1px 5px; border-radius: 5px; white-space: nowrap;
 }}
 #gs-overlay {{
   display: none; position: fixed; inset: 0; z-index: 9999;
-  background: rgba(10,10,20,0.7); backdrop-filter: blur(4px);
-  align-items: flex-start; justify-content: center; padding-top: 80px;
+  background: color-mix(in srgb, var(--ink, #17181C) 28%, transparent); backdrop-filter: blur(3px);
+  align-items: flex-start; justify-content: center; padding: 12vh 16px 16px;
 }}
 #gs-overlay.open {{ display: flex; }}
 #gs-modal {{
-  width: 100%; max-width: 640px; background: #1e2030;
-  border: 1px solid #3a3f5c; border-radius: 14px;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.6); overflow: hidden;
+  width: 100%; max-width: 640px; background: var(--surface, #fff);
+  border: 1px solid var(--line, #E6E6E2); border-radius: 16px;
+  box-shadow: var(--shadow, 0 24px 64px rgba(0,0,0,0.2)); overflow: hidden;
+  font-family: var(--f-ui, system-ui);
 }}
 #gs-input-wrap {{
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 18px; border-bottom: 1px solid #2e3350;
+  display: flex; align-items: center; gap: 10px; color: var(--muted, #7A7D85);
+  padding: 16px 18px; border-bottom: 1px solid var(--line, #E6E6E2);
 }}
-#gs-input-wrap svg {{ flex-shrink: 0; opacity: 0.5; }}
+#gs-input-wrap svg {{ flex-shrink: 0; }}
 #gs-input {{
-  flex: 1; background: none; border: none; outline: none;
-  color: #f0f0f0; font-size: 16px;
+  flex: 1; min-width: 0; background: none; border: none; outline: none;
+  color: var(--ink, #17181C); font: 17px var(--f-ui, system-ui);
 }}
-#gs-input::placeholder {{ color: #555; }}
+#gs-input::placeholder {{ color: var(--muted, #999); }}
 #gs-esc {{
-  font-size: 11px; color: #555; background: rgba(255,255,255,0.07);
-  border: 1px solid #333; padding: 2px 7px; border-radius: 5px; cursor: pointer;
+  font: 11px var(--f-mono, monospace); color: var(--muted, #7A7D85);
+  border: 1px solid var(--line, #E6E6E2); padding: 2px 7px; border-radius: 5px; cursor: pointer;
   white-space: nowrap;
 }}
 #gs-results {{
-  max-height: 440px; overflow-y: auto; padding: 8px 0;
+  max-height: min(440px, 60vh); overflow-y: auto; padding: 6px;
 }}
 #gs-results:empty::after {{
   content: ''; display: block;
 }}
-.gs-empty {{ padding: 20px; text-align: center; color: #555; font-size: 14px; }}
-.gs-section {{ padding: 6px 18px 2px; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.08em; color: #4a5080; text-transform: uppercase; }}
+.gs-empty {{ padding: 24px; text-align: center; color: var(--muted, #7A7D85); font-size: 14px; }}
+.gs-section {{ padding: 10px 12px 4px; font: 500 11px var(--f-mono, monospace);
+  letter-spacing: 0.08em; color: var(--muted, #7A7D85); text-transform: uppercase; }}
 .gs-item {{
   display: flex; align-items: flex-start; gap: 12px;
-  padding: 10px 18px; cursor: pointer; transition: background 0.1s;
+  padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: background 0.1s;
 }}
-.gs-item:hover, .gs-item.active {{ background: rgba(255,255,255,0.06); }}
+.gs-item:hover, .gs-item.active {{ background: var(--sunk, #F3F3F0); }}
 .gs-dot {{
-  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 7px;
 }}
 .gs-body {{ flex: 1; min-width: 0; }}
-.gs-label {{ font-size: 14px; font-weight: 600; color: #e8eaf0; white-space: nowrap;
+.gs-label {{ font-size: 14px; font-weight: 500; color: var(--ink, #17181C); white-space: nowrap;
   overflow: hidden; text-overflow: ellipsis; }}
-.gs-meta {{ font-size: 11px; color: #5a6080; margin-top: 1px; }}
-.gs-excerpt {{ font-size: 12px; color: #6a7090; margin-top: 3px;
+.gs-meta {{ font: 11px var(--f-mono, monospace); color: var(--muted, #7A7D85); margin-top: 2px; }}
+.gs-excerpt {{ font-size: 12.5px; color: var(--ink-2, #45474E); margin-top: 3px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
 .gs-badge {{
-  font-size: 10px; padding: 1px 7px; border-radius: 10px;
-  background: rgba(255,255,255,0.07); color: #8090b0; white-space: nowrap;
+  font: 10px var(--f-mono, monospace); padding: 2px 7px; border-radius: 99px;
+  border: 1px solid var(--line, #E6E6E2); color: var(--muted, #7A7D85); white-space: nowrap;
   align-self: center; flex-shrink: 0;
 }}
 </style>
@@ -211,7 +212,7 @@ def widget_html(index_path: str) -> str:
         const glossUrl = INDEX_PATH.replace('search-index.json','') + 'glossary.html#' + g.id;
         gsItems.push({{ url: glossUrl, label }});
         html += `<div class="gs-item" data-url="${{glossUrl}}" onclick="gsGo(this)">
-          <div class="gs-dot" style="background:#95A5A6"></div>
+          <div class="gs-dot" style="background:var(--muted)"></div>
           <div class="gs-body">
             <div class="gs-label">${{label}}</div>
             <div class="gs-excerpt">${{excerpt(desc, raw)}}</div>
@@ -229,7 +230,7 @@ def widget_html(index_path: str) -> str:
         const tUrl  = INDEX_PATH.replace('search-index.json','') + tp.url;
         gsItems.push({{ url: tUrl, label }});
         html += `<div class="gs-item" data-url="${{tUrl}}" onclick="gsGo(this)">
-          <div class="gs-dot" style="background:#E74C3C"></div>
+          <div class="gs-dot" style="background:var(--accent)"></div>
           <div class="gs-body">
             <div class="gs-label">${{label}}</div>
             <div class="gs-excerpt">${{excerpt(desc, raw)}}</div>

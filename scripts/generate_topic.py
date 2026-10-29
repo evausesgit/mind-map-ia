@@ -13,7 +13,7 @@ import yaml
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
-from global_search import widget_html as gs_widget
+from site_chrome import head_assets, site_header, site_footer, chrome_script
 
 ROOT = Path(__file__).parent.parent
 TOPICS_DIR = ROOT / "data" / "topics"
@@ -210,107 +210,6 @@ def t(field, lang):
     return str(field) if field else ""
 
 
-def build_nav(maps, current_id=None, topics=None, links=None):
-    map_items = ""
-    for m in (maps or []):
-        if m.get("id") == "glossary":
-            continue
-        title_en = t(m.get("title", ""), "en")
-        title_fr = t(m.get("title", ""), "fr") or title_en
-        desc_en  = t(m.get("description", ""), "en")
-        desc_fr  = t(m.get("description", ""), "fr") or desc_en
-        map_items += (
-            f'<a href="../{m["output"]}" class="nav-item">'
-            f'<span class="nav-item-icon">{m.get("icon","📄")}</span>'
-            f'<span class="nav-item-info">'
-            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'</span></a>'
-        )
-
-    deep_dives = [tp for tp in (topics or []) if tp.get("category") != "reflexion"]
-    reflexions = [tp for tp in (topics or []) if tp.get("category") == "reflexion"]
-
-    def _topic_items(topic_list):
-        items = ""
-        for topic in topic_list:
-            tid = topic.get("id", "")
-            active_cls = " active" if tid == current_id else ""
-            title_en = t(topic.get("title",   ""), "en")
-            title_fr = t(topic.get("title",   ""), "fr") or title_en
-            summ_en  = t(topic.get("summary", ""), "en")
-            summ_fr  = t(topic.get("summary", ""), "fr") or summ_en
-            items += (
-                f'<a href="../topics/{tid}.html" class="nav-item{active_cls}">'
-                f'<span class="nav-item-icon">📝</span>'
-                f'<span class="nav-item-info">'
-                f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-                f'<span class="nav-item-desc" data-en="{summ_en}" data-fr="{summ_fr}">{summ_en}</span>'
-                f'</span></a>'
-            )
-        return items
-
-    dive_items = _topic_items(deep_dives)
-    reflexion_items = _topic_items(reflexions)
-
-    link_items = ""
-    for link in (links or []):
-        title_en = t(link.get("title", ""), "en")
-        title_fr = t(link.get("title", ""), "fr") or title_en
-        desc_en  = t(link.get("description", ""), "en")
-        desc_fr  = t(link.get("description", ""), "fr") or desc_en
-        url = link.get("url", "")
-        link_items += (
-            f'<a href="{url}" class="nav-item" target="_blank" rel="noopener">'
-            f'<span class="nav-item-icon">{link.get("icon","🔗")}</span>'
-            f'<span class="nav-item-info">'
-            f'<span class="nav-item-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</span>'
-            f'<span class="nav-item-desc" data-en="{desc_en}" data-fr="{desc_fr}">{desc_en}</span>'
-            f'</span></a>'
-        )
-
-    nav = (
-        f'<div class="nav-group">'
-        f'  <button class="nav-btn">'
-        f'    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾'
-        f'  </button>'
-        f'  <div class="nav-dropdown">{map_items}</div>'
-        f'</div>'
-        f'<div class="nav-group">'
-        f'  <button class="nav-btn">'
-        f'    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾'
-        f'  </button>'
-        f'  <div class="nav-dropdown">{dive_items}</div>'
-        f'</div>'
-    )
-    if reflexion_items:
-        nav += (
-            f'<div class="nav-group">'
-            f'  <button class="nav-btn">'
-            f'    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾'
-            f'  </button>'
-            f'  <div class="nav-dropdown">{reflexion_items}</div>'
-            f'</div>'
-        )
-    if link_items:
-        nav += (
-            f'<div class="nav-group">'
-            f'  <button class="nav-btn">'
-            f'    <span data-en="Links" data-fr="Liens">Links</span> ▾'
-            f'  </button>'
-            f'  <div class="nav-dropdown">{link_items}</div>'
-            f'</div>'
-        )
-    nav += (
-        f'<a href="../index.html#news" class="nav-btn" style="text-decoration:none;">'
-        f'  <span data-en="News" data-fr="Nouveautés">News</span>'
-        f'</a>'
-    )
-    return nav
-
-
-# ── HTML generation ───────────────────────────────────────────────────────────
-
 def generate_html(topic, maps, topics=None, links=None):
     tid = topic["id"]
     title_en = t(topic.get("title", ""), "en")
@@ -320,6 +219,7 @@ def generate_html(topic, maps, topics=None, links=None):
     tags = topic.get("tags", [])
     status = topic.get("status", "draft")
     date = str(topic.get("date", ""))
+    is_reflexion = topic.get("category") == "reflexion"
 
     content_en_md = topic["content_en"]
     content_fr_md = topic["content_fr"] or content_en_md
@@ -330,330 +230,238 @@ def generate_html(topic, maps, topics=None, links=None):
     toc_en = build_toc(content_en_md)
     toc_fr = build_toc(content_fr_md)
 
-    nav_html = build_nav(maps, current_id=tid, topics=topics, links=links)
+    minutes = max(2, round(len(re.findall(r"\w+", content_en_md)) / 220))
     tags_html = "".join(f'<span class="tag">{tag}</span>' for tag in tags)
-
-    status_colors = {
-        "stable": "#27AE60",
-        "draft":  "#E67E22",
-        "review": "#3498DB",
-    }
-    status_color = status_colors.get(status, "#7F8C8D")
+    kind_en, kind_fr = ("Reflection", "Réflexion") if is_reflexion else ("Deep dive", "Article de fond")
+    header_html = site_header(prefix="../", active="articles", current=f"topics/{tid}.html")
 
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title_en}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>{title_en} — Mind Map IA</title>
+<meta name="description" content="{summary_en.replace('"', '&quot;')}">
+{head_assets()}
 <style>
-  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  body {{
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #F8F9FA;
-    color: #1A1A2E;
-    min-height: 100vh;
-  }}
-  header {{
-    background: #0D1117;
-    color: white;
-    padding: 14px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    border-bottom: 1px solid #1E2D4E;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }}
-  .nav-group {{ position: relative; }}
-  .nav-btn {{
-    padding: 5px 11px;
-    border: 1.5px solid #333;
-    border-radius: 6px;
-    background: transparent;
-    color: #BDC3C7;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    min-width: 110px;
-    text-align: center;
-  }}
-  .nav-btn:hover {{ border-color: #888; color: white; }}
-  .nav-group:hover .nav-dropdown,
-  .nav-group:focus-within .nav-dropdown {{ display: block; }}
-  .nav-dropdown {{
-    display: none;
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    background: #16213E;
-    border: 1px solid #2C3E6E;
-    border-radius: 10px;
-    min-width: 280px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-    z-index: 1000;
-    overflow: hidden;
-  }}
-  .nav-item {{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    color: #BDC3C7;
-    text-decoration: none;
-    font-size: 13px;
-    transition: background 0.12s;
-    border-bottom: 1px solid #1E2D4E;
-  }}
-  .nav-item:last-child {{ border-bottom: none; }}
-  .nav-item:hover {{ background: #1E2D4E; color: white; }}
-  .nav-item.active {{ background: #1E2D4E; color: white; }}
-  .nav-item-icon {{ font-size: 16px; flex-shrink: 0; }}
-  .nav-item-info {{ display: flex; flex-direction: column; }}
-  .nav-item-title {{ font-weight: 600; font-size: 13px; }}
-  .nav-item-desc {{ font-size: 11px; color: #7F8C8D; margin-top: 1px; }}
-  .lang-toggle {{ display: flex; gap: 6px; }}
-  .lang-btn {{
-    background: none;
-    border: 1px solid #555;
-    border-radius: 4px;
-    color: #BDC3C7;
-    padding: 4px 10px;
-    font-size: 13px;
-    cursor: pointer;
-  }}
-  .lang-btn.active {{ background: white; color: #1A1A2E; border-color: white; }}
-
+  body {{ font-size: 16px; line-height: 1.6; }}
   .page-layout {{
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 40px 32px;
     display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 48px;
-    align-items: start;
+    grid-template-columns: 200px minmax(0, 680px) minmax(0, 1fr);
+    gap: 56px;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 64px max(20px, env(safe-area-inset-right, 0px)) 96px max(20px, env(safe-area-inset-left, 0px));
   }}
-  @media (max-width: 768px) {{
-    header {{ padding: 10px 12px; flex-wrap: wrap; align-items: flex-start; gap: 8px; }}
-    header h1 {{ width: 100%; font-size: 17px; line-height: 1.25; }}
-    .nav-btn, .lang-btn {{ min-height: 34px; font-size: 12px; padding: 5px 9px; }}
-    .nav-dropdown {{
-      position: fixed;
-      top: 92px;
-      left: 8px;
-      right: 8px;
-      min-width: 0;
-      max-height: calc(100dvh - 110px);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }}
-    .nav-item {{ padding: 12px 14px; }}
-    .nav-item-desc {{ display: none; }}
-    .page-layout {{ grid-template-columns: 1fr; padding: 24px 14px 40px; gap: 24px; }}
-    .sidebar {{ display: none; }}
-    .article-header {{ margin-bottom: 24px; }}
-    .article-title {{ font-size: clamp(24px, 8vw, 32px); }}
-    .article-summary {{ font-size: 15px; }}
-    .article-body h2 {{ font-size: 20px; margin-top: 30px; }}
-    .callout, .related-box {{ padding: 14px; }}
-  }}
+  main {{ min-width: 0; grid-column: 2; }}
 
-  .article-header {{ margin-bottom: 32px; }}
-  .article-meta {{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
+  .article-header {{ margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }}
+  .crumb {{
+    display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center;
+    font: 12px var(--f-mono); color: var(--muted);
   }}
-  .status-badge {{
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 4px;
-    background: {status_color}22;
-    color: {status_color};
-    border: 1px solid {status_color}44;
-  }}
-  .date {{ font-size: 12px; color: #95A5A6; }}
+  .crumb a {{ color: var(--muted); text-decoration: none; }}
+  .crumb a:hover {{ color: var(--accent); }}
   .article-title {{
-    font-size: clamp(24px, 4vw, 36px);
-    font-weight: 800;
-    line-height: 1.2;
-    color: #1A1A2E;
-    margin-bottom: 12px;
+    font-family: var(--f-read);
+    font-size: clamp(34px, 5vw, 52px);
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    margin: 18px 0 16px;
+    text-wrap: balance;
   }}
   .article-summary {{
-    font-size: 16px;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 16px;
+    font-family: var(--f-read);
+    font-size: 21px;
+    color: var(--ink-2);
+    line-height: 1.45;
+    margin: 0 0 22px;
   }}
-  .tags {{ display: flex; flex-wrap: wrap; gap: 6px; }}
+  .article-meta {{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }}
+  .tags {{ display: contents; }}
   .tag {{
-    font-size: 11px;
-    padding: 2px 8px;
-    background: #E8EAF6;
-    color: #3F51B5;
-    border-radius: 4px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
+    font: 12px var(--f-mono); color: var(--muted);
   }}
+  .tag::before {{ content: "#"; opacity: .6; }}
 
-  .article-body {{ line-height: 1.75; color: #2C3E50; }}
+  .article-body {{ color: var(--ink); }}
+  .article-body > :first-child {{ margin-top: 0; }}
   .article-body h2 {{
-    font-size: 22px;
-    font-weight: 700;
-    color: #1A1A2E;
-    margin: 36px 0 12px;
-    padding-bottom: 6px;
-    border-bottom: 2px solid #E8EAED;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin: 52px 0 14px;
+    scroll-margin-top: calc(var(--header-h) + 24px);
+    text-wrap: balance;
   }}
   .article-body h3 {{
-    font-size: 17px;
-    font-weight: 700;
-    color: #1A1A2E;
-    margin: 24px 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 32px 0 10px;
+    scroll-margin-top: calc(var(--header-h) + 24px);
   }}
   .article-body h4 {{
-    font-size: 14px;
-    font-weight: 700;
+    font: 500 12px var(--f-mono);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #7F8C8D;
-    margin: 20px 0 6px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 26px 0 8px;
   }}
-  .article-body p {{ margin-bottom: 14px; font-size: 15px; }}
-  .article-body ul, .article-body ol {{
-    margin: 8px 0 14px 20px;
-    font-size: 15px;
+  .article-body p, .article-body li {{
+    font-family: var(--f-read);
+    font-size: 19px;
+    line-height: 1.68;
   }}
-  .article-body li {{ margin-bottom: 4px; }}
-  .article-body strong {{ font-weight: 700; color: #1A1A2E; }}
-  .article-body em {{ color: #555; }}
+  .article-body p {{ margin: 0 0 18px; }}
+  .article-body ul, .article-body ol {{ margin: 0 0 20px; padding-left: 24px; }}
+  .article-body li {{ margin-bottom: 6px; }}
+  .article-body li::marker {{ color: var(--muted); }}
+  .article-body strong {{ font-weight: 600; }}
+  .article-body em {{ color: var(--ink-2); }}
   .article-body code {{
-    font-family: "SF Mono", "Fira Code", Consolas, monospace;
-    font-size: 13px;
-    background: #EEF0F3;
-    padding: 1px 5px;
-    border-radius: 3px;
-    color: #C0392B;
+    font-family: var(--f-mono);
+    font-size: 0.82em;
+    background: var(--sunk);
+    padding: 2px 6px;
+    border-radius: 5px;
+    color: var(--ink);
   }}
   .article-body pre {{
-    background: #1A1A2E;
-    color: #E8EAF6;
-    border-radius: 8px;
-    padding: 20px;
+    background: var(--sunk);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 22px;
     overflow-x: auto;
-    margin: 16px 0;
-    font-size: 13px;
+    margin: 24px 0;
+    font-size: 14px;
     line-height: 1.6;
   }}
-  .article-body pre code {{
-    background: none;
-    color: inherit;
-    padding: 0;
-    font-size: inherit;
-    border-radius: 0;
-  }}
+  .article-body pre code {{ background: none; padding: 0; font-size: inherit; border-radius: 0; }}
+  .article-body .table-wrap, .article-body table {{ max-width: 100%; }}
   .article-body table {{
-    width: 100%;
+    display: block;
+    overflow-x: auto;
     border-collapse: collapse;
-    margin: 16px 0;
-    font-size: 14px;
+    margin: 24px 0;
+    font-size: 14.5px;
+    line-height: 1.5;
   }}
   .article-body th {{
-    background: #1A1A2E;
-    color: white;
-    padding: 10px 14px;
+    font: 500 11.5px var(--f-mono);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
     text-align: left;
-    font-weight: 600;
+    padding: 10px 16px 10px 0;
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
   }}
   .article-body td {{
-    padding: 8px 14px;
-    border-bottom: 1px solid #E8EAED;
+    padding: 12px 16px 12px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
   }}
-  .article-body tr:nth-child(even) td {{ background: #F8F9FA; }}
   .article-body blockquote {{
-    border-left: 3px solid #1A1A2E;
-    padding: 8px 16px;
-    margin: 12px 0;
-    color: #555;
-    background: #F0F0F5;
-    border-radius: 0 4px 4px 0;
-  }}
-  .article-body hr {{
-    border: none;
-    border-top: 1px solid #E0E0E0;
     margin: 28px 0;
+    padding: 4px 0 4px 22px;
+    border-left: 2px solid var(--accent);
+    color: var(--ink-2);
   }}
-  .article-body a {{ color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }}
-  .article-body a:hover {{ color: #3498DB; }}
+  .article-body blockquote p {{ font-size: 21px; font-style: italic; }}
+  .article-body hr {{ border: none; border-top: 1px solid var(--line); margin: 40px 0; }}
+  .article-body a {{
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }}
+  .article-body a:hover {{ color: var(--accent); }}
+  .article-body img {{ max-width: 100%; border-radius: 12px; }}
+  .article-body .mermaid {{
+    margin: 28px 0; padding: 24px; overflow-x: auto;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    text-align: center;
+  }}
 
   /* Sidebar */
-  .sidebar {{ position: sticky; top: 80px; }}
-  .toc {{ display: flex; flex-direction: column; gap: 4px; }}
+  .sidebar {{ grid-column: 1; grid-row: 1; position: sticky; top: calc(var(--header-h) + 32px); align-self: start; max-height: calc(100vh - var(--header-h) - 64px); overflow-y: auto; }}
+  .toc {{ display: flex; flex-direction: column; gap: 2px; }}
   .toc-label {{
-    font-size: 11px;
-    font-weight: 700;
+    font: 500 11px var(--f-mono);
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #95A5A6;
-    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 12px;
   }}
   .toc a {{
-    font-size: 13px;
-    color: #555;
+    font-size: 13.5px;
+    color: var(--muted);
     text-decoration: none;
-    padding: 3px 0;
-    border-left: 2px solid transparent;
-    padding-left: 10px;
+    padding: 4px 0 4px 12px;
+    border-left: 1px solid var(--line);
     line-height: 1.4;
-    transition: all 0.1s;
+    transition: color .15s, border-color .15s;
   }}
-  .toc a.toc-h3 {{
-    padding-left: 20px;
-    font-size: 12px;
-    color: #7F8C8D;
+  .toc a.toc-h3 {{ padding-left: 24px; font-size: 12.5px; }}
+  .toc a:hover {{ color: var(--ink); }}
+  .toc a.on {{ color: var(--ink); border-left-color: var(--accent); }}
+
+  .article-end {{
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;
+    font-size: 14px; color: var(--muted);
   }}
-  .toc a:hover {{ color: #1A1A2E; border-left-color: #1A1A2E; }}
+  .article-end a {{ color: var(--ink); text-decoration: none; font-weight: 500; }}
+  .article-end a:hover {{ color: var(--accent); }}
+
+  @media (max-width: 1100px) {{
+    .page-layout {{ grid-template-columns: 180px minmax(0, 1fr); gap: 40px; }}
+  }}
+  @media (max-width: 820px) {{
+    .page-layout {{ grid-template-columns: minmax(0, 1fr); padding-top: 36px; gap: 0; }}
+    main {{ grid-column: 1; }}
+    .sidebar {{ display: none; }}
+    .article-summary {{ font-size: 18px; }}
+    .article-body p, .article-body li {{ font-size: 18px; }}
+    .article-body h2 {{ font-size: 21px; margin-top: 40px; }}
+  }}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
-<header>
-  <div style="display:flex;align-items:center;gap:16px;">
-    {nav_html}
-  </div>
-  {gs_widget('../search-index.json')}
-  <div class="lang-toggle">
-    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
-  </div>
-</header>
+{header_html}
 
 <div class="page-layout">
   <main>
     <div class="article-header">
-      <div class="article-meta">
-        <span class="status-badge">{status}</span>
-        {f'<span class="date">{date}</span>' if date else ''}
+      <div class="crumb">
+        <a href="../index.html#articles" data-en="Articles" data-fr="Articles">Articles</a><span>/</span>
+        <span data-en="{kind_en}" data-fr="{kind_fr}">{kind_en}</span>
+        {f'<span>·</span><time datetime="{date}">{date}</time>' if date else ''}
+        <span>·</span><span>{minutes} min</span>
       </div>
       <h1 class="article-title" data-en="{title_en}" data-fr="{title_fr}">{title_en}</h1>
       <p class="article-summary" data-en="{summary_en}" data-fr="{summary_fr}">{summary_en}</p>
-      <div class="tags">{tags_html}</div>
+      <div class="article-meta">
+        <span class="chip dot st-{status}">{status}</span>
+        <div class="tags">{tags_html}</div>
+      </div>
     </div>
 
     <div class="article-body" id="article-body">
       {content_en_html}
+    </div>
+
+    <div class="article-end">
+      <a href="../index.html#articles" data-en="← All articles" data-fr="← Tous les articles">← All articles</a>
+      <a href="../glossary.html" data-en="Glossary →" data-fr="Glossaire →">Glossary →</a>
     </div>
   </main>
 
@@ -665,9 +473,14 @@ def generate_html(topic, maps, topics=None, links=None):
   </aside>
 </div>
 
+{site_footer("../")}
+
 <script src="../mermaid.min.js"></script>
 <script>
-mermaid.initialize({{ startOnLoad: false, theme: 'default', securityLevel: 'loose' }});
+function mermaidTheme() {{
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'neutral';
+}}
+mermaid.initialize({{ startOnLoad: false, theme: mermaidTheme(), securityLevel: 'loose', fontFamily: 'Geist, system-ui, sans-serif' }});
 
 const CONTENT = {{
   en: {repr(content_en_html)},
@@ -683,6 +496,20 @@ function renderMermaid() {{
   mermaid.run({{ querySelector: '.mermaid' }});
 }}
 
+function watchToc() {{
+  const links = [...document.querySelectorAll('#toc-nav a')];
+  const heads = links.map(a => document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)))).filter(Boolean);
+  if (!heads.length || !('IntersectionObserver' in window)) return;
+  if (window._tocObs) window._tocObs.disconnect();
+  window._tocObs = new IntersectionObserver(entries => {{
+    entries.forEach(e => {{
+      if (!e.isIntersecting) return;
+      links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+    }});
+  }}, {{ rootMargin: '-80px 0px -70% 0px' }});
+  heads.forEach(h => window._tocObs.observe(h));
+}}
+
 function setLang(newLang) {{
   lang = newLang;
   document.querySelectorAll('.lang-btn').forEach(b =>
@@ -694,10 +521,19 @@ function setLang(newLang) {{
     el.textContent = el.dataset[lang] || el.dataset.en;
   }});
   renderMermaid();
+  watchToc();
 }}
 
-document.addEventListener('DOMContentLoaded', renderMermaid);
+window.addEventListener('mmia-themechange', () => {{
+  mermaid.initialize({{ startOnLoad: false, theme: mermaidTheme(), securityLevel: 'loose', fontFamily: 'Geist, system-ui, sans-serif' }});
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  renderMermaid();
+  watchToc();
+}});
+
+document.addEventListener('DOMContentLoaded', () => {{ renderMermaid(); watchToc(); }});
 </script>
+{chrome_script()}
 </body>
 </html>"""
 

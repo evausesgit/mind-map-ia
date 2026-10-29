@@ -10,7 +10,7 @@ A static site generator that produces interactive, bilingual (EN/FR) mind maps a
 
 ```bash
 # Regenerate all pages (run from repo root)
-python scripts/generate_home.py                                              # index.html (landing page)
+python scripts/generate_home.py                                              # index.html (landing page) + news.html
 python scripts/generate.py data/ecosystem-macro.yaml web/macro.html         # "Big Picture" map
 python scripts/generate.py data/ecosystem.yaml web/ecosystem.html           # "Full Ecosystem" map
 python scripts/generate.py data/rag-pattern.yaml web/rag-pattern.html       # RAG pattern map
@@ -22,11 +22,14 @@ python scripts/generate.py data/proprietary-models.yaml web/proprietary-models.h
 python scripts/generate_mermaid.py data/dense-vs-moe.yaml web/dense-vs-moe.html  # Mermaid diagram
 python scripts/generate_glossary.py                                          # web/glossary.html
 python scripts/generate_topic.py                                             # web/topics/*.html
+python scripts/generate.py data/use-cases.yaml web/use-cases.html
+python scripts/generate_quantization_visual.py                               # web/quantization.html
+python scripts/generate_llm_chatbot.py                                       # web/animations/llm-chatbot.html
 ```
 
 Only dependency: `pyyaml` (`pip install pyyaml`).
 
-**Note:** The CI pipeline only regenerates `macro.html`, `ecosystem.html`, `dense-vs-moe.html`, `glossary.html`, and `index.html`. All other pages (topic maps, slides, topic articles) must be regenerated locally and committed.
+**Note:** The CI pipeline only regenerates `macro.html`, `ecosystem.html`, `dense-vs-moe.html`, `glossary.html`, `index.html` and `news.html`. All other pages (topic maps, slides, topic articles) must be regenerated locally and committed. Any change to `scripts/site_chrome.py` (nav, tokens, header) affects every page, so regenerate them all.
 
 ## Architecture
 
@@ -37,13 +40,16 @@ data/
   glossary.yaml   → scripts/generate_glossary.py → web/glossary.html
   topics/*.md     → scripts/generate_topic.py  → web/topics/*.html
   maps.yaml       → scripts/generate_home.py   → web/index.html
+  news.yaml       → scripts/generate_home.py   → web/news.html
 ```
+
+Every generator builds its page chrome from **`scripts/site_chrome.py`**: design tokens (light by default, dark via the header toggle), Google Fonts (Geist / Geist Mono / Newsreader), the sticky header with the 4-entry nav (Maps ▾ · Articles ▾ · News · Glossary), the global search widget, EN/FR toggle and footer. It also remembers the reader's language and theme in `localStorage` (`mmia-lang`, `mmia-theme`). Pages style their own content with the same CSS variables (`--bg`, `--surface`, `--ink`, `--muted`, `--line`, `--accent`…) — never hard-coded colours.
 
 All generated HTML files are committed to the repo and served directly via GitHub Pages.
 
 ## Data layer (`data/`)
 
-- **`maps.yaml`** — registry of all maps (id, icon, title EN/FR, description EN/FR, output path, data source path). Referenced by all generators to build the nav.
+- **`maps.yaml`** — registry of all maps (id, title EN/FR, description EN/FR, output path, data source path, optional `kind: diagram`), plus `animations:` and external `links:`. Read by `site_chrome.py` to build the nav and by the home page.
 - **`ecosystem.yaml`** — full ecosystem map (~53 nodes)
 - **`ecosystem-macro.yaml`** — simplified "big picture" map (~26 nodes)
 - **`rag-pattern.yaml`**, **`cloud-managed.yaml`**, **`ai-agents.yaml`**, **`ai-coding-assistants.yaml`**, **`open-weights-models.yaml`**, **`proprietary-models.yaml`** — thematic Cytoscape maps
@@ -80,9 +86,13 @@ Generates `web/glossary.html` from `data/glossary.yaml`. Features: alphabetical 
 
 Generates `web/topics/*.html` from `data/topics/*.md`. Each topic file has YAML frontmatter (id, title EN/FR, summary, tags, related_terms, related_nodes, status, date) and bilingual Markdown content.
 
-### `scripts/generate_home.py` (~612 lines)
+### `scripts/generate_home.py`
 
-Reads `maps.yaml` and generates `web/index.html` — the landing page with a bilingual card grid linking to each map and topic.
+Generates `web/index.html` (hero, maps & diagrams, articles, latest 8 news, animations, resources) and `web/news.html` (full feed grouped by month, type filters, text filter, one `#news-<date>-<slug>` anchor per item). Old `index.html#news-…` links redirect to `news.html`.
+
+### `scripts/site_chrome.py`
+
+Shared header, nav, footer, tokens and theme/language memory used by every generator (see Architecture).
 
 ## Frontend (`web/`)
 

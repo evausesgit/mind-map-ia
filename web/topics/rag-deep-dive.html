@@ -3,362 +3,538 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RAG: Retrieval-Augmented Generation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>RAG: Retrieval-Augmented Generation — Mind Map IA</title>
+<meta name="description" content="How RAG works, when to use it, and trade-offs vs fine-tuning.">
+<script>try{if(localStorage.getItem('mmia-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #F8F9FA;
-    color: #1A1A2E;
-    min-height: 100vh;
-  }
-  header {
-    background: #0D1117;
-    color: white;
-    padding: 14px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    border-bottom: 1px solid #1E2D4E;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .nav-group { position: relative; }
-  .nav-btn {
-    padding: 5px 11px;
-    border: 1.5px solid #333;
-    border-radius: 6px;
-    background: transparent;
-    color: #BDC3C7;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    min-width: 110px;
-    text-align: center;
-  }
-  .nav-btn:hover { border-color: #888; color: white; }
-  .nav-group:hover .nav-dropdown,
-  .nav-group:focus-within .nav-dropdown { display: block; }
-  .nav-dropdown {
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --sunk: #F3F3F0;
+  --ink: #17181C;
+  --ink-2: #45474E;
+  --muted: #7A7D85;
+  --line: #E6E6E2;
+  --line-strong: #D2D2CC;
+  --accent: #D8432E;
+  --accent-ink: #B5361F;
+  --accent-soft: #FBEAE6;
+  --ok: #2F8F5B;
+  --warn: #B7791F;
+  --new: #6B4FBB;
+  --info: #2F6FB5;
+  --shadow-sm: 0 1px 2px rgba(20,20,25,.05);
+  --shadow: 0 1px 2px rgba(20,20,25,.04), 0 12px 32px -16px rgba(20,20,25,.18);
+  --f-ui: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --f-read: "Newsreader", Georgia, "Times New Roman", serif;
+  --r: 10px;
+  --header-h: 60px;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #0F1013;
+  --surface: #17181C;
+  --sunk: #1D1E23;
+  --ink: #EDEDEF;
+  --ink-2: #BDBFC6;
+  --muted: #8E919A;
+  --line: #2A2C32;
+  --line-strong: #3A3D44;
+  --accent: #F0644E;
+  --accent-ink: #FF8571;
+  --accent-soft: #3A1E19;
+  --ok: #5BC48A;
+  --warn: #E0A84A;
+  --new: #A68BEB;
+  --info: #6FA8E8;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -16px rgba(0,0,0,.6);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+::selection { background: var(--accent-soft); }
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 900;
+  height: var(--header-h);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.sh-inner {
+  height: 100%;
+  display: flex; align-items: center; gap: 28px;
+  padding: 0 max(20px, env(safe-area-inset-right, 0px)) 0 max(20px, env(safe-area-inset-left, 0px));
+}
+.sh-logo {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--ink); text-decoration: none;
+  font-weight: 600; font-size: 15px; letter-spacing: -0.01em; white-space: nowrap;
+}
+.sh-logo svg { width: 26px; height: 26px; flex-shrink: 0; }
+.sh-nav { display: flex; align-items: center; gap: 4px; }
+.sh-group { position: relative; }
+.sh-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 34px; padding: 0 10px;
+  font: 500 14px/1 var(--f-ui); color: var(--ink-2);
+  background: none; border: 0; border-radius: 8px; cursor: pointer;
+  text-decoration: none; white-space: nowrap; position: relative;
+  transition: color .15s, background .15s;
+}
+.sh-link:hover, .sh-group.open > .sh-link { color: var(--ink); background: var(--sunk); }
+.sh-link.active { color: var(--ink); }
+.sh-link.active::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: -13px;
+  height: 2px; border-radius: 2px; background: var(--accent);
+}
+.sh-caret { width: 10px; height: 10px; opacity: .55; transition: transform .15s; }
+.sh-group.open .sh-caret { transform: rotate(180deg); }
+.sh-menu {
+  display: none;
+  position: absolute; top: calc(100% + 10px); left: -8px;
+  min-width: 340px; max-height: calc(100vh - 90px); overflow-y: auto;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.sh-menu.wide { min-width: 640px; display: none; grid-template-columns: 1fr 1fr; gap: 4px 8px; }
+.sh-group.open > .sh-menu { display: block; }
+.sh-group.open > .sh-menu.wide { display: grid; }
+@media (hover: hover) and (min-width: 900px) {
+  .sh-group:hover > .sh-menu { display: block; }
+  .sh-group:hover > .sh-menu.wide { display: grid; }
+  .sh-group:hover .sh-caret { transform: rotate(180deg); }
+  .sh-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }
+}
+.sh-menu-col { display: grid; gap: 2px; align-content: start; }
+.sh-menu-label {
+  padding: 10px 10px 4px;
+  font: 500 11px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+.sh-item {
+  display: grid; gap: 2px;
+  padding: 8px 10px; border-radius: 8px;
+  color: var(--ink); text-decoration: none;
+  transition: background .12s;
+}
+.sh-item:hover, .sh-item.active { background: var(--sunk); }
+.sh-item-title { font-size: 14px; font-weight: 500; line-height: 1.3; }
+.sh-item-desc { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.sh-item.active .sh-item-title::before {
+  content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); margin-right: 7px; vertical-align: 2px;
+}
+.sh-menu-foot {
+  grid-column: 1 / -1; margin-top: 4px; padding: 10px; border-top: 1px solid var(--line);
+  font-size: 13px; color: var(--muted);
+}
+.sh-menu-foot a { color: var(--ink); font-weight: 500; text-decoration: none; }
+.sh-menu-foot a:hover { color: var(--accent); }
+
+.sh-context {
+  display: flex; align-items: baseline; gap: 10px; min-width: 0;
+  font-size: 14px; color: var(--muted);
+}
+.sh-context .sh-sep { color: var(--line-strong); }
+.sh-context .sh-title {
+  color: var(--ink); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sh-context .sh-meta { font: 12px var(--f-mono); color: var(--muted); white-space: nowrap; }
+
+.sh-right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.lang-toggle {
+  display: inline-flex; padding: 2px; gap: 2px;
+  border: 1px solid var(--line); border-radius: 9px; background: var(--bg);
+}
+.lang-btn {
+  height: 28px; min-width: 34px; padding: 0 8px;
+  font: 500 12px/1 var(--f-mono); letter-spacing: .02em;
+  color: var(--muted); background: none; border: 0; border-radius: 7px; cursor: pointer;
+  transition: color .15s, background .15s;
+}
+.lang-btn:hover { color: var(--ink); }
+.lang-btn.active { background: var(--ink); color: var(--surface); }
+.icon-btn {
+  width: 34px; height: 34px; display: inline-grid; place-items: center;
+  color: var(--ink-2); background: none; border: 1px solid var(--line); border-radius: 9px; cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.icon-btn:hover { color: var(--ink); border-color: var(--line-strong); background: var(--sunk); }
+.icon-btn svg { width: 16px; height: 16px; }
+.theme-btn .i-sun { display: none; }
+:root[data-theme="dark"] .theme-btn .i-sun { display: block; }
+:root[data-theme="dark"] .theme-btn .i-moon { display: none; }
+.sh-burger { display: none; }
+
+@media (max-width: 1100px) {
+  .sh-context .sh-meta { display: none; }
+}
+@media (max-width: 960px) {
+  .sh-inner { gap: 14px; }
+  .sh-context { display: none; }
+}
+@media (max-width: 899px) {
+  .sh-burger { display: inline-grid; }
+  .sh-nav {
     display: none;
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    background: #16213E;
-    border: 1px solid #2C3E6E;
-    border-radius: 10px;
-    min-width: 280px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-    z-index: 1000;
-    overflow: hidden;
+    position: fixed; left: 0; right: 0; top: var(--header-h); bottom: 0;
+    flex-direction: column; align-items: stretch; gap: 2px;
+    padding: 12px max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px));
+    background: var(--surface); overflow-y: auto;
+    border-top: 1px solid var(--line);
   }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    color: #BDC3C7;
-    text-decoration: none;
-    font-size: 13px;
-    transition: background 0.12s;
-    border-bottom: 1px solid #1E2D4E;
+  body.sh-menu-open .sh-nav { display: flex; }
+  /* backdrop-filter would make the header the containing block of the fixed menu */
+  body.sh-menu-open .site-header { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface); }
+  body.sh-menu-open { overflow: hidden; }
+  .sh-link { height: 44px; font-size: 16px; justify-content: space-between; width: 100%; }
+  .sh-link.active::after { display: none; }
+  .sh-link.active { color: var(--accent); }
+  .sh-menu, .sh-menu.wide {
+    position: static; min-width: 0; max-height: none; box-shadow: none; border: 0;
+    padding: 0 0 8px 8px; grid-template-columns: 1fr;
   }
-  .nav-item:last-child { border-bottom: none; }
-  .nav-item:hover { background: #1E2D4E; color: white; }
-  .nav-item.active { background: #1E2D4E; color: white; }
-  .nav-item-icon { font-size: 16px; flex-shrink: 0; }
-  .nav-item-info { display: flex; flex-direction: column; }
-  .nav-item-title { font-weight: 600; font-size: 13px; }
-  .nav-item-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
-  .lang-toggle { display: flex; gap: 6px; }
-  .lang-btn {
-    background: none;
-    border: 1px solid #555;
-    border-radius: 4px;
-    color: #BDC3C7;
-    padding: 4px 10px;
-    font-size: 13px;
-    cursor: pointer;
-  }
-  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+  .sh-item-desc { display: none; }
+  .sh-right #gs-trigger .gs-placeholder, .sh-right #gs-trigger .gs-kbd { display: none; }
+  .sh-right #gs-trigger { min-width: 0; width: 34px; height: 34px; padding: 0; justify-content: center; }
+}
 
+/* ── Footer ── */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 28px max(20px, env(safe-area-inset-right, 0px)) 36px max(20px, env(safe-area-inset-left, 0px));
+  color: var(--muted); font-size: 13px;
+}
+.sf-inner { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; }
+.sf-inner a { color: var(--ink-2); text-decoration: none; }
+.sf-inner a:hover { color: var(--accent); }
+.sf-links { display: flex; gap: 18px; flex-wrap: wrap; }
+
+/* ── Shared building blocks ── */
+.eyebrow {
+  font: 500 12px/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font: 500 11px/1 var(--f-mono); letter-spacing: .02em;
+  padding: 4px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--ink-2); background: var(--surface);
+  white-space: nowrap;
+}
+.chip.dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.chip.st-stable { color: var(--ok); }
+.chip.st-evolving { color: var(--warn); }
+.chip.st-emerging { color: var(--new); }
+.chip.st-deprecated { color: var(--muted); }
+.chip.st-draft { color: var(--warn); }
+.chip.st-review { color: var(--info); }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 40px; padding: 0 16px;
+  font: 500 14px/1 var(--f-ui); color: var(--ink); text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: 9px; cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s, transform .15s;
+}
+.btn:hover { border-color: var(--ink-2); }
+.btn.primary { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+<style>
+  body { font-size: 16px; line-height: 1.6; }
   .page-layout {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 40px 32px;
     display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 48px;
-    align-items: start;
+    grid-template-columns: 200px minmax(0, 680px) minmax(0, 1fr);
+    gap: 56px;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 64px max(20px, env(safe-area-inset-right, 0px)) 96px max(20px, env(safe-area-inset-left, 0px));
   }
-  @media (max-width: 768px) {
-    header { padding: 10px 12px; flex-wrap: wrap; align-items: flex-start; gap: 8px; }
-    header h1 { width: 100%; font-size: 17px; line-height: 1.25; }
-    .nav-btn, .lang-btn { min-height: 34px; font-size: 12px; padding: 5px 9px; }
-    .nav-dropdown {
-      position: fixed;
-      top: 92px;
-      left: 8px;
-      right: 8px;
-      min-width: 0;
-      max-height: calc(100dvh - 110px);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .nav-item { padding: 12px 14px; }
-    .nav-item-desc { display: none; }
-    .page-layout { grid-template-columns: 1fr; padding: 24px 14px 40px; gap: 24px; }
-    .sidebar { display: none; }
-    .article-header { margin-bottom: 24px; }
-    .article-title { font-size: clamp(24px, 8vw, 32px); }
-    .article-summary { font-size: 15px; }
-    .article-body h2 { font-size: 20px; margin-top: 30px; }
-    .callout, .related-box { padding: 14px; }
-  }
+  main { min-width: 0; grid-column: 2; }
 
-  .article-header { margin-bottom: 32px; }
-  .article-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
+  .article-header { margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .crumb {
+    display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center;
+    font: 12px var(--f-mono); color: var(--muted);
   }
-  .status-badge {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 4px;
-    background: #27AE6022;
-    color: #27AE60;
-    border: 1px solid #27AE6044;
-  }
-  .date { font-size: 12px; color: #95A5A6; }
+  .crumb a { color: var(--muted); text-decoration: none; }
+  .crumb a:hover { color: var(--accent); }
   .article-title {
-    font-size: clamp(24px, 4vw, 36px);
-    font-weight: 800;
-    line-height: 1.2;
-    color: #1A1A2E;
-    margin-bottom: 12px;
+    font-family: var(--f-read);
+    font-size: clamp(34px, 5vw, 52px);
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    margin: 18px 0 16px;
+    text-wrap: balance;
   }
   .article-summary {
-    font-size: 16px;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 16px;
+    font-family: var(--f-read);
+    font-size: 21px;
+    color: var(--ink-2);
+    line-height: 1.45;
+    margin: 0 0 22px;
   }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .article-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .tags { display: contents; }
   .tag {
-    font-size: 11px;
-    padding: 2px 8px;
-    background: #E8EAF6;
-    color: #3F51B5;
-    border-radius: 4px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
+    font: 12px var(--f-mono); color: var(--muted);
   }
+  .tag::before { content: "#"; opacity: .6; }
 
-  .article-body { line-height: 1.75; color: #2C3E50; }
+  .article-body { color: var(--ink); }
+  .article-body > :first-child { margin-top: 0; }
   .article-body h2 {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1A1A2E;
-    margin: 36px 0 12px;
-    padding-bottom: 6px;
-    border-bottom: 2px solid #E8EAED;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin: 52px 0 14px;
+    scroll-margin-top: calc(var(--header-h) + 24px);
+    text-wrap: balance;
   }
   .article-body h3 {
-    font-size: 17px;
-    font-weight: 700;
-    color: #1A1A2E;
-    margin: 24px 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 32px 0 10px;
+    scroll-margin-top: calc(var(--header-h) + 24px);
   }
   .article-body h4 {
-    font-size: 14px;
-    font-weight: 700;
+    font: 500 12px var(--f-mono);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #7F8C8D;
-    margin: 20px 0 6px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 26px 0 8px;
   }
-  .article-body p { margin-bottom: 14px; font-size: 15px; }
-  .article-body ul, .article-body ol {
-    margin: 8px 0 14px 20px;
-    font-size: 15px;
+  .article-body p, .article-body li {
+    font-family: var(--f-read);
+    font-size: 19px;
+    line-height: 1.68;
   }
-  .article-body li { margin-bottom: 4px; }
-  .article-body strong { font-weight: 700; color: #1A1A2E; }
-  .article-body em { color: #555; }
+  .article-body p { margin: 0 0 18px; }
+  .article-body ul, .article-body ol { margin: 0 0 20px; padding-left: 24px; }
+  .article-body li { margin-bottom: 6px; }
+  .article-body li::marker { color: var(--muted); }
+  .article-body strong { font-weight: 600; }
+  .article-body em { color: var(--ink-2); }
   .article-body code {
-    font-family: "SF Mono", "Fira Code", Consolas, monospace;
-    font-size: 13px;
-    background: #EEF0F3;
-    padding: 1px 5px;
-    border-radius: 3px;
-    color: #C0392B;
+    font-family: var(--f-mono);
+    font-size: 0.82em;
+    background: var(--sunk);
+    padding: 2px 6px;
+    border-radius: 5px;
+    color: var(--ink);
   }
   .article-body pre {
-    background: #1A1A2E;
-    color: #E8EAF6;
-    border-radius: 8px;
-    padding: 20px;
+    background: var(--sunk);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 22px;
     overflow-x: auto;
-    margin: 16px 0;
-    font-size: 13px;
+    margin: 24px 0;
+    font-size: 14px;
     line-height: 1.6;
   }
-  .article-body pre code {
-    background: none;
-    color: inherit;
-    padding: 0;
-    font-size: inherit;
-    border-radius: 0;
-  }
+  .article-body pre code { background: none; padding: 0; font-size: inherit; border-radius: 0; }
+  .article-body .table-wrap, .article-body table { max-width: 100%; }
   .article-body table {
-    width: 100%;
+    display: block;
+    overflow-x: auto;
     border-collapse: collapse;
-    margin: 16px 0;
-    font-size: 14px;
+    margin: 24px 0;
+    font-size: 14.5px;
+    line-height: 1.5;
   }
   .article-body th {
-    background: #1A1A2E;
-    color: white;
-    padding: 10px 14px;
+    font: 500 11.5px var(--f-mono);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
     text-align: left;
-    font-weight: 600;
+    padding: 10px 16px 10px 0;
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
   }
   .article-body td {
-    padding: 8px 14px;
-    border-bottom: 1px solid #E8EAED;
+    padding: 12px 16px 12px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
   }
-  .article-body tr:nth-child(even) td { background: #F8F9FA; }
   .article-body blockquote {
-    border-left: 3px solid #1A1A2E;
-    padding: 8px 16px;
-    margin: 12px 0;
-    color: #555;
-    background: #F0F0F5;
-    border-radius: 0 4px 4px 0;
-  }
-  .article-body hr {
-    border: none;
-    border-top: 1px solid #E0E0E0;
     margin: 28px 0;
+    padding: 4px 0 4px 22px;
+    border-left: 2px solid var(--accent);
+    color: var(--ink-2);
   }
-  .article-body a { color: #1A1A2E; font-weight: 600; text-underline-offset: 2px; }
-  .article-body a:hover { color: #3498DB; }
+  .article-body blockquote p { font-size: 21px; font-style: italic; }
+  .article-body hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+  .article-body a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .article-body a:hover { color: var(--accent); }
+  .article-body img { max-width: 100%; border-radius: 12px; }
+  .article-body .mermaid {
+    margin: 28px 0; padding: 24px; overflow-x: auto;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    text-align: center;
+  }
 
   /* Sidebar */
-  .sidebar { position: sticky; top: 80px; }
-  .toc { display: flex; flex-direction: column; gap: 4px; }
+  .sidebar { grid-column: 1; grid-row: 1; position: sticky; top: calc(var(--header-h) + 32px); align-self: start; max-height: calc(100vh - var(--header-h) - 64px); overflow-y: auto; }
+  .toc { display: flex; flex-direction: column; gap: 2px; }
   .toc-label {
-    font-size: 11px;
-    font-weight: 700;
+    font: 500 11px var(--f-mono);
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #95A5A6;
-    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 12px;
   }
   .toc a {
-    font-size: 13px;
-    color: #555;
+    font-size: 13.5px;
+    color: var(--muted);
     text-decoration: none;
-    padding: 3px 0;
-    border-left: 2px solid transparent;
-    padding-left: 10px;
+    padding: 4px 0 4px 12px;
+    border-left: 1px solid var(--line);
     line-height: 1.4;
-    transition: all 0.1s;
+    transition: color .15s, border-color .15s;
   }
-  .toc a.toc-h3 {
-    padding-left: 20px;
-    font-size: 12px;
-    color: #7F8C8D;
+  .toc a.toc-h3 { padding-left: 24px; font-size: 12.5px; }
+  .toc a:hover { color: var(--ink); }
+  .toc a.on { color: var(--ink); border-left-color: var(--accent); }
+
+  .article-end {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;
+    font-size: 14px; color: var(--muted);
   }
-  .toc a:hover { color: #1A1A2E; border-left-color: #1A1A2E; }
+  .article-end a { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .article-end a:hover { color: var(--accent); }
+
+  @media (max-width: 1100px) {
+    .page-layout { grid-template-columns: 180px minmax(0, 1fr); gap: 40px; }
+  }
+  @media (max-width: 820px) {
+    .page-layout { grid-template-columns: minmax(0, 1fr); padding-top: 36px; gap: 0; }
+    main { grid-column: 1; }
+    .sidebar { display: none; }
+    .article-summary { font-size: 18px; }
+    .article-body p, .article-body li { font-size: 18px; }
+    .article-body h2 { font-size: 21px; margin-top: 40px; }
+  }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
-<header>
-  <div style="display:flex;align-items:center;gap:16px;">
-    <div class="nav-group">  <button class="nav-btn">    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾  </button>  <div class="nav-dropdown"><a href="../macro.html" class="nav-item"><span class="nav-item-icon">🗺️</span><span class="nav-item-info"><span class="nav-item-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span><span class="nav-item-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span></span></a><a href="../ai-agents.html" class="nav-item"><span class="nav-item-icon">🤖</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span><span class="nav-item-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span></span></a><a href="../ai-coding-assistants.html" class="nav-item"><span class="nav-item-icon">💻</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span><span class="nav-item-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span></span></a><a href="../proprietary-models.html" class="nav-item"><span class="nav-item-icon">🏢</span><span class="nav-item-info"><span class="nav-item-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span><span class="nav-item-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span></span></a><a href="../open-weights-models.html" class="nav-item"><span class="nav-item-icon">🔓</span><span class="nav-item-info"><span class="nav-item-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span><span class="nav-item-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span></span></a><a href="../cloud-managed.html" class="nav-item"><span class="nav-item-icon">☁️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span><span class="nav-item-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span></span></a><a href="../dense-vs-moe.html" class="nav-item"><span class="nav-item-icon">⚡</span><span class="nav-item-info"><span class="nav-item-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span><span class="nav-item-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span></span></a><a href="../quantization.html" class="nav-item"><span class="nav-item-icon">🗜️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Quantization — Memory by Format" data-fr="Quantisation — Mémoire par Format">Quantization — Memory by Format</span><span class="nav-item-desc" data-en="How numerical precision (FP32 → INT4) affects a 70B model's memory footprint" data-fr="Comment la précision numérique (FP32 → INT4) affecte l'empreinte mémoire d'un modèle 70B">How numerical precision (FP32 → INT4) affects a 70B model's memory footprint</span></span></a><a href="../rag-pattern.html" class="nav-item"><span class="nav-item-icon">🔍</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG" data-fr="RAG">RAG</span><span class="nav-item-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾  </button>  <div class="nav-dropdown"><a href="../topics/llm-not-a-truth-machine.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="LLMs Are Not Truth Machines" data-fr="Les LLMs ne sont pas des machines à vérité">LLMs Are Not Truth Machines</span><span class="nav-item-desc" data-en="Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead." data-fr="Pourquoi demander la vérité à un LLM est le mauvais modèle mental — et ce que fait RAG à la place.">Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead.</span></span></a><a href="../topics/usecase-chat-qa.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case — Chat LLM (ChatGPT-like)" data-fr="Cas d'Usage — Chat LLM (type ChatGPT)">Use Case — Chat LLM (ChatGPT-like)</span><span class="nav-item-desc" data-en="How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes." data-fr="Comment un Chat LLM fonctionne de bout en bout : construction du prompt, RAG optionnel, inférence, génération de tokens, et les bons modèles mentaux pour éviter les erreurs courantes.">How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes.</span></span></a><a href="../topics/usecase-analyst-rag.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Knowledge Search for Analysts" data-fr="Cas d'Usage : Recherche dans la Connaissance pour Analystes">Use Case: Knowledge Search for Analysts</span><span class="nav-item-desc" data-en="How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs." data-fr="Comment un analyste métier interroge des corpus de documents privés avec l'IA — architecture, gouvernance, et compromis pratiques.">How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs.</span></span></a><a href="../topics/usecase-dev-agentic.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Agentic Coding" data-fr="Cas d'Usage : Coding Agentique">Use Case: Agentic Coding</span><span class="nav-item-desc" data-en="How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously." data-fr="Comment un agent IA assiste un développeur au-delà de l'autocomplétion — planification, édition, exécution de tests, et itération autonome.">How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously.</span></span></a><a href="../topics/usecase-ops-automation.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Ops Workflow Automation" data-fr="Cas d'Usage : Automatisation de Workflows Ops">Use Case: Ops Workflow Automation</span><span class="nav-item-desc" data-en="How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model." data-fr="Comment des agents autonomes gèrent des processus opérationnels multi-étapes — triage d'incidents, orchestration de pipelines, et le modèle humain dans la boucle.">How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model.</span></span></a><a href="../topics/mcp-explained.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</span><span class="nav-item-desc" data-en="What MCP is, how it works architecturally, and why it matters for AI agent development." data-fr="Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA.">What MCP is, how it works architecturally, and why it matters for AI agent development.</span></span></a><a href="../topics/rag-deep-dive.html" class="nav-item active"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</span><span class="nav-item-desc" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾  </button>  <div class="nav-dropdown"><a href="../topics/meta-reasoning-agents.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Meta-Reasoning: Teaching AI Agents to Know When They're Stuck" data-fr="Méta-raisonnement : Apprendre aux agents IA à reconnaître quand ils bloquent">Meta-Reasoning: Teaching AI Agents to Know When They're Stuck</span><span class="nav-item-desc" data-en="A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most." data-fr="Une étude de 2026 montre que les agents capables de surveiller leur raisonnement et de changer de stratégie surpassent les agents standard de 31 % — les modèles open-source en bénéficiant le plus.">A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most.</span></span></a><a href="../topics/laurent-alexandre-assemblee-ia.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en=""Stop the Denial" — Laurent Alexandre on AI at the French National Assembly" data-fr=""Sortir du déni" — Laurent Alexandre sur l'IA à l'Assemblée nationale">"Stop the Denial" — Laurent Alexandre on AI at the French National Assembly</span><span class="nav-item-desc" data-en="Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake." data-fr="Laurent Alexandre soutient devant l'Assemblée nationale que l'IA dépasse déjà des experts sur des tâches cognitives — et que minimiser ce fait est une erreur stratégique.">Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake.</span></span></a><a href="../topics/co-intelligence-mollick.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</span><span class="nav-item-desc" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Links" data-fr="Liens">Links</span> ▾  </button>  <div class="nav-dropdown"><a href="https://www.laude.org/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🚢</span><span class="nav-item-info"><span class="nav-item-title" data-en="Laude" data-fr="Laude">Laude</span><span class="nav-item-desc" data-en="Ship Your Research — put research into production and into people’s hands" data-fr="Ship Your Research — mettre sa recherche en production et dans les mains des gens">Ship Your Research — put research into production and into people’s hands</span></span></a><a href="https://artificialanalysis.ai/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">📊</span><span class="nav-item-info"><span class="nav-item-title" data-en="Artificial Analysis" data-fr="Artificial Analysis">Artificial Analysis</span><span class="nav-item-desc" data-en="Independent analysis of AI — choose the best model and provider for your use case" data-fr="Analyse indépendante de l'IA — choisir le meilleur modèle et fournisseur pour votre cas d'usage">Independent analysis of AI — choose the best model and provider for your use case</span></span></a><a href="https://epoch.ai/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">📈</span><span class="nav-item-info"><span class="nav-item-title" data-en="Epoch AI" data-fr="Epoch AI">Epoch AI</span><span class="nav-item-desc" data-en="Research institute studying AI progress — trends in compute, data, and capabilities" data-fr="Institut de recherche sur la progression de l'IA — tendances en calcul, données et capacités">Research institute studying AI progress — trends in compute, data, and capabilities</span></span></a><a href="https://karpathy.ai/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🎓</span><span class="nav-item-info"><span class="nav-item-title" data-en="Andrej Karpathy" data-fr="Andrej Karpathy">Andrej Karpathy</span><span class="nav-item-desc" data-en="AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs" data-fr="Chercheur et pédagogue en IA — cours de deep learning, réseaux de neurones from scratch, et explications claires des LLMs">AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs</span></span></a><a href="https://x.com/ClaudeDevs" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🐦</span><span class="nav-item-info"><span class="nav-item-title" data-en="Claude Devs (X)" data-fr="Claude Devs (X)">Claude Devs (X)</span><span class="nav-item-desc" data-en="Official Anthropic account for Claude developers — API updates, tips and community news" data-fr="Compte Anthropic officiel pour les développeurs Claude — mises à jour API, conseils et actualités communautaires">Official Anthropic account for Claude developers — API updates, tips and community news</span></span></a><a href="https://developers.openai.com/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🧰</span><span class="nav-item-info"><span class="nav-item-title" data-en="OpenAI Developers" data-fr="OpenAI Developers">OpenAI Developers</span><span class="nav-item-desc" data-en="Official OpenAI developer resources — docs, guides, examples, and platform updates" data-fr="Ressources officielles OpenAI pour développeurs — docs, guides, exemples et actualités de la plateforme">Official OpenAI developer resources — docs, guides, examples, and platform updates</span></span></a></div></div><a href="../index.html#news" class="nav-btn" style="text-decoration:none;">  <span data-en="News" data-fr="Nouveautés">News</span></a>
-  </div>
-  
+<header class="site-header">
+  <div class="sh-inner">
+    <a href="../index.html" class="sh-logo" title="Mind Map IA"><svg viewBox="0 0 26 26" aria-hidden="true">
+  <g stroke="var(--line-strong)" stroke-width="1.1" fill="none">
+    <path d="M4 9L11 5L18 10L22 6M11 5L12 14L18 10M4 9L12 14L7 20L15 21L22 16L18 10M15 21L12 14"/>
+  </g>
+  <g fill="var(--ink)"><circle cx="4" cy="9" r="1.8"/><circle cx="11" cy="5" r="1.8"/><circle cx="22" cy="6" r="1.8"/>
+  <circle cx="7" cy="20" r="1.8"/><circle cx="15" cy="21" r="1.8"/><circle cx="22" cy="16" r="1.8"/></g>
+  <circle cx="18" cy="10" r="2.6" fill="var(--accent)"/><circle cx="12" cy="14" r="2.6" fill="var(--accent)"/>
+</svg><span>Mind Map IA</span></a>
+    <nav class="sh-nav" aria-label="Site"><div class="sh-group"><button class="sh-link" aria-haspopup="true" aria-expanded="false"><span data-en="Maps" data-fr="Cartes">Maps</span><svg class="sh-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="sh-menu wide"><div class="sh-menu-col"><div class="sh-menu-label"><span data-en="Maps" data-fr="Cartes">Maps</span></div><a href="../macro.html" class="sh-item"><span class="sh-item-title" data-en="LLM &amp; AI Ecosystem" data-fr="LLM &amp; AI Ecosystem">LLM & AI Ecosystem</span><span class="sh-item-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span></a><a href="../ai-agents.html" class="sh-item"><span class="sh-item-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span><span class="sh-item-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span></a><a href="../ai-coding-assistants.html" class="sh-item"><span class="sh-item-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span><span class="sh-item-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span></a><a href="../proprietary-models.html" class="sh-item"><span class="sh-item-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span><span class="sh-item-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span></a><a href="../open-weights-models.html" class="sh-item"><span class="sh-item-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span><span class="sh-item-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span></a><a href="../cloud-managed.html" class="sh-item"><span class="sh-item-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span><span class="sh-item-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span></a><a href="../rag-pattern.html" class="sh-item"><span class="sh-item-title" data-en="RAG" data-fr="RAG">RAG</span><span class="sh-item-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span></a></div><div class="sh-menu-col"><div class="sh-menu-label"><span data-en="Diagrams" data-fr="Diagrammes">Diagrams</span></div><a href="../dense-vs-moe.html" class="sh-item"><span class="sh-item-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span><span class="sh-item-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span></a><a href="../quantization.html" class="sh-item"><span class="sh-item-title" data-en="Quantization — Memory by Format" data-fr="Quantisation — Mémoire par Format">Quantization — Memory by Format</span><span class="sh-item-desc" data-en="How numerical precision (FP32 → INT4) affects a 70B model's memory footprint" data-fr="Comment la précision numérique (FP32 → INT4) affecte l'empreinte mémoire d'un modèle 70B">How numerical precision (FP32 → INT4) affects a 70B model's memory footprint</span></a><div class="sh-menu-label"><span data-en="Animations" data-fr="Animations">Animations</span></div><a href="../animations/llm-chatbot.html" class="sh-item"><span class="sh-item-title" data-en="How an LLM works" data-fr="Comment fonctionne un LLM">How an LLM works</span><span class="sh-item-desc" data-en="Tokenisation, embeddings, self-attention and generation — animated" data-fr="Tokenisation, embeddings, self-attention et génération — animés">Tokenisation, embeddings, self-attention and generation — animated</span></a><a href="../animations/mcp-agentic-architecture.html" class="sh-item"><span class="sh-item-title" data-en="MCP &amp; agentic architecture" data-fr="MCP &amp; architecture agentique">MCP & agentic architecture</span><span class="sh-item-desc" data-en="Agent, orchestrator and MCP connecting AI to enterprise data" data-fr="Agent, orchestrateur et MCP reliant l’IA aux données de l’entreprise">Agent, orchestrator and MCP connecting AI to enterprise data</span></a><a href="../animations/trusted-data-agents.html" class="sh-item"><span class="sh-item-title" data-en="Trusted data for agents" data-fr="Des données de confiance pour les agents">Trusted data for agents</span><span class="sh-item-desc" data-en="Data quality, context, access control, anonymisation and on-prem vs cloud routing behind MCP" data-fr="Qualité et contexte des données, habilitations, anonymisation et routage on-premise / cloud derrière MCP">Data quality, context, access control, anonymisation and on-prem vs cloud routing behind MCP</span></a><a href="../animations/sales-trader-copilot.html" class="sh-item"><span class="sh-item-title" data-en="AI-enabled sales trading" data-fr="Sales trading augmenté par l’IA">AI-enabled sales trading</span><span class="sh-item-desc" data-en="A copilot investigating via MCP alongside a Cash Equity Sales Trader" data-fr="Un copilote qui enquête via MCP aux côtés d’un Sales Trader Cash Equity">A copilot investigating via MCP alongside a Cash Equity Sales Trader</span></a></div></div></div><div class="sh-group"><button class="sh-link active" aria-haspopup="true" aria-expanded="false"><span data-en="Articles" data-fr="Articles">Articles</span><svg class="sh-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="sh-menu wide"><div class="sh-menu-col"><div class="sh-menu-label"><span data-en="Deep dives" data-fr="Articles de fond">Deep dives</span></div><a href="../topics/llm-not-a-truth-machine.html" class="sh-item"><span class="sh-item-title" data-en="LLMs Are Not Truth Machines" data-fr="Les LLMs ne sont pas des machines à vérité">LLMs Are Not Truth Machines</span><span class="sh-item-desc" data-en="Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead." data-fr="Pourquoi demander la vérité à un LLM est le mauvais modèle mental — et ce que fait RAG à la place.">Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead.</span></a><a href="../topics/usecase-chat-qa.html" class="sh-item"><span class="sh-item-title" data-en="Use Case — Chat LLM (ChatGPT-like)" data-fr="Cas d'Usage — Chat LLM (type ChatGPT)">Use Case — Chat LLM (ChatGPT-like)</span><span class="sh-item-desc" data-en="How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes." data-fr="Comment un Chat LLM fonctionne de bout en bout : construction du prompt, RAG optionnel, inférence, génération de tokens, et les bons modèles mentaux pour éviter les erreurs courantes.">How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes.</span></a><a href="../topics/usecase-analyst-rag.html" class="sh-item"><span class="sh-item-title" data-en="Use Case: Knowledge Search for Analysts" data-fr="Cas d'Usage : Recherche dans la Connaissance pour Analystes">Use Case: Knowledge Search for Analysts</span><span class="sh-item-desc" data-en="How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs." data-fr="Comment un analyste métier interroge des corpus de documents privés avec l'IA — architecture, gouvernance, et compromis pratiques.">How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs.</span></a><a href="../topics/usecase-dev-agentic.html" class="sh-item"><span class="sh-item-title" data-en="Use Case: Agentic Coding" data-fr="Cas d'Usage : Coding Agentique">Use Case: Agentic Coding</span><span class="sh-item-desc" data-en="How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously." data-fr="Comment un agent IA assiste un développeur au-delà de l'autocomplétion — planification, édition, exécution de tests, et itération autonome.">How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously.</span></a><a href="../topics/usecase-ops-automation.html" class="sh-item"><span class="sh-item-title" data-en="Use Case: Ops Workflow Automation" data-fr="Cas d'Usage : Automatisation de Workflows Ops">Use Case: Ops Workflow Automation</span><span class="sh-item-desc" data-en="How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model." data-fr="Comment des agents autonomes gèrent des processus opérationnels multi-étapes — triage d'incidents, orchestration de pipelines, et le modèle humain dans la boucle.">How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model.</span></a><a href="../topics/mcp-explained.html" class="sh-item"><span class="sh-item-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</span><span class="sh-item-desc" data-en="What MCP is, how it works architecturally, and why it matters for AI agent development." data-fr="Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA.">What MCP is, how it works architecturally, and why it matters for AI agent development.</span></a><a href="../topics/rag-deep-dive.html" class="sh-item active"><span class="sh-item-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</span><span class="sh-item-desc" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</span></a></div><div class="sh-menu-col"><div class="sh-menu-label"><span data-en="Reflection" data-fr="Réflexion">Reflection</span></div><a href="../topics/meta-reasoning-agents.html" class="sh-item"><span class="sh-item-title" data-en="Meta-Reasoning: Teaching AI Agents to Know When They're Stuck" data-fr="Méta-raisonnement : Apprendre aux agents IA à reconnaître quand ils bloquent">Meta-Reasoning: Teaching AI Agents to Know When They're Stuck</span><span class="sh-item-desc" data-en="A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most." data-fr="Une étude de 2026 montre que les agents capables de surveiller leur raisonnement et de changer de stratégie surpassent les agents standard de 31 % — les modèles open-source en bénéficiant le plus.">A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most.</span></a><a href="../topics/laurent-alexandre-assemblee-ia.html" class="sh-item"><span class="sh-item-title" data-en="&quot;Stop the Denial&quot; — Laurent Alexandre on AI at the French National Assembly" data-fr="&quot;Sortir du déni&quot; — Laurent Alexandre sur l'IA à l'Assemblée nationale">"Stop the Denial" — Laurent Alexandre on AI at the French National Assembly</span><span class="sh-item-desc" data-en="Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake." data-fr="Laurent Alexandre soutient devant l'Assemblée nationale que l'IA dépasse déjà des experts sur des tâches cognitives — et que minimiser ce fait est une erreur stratégique.">Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake.</span></a><a href="../topics/co-intelligence-mollick.html" class="sh-item"><span class="sh-item-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</span><span class="sh-item-desc" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</span></a><div class="sh-menu-label"><span data-en="Resources" data-fr="Ressources">Resources</span></div><a href="https://www.laude.org/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Laude" data-fr="Laude">Laude</span><span class="sh-item-desc" data-en="Ship Your Research — put research into production and into people’s hands" data-fr="Ship Your Research — mettre sa recherche en production et dans les mains des gens">Ship Your Research — put research into production and into people’s hands</span></a><a href="https://artificialanalysis.ai/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Artificial Analysis" data-fr="Artificial Analysis">Artificial Analysis</span><span class="sh-item-desc" data-en="Independent analysis of AI — choose the best model and provider for your use case" data-fr="Analyse indépendante de l'IA — choisir le meilleur modèle et fournisseur pour votre cas d'usage">Independent analysis of AI — choose the best model and provider for your use case</span></a><a href="https://epoch.ai/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Epoch AI" data-fr="Epoch AI">Epoch AI</span><span class="sh-item-desc" data-en="Research institute studying AI progress — trends in compute, data, and capabilities" data-fr="Institut de recherche sur la progression de l'IA — tendances en calcul, données et capacités">Research institute studying AI progress — trends in compute, data, and capabilities</span></a><a href="https://karpathy.ai/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Andrej Karpathy" data-fr="Andrej Karpathy">Andrej Karpathy</span><span class="sh-item-desc" data-en="AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs" data-fr="Chercheur et pédagogue en IA — cours de deep learning, réseaux de neurones from scratch, et explications claires des LLMs">AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs</span></a><a href="https://x.com/ClaudeDevs" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Claude Devs (X)" data-fr="Claude Devs (X)">Claude Devs (X)</span><span class="sh-item-desc" data-en="Official Anthropic account for Claude developers — API updates, tips and community news" data-fr="Compte Anthropic officiel pour les développeurs Claude — mises à jour API, conseils et actualités communautaires">Official Anthropic account for Claude developers — API updates, tips and community news</span></a><a href="https://developers.openai.com/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="OpenAI Developers" data-fr="OpenAI Developers">OpenAI Developers</span><span class="sh-item-desc" data-en="Official OpenAI developer resources — docs, guides, examples, and platform updates" data-fr="Ressources officielles OpenAI pour développeurs — docs, guides, exemples et actualités de la plateforme">Official OpenAI developer resources — docs, guides, examples, and platform updates</span></a></div></div></div><a href="../news.html" class="sh-link"><span data-en="News" data-fr="Actualités">News</span></a><a href="../glossary.html" class="sh-link"><span data-en="Glossary" data-fr="Glossaire">Glossary</span></a></nav>
+    
+    <div class="sh-right">
+      
 <!-- ── Global Search Widget ── -->
 <style>
 #gs-trigger {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 14px; border-radius: 8px; min-width: 180px;
-  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
-  color: #aaa; font-size: 13px; cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  height: 34px; padding: 0 8px 0 10px; border-radius: 9px; min-width: 220px;
+  background: var(--bg, #FAFAF8); border: 1px solid var(--line, #E6E6E2);
+  color: var(--muted, #7A7D85); font: 13px var(--f-ui, system-ui); cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
 }
-#gs-trigger:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.3); color: #fff; }
-#gs-trigger .gs-placeholder { flex: 1; text-align: left; }
+#gs-trigger:hover { border-color: var(--line-strong, #ccc); color: var(--ink, #17181C); }
+#gs-trigger .gs-placeholder { flex: 1; text-align: left; white-space: nowrap; }
 #gs-trigger .gs-kbd {
-  font-size: 11px; opacity: 0.5;
-  background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+  font: 11px var(--f-mono, monospace); color: var(--muted, #7A7D85);
+  border: 1px solid var(--line, #E6E6E2); padding: 1px 5px; border-radius: 5px; white-space: nowrap;
 }
 #gs-overlay {
   display: none; position: fixed; inset: 0; z-index: 9999;
-  background: rgba(10,10,20,0.7); backdrop-filter: blur(4px);
-  align-items: flex-start; justify-content: center; padding-top: 80px;
+  background: color-mix(in srgb, var(--ink, #17181C) 28%, transparent); backdrop-filter: blur(3px);
+  align-items: flex-start; justify-content: center; padding: 12vh 16px 16px;
 }
 #gs-overlay.open { display: flex; }
 #gs-modal {
-  width: 100%; max-width: 640px; background: #1e2030;
-  border: 1px solid #3a3f5c; border-radius: 14px;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.6); overflow: hidden;
+  width: 100%; max-width: 640px; background: var(--surface, #fff);
+  border: 1px solid var(--line, #E6E6E2); border-radius: 16px;
+  box-shadow: var(--shadow, 0 24px 64px rgba(0,0,0,0.2)); overflow: hidden;
+  font-family: var(--f-ui, system-ui);
 }
 #gs-input-wrap {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 18px; border-bottom: 1px solid #2e3350;
+  display: flex; align-items: center; gap: 10px; color: var(--muted, #7A7D85);
+  padding: 16px 18px; border-bottom: 1px solid var(--line, #E6E6E2);
 }
-#gs-input-wrap svg { flex-shrink: 0; opacity: 0.5; }
+#gs-input-wrap svg { flex-shrink: 0; }
 #gs-input {
-  flex: 1; background: none; border: none; outline: none;
-  color: #f0f0f0; font-size: 16px;
+  flex: 1; min-width: 0; background: none; border: none; outline: none;
+  color: var(--ink, #17181C); font: 17px var(--f-ui, system-ui);
 }
-#gs-input::placeholder { color: #555; }
+#gs-input::placeholder { color: var(--muted, #999); }
 #gs-esc {
-  font-size: 11px; color: #555; background: rgba(255,255,255,0.07);
-  border: 1px solid #333; padding: 2px 7px; border-radius: 5px; cursor: pointer;
+  font: 11px var(--f-mono, monospace); color: var(--muted, #7A7D85);
+  border: 1px solid var(--line, #E6E6E2); padding: 2px 7px; border-radius: 5px; cursor: pointer;
   white-space: nowrap;
 }
 #gs-results {
-  max-height: 440px; overflow-y: auto; padding: 8px 0;
+  max-height: min(440px, 60vh); overflow-y: auto; padding: 6px;
 }
 #gs-results:empty::after {
   content: ''; display: block;
 }
-.gs-empty { padding: 20px; text-align: center; color: #555; font-size: 14px; }
-.gs-section { padding: 6px 18px 2px; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.08em; color: #4a5080; text-transform: uppercase; }
+.gs-empty { padding: 24px; text-align: center; color: var(--muted, #7A7D85); font-size: 14px; }
+.gs-section { padding: 10px 12px 4px; font: 500 11px var(--f-mono, monospace);
+  letter-spacing: 0.08em; color: var(--muted, #7A7D85); text-transform: uppercase; }
 .gs-item {
   display: flex; align-items: flex-start; gap: 12px;
-  padding: 10px 18px; cursor: pointer; transition: background 0.1s;
+  padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: background 0.1s;
 }
-.gs-item:hover, .gs-item.active { background: rgba(255,255,255,0.06); }
+.gs-item:hover, .gs-item.active { background: var(--sunk, #F3F3F0); }
 .gs-dot {
-  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 7px;
 }
 .gs-body { flex: 1; min-width: 0; }
-.gs-label { font-size: 14px; font-weight: 600; color: #e8eaf0; white-space: nowrap;
+.gs-label { font-size: 14px; font-weight: 500; color: var(--ink, #17181C); white-space: nowrap;
   overflow: hidden; text-overflow: ellipsis; }
-.gs-meta { font-size: 11px; color: #5a6080; margin-top: 1px; }
-.gs-excerpt { font-size: 12px; color: #6a7090; margin-top: 3px;
+.gs-meta { font: 11px var(--f-mono, monospace); color: var(--muted, #7A7D85); margin-top: 2px; }
+.gs-excerpt { font-size: 12.5px; color: var(--ink-2, #45474E); margin-top: 3px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .gs-badge {
-  font-size: 10px; padding: 1px 7px; border-radius: 10px;
-  background: rgba(255,255,255,0.07); color: #8090b0; white-space: nowrap;
+  font: 10px var(--f-mono, monospace); padding: 2px 7px; border-radius: 99px;
+  border: 1px solid var(--line, #E6E6E2); color: var(--muted, #7A7D85); white-space: nowrap;
   align-self: center; flex-shrink: 0;
 }
 </style>
@@ -494,7 +670,7 @@
         const glossUrl = INDEX_PATH.replace('search-index.json','') + 'glossary.html#' + g.id;
         gsItems.push({ url: glossUrl, label });
         html += `<div class="gs-item" data-url="${glossUrl}" onclick="gsGo(this)">
-          <div class="gs-dot" style="background:#95A5A6"></div>
+          <div class="gs-dot" style="background:var(--muted)"></div>
           <div class="gs-body">
             <div class="gs-label">${label}</div>
             <div class="gs-excerpt">${excerpt(desc, raw)}</div>
@@ -512,7 +688,7 @@
         const tUrl  = INDEX_PATH.replace('search-index.json','') + tp.url;
         gsItems.push({ url: tUrl, label });
         html += `<div class="gs-item" data-url="${tUrl}" onclick="gsGo(this)">
-          <div class="gs-dot" style="background:#E74C3C"></div>
+          <div class="gs-dot" style="background:var(--accent)"></div>
           <div class="gs-body">
             <div class="gs-label">${label}</div>
             <div class="gs-excerpt">${excerpt(desc, raw)}</div>
@@ -573,22 +749,36 @@
 })();
 </script>
 
-  <div class="lang-toggle">
-    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+      </div>
+      <button class="icon-btn theme-btn" onclick="mmiaToggleTheme()" title="Light / dark" aria-label="Toggle dark mode">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn sh-burger" onclick="document.body.classList.toggle('sh-menu-open')" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
   </div>
 </header>
 
 <div class="page-layout">
   <main>
     <div class="article-header">
-      <div class="article-meta">
-        <span class="status-badge">stable</span>
-        <span class="date">2026-04-04</span>
+      <div class="crumb">
+        <a href="../index.html#articles" data-en="Articles" data-fr="Articles">Articles</a><span>/</span>
+        <span data-en="Deep dive" data-fr="Article de fond">Deep dive</span>
+        <span>·</span><time datetime="2026-04-04">2026-04-04</time>
+        <span>·</span><span>2 min</span>
       </div>
       <h1 class="article-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</h1>
       <p class="article-summary" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</p>
-      <div class="tags"><span class="tag">rag</span><span class="tag">retrieval</span><span class="tag">embeddings</span><span class="tag">vector-db</span></div>
+      <div class="article-meta">
+        <span class="chip dot st-stable">stable</span>
+        <div class="tags"><span class="tag">rag</span><span class="tag">retrieval</span><span class="tag">embeddings</span><span class="tag">vector-db</span></div>
+      </div>
     </div>
 
     <div class="article-body" id="article-body">
@@ -632,6 +822,11 @@ prompt = f"Use the following context to answer.\n\n{context}\n\nQuestion: {user_
 answer = llm.generate(prompt)</code></pre>
 <p>In production, you'll want: a reranker after retrieval, hybrid search (dense + BM25), metadata filtering, and eval on retrieval quality separately from generation quality.</p>
     </div>
+
+    <div class="article-end">
+      <a href="../index.html#articles" data-en="← All articles" data-fr="← Tous les articles">← All articles</a>
+      <a href="../glossary.html" data-en="Glossary →" data-fr="Glossaire →">Glossary →</a>
+    </div>
   </main>
 
   <aside class="sidebar">
@@ -647,9 +842,25 @@ answer = llm.generate(prompt)</code></pre>
   </aside>
 </div>
 
+<footer class="site-footer">
+  <div class="sf-inner">
+    <span><span data-en="Mind Map IA · Open source, built to learn and share" data-fr="Mind Map IA · Open source, construit pour apprendre et partager">Mind Map IA · Open source, built to learn and share</span></span>
+    <div class="sf-links">
+      <a href="../index.html#maps"><span data-en="Maps" data-fr="Cartes">Maps</span></a>
+      <a href="../index.html#articles"><span data-en="Articles" data-fr="Articles">Articles</span></a>
+      <a href="../news.html"><span data-en="News" data-fr="Actualités">News</span></a>
+      <a href="../glossary.html"><span data-en="Glossary" data-fr="Glossaire">Glossary</span></a>
+      <a href="https://github.com/evausesgit/mind-map-ia" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</footer>
+
 <script src="../mermaid.min.js"></script>
 <script>
-mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+function mermaidTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'neutral';
+}
+mermaid.initialize({ startOnLoad: false, theme: mermaidTheme(), securityLevel: 'loose', fontFamily: 'Geist, system-ui, sans-serif' });
 
 const CONTENT = {
   en: '<h2 id="what-is-rag">What is RAG?</h2>\n<p>RAG (Retrieval-Augmented Generation) is a pattern that gives a language model access to an external knowledge base at inference time. Instead of relying solely on what was baked into its weights during training, the model first retrieves relevant documents from a database, then generates a response grounded in that retrieved context.</p>\n<p>The key insight: <strong>the model\'s knowledge and the model\'s reasoning are separated</strong>. You keep knowledge in a database you control, and use the LLM for what it\'s actually good at — synthesis, reasoning, and language generation.</p>\n<h2 id="how-it-works">How it works</h2>\n<p>A RAG pipeline has three stages:</p>\n<ol><li><strong>Indexing</strong> (offline, done once): Split your documents into chunks, embed each chunk into a vector, store vectors in a vector database.</li><li><strong>Retrieval</strong> (at query time): Embed the user\'s query, find the top-k chunks whose vectors are closest to the query vector.</li><li><strong>Generation</strong>: Inject the retrieved chunks into the model\'s context window as a prompt prefix, then generate the answer.</li></ol>\n<pre><code>User query\n    ↓\n[Embed query] → vector\n    ↓\n[Vector DB] → top-k relevant chunks\n    ↓\n[LLM] ← prompt = system + chunks + query\n    ↓\nAnswer grounded in retrieved context</code></pre>\n<p>The quality of retrieval determines the quality of the answer. Garbage in, garbage out — no matter how good the LLM is.</p>\n<h2 id="when-to-use-it">When to use it</h2>\n<p>RAG is the right choice when:</p>\n<ul><li>Your knowledge base <strong>changes frequently</strong> (product docs, internal wikis, news)</li><li>You need <strong>citations</strong> — answers traceable to specific source documents</li><li>You\'re working with <strong>domain-specific or proprietary information</strong> the model wasn\'t trained on</li><li>You want to <strong>reduce hallucinations</strong> on factual questions</li><li><strong>Cost is a concern</strong> — fine-tuning is expensive, RAG can use any base model</li></ul>\n<h2 id="trade-offs-vs-fine-tuning">Trade-offs vs fine-tuning</h2>\n<table><thead><tr><td>Knowledge update</td><td>Change the DB, no retraining</td><td>Full or partial retraining</td></tr></thead><tbody><tr><td>Cost</td><td>Low (retrieval + inference)</td><td>High (GPU training)</td></tr><tr><td>Hallucination on facts</td><td>Lower (grounded in docs)</td><td>Higher (baked in weights)</td></tr><tr><td>Reasoning style / tone</td><td>Unchanged</td><td>Can be adapted</td></tr><tr><td>Latency</td><td>+retrieval step</td><td>Same as base model</td></tr><tr><td>Knowledge cutoff</td><td>None — DB is always current</td><td>Frozen at training time</td></tr></tbody></table>\n<p><strong>Rule of thumb</strong>: Use RAG for <em>what the model knows</em>. Use fine-tuning for <em>how the model behaves</em>.</p>\n<h2 id="failure-modes-to-know">Failure modes to know</h2>\n<ul><li><strong>Chunking too coarsely</strong>: relevant info gets split across chunks that aren\'t retrieved together</li><li><strong>Chunking too finely</strong>: chunks lose context, embeddings become noisy</li><li><strong>Query-document mismatch</strong>: user asks in a different "register" than how docs are written — semantic search struggles</li><li><strong>Context window overflow</strong>: retrieving too many chunks can push the actual question out of focus</li><li><strong>Retrieval without reranking</strong>: top-k by cosine similarity ≠ top-k by relevance to the actual question. A reranker (cross-encoder) helps.</li></ul>\n<h2 id="in-practice">In practice</h2>\n<p>A minimal RAG stack looks like:</p>\n<pre><code class="language-python"># 1. Embed the query\nquery_vec = embedder.encode(user_query)\n\n# 2. Retrieve top-k chunks\nresults = vector_db.search(query_vec, top_k=5)\n\n# 3. Build prompt\ncontext = "\\n\\n".join(r.text for r in results)\nprompt = f"Use the following context to answer.\\n\\n{context}\\n\\nQuestion: {user_query}"\n\n# 4. Generate\nanswer = llm.generate(prompt)</code></pre>\n<p>In production, you\'ll want: a reranker after retrieval, hybrid search (dense + BM25), metadata filtering, and eval on retrieval quality separately from generation quality.</p>',
@@ -665,6 +876,20 @@ function renderMermaid() {
   mermaid.run({ querySelector: '.mermaid' });
 }
 
+function watchToc() {
+  const links = [...document.querySelectorAll('#toc-nav a')];
+  const heads = links.map(a => document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)))).filter(Boolean);
+  if (!heads.length || !('IntersectionObserver' in window)) return;
+  if (window._tocObs) window._tocObs.disconnect();
+  window._tocObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+    });
+  }, { rootMargin: '-80px 0px -70% 0px' });
+  heads.forEach(h => window._tocObs.observe(h));
+}
+
 function setLang(newLang) {
   lang = newLang;
   document.querySelectorAll('.lang-btn').forEach(b =>
@@ -676,9 +901,69 @@ function setLang(newLang) {
     el.textContent = el.dataset[lang] || el.dataset.en;
   });
   renderMermaid();
+  watchToc();
 }
 
-document.addEventListener('DOMContentLoaded', renderMermaid);
+window.addEventListener('mmia-themechange', () => {
+  mermaid.initialize({ startOnLoad: false, theme: mermaidTheme(), securityLevel: 'loose', fontFamily: 'Geist, system-ui, sans-serif' });
+  document.getElementById('article-body').innerHTML = CONTENT[lang] || CONTENT.en;
+  renderMermaid();
+  watchToc();
+});
+
+document.addEventListener('DOMContentLoaded', () => { renderMermaid(); watchToc(); });
+</script>
+
+<script>
+(function () {
+  // Dropdowns: click to toggle (touch + keyboard); hover handled in CSS on desktop.
+  document.querySelectorAll('.sh-group > .sh-link').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var g = btn.parentElement, open = !g.classList.contains('open');
+      document.querySelectorAll('.sh-group.open').forEach(function (o) { o.classList.remove('open'); });
+      g.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open);
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.sh-group')) document.querySelectorAll('.sh-group.open').forEach(function (o) { o.classList.remove('open'); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.sh-group.open').forEach(function (o) { o.classList.remove('open'); });
+      document.body.classList.remove('sh-menu-open');
+    }
+  });
+
+  // Theme
+  window.mmiaToggleTheme = function () {
+    var dark = document.documentElement.getAttribute('data-theme') !== 'dark';
+    if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem('mmia-theme', dark ? 'dark' : 'light'); } catch (e) {}
+    window.dispatchEvent(new CustomEvent('mmia-themechange', { detail: { dark: dark } }));
+  };
+
+  // Language memory: wrap the page's setLang, then restore the saved choice.
+  if (typeof window.setLang === 'function') {
+    var pageSetLang = window.setLang;
+    window.setLang = function (l) {
+      try { localStorage.setItem('mmia-lang', l); } catch (e) {}
+      document.documentElement.lang = l;
+      var r = pageSetLang.apply(this, arguments);
+      document.querySelectorAll('.site-header [data-en], .site-footer [data-en]').forEach(function (el) {
+        el.textContent = l === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
+      });
+      document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.lang === l); });
+      return r;
+    };
+    var saved = null;
+    try { saved = localStorage.getItem('mmia-lang'); } catch (e) {}
+    if (!saved) saved = (navigator.language || '').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+    if (saved !== 'en') window.setLang(saved);
+  }
+})();
 </script>
 </body>
 </html>

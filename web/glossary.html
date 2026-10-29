@@ -3,267 +3,422 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glossary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Glossary — Mind Map IA</title>
+<script>try{if(localStorage.getItem('mmia-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #F8F9FA;
-    color: #1A1A2E;
-    min-height: 100vh;
-  }
-  header {
-    background: #0D1117;
-    color: white;
-    padding: 14px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    border-bottom: 1px solid #1E2D4E;
-  }
-  header h1 { font-size: 20px; font-weight: 700; }
-  .nav-group { position: relative; }
-  .nav-btn {
-    padding: 5px 11px;
-    border: 1.5px solid #333;
-    border-radius: 6px;
-    background: transparent;
-    color: #BDC3C7;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    min-width: 110px;
-    text-align: center;
-  }
-  .nav-btn:hover { border-color: #888; color: white; }
-  .nav-group:hover .nav-dropdown,
-  .nav-group:focus-within .nav-dropdown { display: block; }
-  .nav-dropdown {
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --sunk: #F3F3F0;
+  --ink: #17181C;
+  --ink-2: #45474E;
+  --muted: #7A7D85;
+  --line: #E6E6E2;
+  --line-strong: #D2D2CC;
+  --accent: #D8432E;
+  --accent-ink: #B5361F;
+  --accent-soft: #FBEAE6;
+  --ok: #2F8F5B;
+  --warn: #B7791F;
+  --new: #6B4FBB;
+  --info: #2F6FB5;
+  --shadow-sm: 0 1px 2px rgba(20,20,25,.05);
+  --shadow: 0 1px 2px rgba(20,20,25,.04), 0 12px 32px -16px rgba(20,20,25,.18);
+  --f-ui: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --f-read: "Newsreader", Georgia, "Times New Roman", serif;
+  --r: 10px;
+  --header-h: 60px;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #0F1013;
+  --surface: #17181C;
+  --sunk: #1D1E23;
+  --ink: #EDEDEF;
+  --ink-2: #BDBFC6;
+  --muted: #8E919A;
+  --line: #2A2C32;
+  --line-strong: #3A3D44;
+  --accent: #F0644E;
+  --accent-ink: #FF8571;
+  --accent-soft: #3A1E19;
+  --ok: #5BC48A;
+  --warn: #E0A84A;
+  --new: #A68BEB;
+  --info: #6FA8E8;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -16px rgba(0,0,0,.6);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+::selection { background: var(--accent-soft); }
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 900;
+  height: var(--header-h);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.sh-inner {
+  height: 100%;
+  display: flex; align-items: center; gap: 28px;
+  padding: 0 max(20px, env(safe-area-inset-right, 0px)) 0 max(20px, env(safe-area-inset-left, 0px));
+}
+.sh-logo {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--ink); text-decoration: none;
+  font-weight: 600; font-size: 15px; letter-spacing: -0.01em; white-space: nowrap;
+}
+.sh-logo svg { width: 26px; height: 26px; flex-shrink: 0; }
+.sh-nav { display: flex; align-items: center; gap: 4px; }
+.sh-group { position: relative; }
+.sh-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 34px; padding: 0 10px;
+  font: 500 14px/1 var(--f-ui); color: var(--ink-2);
+  background: none; border: 0; border-radius: 8px; cursor: pointer;
+  text-decoration: none; white-space: nowrap; position: relative;
+  transition: color .15s, background .15s;
+}
+.sh-link:hover, .sh-group.open > .sh-link { color: var(--ink); background: var(--sunk); }
+.sh-link.active { color: var(--ink); }
+.sh-link.active::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: -13px;
+  height: 2px; border-radius: 2px; background: var(--accent);
+}
+.sh-caret { width: 10px; height: 10px; opacity: .55; transition: transform .15s; }
+.sh-group.open .sh-caret { transform: rotate(180deg); }
+.sh-menu {
+  display: none;
+  position: absolute; top: calc(100% + 10px); left: -8px;
+  min-width: 340px; max-height: calc(100vh - 90px); overflow-y: auto;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.sh-menu.wide { min-width: 640px; display: none; grid-template-columns: 1fr 1fr; gap: 4px 8px; }
+.sh-group.open > .sh-menu { display: block; }
+.sh-group.open > .sh-menu.wide { display: grid; }
+@media (hover: hover) and (min-width: 900px) {
+  .sh-group:hover > .sh-menu { display: block; }
+  .sh-group:hover > .sh-menu.wide { display: grid; }
+  .sh-group:hover .sh-caret { transform: rotate(180deg); }
+  .sh-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }
+}
+.sh-menu-col { display: grid; gap: 2px; align-content: start; }
+.sh-menu-label {
+  padding: 10px 10px 4px;
+  font: 500 11px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+.sh-item {
+  display: grid; gap: 2px;
+  padding: 8px 10px; border-radius: 8px;
+  color: var(--ink); text-decoration: none;
+  transition: background .12s;
+}
+.sh-item:hover, .sh-item.active { background: var(--sunk); }
+.sh-item-title { font-size: 14px; font-weight: 500; line-height: 1.3; }
+.sh-item-desc { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.sh-item.active .sh-item-title::before {
+  content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); margin-right: 7px; vertical-align: 2px;
+}
+.sh-menu-foot {
+  grid-column: 1 / -1; margin-top: 4px; padding: 10px; border-top: 1px solid var(--line);
+  font-size: 13px; color: var(--muted);
+}
+.sh-menu-foot a { color: var(--ink); font-weight: 500; text-decoration: none; }
+.sh-menu-foot a:hover { color: var(--accent); }
+
+.sh-context {
+  display: flex; align-items: baseline; gap: 10px; min-width: 0;
+  font-size: 14px; color: var(--muted);
+}
+.sh-context .sh-sep { color: var(--line-strong); }
+.sh-context .sh-title {
+  color: var(--ink); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sh-context .sh-meta { font: 12px var(--f-mono); color: var(--muted); white-space: nowrap; }
+
+.sh-right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.lang-toggle {
+  display: inline-flex; padding: 2px; gap: 2px;
+  border: 1px solid var(--line); border-radius: 9px; background: var(--bg);
+}
+.lang-btn {
+  height: 28px; min-width: 34px; padding: 0 8px;
+  font: 500 12px/1 var(--f-mono); letter-spacing: .02em;
+  color: var(--muted); background: none; border: 0; border-radius: 7px; cursor: pointer;
+  transition: color .15s, background .15s;
+}
+.lang-btn:hover { color: var(--ink); }
+.lang-btn.active { background: var(--ink); color: var(--surface); }
+.icon-btn {
+  width: 34px; height: 34px; display: inline-grid; place-items: center;
+  color: var(--ink-2); background: none; border: 1px solid var(--line); border-radius: 9px; cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.icon-btn:hover { color: var(--ink); border-color: var(--line-strong); background: var(--sunk); }
+.icon-btn svg { width: 16px; height: 16px; }
+.theme-btn .i-sun { display: none; }
+:root[data-theme="dark"] .theme-btn .i-sun { display: block; }
+:root[data-theme="dark"] .theme-btn .i-moon { display: none; }
+.sh-burger { display: none; }
+
+@media (max-width: 1100px) {
+  .sh-context .sh-meta { display: none; }
+}
+@media (max-width: 960px) {
+  .sh-inner { gap: 14px; }
+  .sh-context { display: none; }
+}
+@media (max-width: 899px) {
+  .sh-burger { display: inline-grid; }
+  .sh-nav {
     display: none;
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    background: #16213E;
-    border: 1px solid #2C3E6E;
-    border-radius: 10px;
-    min-width: 280px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-    z-index: 1000;
-    overflow: hidden;
+    position: fixed; left: 0; right: 0; top: var(--header-h); bottom: 0;
+    flex-direction: column; align-items: stretch; gap: 2px;
+    padding: 12px max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px));
+    background: var(--surface); overflow-y: auto;
+    border-top: 1px solid var(--line);
   }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    color: #BDC3C7;
-    text-decoration: none;
-    font-size: 13px;
-    transition: background 0.12s;
-    border-bottom: 1px solid #1E2D4E;
+  body.sh-menu-open .sh-nav { display: flex; }
+  /* backdrop-filter would make the header the containing block of the fixed menu */
+  body.sh-menu-open .site-header { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface); }
+  body.sh-menu-open { overflow: hidden; }
+  .sh-link { height: 44px; font-size: 16px; justify-content: space-between; width: 100%; }
+  .sh-link.active::after { display: none; }
+  .sh-link.active { color: var(--accent); }
+  .sh-menu, .sh-menu.wide {
+    position: static; min-width: 0; max-height: none; box-shadow: none; border: 0;
+    padding: 0 0 8px 8px; grid-template-columns: 1fr;
   }
-  .nav-item:last-child { border-bottom: none; }
-  .nav-item:hover { background: #1E2D4E; color: white; }
-  .nav-item-icon { font-size: 16px; flex-shrink: 0; }
-  .nav-item-info { display: flex; flex-direction: column; }
-  .nav-item-title { font-weight: 600; font-size: 13px; }
-  .nav-item-desc { font-size: 11px; color: #7F8C8D; margin-top: 1px; }
-  .lang-toggle { display: flex; gap: 6px; }
-  .lang-btn {
-    background: none;
-    border: 1px solid #555;
-    border-radius: 4px;
-    color: #BDC3C7;
-    padding: 4px 10px;
-    font-size: 13px;
-    cursor: pointer;
+  .sh-item-desc { display: none; }
+  .sh-right #gs-trigger .gs-placeholder, .sh-right #gs-trigger .gs-kbd { display: none; }
+  .sh-right #gs-trigger { min-width: 0; width: 34px; height: 34px; padding: 0; justify-content: center; }
+}
+
+/* ── Footer ── */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 28px max(20px, env(safe-area-inset-right, 0px)) 36px max(20px, env(safe-area-inset-left, 0px));
+  color: var(--muted); font-size: 13px;
+}
+.sf-inner { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; }
+.sf-inner a { color: var(--ink-2); text-decoration: none; }
+.sf-inner a:hover { color: var(--accent); }
+.sf-links { display: flex; gap: 18px; flex-wrap: wrap; }
+
+/* ── Shared building blocks ── */
+.eyebrow {
+  font: 500 12px/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font: 500 11px/1 var(--f-mono); letter-spacing: .02em;
+  padding: 4px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--ink-2); background: var(--surface);
+  white-space: nowrap;
+}
+.chip.dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.chip.st-stable { color: var(--ok); }
+.chip.st-evolving { color: var(--warn); }
+.chip.st-emerging { color: var(--new); }
+.chip.st-deprecated { color: var(--muted); }
+.chip.st-draft { color: var(--warn); }
+.chip.st-review { color: var(--info); }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 40px; padding: 0 16px;
+  font: 500 14px/1 var(--f-ui); color: var(--ink); text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: 9px; cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s, transform .15s;
+}
+.btn:hover { border-color: var(--ink-2); }
+.btn.primary { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+<style>
+  body { font-size: 16px; line-height: 1.6; }
+  .wrap {
+    max-width: 1080px; margin: 0 auto;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
   }
-  .lang-btn.active { background: white; color: #1A1A2E; border-color: white; }
+  .g-hero { padding-block: 56px 28px; display: grid; gap: 14px; }
+  .g-hero h1 { margin: 0; font-size: clamp(34px, 4.5vw, 48px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; }
+  .g-hero p { margin: 0; font-size: 17px; color: var(--ink-2); max-width: 36em; }
   .alphabet-index {
-    background: white;
-    border-bottom: 1px solid #E0E0E0;
-    padding: 10px 32px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    position: sticky; top: var(--header-h); z-index: 50;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+    padding-block: 12px; background: var(--bg); border-bottom: 1px solid var(--line);
   }
   .idx-letter {
-    display: inline-block;
-    width: 28px;
-    height: 28px;
-    line-height: 28px;
-    text-align: center;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 13px;
-    color: #1A1A2E;
+    width: 30px; height: 30px; display: grid; place-items: center;
+    border-radius: 8px;
+    font: 500 13px var(--f-mono);
+    color: var(--ink-2);
     text-decoration: none;
-    background: #F0F0F0;
   }
-  .idx-letter:hover { background: #1A1A2E; color: white; }
-  .content {
-    max-width: 800px;
-    margin: 32px auto;
-    padding: 0 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  .idx-letter:hover { background: var(--sunk); color: var(--ink); }
+  .g-filter {
+    margin-left: auto; height: 34px; width: min(260px, 100%); padding: 0 12px;
+    font: 14px var(--f-ui); color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 9px; outline: none;
+  }
+  .g-filter:focus { border-color: var(--ink-2); }
+  .content { padding-bottom: 96px; }
+  .letter {
+    margin: 0; padding: 40px 0 10px;
+    font: 500 13px var(--f-mono); letter-spacing: .08em; color: var(--accent);
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) + 64px);
   }
   .term-card {
-    background: white;
-    border: 1px solid #E0E0E0;
-    border-radius: 8px;
-    padding: 20px 24px;
-    scroll-margin-top: 80px;
+    display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 8px 40px;
+    padding-block: 24px; border-bottom: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) + 72px);
+    transition: background .6s;
   }
-  .term-card:target {
-    border-color: #1A1A2E;
-    box-shadow: 0 0 0 2px #1A1A2E22;
-  }
-  .term-header {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-  }
-  .term-label {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1A1A2E;
-  }
-  .aliases {
-    font-size: 12px;
-    color: #888;
-    font-style: italic;
-  }
-  .term-desc {
-    font-size: 14px;
-    line-height: 1.7;
-    color: #444;
-  }
-  .term-desc p { margin-bottom: 8px; }
+  .term-card:target { background: var(--accent-soft); }
+  .term-header { display: grid; gap: 6px; align-content: start; }
+  .term-label { margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.3; }
+  .aliases { font: 12px/1.5 var(--f-mono); color: var(--muted); }
+  .term-main { min-width: 0; max-width: 640px; }
+  .term-desc { font-family: var(--f-read); font-size: 18px; line-height: 1.65; color: var(--ink); }
+  .term-desc p { margin: 0 0 12px; }
   .term-desc p:last-child { margin-bottom: 0; }
-  .term-desc ol, .term-desc ul { margin: 6px 0 8px 18px; }
-  .term-desc li { margin-bottom: 3px; }
-  .term-desc strong { font-weight: 600; color: #1A1A2E; }
+  .term-desc ol, .term-desc ul { margin: 6px 0 12px; padding-left: 22px; }
+  .term-desc li { margin-bottom: 4px; }
+  .term-desc strong { font-weight: 600; }
+  .term-desc a { color: var(--ink); text-underline-offset: 3px; text-decoration-color: var(--accent); }
   .gloss-link {
-    color: #1A1A2E;
+    color: inherit;
     text-decoration: underline;
-    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
     text-underline-offset: 3px;
-    font-weight: 500;
   }
-  @media (max-width: 640px) {
-    header { padding: 10px 12px; flex-wrap: wrap; align-items: flex-start; gap: 8px; }
-    header h1 { width: 100%; font-size: 17px; line-height: 1.25; }
-    .nav-btn, .lang-btn { min-height: 34px; font-size: 12px; padding: 5px 9px; }
-    .nav-btn { min-width: 92px; }
-    .nav-dropdown {
-      position: fixed;
-      top: 92px;
-      left: 8px;
-      right: 8px;
-      min-width: 0;
-      max-height: calc(100dvh - 110px);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .nav-item { padding: 12px 14px; }
-    .nav-item-desc { display: none; }
-    .alphabet-index { padding: 10px 12px; gap: 5px; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
-    .idx-letter { flex: 0 0 30px; }
-    .content { margin: 20px auto; padding: 0 12px; gap: 12px; }
-    .term-card { padding: 16px 14px; scroll-margin-top: 120px; }
-    .term-label { font-size: 17px; }
+  .gloss-link:hover { color: var(--accent); text-decoration-style: solid; }
+  .see-also { margin-top: 14px; font-size: 14px; }
+  .see-also-link { color: var(--ink); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--line-strong); }
+  .see-also-link:hover { color: var(--accent); border-color: var(--accent); }
+  .g-empty { padding: 48px 0; text-align: center; color: var(--muted); }
+  @media (max-width: 720px) {
+    .term-card { grid-template-columns: minmax(0, 1fr); }
+    .alphabet-index { flex-wrap: nowrap; overflow-x: auto; }
+    .g-filter { display: none; }
+    .term-desc { font-size: 17px; }
   }
-  .gloss-link:hover { color: #3498DB; text-decoration-style: solid; }
-  .see-also { margin-top: 10px; font-size: 13px; color: #555; }
-  .see-also-link { color: #1A1A2E; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
-  .see-also-link:hover { color: #3498DB; }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
-<header>
-  <div style="display:flex;align-items:center;gap:16px;">
-    <div class="nav-group">  <button class="nav-btn">    <span data-en="Mind Maps" data-fr="Mind Maps">Mind Maps</span> ▾  </button>  <div class="nav-dropdown"><a href="macro.html" class="nav-item"><span class="nav-item-icon">🗺️</span><span class="nav-item-info"><span class="nav-item-title" data-en="LLM & AI Ecosystem" data-fr="LLM & AI Ecosystem">LLM & AI Ecosystem</span><span class="nav-item-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span></span></a><a href="ai-agents.html" class="nav-item"><span class="nav-item-icon">🤖</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span><span class="nav-item-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span></span></a><a href="ai-coding-assistants.html" class="nav-item"><span class="nav-item-icon">💻</span><span class="nav-item-info"><span class="nav-item-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span><span class="nav-item-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span></span></a><a href="proprietary-models.html" class="nav-item"><span class="nav-item-icon">🏢</span><span class="nav-item-info"><span class="nav-item-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span><span class="nav-item-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span></span></a><a href="open-weights-models.html" class="nav-item"><span class="nav-item-icon">🔓</span><span class="nav-item-info"><span class="nav-item-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span><span class="nav-item-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span></span></a><a href="cloud-managed.html" class="nav-item"><span class="nav-item-icon">☁️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span><span class="nav-item-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span></span></a><a href="dense-vs-moe.html" class="nav-item"><span class="nav-item-icon">⚡</span><span class="nav-item-info"><span class="nav-item-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span><span class="nav-item-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span></span></a><a href="quantization.html" class="nav-item"><span class="nav-item-icon">🗜️</span><span class="nav-item-info"><span class="nav-item-title" data-en="Quantization — Memory by Format" data-fr="Quantisation — Mémoire par Format">Quantization — Memory by Format</span><span class="nav-item-desc" data-en="How numerical precision (FP32 → INT4) affects a 70B model's memory footprint" data-fr="Comment la précision numérique (FP32 → INT4) affecte l'empreinte mémoire d'un modèle 70B">How numerical precision (FP32 → INT4) affects a 70B model's memory footprint</span></span></a><a href="rag-pattern.html" class="nav-item"><span class="nav-item-icon">🔍</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG" data-fr="RAG">RAG</span><span class="nav-item-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Deep Dives" data-fr="Articles">Deep Dives</span> ▾  </button>  <div class="nav-dropdown"><a href="topics/llm-not-a-truth-machine.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="LLMs Are Not Truth Machines" data-fr="Les LLMs ne sont pas des machines à vérité">LLMs Are Not Truth Machines</span><span class="nav-item-desc" data-en="Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead." data-fr="Pourquoi demander la vérité à un LLM est le mauvais modèle mental — et ce que fait RAG à la place.">Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead.</span></span></a><a href="topics/usecase-chat-qa.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case — Chat LLM (ChatGPT-like)" data-fr="Cas d'Usage — Chat LLM (type ChatGPT)">Use Case — Chat LLM (ChatGPT-like)</span><span class="nav-item-desc" data-en="How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes." data-fr="Comment un Chat LLM fonctionne de bout en bout : construction du prompt, RAG optionnel, inférence, génération de tokens, et les bons modèles mentaux pour éviter les erreurs courantes.">How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes.</span></span></a><a href="topics/usecase-analyst-rag.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Knowledge Search for Analysts" data-fr="Cas d'Usage : Recherche dans la Connaissance pour Analystes">Use Case: Knowledge Search for Analysts</span><span class="nav-item-desc" data-en="How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs." data-fr="Comment un analyste métier interroge des corpus de documents privés avec l'IA — architecture, gouvernance, et compromis pratiques.">How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs.</span></span></a><a href="topics/usecase-dev-agentic.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Agentic Coding" data-fr="Cas d'Usage : Coding Agentique">Use Case: Agentic Coding</span><span class="nav-item-desc" data-en="How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously." data-fr="Comment un agent IA assiste un développeur au-delà de l'autocomplétion — planification, édition, exécution de tests, et itération autonome.">How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously.</span></span></a><a href="topics/usecase-ops-automation.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Use Case: Ops Workflow Automation" data-fr="Cas d'Usage : Automatisation de Workflows Ops">Use Case: Ops Workflow Automation</span><span class="nav-item-desc" data-en="How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model." data-fr="Comment des agents autonomes gèrent des processus opérationnels multi-étapes — triage d'incidents, orchestration de pipelines, et le modèle humain dans la boucle.">How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model.</span></span></a><a href="topics/mcp-explained.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</span><span class="nav-item-desc" data-en="What MCP is, how it works architecturally, and why it matters for AI agent development." data-fr="Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA.">What MCP is, how it works architecturally, and why it matters for AI agent development.</span></span></a><a href="topics/rag-deep-dive.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</span><span class="nav-item-desc" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Reflection" data-fr="Réflexion">Reflection</span> ▾  </button>  <div class="nav-dropdown"><a href="topics/meta-reasoning-agents.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Meta-Reasoning: Teaching AI Agents to Know When They're Stuck" data-fr="Méta-raisonnement : Apprendre aux agents IA à reconnaître quand ils bloquent">Meta-Reasoning: Teaching AI Agents to Know When They're Stuck</span><span class="nav-item-desc" data-en="A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most." data-fr="Une étude de 2026 montre que les agents capables de surveiller leur raisonnement et de changer de stratégie surpassent les agents standard de 31 % — les modèles open-source en bénéficiant le plus.">A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most.</span></span></a><a href="topics/laurent-alexandre-assemblee-ia.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en=""Stop the Denial" — Laurent Alexandre on AI at the French National Assembly" data-fr=""Sortir du déni" — Laurent Alexandre sur l'IA à l'Assemblée nationale">"Stop the Denial" — Laurent Alexandre on AI at the French National Assembly</span><span class="nav-item-desc" data-en="Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake." data-fr="Laurent Alexandre soutient devant l'Assemblée nationale que l'IA dépasse déjà des experts sur des tâches cognitives — et que minimiser ce fait est une erreur stratégique.">Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake.</span></span></a><a href="topics/co-intelligence-mollick.html" class="nav-item"><span class="nav-item-icon">📝</span><span class="nav-item-info"><span class="nav-item-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</span><span class="nav-item-desc" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</span></span></a></div></div><div class="nav-group">  <button class="nav-btn">    <span data-en="Links" data-fr="Liens">Links</span> ▾  </button>  <div class="nav-dropdown"><a href="https://www.laude.org/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🚢</span><span class="nav-item-info"><span class="nav-item-title" data-en="Laude" data-fr="Laude">Laude</span><span class="nav-item-desc" data-en="Ship Your Research — put research into production and into people’s hands" data-fr="Ship Your Research — mettre sa recherche en production et dans les mains des gens">Ship Your Research — put research into production and into people’s hands</span></span></a><a href="https://artificialanalysis.ai/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">📊</span><span class="nav-item-info"><span class="nav-item-title" data-en="Artificial Analysis" data-fr="Artificial Analysis">Artificial Analysis</span><span class="nav-item-desc" data-en="Independent analysis of AI — choose the best model and provider for your use case" data-fr="Analyse indépendante de l'IA — choisir le meilleur modèle et fournisseur pour votre cas d'usage">Independent analysis of AI — choose the best model and provider for your use case</span></span></a><a href="https://epoch.ai/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">📈</span><span class="nav-item-info"><span class="nav-item-title" data-en="Epoch AI" data-fr="Epoch AI">Epoch AI</span><span class="nav-item-desc" data-en="Research institute studying AI progress — trends in compute, data, and capabilities" data-fr="Institut de recherche sur la progression de l'IA — tendances en calcul, données et capacités">Research institute studying AI progress — trends in compute, data, and capabilities</span></span></a><a href="https://karpathy.ai/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🎓</span><span class="nav-item-info"><span class="nav-item-title" data-en="Andrej Karpathy" data-fr="Andrej Karpathy">Andrej Karpathy</span><span class="nav-item-desc" data-en="AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs" data-fr="Chercheur et pédagogue en IA — cours de deep learning, réseaux de neurones from scratch, et explications claires des LLMs">AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs</span></span></a><a href="https://x.com/ClaudeDevs" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🐦</span><span class="nav-item-info"><span class="nav-item-title" data-en="Claude Devs (X)" data-fr="Claude Devs (X)">Claude Devs (X)</span><span class="nav-item-desc" data-en="Official Anthropic account for Claude developers — API updates, tips and community news" data-fr="Compte Anthropic officiel pour les développeurs Claude — mises à jour API, conseils et actualités communautaires">Official Anthropic account for Claude developers — API updates, tips and community news</span></span></a><a href="https://developers.openai.com/" class="nav-item" target="_blank" rel="noopener"><span class="nav-item-icon">🧰</span><span class="nav-item-info"><span class="nav-item-title" data-en="OpenAI Developers" data-fr="OpenAI Developers">OpenAI Developers</span><span class="nav-item-desc" data-en="Official OpenAI developer resources — docs, guides, examples, and platform updates" data-fr="Ressources officielles OpenAI pour développeurs — docs, guides, exemples et actualités de la plateforme">Official OpenAI developer resources — docs, guides, examples, and platform updates</span></span></a></div></div><a href="index.html#news" class="nav-btn" style="text-decoration:none;">  <span data-en="News" data-fr="Nouveautés">News</span></a>
-    <h1 id="main-title">Glossary</h1>
-  </div>
-  <div style="display:flex;align-items:center;gap:12px;">
+<header class="site-header">
+  <div class="sh-inner">
+    <a href="index.html" class="sh-logo" title="Mind Map IA"><svg viewBox="0 0 26 26" aria-hidden="true">
+  <g stroke="var(--line-strong)" stroke-width="1.1" fill="none">
+    <path d="M4 9L11 5L18 10L22 6M11 5L12 14L18 10M4 9L12 14L7 20L15 21L22 16L18 10M15 21L12 14"/>
+  </g>
+  <g fill="var(--ink)"><circle cx="4" cy="9" r="1.8"/><circle cx="11" cy="5" r="1.8"/><circle cx="22" cy="6" r="1.8"/>
+  <circle cx="7" cy="20" r="1.8"/><circle cx="15" cy="21" r="1.8"/><circle cx="22" cy="16" r="1.8"/></g>
+  <circle cx="18" cy="10" r="2.6" fill="var(--accent)"/><circle cx="12" cy="14" r="2.6" fill="var(--accent)"/>
+</svg><span>Mind Map IA</span></a>
+    <nav class="sh-nav" aria-label="Site"><div class="sh-group"><button class="sh-link" aria-haspopup="true" aria-expanded="false"><span data-en="Maps" data-fr="Cartes">Maps</span><svg class="sh-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="sh-menu wide"><div class="sh-menu-col"><div class="sh-menu-label"><span data-en="Maps" data-fr="Cartes">Maps</span></div><a href="macro.html" class="sh-item"><span class="sh-item-title" data-en="LLM &amp; AI Ecosystem" data-fr="LLM &amp; AI Ecosystem">LLM & AI Ecosystem</span><span class="sh-item-desc" data-en="Concepts and categories — the best place to start" data-fr="Concepts et catégories — le meilleur point de départ">Concepts and categories — the best place to start</span></a><a href="ai-agents.html" class="sh-item"><span class="sh-item-title" data-en="AI Agents" data-fr="Agents IA">AI Agents</span><span class="sh-item-desc" data-en="Building blocks, patterns and frameworks for autonomous AI systems" data-fr="Briques, patterns et frameworks pour systèmes IA autonomes">Building blocks, patterns and frameworks for autonomous AI systems</span></a><a href="ai-coding-assistants.html" class="sh-item"><span class="sh-item-title" data-en="AI Coding Assistants" data-fr="Assistants de Code IA">AI Coding Assistants</span><span class="sh-item-desc" data-en="IDE plugins, agentic IDEs and CLI agents for developers" data-fr="Plugins IDE, IDEs agentiques et agents CLI pour développeurs">IDE plugins, agentic IDEs and CLI agents for developers</span></a><a href="proprietary-models.html" class="sh-item"><span class="sh-item-title" data-en="Proprietary Models" data-fr="Modèles Propriétaires">Proprietary Models</span><span class="sh-item-desc" data-en="AI labs and their flagship model families" data-fr="Labos IA et leurs familles de modèles phares">AI labs and their flagship model families</span></a><a href="open-weights-models.html" class="sh-item"><span class="sh-item-title" data-en="Open Source / Weights Models" data-fr="Modèles Open Source / Weights">Open Source / Weights Models</span><span class="sh-item-desc" data-en="Organizations releasing open-weights models and their flagship releases" data-fr="Labos publiant des modèles open weights et leurs sorties phares">Organizations releasing open-weights models and their flagship releases</span></a><a href="cloud-managed.html" class="sh-item"><span class="sh-item-title" data-en="Cloud Managed AI" data-fr="IA Cloud Managée">Cloud Managed AI</span><span class="sh-item-desc" data-en="AWS, Google Cloud, Azure and Cloudflare AI platforms compared" data-fr="Plateformes IA AWS, Google Cloud, Azure et Cloudflare comparées">AWS, Google Cloud, Azure and Cloudflare AI platforms compared</span></a><a href="rag-pattern.html" class="sh-item"><span class="sh-item-title" data-en="RAG" data-fr="RAG">RAG</span><span class="sh-item-desc" data-en="Pipeline stages, components and tools for Retrieval-Augmented Generation" data-fr="Étapes, composants et outils pour la génération augmentée par récupération">Pipeline stages, components and tools for Retrieval-Augmented Generation</span></a></div><div class="sh-menu-col"><div class="sh-menu-label"><span data-en="Diagrams" data-fr="Diagrammes">Diagrams</span></div><a href="dense-vs-moe.html" class="sh-item"><span class="sh-item-title" data-en="Dense vs MoE" data-fr="Dense vs MoE">Dense vs MoE</span><span class="sh-item-desc" data-en="How Dense and Mixture-of-Experts architectures process a token" data-fr="Comment les architectures Dense et MoE traitent un token">How Dense and Mixture-of-Experts architectures process a token</span></a><a href="quantization.html" class="sh-item"><span class="sh-item-title" data-en="Quantization — Memory by Format" data-fr="Quantisation — Mémoire par Format">Quantization — Memory by Format</span><span class="sh-item-desc" data-en="How numerical precision (FP32 → INT4) affects a 70B model's memory footprint" data-fr="Comment la précision numérique (FP32 → INT4) affecte l'empreinte mémoire d'un modèle 70B">How numerical precision (FP32 → INT4) affects a 70B model's memory footprint</span></a><div class="sh-menu-label"><span data-en="Animations" data-fr="Animations">Animations</span></div><a href="animations/llm-chatbot.html" class="sh-item"><span class="sh-item-title" data-en="How an LLM works" data-fr="Comment fonctionne un LLM">How an LLM works</span><span class="sh-item-desc" data-en="Tokenisation, embeddings, self-attention and generation — animated" data-fr="Tokenisation, embeddings, self-attention et génération — animés">Tokenisation, embeddings, self-attention and generation — animated</span></a><a href="animations/mcp-agentic-architecture.html" class="sh-item"><span class="sh-item-title" data-en="MCP &amp; agentic architecture" data-fr="MCP &amp; architecture agentique">MCP & agentic architecture</span><span class="sh-item-desc" data-en="Agent, orchestrator and MCP connecting AI to enterprise data" data-fr="Agent, orchestrateur et MCP reliant l’IA aux données de l’entreprise">Agent, orchestrator and MCP connecting AI to enterprise data</span></a><a href="animations/trusted-data-agents.html" class="sh-item"><span class="sh-item-title" data-en="Trusted data for agents" data-fr="Des données de confiance pour les agents">Trusted data for agents</span><span class="sh-item-desc" data-en="Data quality, context, access control, anonymisation and on-prem vs cloud routing behind MCP" data-fr="Qualité et contexte des données, habilitations, anonymisation et routage on-premise / cloud derrière MCP">Data quality, context, access control, anonymisation and on-prem vs cloud routing behind MCP</span></a><a href="animations/sales-trader-copilot.html" class="sh-item"><span class="sh-item-title" data-en="AI-enabled sales trading" data-fr="Sales trading augmenté par l’IA">AI-enabled sales trading</span><span class="sh-item-desc" data-en="A copilot investigating via MCP alongside a Cash Equity Sales Trader" data-fr="Un copilote qui enquête via MCP aux côtés d’un Sales Trader Cash Equity">A copilot investigating via MCP alongside a Cash Equity Sales Trader</span></a></div></div></div><div class="sh-group"><button class="sh-link" aria-haspopup="true" aria-expanded="false"><span data-en="Articles" data-fr="Articles">Articles</span><svg class="sh-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><div class="sh-menu wide"><div class="sh-menu-col"><div class="sh-menu-label"><span data-en="Deep dives" data-fr="Articles de fond">Deep dives</span></div><a href="topics/llm-not-a-truth-machine.html" class="sh-item"><span class="sh-item-title" data-en="LLMs Are Not Truth Machines" data-fr="Les LLMs ne sont pas des machines à vérité">LLMs Are Not Truth Machines</span><span class="sh-item-desc" data-en="Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead." data-fr="Pourquoi demander la vérité à un LLM est le mauvais modèle mental — et ce que fait RAG à la place.">Why asking an LLM for ground truth is the wrong mental model — and what RAG does instead.</span></a><a href="topics/usecase-chat-qa.html" class="sh-item"><span class="sh-item-title" data-en="Use Case — Chat LLM (ChatGPT-like)" data-fr="Cas d'Usage — Chat LLM (type ChatGPT)">Use Case — Chat LLM (ChatGPT-like)</span><span class="sh-item-desc" data-en="How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes." data-fr="Comment un Chat LLM fonctionne de bout en bout : construction du prompt, RAG optionnel, inférence, génération de tokens, et les bons modèles mentaux pour éviter les erreurs courantes.">How a Chat LLM works end-to-end: prompt construction, optional RAG, inference, token generation, and the key mental models to avoid common mistakes.</span></a><a href="topics/usecase-analyst-rag.html" class="sh-item"><span class="sh-item-title" data-en="Use Case: Knowledge Search for Analysts" data-fr="Cas d'Usage : Recherche dans la Connaissance pour Analystes">Use Case: Knowledge Search for Analysts</span><span class="sh-item-desc" data-en="How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs." data-fr="Comment un analyste métier interroge des corpus de documents privés avec l'IA — architecture, gouvernance, et compromis pratiques.">How a business analyst queries private document corpora with AI — architecture, governance, and practical trade-offs.</span></a><a href="topics/usecase-dev-agentic.html" class="sh-item"><span class="sh-item-title" data-en="Use Case: Agentic Coding" data-fr="Cas d'Usage : Coding Agentique">Use Case: Agentic Coding</span><span class="sh-item-desc" data-en="How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously." data-fr="Comment un agent IA assiste un développeur au-delà de l'autocomplétion — planification, édition, exécution de tests, et itération autonome.">How an AI agent assists a developer beyond autocomplete — planning, editing, running tests, and iterating autonomously.</span></a><a href="topics/usecase-ops-automation.html" class="sh-item"><span class="sh-item-title" data-en="Use Case: Ops Workflow Automation" data-fr="Cas d'Usage : Automatisation de Workflows Ops">Use Case: Ops Workflow Automation</span><span class="sh-item-desc" data-en="How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model." data-fr="Comment des agents autonomes gèrent des processus opérationnels multi-étapes — triage d'incidents, orchestration de pipelines, et le modèle humain dans la boucle.">How autonomous agents handle multi-step operational processes — incident triage, pipeline orchestration, and the human-in-the-loop model.</span></a><a href="topics/mcp-explained.html" class="sh-item"><span class="sh-item-title" data-en="MCP: The Standard for Connecting AI to Everything" data-fr="MCP : Le Standard pour Connecter l'IA à Tout">MCP: The Standard for Connecting AI to Everything</span><span class="sh-item-desc" data-en="What MCP is, how it works architecturally, and why it matters for AI agent development." data-fr="Ce qu'est MCP, comment ça fonctionne architecturalement, et pourquoi c'est important pour le développement d'agents IA.">What MCP is, how it works architecturally, and why it matters for AI agent development.</span></a><a href="topics/rag-deep-dive.html" class="sh-item"><span class="sh-item-title" data-en="RAG: Retrieval-Augmented Generation" data-fr="RAG : Génération Augmentée par Récupération">RAG: Retrieval-Augmented Generation</span><span class="sh-item-desc" data-en="How RAG works, when to use it, and trade-offs vs fine-tuning." data-fr="Comment fonctionne RAG, quand l'utiliser, et compromis vs fine-tuning.">How RAG works, when to use it, and trade-offs vs fine-tuning.</span></a></div><div class="sh-menu-col"><div class="sh-menu-label"><span data-en="Reflection" data-fr="Réflexion">Reflection</span></div><a href="topics/meta-reasoning-agents.html" class="sh-item"><span class="sh-item-title" data-en="Meta-Reasoning: Teaching AI Agents to Know When They're Stuck" data-fr="Méta-raisonnement : Apprendre aux agents IA à reconnaître quand ils bloquent">Meta-Reasoning: Teaching AI Agents to Know When They're Stuck</span><span class="sh-item-desc" data-en="A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most." data-fr="Une étude de 2026 montre que les agents capables de surveiller leur raisonnement et de changer de stratégie surpassent les agents standard de 31 % — les modèles open-source en bénéficiant le plus.">A 2026 study shows that agents capable of monitoring their own reasoning and switching strategies outperform standard agents by 31% — with open-source models benefiting the most.</span></a><a href="topics/laurent-alexandre-assemblee-ia.html" class="sh-item"><span class="sh-item-title" data-en="&quot;Stop the Denial&quot; — Laurent Alexandre on AI at the French National Assembly" data-fr="&quot;Sortir du déni&quot; — Laurent Alexandre sur l'IA à l'Assemblée nationale">"Stop the Denial" — Laurent Alexandre on AI at the French National Assembly</span><span class="sh-item-desc" data-en="Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake." data-fr="Laurent Alexandre soutient devant l'Assemblée nationale que l'IA dépasse déjà des experts sur des tâches cognitives — et que minimiser ce fait est une erreur stratégique.">Laurent Alexandre argues before the French National Assembly that AI already surpasses experts on cognitive tasks — and that downplaying it is a strategic mistake.</span></a><a href="topics/co-intelligence-mollick.html" class="sh-item"><span class="sh-item-title" data-en="Co-Intelligence: Living and Working with AI" data-fr="Co-Intelligence : Vivre et Travailler avec l'IA">Co-Intelligence: Living and Working with AI</span><span class="sh-item-desc" data-en="Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education." data-fr="Leçons clés du livre d'Ethan Mollick sur l'IA comme partenaire collaboratif — cadres pratiques pour le travail, la créativité et l'éducation.">Key lessons from Ethan Mollick's book on AI as a collaborative partner — practical frameworks for work, creativity and education.</span></a><div class="sh-menu-label"><span data-en="Resources" data-fr="Ressources">Resources</span></div><a href="https://www.laude.org/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Laude" data-fr="Laude">Laude</span><span class="sh-item-desc" data-en="Ship Your Research — put research into production and into people’s hands" data-fr="Ship Your Research — mettre sa recherche en production et dans les mains des gens">Ship Your Research — put research into production and into people’s hands</span></a><a href="https://artificialanalysis.ai/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Artificial Analysis" data-fr="Artificial Analysis">Artificial Analysis</span><span class="sh-item-desc" data-en="Independent analysis of AI — choose the best model and provider for your use case" data-fr="Analyse indépendante de l'IA — choisir le meilleur modèle et fournisseur pour votre cas d'usage">Independent analysis of AI — choose the best model and provider for your use case</span></a><a href="https://epoch.ai/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Epoch AI" data-fr="Epoch AI">Epoch AI</span><span class="sh-item-desc" data-en="Research institute studying AI progress — trends in compute, data, and capabilities" data-fr="Institut de recherche sur la progression de l'IA — tendances en calcul, données et capacités">Research institute studying AI progress — trends in compute, data, and capabilities</span></a><a href="https://karpathy.ai/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Andrej Karpathy" data-fr="Andrej Karpathy">Andrej Karpathy</span><span class="sh-item-desc" data-en="AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs" data-fr="Chercheur et pédagogue en IA — cours de deep learning, réseaux de neurones from scratch, et explications claires des LLMs">AI researcher and educator — deep learning courses, neural networks from scratch, and clear explanations of LLMs</span></a><a href="https://x.com/ClaudeDevs" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="Claude Devs (X)" data-fr="Claude Devs (X)">Claude Devs (X)</span><span class="sh-item-desc" data-en="Official Anthropic account for Claude developers — API updates, tips and community news" data-fr="Compte Anthropic officiel pour les développeurs Claude — mises à jour API, conseils et actualités communautaires">Official Anthropic account for Claude developers — API updates, tips and community news</span></a><a href="https://developers.openai.com/" class="sh-item" target="_blank" rel="noopener"><span class="sh-item-title" data-en="OpenAI Developers" data-fr="OpenAI Developers">OpenAI Developers</span><span class="sh-item-desc" data-en="Official OpenAI developer resources — docs, guides, examples, and platform updates" data-fr="Ressources officielles OpenAI pour développeurs — docs, guides, exemples et actualités de la plateforme">Official OpenAI developer resources — docs, guides, examples, and platform updates</span></a></div></div></div><a href="news.html" class="sh-link"><span data-en="News" data-fr="Actualités">News</span></a><a href="glossary.html" class="sh-link active"><span data-en="Glossary" data-fr="Glossaire">Glossary</span></a></nav>
     
+    <div class="sh-right">
+      
 <!-- ── Global Search Widget ── -->
 <style>
 #gs-trigger {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 14px; border-radius: 8px; min-width: 180px;
-  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
-  color: #aaa; font-size: 13px; cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  height: 34px; padding: 0 8px 0 10px; border-radius: 9px; min-width: 220px;
+  background: var(--bg, #FAFAF8); border: 1px solid var(--line, #E6E6E2);
+  color: var(--muted, #7A7D85); font: 13px var(--f-ui, system-ui); cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
 }
-#gs-trigger:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.3); color: #fff; }
-#gs-trigger .gs-placeholder { flex: 1; text-align: left; }
+#gs-trigger:hover { border-color: var(--line-strong, #ccc); color: var(--ink, #17181C); }
+#gs-trigger .gs-placeholder { flex: 1; text-align: left; white-space: nowrap; }
 #gs-trigger .gs-kbd {
-  font-size: 11px; opacity: 0.5;
-  background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+  font: 11px var(--f-mono, monospace); color: var(--muted, #7A7D85);
+  border: 1px solid var(--line, #E6E6E2); padding: 1px 5px; border-radius: 5px; white-space: nowrap;
 }
 #gs-overlay {
   display: none; position: fixed; inset: 0; z-index: 9999;
-  background: rgba(10,10,20,0.7); backdrop-filter: blur(4px);
-  align-items: flex-start; justify-content: center; padding-top: 80px;
+  background: color-mix(in srgb, var(--ink, #17181C) 28%, transparent); backdrop-filter: blur(3px);
+  align-items: flex-start; justify-content: center; padding: 12vh 16px 16px;
 }
 #gs-overlay.open { display: flex; }
 #gs-modal {
-  width: 100%; max-width: 640px; background: #1e2030;
-  border: 1px solid #3a3f5c; border-radius: 14px;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.6); overflow: hidden;
+  width: 100%; max-width: 640px; background: var(--surface, #fff);
+  border: 1px solid var(--line, #E6E6E2); border-radius: 16px;
+  box-shadow: var(--shadow, 0 24px 64px rgba(0,0,0,0.2)); overflow: hidden;
+  font-family: var(--f-ui, system-ui);
 }
 #gs-input-wrap {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 18px; border-bottom: 1px solid #2e3350;
+  display: flex; align-items: center; gap: 10px; color: var(--muted, #7A7D85);
+  padding: 16px 18px; border-bottom: 1px solid var(--line, #E6E6E2);
 }
-#gs-input-wrap svg { flex-shrink: 0; opacity: 0.5; }
+#gs-input-wrap svg { flex-shrink: 0; }
 #gs-input {
-  flex: 1; background: none; border: none; outline: none;
-  color: #f0f0f0; font-size: 16px;
+  flex: 1; min-width: 0; background: none; border: none; outline: none;
+  color: var(--ink, #17181C); font: 17px var(--f-ui, system-ui);
 }
-#gs-input::placeholder { color: #555; }
+#gs-input::placeholder { color: var(--muted, #999); }
 #gs-esc {
-  font-size: 11px; color: #555; background: rgba(255,255,255,0.07);
-  border: 1px solid #333; padding: 2px 7px; border-radius: 5px; cursor: pointer;
+  font: 11px var(--f-mono, monospace); color: var(--muted, #7A7D85);
+  border: 1px solid var(--line, #E6E6E2); padding: 2px 7px; border-radius: 5px; cursor: pointer;
   white-space: nowrap;
 }
 #gs-results {
-  max-height: 440px; overflow-y: auto; padding: 8px 0;
+  max-height: min(440px, 60vh); overflow-y: auto; padding: 6px;
 }
 #gs-results:empty::after {
   content: ''; display: block;
 }
-.gs-empty { padding: 20px; text-align: center; color: #555; font-size: 14px; }
-.gs-section { padding: 6px 18px 2px; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.08em; color: #4a5080; text-transform: uppercase; }
+.gs-empty { padding: 24px; text-align: center; color: var(--muted, #7A7D85); font-size: 14px; }
+.gs-section { padding: 10px 12px 4px; font: 500 11px var(--f-mono, monospace);
+  letter-spacing: 0.08em; color: var(--muted, #7A7D85); text-transform: uppercase; }
 .gs-item {
   display: flex; align-items: flex-start; gap: 12px;
-  padding: 10px 18px; cursor: pointer; transition: background 0.1s;
+  padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: background 0.1s;
 }
-.gs-item:hover, .gs-item.active { background: rgba(255,255,255,0.06); }
+.gs-item:hover, .gs-item.active { background: var(--sunk, #F3F3F0); }
 .gs-dot {
-  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 7px;
 }
 .gs-body { flex: 1; min-width: 0; }
-.gs-label { font-size: 14px; font-weight: 600; color: #e8eaf0; white-space: nowrap;
+.gs-label { font-size: 14px; font-weight: 500; color: var(--ink, #17181C); white-space: nowrap;
   overflow: hidden; text-overflow: ellipsis; }
-.gs-meta { font-size: 11px; color: #5a6080; margin-top: 1px; }
-.gs-excerpt { font-size: 12px; color: #6a7090; margin-top: 3px;
+.gs-meta { font: 11px var(--f-mono, monospace); color: var(--muted, #7A7D85); margin-top: 2px; }
+.gs-excerpt { font-size: 12.5px; color: var(--ink-2, #45474E); margin-top: 3px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .gs-badge {
-  font-size: 10px; padding: 1px 7px; border-radius: 10px;
-  background: rgba(255,255,255,0.07); color: #8090b0; white-space: nowrap;
+  font: 10px var(--f-mono, monospace); padding: 2px 7px; border-radius: 99px;
+  border: 1px solid var(--line, #E6E6E2); color: var(--muted, #7A7D85); white-space: nowrap;
   align-self: center; flex-shrink: 0;
 }
 </style>
@@ -399,7 +554,7 @@
         const glossUrl = INDEX_PATH.replace('search-index.json','') + 'glossary.html#' + g.id;
         gsItems.push({ url: glossUrl, label });
         html += `<div class="gs-item" data-url="${glossUrl}" onclick="gsGo(this)">
-          <div class="gs-dot" style="background:#95A5A6"></div>
+          <div class="gs-dot" style="background:var(--muted)"></div>
           <div class="gs-body">
             <div class="gs-label">${label}</div>
             <div class="gs-excerpt">${excerpt(desc, raw)}</div>
@@ -417,7 +572,7 @@
         const tUrl  = INDEX_PATH.replace('search-index.json','') + tp.url;
         gsItems.push({ url: tUrl, label });
         html += `<div class="gs-item" data-url="${tUrl}" onclick="gsGo(this)">
-          <div class="gs-dot" style="background:#E74C3C"></div>
+          <div class="gs-dot" style="background:var(--accent)"></div>
           <div class="gs-body">
             <div class="gs-label">${label}</div>
             <div class="gs-excerpt">${excerpt(desc, raw)}</div>
@@ -478,172 +633,255 @@
 })();
 </script>
 
-    <div class="lang-toggle">
-      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+      </div>
+      <button class="icon-btn theme-btn" onclick="mmiaToggleTheme()" title="Light / dark" aria-label="Toggle dark mode">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn sh-burger" onclick="document.body.classList.toggle('sh-menu-open')" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
     </div>
   </div>
 </header>
 
-<div class="alphabet-index">
-  <a href="#agentic" class="idx-letter">A</a><a href="#context_window" class="idx-letter">C</a><a href="#dense_model" class="idx-letter">D</a><a href="#fedramp" class="idx-letter">F</a><a href="#hallucination" class="idx-letter">H</a><a href="#kv_cache" class="idx-letter">K</a><a href="#llm" class="idx-letter">L</a><a href="#machine_learning" class="idx-letter">M</a><a href="#quantization" class="idx-letter">Q</a><a href="#rag" class="idx-letter">R</a><a href="#soc2" class="idx-letter">S</a><a href="#temperature" class="idx-letter">T</a><a href="#weights" class="idx-letter">W</a>
-</div>
+<main class="wrap">
+  <section class="g-hero">
+    <div class="eyebrow" data-en="Glossary" data-fr="Glossaire">Glossary</div>
+    <h1 id="main-title">Glossary</h1>
+    <p data-en="19 terms used across the maps and articles, each with plain definitions and links to related terms."
+       data-fr="19 termes utilisés dans les cartes et les articles, avec des définitions simples et des liens vers les termes liés.">19 terms used across the maps and articles, each with plain definitions and links to related terms.</p>
+  </section>
 
-<div class="content" id="cards-container">
+  <div class="alphabet-index">
+    <a href="#letter-A" class="idx-letter">A</a><a href="#letter-C" class="idx-letter">C</a><a href="#letter-D" class="idx-letter">D</a><a href="#letter-F" class="idx-letter">F</a><a href="#letter-H" class="idx-letter">H</a><a href="#letter-K" class="idx-letter">K</a><a href="#letter-L" class="idx-letter">L</a><a href="#letter-M" class="idx-letter">M</a><a href="#letter-Q" class="idx-letter">Q</a><a href="#letter-R" class="idx-letter">R</a><a href="#letter-S" class="idx-letter">S</a><a href="#letter-T" class="idx-letter">T</a><a href="#letter-W" class="idx-letter">W</a>
+    <input class="g-filter" id="g-filter" type="search" placeholder="Filter terms…" oninput="gFilter(this.value)" aria-label="Filter terms">
+  </div>
 
-  <div class="term-card" id="agentic">
+  <div class="content" id="cards-container">
+  
+  <h2 class="letter" id="letter-A">A</h2>
+  <article class="term-card" id="agentic" data-letter="A" data-q="agentic ai ia agentique agentic agent ia ai agent ai agents agents ia agentic ai agentic system système agentique">
     <div class="term-header">
-      <span class="term-label" data-en="Agentic AI" data-fr="IA Agentique">Agentic AI</span>
+      <h3 class="term-label" data-en="Agentic AI" data-fr="IA Agentique">Agentic AI</h3>
       <div class="aliases" data-en="agentic, agent IA, AI agent, AI agents, agents IA, agentic system, système agentique" data-fr="agentic, agent IA, AI agent, AI agents, agents IA, agentic system, système agentique">agentic, agent IA, AI agent, AI agents, agents IA, agentic system, système agentique</div>
     </div>
-    <div class="term-desc" data-tid="agentic"><p>A mode of operation where an AI model acts autonomously over multiple steps to complete a goal, rather than simply answering a single prompt. An agentic system can use tools (web search, code execution, file access), plan a sequence of actions, observe the results of each step, and adjust its behaviour accordingly — often without human intervention between steps. The key properties are: tool use, multi-step reasoning, and a feedback loop between action and observation. Examples: Claude Code, OpenAI Operator, AutoGPT, LangChain agents.</p></div>
-    
-  </div>
-  <div class="term-card" id="context_window">
+    <div class="term-main">
+      <div class="term-desc" data-tid="agentic"><p>A mode of operation where an AI model acts autonomously over multiple steps to complete a goal, rather than simply answering a single prompt. An agentic system can use tools (web search, code execution, file access), plan a sequence of actions, observe the results of each step, and adjust its behaviour accordingly — often without human intervention between steps. The key properties are: tool use, multi-step reasoning, and a feedback loop between action and observation. Examples: Claude Code, OpenAI Operator, AutoGPT, LangChain agents.</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-C">C</h2>
+  <article class="term-card" id="context_window" data-letter="C" data-q="context window fenêtre de contexte context window context length fenêtre de contexte longueur de contexte context">
     <div class="term-header">
-      <span class="term-label" data-en="Context Window" data-fr="Fenêtre de Contexte">Context Window</span>
+      <h3 class="term-label" data-en="Context Window" data-fr="Fenêtre de Contexte">Context Window</h3>
       <div class="aliases" data-en="context length, fenêtre de contexte, longueur de contexte, context" data-fr="context length, fenêtre de contexte, longueur de contexte, context">context length, fenêtre de contexte, longueur de contexte, context</div>
     </div>
-    <div class="term-desc" data-tid="context_window"><p>The maximum number of <a href="#token" class="gloss-link">tokens</a> a model can process in a single interaction — both the input (prompt + history) and the output combined. It defines the model&#x27;s &quot;working memory&quot;: anything outside the window is invisible to it. Modern models range from 8k <a href="#token" class="gloss-link">tokens</a> (Llama 3 8B) to 1M+ <a href="#token" class="gloss-link">tokens</a> (Gemini 1.5 Pro). A larger context window means the model can read longer documents, hold longer conversations, and maintain more context — but also costs more to run.</p></div>
-    
-  </div>
-  <div class="term-card" id="dense_model">
+    <div class="term-main">
+      <div class="term-desc" data-tid="context_window"><p>The maximum number of <a href="#token" class="gloss-link">tokens</a> a model can process in a single interaction — both the input (prompt + history) and the output combined. It defines the model&#x27;s &quot;working memory&quot;: anything outside the window is invisible to it. Modern models range from 8k <a href="#token" class="gloss-link">tokens</a> (Llama 3 8B) to 1M+ <a href="#token" class="gloss-link">tokens</a> (Gemini 1.5 Pro). A larger context window means the model can read longer documents, hold longer conversations, and maintain more context — but also costs more to run.</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-D">D</h2>
+  <article class="term-card" id="dense_model" data-letter="D" data-q="dense model modèle dense dense model dense models modèle dense modèles denses">
     <div class="term-header">
-      <span class="term-label" data-en="Dense Model" data-fr="Modèle Dense">Dense Model</span>
+      <h3 class="term-label" data-en="Dense Model" data-fr="Modèle Dense">Dense Model</h3>
       <div class="aliases" data-en="dense models, modèle dense, modèles denses" data-fr="dense models, modèle dense, modèles denses">dense models, modèle dense, modèles denses</div>
     </div>
-    <div class="term-desc" data-tid="dense_model"><p>A neural network architecture where every parameter is activated for every input. All <a href="#weights" class="gloss-link">weights</a> participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B.</p></div>
-    <div class="see-also">→ <a href="dense-vs-moe.html" class="see-also-link" data-en="Dense vs MoE diagram" data-fr="Diagramme Dense vs MoE">Dense vs MoE diagram</a></div>
-  </div>
-  <div class="term-card" id="fedramp">
+    <div class="term-main">
+      <div class="term-desc" data-tid="dense_model"><p>A neural network architecture where every parameter is activated for every input. All <a href="#weights" class="gloss-link">weights</a> participate in every forward pass. Dense models are simpler to train and reason about, but become expensive at very large scales since doubling the parameters doubles the compute required for each inference. Examples: GPT-4 (believed to be dense), Llama 3, Mistral 7B.</p></div>
+      <div class="see-also"><a href="dense-vs-moe.html" class="see-also-link" data-en="Dense vs MoE diagram →" data-fr="Diagramme Dense vs MoE →">Dense vs MoE diagram →</a></div>
+    </div>
+  </article>
+  <h2 class="letter" id="letter-F">F</h2>
+  <article class="term-card" id="fedramp" data-letter="F" data-q="fedramp fedramp fedramp federal risk and authorization management program">
     <div class="term-header">
-      <span class="term-label" data-en="FedRAMP" data-fr="FedRAMP">FedRAMP</span>
+      <h3 class="term-label" data-en="FedRAMP" data-fr="FedRAMP">FedRAMP</h3>
       <div class="aliases" data-en="Federal Risk and Authorization Management Program" data-fr="Federal Risk and Authorization Management Program">Federal Risk and Authorization Management Program</div>
     </div>
-    <div class="term-desc" data-tid="fedramp"><p>Federal Risk and Authorization Management Program. A US government program that standardizes security assessment and authorization for cloud services used by federal agencies. Any cloud provider wanting to sell to the US federal government must obtain FedRAMP authorization. Three impact levels: Low, Moderate (most civilian agencies), High (sensitive government data). The process is lengthy (12–18 months) and expensive — effectively a barrier to entry. In the AI <a href="#context_window" class="gloss-link">context</a>: FedRAMP authorization is required for AI platforms used in government (defense, healthcare, intelligence). AWS GovCloud and Azure Government have FedRAMP High; Google Vertex AI and some OpenAI/Anthropic offerings have Moderate. FedRAMP is the AI compliance requirement you hear about in US public sector deals.</p></div>
-    
-  </div>
-  <div class="term-card" id="hallucination">
+    <div class="term-main">
+      <div class="term-desc" data-tid="fedramp"><p>Federal Risk and Authorization Management Program. A US government program that standardizes security assessment and authorization for cloud services used by federal agencies. Any cloud provider wanting to sell to the US federal government must obtain FedRAMP authorization. Three impact levels: Low, Moderate (most civilian agencies), High (sensitive government data). The process is lengthy (12–18 months) and expensive — effectively a barrier to entry. In the AI <a href="#context_window" class="gloss-link">context</a>: FedRAMP authorization is required for AI platforms used in government (defense, healthcare, intelligence). AWS GovCloud and Azure Government have FedRAMP High; Google Vertex AI and some OpenAI/Anthropic offerings have Moderate. FedRAMP is the AI compliance requirement you hear about in US public sector deals.</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-H">H</h2>
+  <article class="term-card" id="hallucination" data-letter="H" data-q="hallucination hallucination hallucination hallucinations hallucinate halluciner">
     <div class="term-header">
-      <span class="term-label" data-en="Hallucination" data-fr="Hallucination">Hallucination</span>
+      <h3 class="term-label" data-en="Hallucination" data-fr="Hallucination">Hallucination</h3>
       <div class="aliases" data-en="hallucinations, hallucinate, halluciner" data-fr="hallucinations, hallucinate, halluciner">hallucinations, hallucinate, halluciner</div>
     </div>
-    <div class="term-desc" data-tid="hallucination"><p>When a model generates text that is factually incorrect, fabricated, or inconsistent with reality — stated with apparent confidence. Hallucinations arise because <a href="#llm" class="gloss-link">LLMs</a> predict plausible continuations of text, not verified facts. Common examples: invented citations, wrong dates, non-existent people or products. Mitigated (but not eliminated) by <a href="#rag" class="gloss-link">RAG</a>, grounding, and better alignment.</p></div>
-    
-  </div>
-  <div class="term-card" id="hipaa">
+    <div class="term-main">
+      <div class="term-desc" data-tid="hallucination"><p>When a model generates text that is factually incorrect, fabricated, or inconsistent with reality — stated with apparent confidence. Hallucinations arise because <a href="#llm" class="gloss-link">LLMs</a> predict plausible continuations of text, not verified facts. Common examples: invented citations, wrong dates, non-existent people or products. Mitigated (but not eliminated) by <a href="#rag" class="gloss-link">RAG</a>, grounding, and better alignment.</p></div>
+      
+    </div>
+  </article>
+  <article class="term-card" id="hipaa" data-letter="H" data-q="hipaa hipaa hipaa health insurance portability and accountability act">
     <div class="term-header">
-      <span class="term-label" data-en="HIPAA" data-fr="HIPAA">HIPAA</span>
+      <h3 class="term-label" data-en="HIPAA" data-fr="HIPAA">HIPAA</h3>
       <div class="aliases" data-en="Health Insurance Portability and Accountability Act" data-fr="Health Insurance Portability and Accountability Act">Health Insurance Portability and Accountability Act</div>
     </div>
-    <div class="term-desc" data-tid="hipaa"><p>Health Insurance Portability and Accountability Act. A US federal law (1996) that sets strict rules on how health information (medical records, diagnoses, prescriptions…) can be stored, shared and processed. In the AI <a href="#context_window" class="gloss-link">context</a>: any cloud platform or application that handles patient data in the US must be &quot;HIPAA-compliant&quot; — meaning the vendor signs a Business Associate Agreement (BAA) and implements specific technical safeguards (encryption, access controls, audit logs). AWS Bedrock, Azure OpenAI and Google Vertex AI all offer HIPAA-eligible configurations. Non-compliance can lead to fines up to $1.9M per violation category per year.</p></div>
-    
-  </div>
-  <div class="term-card" id="kv_cache">
+    <div class="term-main">
+      <div class="term-desc" data-tid="hipaa"><p>Health Insurance Portability and Accountability Act. A US federal law (1996) that sets strict rules on how health information (medical records, diagnoses, prescriptions…) can be stored, shared and processed. In the AI <a href="#context_window" class="gloss-link">context</a>: any cloud platform or application that handles patient data in the US must be &quot;HIPAA-compliant&quot; — meaning the vendor signs a Business Associate Agreement (BAA) and implements specific technical safeguards (encryption, access controls, audit logs). AWS Bedrock, Azure OpenAI and Google Vertex AI all offer HIPAA-eligible configurations. Non-compliance can lead to fines up to $1.9M per violation category per year.</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-K">K</h2>
+  <article class="term-card" id="kv_cache" data-letter="K" data-q="kv cache cache kv kv cache kv cache key-value cache key value cache cache clé-valeur cache kv kv cache">
     <div class="term-header">
-      <span class="term-label" data-en="KV Cache" data-fr="Cache KV">KV Cache</span>
+      <h3 class="term-label" data-en="KV Cache" data-fr="Cache KV">KV Cache</h3>
       <div class="aliases" data-en="key-value cache, key value cache, cache clé-valeur, cache KV" data-fr="key-value cache, key value cache, cache clé-valeur, cache KV">key-value cache, key value cache, cache clé-valeur, cache KV</div>
     </div>
-    <div class="term-desc" data-tid="kv_cache"><p>Short for <strong>Key-Value Cache</strong>. A memory optimization used during <a href="#llm" class="gloss-link">LLM</a> inference (text generation).</p><p><strong>How <a href="#transformer" class="gloss-link">transformers</a> generate text:</strong> they produce <a href="#token" class="gloss-link">tokens</a> one at a time. For each new <a href="#token" class="gloss-link">token</a>, the <a href="#transformer" class="gloss-link">attention mechanism</a> needs the Key (K) and Value (V) matrices for *all previous <a href="#token" class="gloss-link">tokens</a>* — to understand what came before. Without a cache, those matrices are recomputed from scratch at every step: cost grows quadratically with <a href="#context_window" class="gloss-link"><a href="#context_window" class="gloss-link">context</a> length</a>.</p><p><strong>What the KV cache does:</strong> after computing K and V for each <a href="#token" class="gloss-link">token</a>, it stores them. When generating the next <a href="#token" class="gloss-link">token</a>, only the new <a href="#token" class="gloss-link">token</a>&#x27;s K/V are computed — all previous ones are read from cache. This reduces per-<a href="#token" class="gloss-link">token</a> cost from O(n²) to O(n).</p><p><strong>The trade-off:</strong> the cache lives in GPU/CPU memory. For a 70B model with a 128K <a href="#context_window" class="gloss-link">context</a>, the KV cache can consume tens of gigabytes of VRAM — often more than the <a href="#weights" class="gloss-link">model <a href="#weights" class="gloss-link">weights</a></a> themselves.</p><p><strong>Key related concepts:</strong> - <strong>GQA / MQA</strong> (Grouped/Multi-Query Attention): architectural variants (Llama 3, Gemma, Mistral)</p><p>that share K/V heads across query heads, shrinking cache size 4–8×.</p><ul><li><strong>Paged Attention</strong> (vLLM): manages the cache like OS virtual memory to avoid fragmentation</li></ul><p>and maximize GPU utilization in multi-user serving.</p><ul><li><strong>Prefix caching</strong>: reuses the cached K/V of a repeated system prompt across requests —</li></ul><p>saving latency and cost (supported by Anthropic, OpenAI, Google APIs).</p></div>
-    
-  </div>
-  <div class="term-card" id="llm">
+    <div class="term-main">
+      <div class="term-desc" data-tid="kv_cache"><p>Short for <strong>Key-Value Cache</strong>. A memory optimization used during <a href="#llm" class="gloss-link">LLM</a> inference (text generation).</p><p><strong>How <a href="#transformer" class="gloss-link">transformers</a> generate text:</strong> they produce <a href="#token" class="gloss-link">tokens</a> one at a time. For each new <a href="#token" class="gloss-link">token</a>, the <a href="#transformer" class="gloss-link">attention mechanism</a> needs the Key (K) and Value (V) matrices for *all previous <a href="#token" class="gloss-link">tokens</a>* — to understand what came before. Without a cache, those matrices are recomputed from scratch at every step: cost grows quadratically with <a href="#context_window" class="gloss-link"><a href="#context_window" class="gloss-link">context</a> length</a>.</p><p><strong>What the KV cache does:</strong> after computing K and V for each <a href="#token" class="gloss-link">token</a>, it stores them. When generating the next <a href="#token" class="gloss-link">token</a>, only the new <a href="#token" class="gloss-link">token</a>&#x27;s K/V are computed — all previous ones are read from cache. This reduces per-<a href="#token" class="gloss-link">token</a> cost from O(n²) to O(n).</p><p><strong>The trade-off:</strong> the cache lives in GPU/CPU memory. For a 70B model with a 128K <a href="#context_window" class="gloss-link">context</a>, the KV cache can consume tens of gigabytes of VRAM — often more than the <a href="#weights" class="gloss-link">model <a href="#weights" class="gloss-link">weights</a></a> themselves.</p><p><strong>Key related concepts:</strong> - <strong>GQA / MQA</strong> (Grouped/Multi-Query Attention): architectural variants (Llama 3, Gemma, Mistral)</p><p>that share K/V heads across query heads, shrinking cache size 4–8×.</p><ul><li><strong>Paged Attention</strong> (vLLM): manages the cache like OS virtual memory to avoid fragmentation</li></ul><p>and maximize GPU utilization in multi-user serving.</p><ul><li><strong>Prefix caching</strong>: reuses the cached K/V of a repeated system prompt across requests —</li></ul><p>saving latency and cost (supported by Anthropic, OpenAI, Google APIs).</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-L">L</h2>
+  <article class="term-card" id="llm" data-letter="L" data-q="large language model grand modèle de langage llm llms large language model large language models grand modèle de langage grands modèles de langage">
     <div class="term-header">
-      <span class="term-label" data-en="Large Language Model" data-fr="Grand Modèle de Langage">Large Language Model</span>
+      <h3 class="term-label" data-en="Large Language Model" data-fr="Grand Modèle de Langage">Large Language Model</h3>
       <div class="aliases" data-en="LLM, LLMs, Large Language Models, grand modèle de langage, grands modèles de langage" data-fr="LLM, LLMs, Large Language Models, grand modèle de langage, grands modèles de langage">LLM, LLMs, Large Language Models, grand modèle de langage, grands modèles de langage</div>
     </div>
-    <div class="term-desc" data-tid="llm"><p>A language model trained on massive text datasets with billions of parameters. The &quot;large&quot; refers to both the size of the training data and the number of parameters. LLMs can understand and generate coherent text, answer questions, write code, and more. Examples: GPT-4, Claude, Gemini, Llama.</p></div>
-    
-  </div>
-  <div class="term-card" id="machine_learning">
+    <div class="term-main">
+      <div class="term-desc" data-tid="llm"><p>A language model trained on massive text datasets with billions of parameters. The &quot;large&quot; refers to both the size of the training data and the number of parameters. LLMs can understand and generate coherent text, answer questions, write code, and more. Examples: GPT-4, Claude, Gemini, Llama.</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-M">M</h2>
+  <article class="term-card" id="machine_learning" data-letter="M" data-q="machine learning machine learning ml machine learning apprentissage automatique">
     <div class="term-header">
-      <span class="term-label" data-en="Machine Learning" data-fr="Machine Learning">Machine Learning</span>
+      <h3 class="term-label" data-en="Machine Learning" data-fr="Machine Learning">Machine Learning</h3>
       <div class="aliases" data-en="ML, apprentissage automatique" data-fr="ML, apprentissage automatique">ML, apprentissage automatique</div>
     </div>
-    <div class="term-desc" data-tid="machine_learning"><p>A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without being explicitly programmed for each case. Deep Learning and <a href="#llm" class="gloss-link">LLMs</a> are branches of Machine Learning.</p></div>
-    
-  </div>
-  <div class="term-card" id="mcp">
+    <div class="term-main">
+      <div class="term-desc" data-tid="machine_learning"><p>A subfield of artificial intelligence where systems learn from data to improve their performance on a task, without being explicitly programmed for each case. Deep Learning and <a href="#llm" class="gloss-link">LLMs</a> are branches of Machine Learning.</p></div>
+      
+    </div>
+  </article>
+  <article class="term-card" id="mcp" data-letter="M" data-q="mcp mcp mcp model context protocol model context protocol">
     <div class="term-header">
-      <span class="term-label" data-en="MCP" data-fr="MCP">MCP</span>
+      <h3 class="term-label" data-en="MCP" data-fr="MCP">MCP</h3>
       <div class="aliases" data-en="Model Context Protocol, model context protocol" data-fr="Model Context Protocol, model context protocol">Model Context Protocol, model context protocol</div>
     </div>
-    <div class="term-desc" data-tid="mcp"><p>Model <a href="#context_window" class="gloss-link">Context</a> Protocol. An open standard (governed by the Linux Foundation) that defines how AI applications connect to external data sources and tools. MCP uses a client-server model: the <strong>MCP Host</strong> (your app) contains an <strong>MCP Client</strong> that communicates with one or more <strong>MCP Servers</strong>, each exposing three types of capabilities: <strong>Resources</strong> (read-only data), <strong>Tools</strong> (functions with side effects), and <strong>Prompts</strong> (reusable templates). Before MCP, every AI application had to build custom integrations for every external resource. MCP standardizes this layer so that any compliant client can talk to any compliant server. Official SDKs exist for 10 languages. A community registry lists hundreds of production servers covering filesystems, databases, GitHub, Slack, browser automation, and more.</p></div>
-    <div class="see-also">→ <a href="topics/mcp-explained.html" class="see-also-link" data-en="MCP deep dive" data-fr="Article complet sur MCP">MCP deep dive</a></div>
-  </div>
-  <div class="term-card" id="moe_model">
+    <div class="term-main">
+      <div class="term-desc" data-tid="mcp"><p>Model <a href="#context_window" class="gloss-link">Context</a> Protocol. An open standard (governed by the Linux Foundation) that defines how AI applications connect to external data sources and tools. MCP uses a client-server model: the <strong>MCP Host</strong> (your app) contains an <strong>MCP Client</strong> that communicates with one or more <strong>MCP Servers</strong>, each exposing three types of capabilities: <strong>Resources</strong> (read-only data), <strong>Tools</strong> (functions with side effects), and <strong>Prompts</strong> (reusable templates). Before MCP, every AI application had to build custom integrations for every external resource. MCP standardizes this layer so that any compliant client can talk to any compliant server. Official SDKs exist for 10 languages. A community registry lists hundreds of production servers covering filesystems, databases, GitHub, Slack, browser automation, and more.</p></div>
+      <div class="see-also"><a href="topics/mcp-explained.html" class="see-also-link" data-en="MCP deep dive →" data-fr="Article complet sur MCP →">MCP deep dive →</a></div>
+    </div>
+  </article>
+  <article class="term-card" id="moe_model" data-letter="M" data-q="mixture of experts mélange d'experts moe mixture of experts mixture of experts mélange d'experts mélange d'experts">
     <div class="term-header">
-      <span class="term-label" data-en="Mixture of Experts" data-fr="Mélange d'Experts">Mixture of Experts</span>
+      <h3 class="term-label" data-en="Mixture of Experts" data-fr="Mélange d'Experts">Mixture of Experts</h3>
       <div class="aliases" data-en="MoE, mélange d'experts, Mélange d'Experts" data-fr="MoE, mélange d'experts, Mélange d'Experts">MoE, mélange d'experts, Mélange d'Experts</div>
     </div>
-    <div class="term-desc" data-tid="moe_model"><p>An architecture where the model is divided into many specialized sub-networks (&quot;experts&quot;). For each <a href="#token" class="gloss-link">token</a>, a routing mechanism activates only a small subset of experts (typically 2–8). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference — achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.</p></div>
-    <div class="see-also">→ <a href="dense-vs-moe.html" class="see-also-link" data-en="Dense vs MoE diagram" data-fr="Diagramme Dense vs MoE">Dense vs MoE diagram</a></div>
-  </div>
-  <div class="term-card" id="quantization">
+    <div class="term-main">
+      <div class="term-desc" data-tid="moe_model"><p>An architecture where the model is divided into many specialized sub-networks (&quot;experts&quot;). For each <a href="#token" class="gloss-link">token</a>, a routing mechanism activates only a small subset of experts (typically 2–8). Result: a model can have hundreds of billions of total parameters but use only a fraction per inference — achieving high capacity at lower compute cost. Examples: GPT-4 (believed MoE), Mixtral 8x7B, Gemini 1.5, DeepSeek-V3.</p></div>
+      <div class="see-also"><a href="dense-vs-moe.html" class="see-also-link" data-en="Dense vs MoE diagram →" data-fr="Diagramme Dense vs MoE →">Dense vs MoE diagram →</a></div>
+    </div>
+  </article>
+  <h2 class="letter" id="letter-Q">Q</h2>
+  <article class="term-card" id="quantization" data-letter="Q" data-q="quantization quantisation quantization quantisation model quantization quantisation du modèle int8 int4 fp8 post-training quantization ptq gguf gptq awq">
     <div class="term-header">
-      <span class="term-label" data-en="Quantization" data-fr="Quantisation">Quantization</span>
+      <h3 class="term-label" data-en="Quantization" data-fr="Quantisation">Quantization</h3>
       <div class="aliases" data-en="quantisation, model quantization, quantisation du modèle, INT8, INT4, FP8, post-training quantization, PTQ, GGUF, GPTQ, AWQ" data-fr="quantisation, model quantization, quantisation du modèle, INT8, INT4, FP8, post-training quantization, PTQ, GGUF, GPTQ, AWQ">quantisation, model quantization, quantisation du modèle, INT8, INT4, FP8, post-training quantization, PTQ, GGUF, GPTQ, AWQ</div>
     </div>
-    <div class="term-desc" data-tid="quantization"><p>A compression technique that reduces the numerical precision of <a href="#weights" class="gloss-link">model <a href="#weights" class="gloss-link">weights</a></a> — and sometimes activations — from high-precision formats (FP32, BF16) to lower-precision ones (INT8, FP8, INT4). The goal: smaller model, faster inference, less memory, minimal quality loss.</p><p><strong>Why it matters:</strong> a 70B parameter model in BF16 requires ~140 GB of VRAM. In INT4, it fits in ~35 GB — runnable on 2× consumer GPUs or a single high-end one.</p><p><strong>Common formats:</strong> - <strong>FP32</strong> (32-bit float): training reference, rarely used for inference - <strong>BF16 / FP16</strong> (16-bit): standard inference today — good quality, half the FP32 size - <strong>INT8</strong> (8-bit integer): ~2× smaller than BF16, fast on modern GPUs, minimal degradation - <strong>FP8</strong> (8-bit float): newer format (H100 GPUs), better than INT8 for preserving range - <strong>INT4</strong> (4-bit integer): aggressive compression, some quality loss, used in consumer setups</p><p><strong>Popular quantization methods:</strong> - <strong>GPTQ</strong>: post-training quantization (PTQ), layer-by-layer, good INT4 quality - <strong>AWQ</strong> (Activation-aware <a href="#weights" class="gloss-link">Weight</a> Quantization): preserves important <a href="#weights" class="gloss-link">weights</a>, better quality than GPTQ - <strong>GGUF</strong> (llama.cpp): file format that bundles model + quantization metadata for CPU/GPU inference</p><p><strong><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link">KV cache</a></a></a> quantization:</strong> quantization can also be applied to the <a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link">KV cache</a></a></a> (not just <a href="#weights" class="gloss-link">weights</a>), reducing its memory footprint for long contexts — distinct from model <a href="#weights" class="gloss-link">weight</a> quantization.</p><p><strong>Not the same as <a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link">KV cache</a></a></a>:</strong> quantization compresses the model itself at load time; the <a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link">KV cache</a></a></a> is a runtime optimization for storing attention states during generation.</p></div>
-    
-  </div>
-  <div class="term-card" id="rag">
+    <div class="term-main">
+      <div class="term-desc" data-tid="quantization"><p>A compression technique that reduces the numerical precision of <a href="#weights" class="gloss-link">model <a href="#weights" class="gloss-link">weights</a></a> — and sometimes activations — from high-precision formats (FP32, BF16) to lower-precision ones (INT8, FP8, INT4). The goal: smaller model, faster inference, less memory, minimal quality loss.</p><p><strong>Why it matters:</strong> a 70B parameter model in BF16 requires ~140 GB of VRAM. In INT4, it fits in ~35 GB — runnable on 2× consumer GPUs or a single high-end one.</p><p><strong>Common formats:</strong> - <strong>FP32</strong> (32-bit float): training reference, rarely used for inference - <strong>BF16 / FP16</strong> (16-bit): standard inference today — good quality, half the FP32 size - <strong>INT8</strong> (8-bit integer): ~2× smaller than BF16, fast on modern GPUs, minimal degradation - <strong>FP8</strong> (8-bit float): newer format (H100 GPUs), better than INT8 for preserving range - <strong>INT4</strong> (4-bit integer): aggressive compression, some quality loss, used in consumer setups</p><p><strong>Popular quantization methods:</strong> - <strong>GPTQ</strong>: post-training quantization (PTQ), layer-by-layer, good INT4 quality - <strong>AWQ</strong> (Activation-aware <a href="#weights" class="gloss-link">Weight</a> Quantization): preserves important <a href="#weights" class="gloss-link">weights</a>, better quality than GPTQ - <strong>GGUF</strong> (llama.cpp): file format that bundles model + quantization metadata for CPU/GPU inference</p><p><strong><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link">KV cache</a></a></a> quantization:</strong> quantization can also be applied to the <a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link">KV cache</a></a></a> (not just <a href="#weights" class="gloss-link">weights</a>), reducing its memory footprint for long contexts — distinct from model <a href="#weights" class="gloss-link">weight</a> quantization.</p><p><strong>Not the same as <a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link">KV cache</a></a></a>:</strong> quantization compresses the model itself at load time; the <a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link"><a href="#kv_cache" class="gloss-link">KV cache</a></a></a> is a runtime optimization for storing attention states during generation.</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-R">R</h2>
+  <article class="term-card" id="rag" data-letter="R" data-q="rag rag rag retrieval-augmented generation retrieval augmented generation retrieval-augmented generation">
     <div class="term-header">
-      <span class="term-label" data-en="RAG" data-fr="RAG">RAG</span>
+      <h3 class="term-label" data-en="RAG" data-fr="RAG">RAG</h3>
       <div class="aliases" data-en="Retrieval-Augmented Generation, retrieval augmented generation, retrieval-augmented generation" data-fr="Retrieval-Augmented Generation, retrieval augmented generation, retrieval-augmented generation">Retrieval-Augmented Generation, retrieval augmented generation, retrieval-augmented generation</div>
     </div>
-    <div class="term-desc" data-tid="rag"><p>Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and <a href="#hallucination" class="gloss-link">hallucination</a> problems by injecting real-time or domain-specific information into the prompt at query time. How it works: (1) the user query is converted to a vector, (2) semantically similar documents are retrieved from a knowledge base, (3) those documents are added to the prompt, (4) the model answers based on the provided <a href="#context_window" class="gloss-link">context</a>. Widely adopted in production — the most reliable way to give an <a href="#llm" class="gloss-link">LLM</a> access to specific data.</p></div>
-    <div class="see-also">→ <a href="ecosystem.html#rag_pattern" class="see-also-link" data-en="RAG on the ecosystem map" data-fr="RAG sur la carte écosystème">RAG on the ecosystem map</a></div>
-  </div>
-  <div class="term-card" id="rlhf">
+    <div class="term-main">
+      <div class="term-desc" data-tid="rag"><p>Retrieval-Augmented Generation. A pattern that solves the knowledge cutoff and <a href="#hallucination" class="gloss-link">hallucination</a> problems by injecting real-time or domain-specific information into the prompt at query time. How it works: (1) the user query is converted to a vector, (2) semantically similar documents are retrieved from a knowledge base, (3) those documents are added to the prompt, (4) the model answers based on the provided <a href="#context_window" class="gloss-link">context</a>. Widely adopted in production — the most reliable way to give an <a href="#llm" class="gloss-link">LLM</a> access to specific data.</p></div>
+      <div class="see-also"><a href="ecosystem.html#rag_pattern" class="see-also-link" data-en="RAG on the ecosystem map →" data-fr="RAG sur la carte écosystème →">RAG on the ecosystem map →</a></div>
+    </div>
+  </article>
+  <article class="term-card" id="rlhf" data-letter="R" data-q="rlhf rlhf rlhf reinforcement learning from human feedback reinforcement learning from human feedback">
     <div class="term-header">
-      <span class="term-label" data-en="RLHF" data-fr="RLHF">RLHF</span>
+      <h3 class="term-label" data-en="RLHF" data-fr="RLHF">RLHF</h3>
       <div class="aliases" data-en="Reinforcement Learning from Human Feedback, reinforcement learning from human feedback" data-fr="Reinforcement Learning from Human Feedback, reinforcement learning from human feedback">Reinforcement Learning from Human Feedback, reinforcement learning from human feedback</div>
     </div>
-    <div class="term-desc" data-tid="rlhf"><p>Reinforcement Learning from Human Feedback. A training technique used to align <a href="#llm" class="gloss-link">LLMs</a> with human preferences after the initial pre-training phase. Human raters compare model outputs and rank them; these preferences train a reward model which then guides the <a href="#llm" class="gloss-link">LLM</a> via reinforcement learning to produce more helpful, harmless, and honest responses. Used by OpenAI (InstructGPT, ChatGPT) and Anthropic (Claude).</p></div>
-    
-  </div>
-  <div class="term-card" id="soc2">
+    <div class="term-main">
+      <div class="term-desc" data-tid="rlhf"><p>Reinforcement Learning from Human Feedback. A training technique used to align <a href="#llm" class="gloss-link">LLMs</a> with human preferences after the initial pre-training phase. Human raters compare model outputs and rank them; these preferences train a reward model which then guides the <a href="#llm" class="gloss-link">LLM</a> via reinforcement learning to produce more helpful, harmless, and honest responses. Used by OpenAI (InstructGPT, ChatGPT) and Anthropic (Claude).</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-S">S</h2>
+  <article class="term-card" id="soc2" data-letter="S" data-q="soc 2 soc 2 soc 2 soc2 soc 2 type ii soc 2 type i system and organization controls">
     <div class="term-header">
-      <span class="term-label" data-en="SOC 2" data-fr="SOC 2">SOC 2</span>
+      <h3 class="term-label" data-en="SOC 2" data-fr="SOC 2">SOC 2</h3>
       <div class="aliases" data-en="SOC2, SOC 2 Type II, SOC 2 Type I, System and Organization Controls" data-fr="SOC2, SOC 2 Type II, SOC 2 Type I, System and Organization Controls">SOC2, SOC 2 Type II, SOC 2 Type I, System and Organization Controls</div>
     </div>
-    <div class="term-desc" data-tid="soc2"><p>Service Organization Control 2. An auditing framework created by the AICPA (American Institute of CPAs) that evaluates how a cloud service provider manages data security. SOC 2 covers five &quot;Trust Service Criteria&quot;: Security, Availability, Processing Integrity, Confidentiality, and Privacy. Two levels: Type I (snapshot audit — controls exist at a point in time), Type II (operational audit — controls worked consistently over 6–12 months). Type II is the standard enterprise buyers require. In the AI <a href="#context_window" class="gloss-link">context</a>: SOC 2 Type II is the baseline certification expected from any AI API provider (OpenAI, Anthropic, Google, AWS…) before enterprise procurement teams will approve it.</p></div>
-    
-  </div>
-  <div class="term-card" id="temperature">
+    <div class="term-main">
+      <div class="term-desc" data-tid="soc2"><p>Service Organization Control 2. An auditing framework created by the AICPA (American Institute of CPAs) that evaluates how a cloud service provider manages data security. SOC 2 covers five &quot;Trust Service Criteria&quot;: Security, Availability, Processing Integrity, Confidentiality, and Privacy. Two levels: Type I (snapshot audit — controls exist at a point in time), Type II (operational audit — controls worked consistently over 6–12 months). Type II is the standard enterprise buyers require. In the AI <a href="#context_window" class="gloss-link">context</a>: SOC 2 Type II is the baseline certification expected from any AI API provider (OpenAI, Anthropic, Google, AWS…) before enterprise procurement teams will approve it.</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-T">T</h2>
+  <article class="term-card" id="temperature" data-letter="T" data-q="temperature température temperature température temp sampling temperature">
     <div class="term-header">
-      <span class="term-label" data-en="Temperature" data-fr="Température">Temperature</span>
+      <h3 class="term-label" data-en="Temperature" data-fr="Température">Temperature</h3>
       <div class="aliases" data-en="température, temp, sampling temperature" data-fr="température, temp, sampling temperature">température, temp, sampling temperature</div>
     </div>
-    <div class="term-desc" data-tid="temperature"><p>A parameter (typically between 0 and 2) that controls how random or deterministic a model&#x27;s outputs are. Technically: it scales the probability distribution over the vocabulary before sampling the next <a href="#token" class="gloss-link">token</a>. Low temperature → the model concentrates probability on the most likely <a href="#token" class="gloss-link">tokens</a> (predictable, repetitive). High temperature → probability is spread more evenly (creative, varied, but also more likely to <a href="#hallucination" class="gloss-link">hallucinate</a>). <strong>Temperature 0</strong>: near-deterministic — the model almost always picks the highest-probability <a href="#token" class="gloss-link">token</a>. Good for: code generation, factual Q&amp;A, structured outputs. <strong>Temperature 0.7–1</strong>: balanced creativity. Good for: chat, writing assistance. <strong>Temperature &gt; 1</strong>: highly creative/random. Good for: brainstorming, creative writing. Often used alongside <strong>top-p</strong> (nucleus sampling) to further control output diversity.</p></div>
-    
-  </div>
-  <div class="term-card" id="token">
+    <div class="term-main">
+      <div class="term-desc" data-tid="temperature"><p>A parameter (typically between 0 and 2) that controls how random or deterministic a model&#x27;s outputs are. Technically: it scales the probability distribution over the vocabulary before sampling the next <a href="#token" class="gloss-link">token</a>. Low temperature → the model concentrates probability on the most likely <a href="#token" class="gloss-link">tokens</a> (predictable, repetitive). High temperature → probability is spread more evenly (creative, varied, but also more likely to <a href="#hallucination" class="gloss-link">hallucinate</a>). <strong>Temperature 0</strong>: near-deterministic — the model almost always picks the highest-probability <a href="#token" class="gloss-link">token</a>. Good for: code generation, factual Q&amp;A, structured outputs. <strong>Temperature 0.7–1</strong>: balanced creativity. Good for: chat, writing assistance. <strong>Temperature &gt; 1</strong>: highly creative/random. Good for: brainstorming, creative writing. Often used alongside <strong>top-p</strong> (nucleus sampling) to further control output diversity.</p></div>
+      
+    </div>
+  </article>
+  <article class="term-card" id="token" data-letter="T" data-q="token token token tokens tokenization tokenisation">
     <div class="term-header">
-      <span class="term-label" data-en="Token" data-fr="Token">Token</span>
+      <h3 class="term-label" data-en="Token" data-fr="Token">Token</h3>
       <div class="aliases" data-en="tokens, tokenization, tokenisation" data-fr="tokens, tokenization, tokenisation">tokens, tokenization, tokenisation</div>
     </div>
-    <div class="term-desc" data-tid="token"><p>The smallest unit of text a language model processes. A token is roughly 0.75 words in English — &quot;tokenization&quot; is typically split into [&quot;token&quot;, &quot;ization&quot;]. Models don&#x27;t see raw text: they convert everything into a sequence of token IDs before processing. The number of tokens in a request determines its cost and speed.</p></div>
-    
-  </div>
-  <div class="term-card" id="transformer">
+    <div class="term-main">
+      <div class="term-desc" data-tid="token"><p>The smallest unit of text a language model processes. A token is roughly 0.75 words in English — &quot;tokenization&quot; is typically split into [&quot;token&quot;, &quot;ization&quot;]. Models don&#x27;t see raw text: they convert everything into a sequence of token IDs before processing. The number of tokens in a request determines its cost and speed.</p></div>
+      
+    </div>
+  </article>
+  <article class="term-card" id="transformer" data-letter="T" data-q="transformer transformer transformer transformer transformers attention mechanism mécanisme d'attention self-attention">
     <div class="term-header">
-      <span class="term-label" data-en="Transformer" data-fr="Transformer">Transformer</span>
+      <h3 class="term-label" data-en="Transformer" data-fr="Transformer">Transformer</h3>
       <div class="aliases" data-en="transformers, attention mechanism, mécanisme d'attention, self-attention" data-fr="transformers, attention mechanism, mécanisme d'attention, self-attention">transformers, attention mechanism, mécanisme d'attention, self-attention</div>
     </div>
-    <div class="term-desc" data-tid="transformer"><p>The neural network architecture that underpins virtually all modern <a href="#llm" class="gloss-link">LLMs</a>. Introduced in the 2017 paper <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">&quot;Attention Is All You Need&quot;</a> (Vaswani et al., Google). Key innovation: the <strong>self-attention mechanism</strong>, which lets the model weigh the relevance of every word against every other word in the input simultaneously — instead of processing <a href="#token" class="gloss-link">tokens</a> one by one like older RNNs. This parallelism made it possible to train on massive datasets using GPUs/TPUs at scale. Two variants: <strong>Encoder</strong> (BERT — good for understanding/classification), <strong>Decoder</strong> (GPT, Claude, Llama — good for generation), and <strong>Encoder-Decoder</strong> (T5, translation). Every <a href="#llm" class="gloss-link">LLM</a> you use today — GPT-4, Claude, Gemini, Llama — is a Transformer.</p></div>
-    
-  </div>
-  <div class="term-card" id="weights">
+    <div class="term-main">
+      <div class="term-desc" data-tid="transformer"><p>The neural network architecture that underpins virtually all modern <a href="#llm" class="gloss-link">LLMs</a>. Introduced in the 2017 paper <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">&quot;Attention Is All You Need&quot;</a> (Vaswani et al., Google). Key innovation: the <strong>self-attention mechanism</strong>, which lets the model weigh the relevance of every word against every other word in the input simultaneously — instead of processing <a href="#token" class="gloss-link">tokens</a> one by one like older RNNs. This parallelism made it possible to train on massive datasets using GPUs/TPUs at scale. Two variants: <strong>Encoder</strong> (BERT — good for understanding/classification), <strong>Decoder</strong> (GPT, Claude, Llama — good for generation), and <strong>Encoder-Decoder</strong> (T5, translation). Every <a href="#llm" class="gloss-link">LLM</a> you use today — GPT-4, Claude, Gemini, Llama — is a Transformer.</p></div>
+      
+    </div>
+  </article>
+  <h2 class="letter" id="letter-W">W</h2>
+  <article class="term-card" id="weights" data-letter="W" data-q="weights poids weights weight model weights poids poids du modèle open weights">
     <div class="term-header">
-      <span class="term-label" data-en="Weights" data-fr="Poids">Weights</span>
+      <h3 class="term-label" data-en="Weights" data-fr="Poids">Weights</h3>
       <div class="aliases" data-en="weight, model weights, poids, poids du modèle, open weights" data-fr="weight, model weights, poids, poids du modèle, open weights">weight, model weights, poids, poids du modèle, open weights</div>
     </div>
-    <div class="term-desc" data-tid="weights"><p>The numerical parameters learned by a neural network during training. Weights encode everything the model has &quot;learned&quot; — grammar, facts, reasoning patterns. When a model is said to have billions of parameters, those parameters are its weights. &quot;Open weights&quot; means the trained weight files are publicly released, allowing anyone to run or fine-tune the model locally — even if the training data or code are not shared.</p></div>
-    
+    <div class="term-main">
+      <div class="term-desc" data-tid="weights"><p>The numerical parameters learned by a neural network during training. Weights encode everything the model has &quot;learned&quot; — grammar, facts, reasoning patterns. When a model is said to have billions of parameters, those parameters are its weights. &quot;Open weights&quot; means the trained weight files are publicly released, allowing anyone to run or fine-tune the model locally — even if the training data or code are not shared.</p></div>
+      
+    </div>
+  </article>
   </div>
-</div>
+  <div class="g-empty" id="g-empty" hidden data-en="No term matches this filter." data-fr="Aucun terme ne correspond à ce filtre.">No term matches this filter.</div>
+</main>
+
+<footer class="site-footer">
+  <div class="sf-inner">
+    <span><span data-en="Mind Map IA · Open source, built to learn and share" data-fr="Mind Map IA · Open source, construit pour apprendre et partager">Mind Map IA · Open source, built to learn and share</span></span>
+    <div class="sf-links">
+      <a href="index.html#maps"><span data-en="Maps" data-fr="Cartes">Maps</span></a>
+      <a href="index.html#articles"><span data-en="Articles" data-fr="Articles">Articles</span></a>
+      <a href="news.html"><span data-en="News" data-fr="Actualités">News</span></a>
+      <a href="glossary.html"><span data-en="Glossary" data-fr="Glossaire">Glossary</span></a>
+      <a href="https://github.com/evausesgit/mind-map-ia" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</footer>
 
 <script>
 const TITLES = { "en": "Glossary", "fr": "Glossaire" };
@@ -656,6 +894,7 @@ function setLang(newLang) {
     b.classList.toggle('active', b.dataset.lang === lang)
   );
   document.getElementById('main-title').textContent = TITLES[lang];
+  document.getElementById('g-filter').placeholder = lang === 'fr' ? 'Filtrer les termes…' : 'Filter terms…';
   // Plain text elements
   document.querySelectorAll('[data-en]').forEach(el => {
     el.textContent = el.dataset[lang] || el.dataset.en;
@@ -666,6 +905,71 @@ function setLang(newLang) {
     if (d) el.innerHTML = d[lang] || d.en;
   });
 }
+
+function gFilter(q) {
+  q = q.trim().toLowerCase();
+  const seen = {};
+  let shown = 0;
+  document.querySelectorAll('.term-card').forEach(el => {
+    const ok = !q || el.dataset.q.indexOf(q) !== -1 || el.textContent.toLowerCase().indexOf(q) !== -1;
+    el.hidden = !ok;
+    if (ok) { seen[el.dataset.letter] = true; shown++; }
+  });
+  document.querySelectorAll('.letter').forEach(h => { h.hidden = !seen[h.textContent]; });
+  document.getElementById('g-empty').hidden = shown > 0;
+}
+</script>
+
+<script>
+(function () {
+  // Dropdowns: click to toggle (touch + keyboard); hover handled in CSS on desktop.
+  document.querySelectorAll('.sh-group > .sh-link').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var g = btn.parentElement, open = !g.classList.contains('open');
+      document.querySelectorAll('.sh-group.open').forEach(function (o) { o.classList.remove('open'); });
+      g.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open);
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.sh-group')) document.querySelectorAll('.sh-group.open').forEach(function (o) { o.classList.remove('open'); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.sh-group.open').forEach(function (o) { o.classList.remove('open'); });
+      document.body.classList.remove('sh-menu-open');
+    }
+  });
+
+  // Theme
+  window.mmiaToggleTheme = function () {
+    var dark = document.documentElement.getAttribute('data-theme') !== 'dark';
+    if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem('mmia-theme', dark ? 'dark' : 'light'); } catch (e) {}
+    window.dispatchEvent(new CustomEvent('mmia-themechange', { detail: { dark: dark } }));
+  };
+
+  // Language memory: wrap the page's setLang, then restore the saved choice.
+  if (typeof window.setLang === 'function') {
+    var pageSetLang = window.setLang;
+    window.setLang = function (l) {
+      try { localStorage.setItem('mmia-lang', l); } catch (e) {}
+      document.documentElement.lang = l;
+      var r = pageSetLang.apply(this, arguments);
+      document.querySelectorAll('.site-header [data-en], .site-footer [data-en]').forEach(function (el) {
+        el.textContent = l === 'fr' ? (el.dataset.fr || el.dataset.en) : el.dataset.en;
+      });
+      document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.lang === l); });
+      return r;
+    };
+    var saved = null;
+    try { saved = localStorage.getItem('mmia-lang'); } catch (e) {}
+    if (!saved) saved = (navigator.language || '').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+    if (saved !== 'en') window.setLang(saved);
+  }
+})();
 </script>
 </body>
 </html>

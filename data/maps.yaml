@@ -77,6 +77,7 @@ maps:
     description:
       en: "How Dense and Mixture-of-Experts architectures process a token"
       fr: "Comment les architectures Dense et MoE traitent un token"
+    kind: diagram
     output: dense-vs-moe.html
     data: data/dense-vs-moe.yaml
 
@@ -88,6 +89,7 @@ maps:
     description:
       en: "How numerical precision (FP32 → INT4) affects a 70B model's memory footprint"
       fr: "Comment la précision numérique (FP32 → INT4) affecte l'empreinte mémoire d'un modèle 70B"
+    kind: diagram
     output: quantization.html
 
   - id: rag-pattern
@@ -100,6 +102,40 @@ maps:
       fr: "Étapes, composants et outils pour la génération augmentée par récupération"
     output: rag-pattern.html
     data: data/rag-pattern.yaml
+
+animations:
+  - id: llm-chatbot
+    title:
+      en: "How an LLM works"
+      fr: "Comment fonctionne un LLM"
+    description:
+      en: "Tokenisation, embeddings, self-attention and generation — animated"
+      fr: "Tokenisation, embeddings, self-attention et génération — animés"
+    output: animations/llm-chatbot.html
+  - id: mcp-agentic-architecture
+    title:
+      en: "MCP & agentic architecture"
+      fr: "MCP & architecture agentique"
+    description:
+      en: "Agent, orchestrator and MCP connecting AI to enterprise data"
+      fr: "Agent, orchestrateur et MCP reliant l’IA aux données de l’entreprise"
+    output: animations/mcp-agentic-architecture.html
+  - id: trusted-data-agents
+    title:
+      en: "Trusted data for agents"
+      fr: "Des données de confiance pour les agents"
+    description:
+      en: "Data quality, context, access control, anonymisation and on-prem vs cloud routing behind MCP"
+      fr: "Qualité et contexte des données, habilitations, anonymisation et routage on-premise / cloud derrière MCP"
+    output: animations/trusted-data-agents.html
+  - id: sales-trader-copilot
+    title:
+      en: "AI-enabled sales trading"
+      fr: "Sales trading augmenté par l’IA"
+    description:
+      en: "A copilot investigating via MCP alongside a Cash Equity Sales Trader"
+      fr: "Un copilote qui enquête via MCP aux côtés d’un Sales Trader Cash Equity"
+    output: animations/sales-trader-copilot.html
 
 links:
   - id: laude
