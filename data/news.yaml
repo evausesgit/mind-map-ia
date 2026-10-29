@@ -1,4 +1,40 @@
 news:
+  - date: '2026-10-28'
+    type: update
+    title:
+      en: "Google launches Gemini 4 Carbon with a cybersecurity focus"
+      fr: "Google lance Gemini 4 Carbon avec un accent sur la cybersécurité"
+    description:
+      en: "Google unveiled Gemini 4 Carbon, a frontier model it says improves coding, agentic tasks and cybersecurity. The release intensifies competition with OpenAI and Anthropic, but enterprise buyers still need independent evaluations for accuracy, misuse risk, latency and total cost."
+      fr: "Google a dévoilé Gemini 4 Carbon, un modèle de pointe présenté comme plus performant en programmation, tâches agentiques et cybersécurité. Cette sortie intensifie la concurrence avec OpenAI et Anthropic, mais les entreprises doivent encore mener leurs propres évaluations de précision, de risque d’usage détourné, de latence et de coût complet."
+    link: https://www.reuters.com/technology/google-launches-gemini-4-carbon-ai-model-with-cybersecurity-focus-2026-10-28/
+  - date: '2026-10-28'
+    type: update
+    title:
+      en: "SAP targets more than €2 billion in gains by routing AI work to cheaper models"
+      fr: "SAP vise plus de 2 milliards d’euros de gains en orientant l’IA vers des modèles moins coûteux"
+    description:
+      en: "SAP is replacing expensive models with cheaper alternatives where performance remains sufficient, targeting more than €2 billion in efficiency gains over two years even as overall AI spending rises. The move makes model routing, quality thresholds and unit economics core capabilities for enterprise AI portfolios."
+      fr: "SAP remplace des modèles coûteux par des alternatives moins chères lorsque la performance reste suffisante et vise plus de 2 milliards d’euros de gains d’efficacité sur deux ans, malgré la hausse de ses dépenses IA globales. Cette stratégie place le routage des modèles, les seuils de qualité et l’économie unitaire au cœur des portefeuilles IA d’entreprise."
+    link: https://www.reuters.com/world/china/sap-swaps-costly-ai-models-cheaper-alternatives-targets-over-2-bln-gains-2026-10-28/
+  - date: '2026-10-28'
+    type: update
+    title:
+      en: "ServiceNow and OpenAI connect ChatGPT to governed enterprise workflows"
+      fr: "ServiceNow et OpenAI relient ChatGPT aux workflows d’entreprise gouvernés"
+    description:
+      en: "ServiceNow announced a ChatGPT plugin and deeper integrations that let OpenAI agents access workflows through Action Fabric with enterprise context, permissions and approvals. Planned work also covers cyber models, Codex in AI Workflow Factory and voice-driven governance and risk assessment."
+      fr: "ServiceNow a annoncé un plugin ChatGPT et des intégrations permettant aux agents OpenAI d’accéder aux workflows via Action Fabric, avec contexte d’entreprise, autorisations et validations. Les travaux prévus couvrent aussi les modèles cyber, Codex dans AI Workflow Factory et l’évaluation vocale de la gouvernance et des risques."
+    link: https://newsroom.servicenow.com/press-releases/details/2026/ServiceNow-and-OpenAI-accelerate-enterprise-AI-from-models-and-operations-to-cybersecurity-and-agentic-development/default.aspx
+  - date: '2026-10-23'
+    type: update
+    title:
+      en: "MiniMax publishes M3.1 Flash open weights on Hugging Face"
+      fr: "MiniMax publie les poids ouverts de M3.1 Flash sur Hugging Face"
+    description:
+      en: "MiniMax released the M3.1 Flash weights on Hugging Face: a mixture-of-experts model with 428 billion parameters in total, 23 billion active per token and a one-million-token context window. The files are roughly 252 GB, making the release inspectable and self-hostable but still infrastructure-intensive; commercial users must review the model licence."
+      fr: "MiniMax a publié sur Hugging Face les poids de M3.1 Flash : un modèle mixture-of-experts de 428 milliards de paramètres au total, dont 23 milliards actifs par jeton, avec une fenêtre de contexte d’un million de jetons. Les fichiers pèsent environ 252 Go : le modèle est inspectable et auto-hébergeable, mais reste exigeant en infrastructure ; les usages commerciaux doivent vérifier la licence."
+    link: https://huggingface.co/MiniMaxAI/MiniMax-M3.1-Flash
   - date: '2026-10-27'
     type: update
     title:
