@@ -1,4 +1,40 @@
 news:
+  - date: '2026-10-29'
+    type: update
+    title:
+      en: "Mistral releases the open weights of one-trillion-parameter Large 4"
+      fr: "Mistral publie les poids ouverts de Large 4, un modèle à mille milliards de paramètres"
+    description:
+      en: "Mistral released the weights of Large 4, a natively multimodal mixture-of-experts model with one trillion total parameters and 52 billion active parameters. The company targets coding, agentic workflows and sensitive enterprise domains including cybersecurity, finance and law; buyers should still validate the licence, infrastructure needs and independent performance."
+      fr: "Mistral a publié les poids de Large 4, un modèle multimodal natif en mixture-of-experts comptant mille milliards de paramètres au total, dont 52 milliards actifs. L’entreprise vise le code, les workflows agentiques et les domaines sensibles comme la cybersécurité, la finance et le droit ; licence, infrastructure et performances indépendantes restent à valider."
+    link: https://mistral.ai/news/mistral-large-4/
+  - date: '2026-10-29'
+    type: research
+    title:
+      en: "OpenAI updates its Model Spec around five core values"
+      fr: "OpenAI met à jour son Model Spec autour de cinq valeurs fondamentales"
+    description:
+      en: "OpenAI published an updated Model Spec organised around five values intended to guide more capable systems toward sound judgment, human agency and faithfulness to user intent. For regulated deployments, the document is useful governance input but does not replace contractual controls, model-specific testing or evidence from production monitoring."
+      fr: "OpenAI a publié un Model Spec actualisé, structuré autour de cinq valeurs destinées à orienter les systèmes plus puissants vers un jugement solide, l’autonomie humaine et la fidélité à l’intention de l’utilisateur. Pour les usages réglementés, ce document nourrit la gouvernance mais ne remplace ni les contrôles contractuels, ni les tests propres au modèle, ni le suivi en production."
+    link: https://openai.com/index/updated-model-spec/
+  - date: '2026-10-28'
+    type: update
+    title:
+      en: "Cisco open-sources Project Quarry for multi-step AI-agent defence"
+      fr: "Cisco ouvre Project Quarry pour défendre contre les attaques multi-étapes d’agents IA"
+    description:
+      en: "Cisco introduced the open-source Project Quarry to describe and detect harmful agent behaviour that emerges across a sequence of individually benign-looking actions. It gives security, AI and governance teams a shared framework for threat modelling, telemetry and controls around autonomous workflows."
+      fr: "Cisco a présenté le projet open source Quarry pour décrire et détecter les comportements nuisibles d’agents qui apparaissent au fil d’une séquence d’actions apparemment anodines. Il fournit aux équipes sécurité, IA et gouvernance un cadre commun pour la modélisation des menaces, la télémétrie et les contrôles des workflows autonomes."
+    link: https://news.google.com/rss/articles/CBMidkFVX3lxTE4zb1FEWG9SWld6N1pndWVYR1A4VkU3YUVaMklFOFQ5WldURVFUbzlBZVFZMThWMjlMQk00UW5rRWZlQ3FJSE1fenFTYTAwRHZlVDNvbWU4OFFpSndzTjhvWndtc3ZldnJDYzU3STJ0c0hMWmpvN2c?oc=5
+  - date: '2026-10-29'
+    type: update
+    title:
+      en: "Alphabet and Amazon results renew scrutiny of AI capital spending"
+      fr: "Les résultats d’Alphabet et d’Amazon ravivent l’examen des dépenses d’investissement dans l’IA"
+    description:
+      en: "Alphabet shares fell after a revenue miss, while Amazon also came under pressure as rising AI spending overshadowed strong cloud growth. The market reaction reinforces a shift from rewarding AI investment alone to demanding measurable utilisation, revenue conversion, cash generation and durable margins."
+      fr: "L’action Alphabet a chuté après un chiffre d’affaires inférieur aux attentes, tandis qu’Amazon a aussi été sanctionné, ses dépenses IA ayant éclipsé une forte croissance du cloud. La réaction du marché confirme que les investisseurs exigent désormais utilisation mesurable, conversion en revenus, génération de trésorerie et marges durables, au-delà des seuls investissements."
+    link: https://news.google.com/rss/articles/CBMipAFBVV95cUxObTRZdktaNHNaUkc2SG45TFV3V3hKRlMwdWdFTEhyUVFSRnBodWFIM0gxSHh5NWZDVkp3WnJOX3RTZGFtUDVIN3ZPQnB6NlNOQ01OOXhTRnNhNjkyajZ2ejhEZkRBS1IxMkxjVWJmY3FYa3lqcHUxajVqRXpWdS1UWjdxZFZYTW8tUjBtN2NZTGlLSWFiRlpjTDNKaVlVbHRiLVRCcA?oc=5
   - date: '2026-10-28'
     type: update
     title:
