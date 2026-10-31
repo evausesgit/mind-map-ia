@@ -62,7 +62,7 @@ Related news: data/news.yaml
 <English LinkedIn post draft>
 ```
 
-6. **Regenerate** `web/index.html` (latest 8 items) and `web/news.html` (full feed, one anchor per item):
+6. **Regenerate** `web/index.html` (news rail, latest 30 items) and `web/news.html` (full feed, one anchor per item):
 ```bash
 python3 scripts/generate_home.py
 ```

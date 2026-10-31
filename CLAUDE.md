@@ -88,7 +88,7 @@ Generates `web/topics/*.html` from `data/topics/*.md`. Each topic file has YAML 
 
 ### `scripts/generate_home.py`
 
-Generates `web/index.html` (hero, maps & diagrams, articles, latest 8 news, animations, resources) and `web/news.html` (full feed grouped by month, type filters, text filter, one `#news-<date>-<slug>` anchor per item). Old `index.html#news-…` links redirect to `news.html`.
+Generates `web/index.html` (hero, sticky news rail with the latest 30 items, maps & diagrams, articles, animations, resources) and `web/news.html` (full feed grouped by month, type filters, text filter, one `#news-<date>-<slug>` anchor per item). Old `index.html#news-…` links redirect to `news.html`.
 
 ### `scripts/site_chrome.py`
 
