@@ -65,18 +65,53 @@
     .cell h2 { font-size: 16px; } .cell p { font-size: 14px; }
     .close strong { font-size: 21px; } .close em { font-size: 14px; }
   }
+
+  /* Reveal: column by column, industry first, then its AI counterpart. */
+  .nav button { font: 500 12px 'Inter', sans-serif; color: var(--muted); padding: 6px 10px; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav button:hover { color: var(--text); }
+  .play .eyebrow, .play h1, .play .grid > *, .play .close {
+    opacity: 0; animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: var(--d, 0s); }
+  .play h1 { --d: .25s; }
+  .play .grid > :nth-child(5) { --d: .7s; }
+  .play .grid > :nth-child(9) { --d: .95s; }
+  .play .grid > :nth-child(2) { --d: 1.2s; }
+  .play .grid > :nth-child(6) { --d: 1.4s; }
+  .play .grid > :nth-child(10) { --d: 2.1s; }
+  .play .grid > :nth-child(3) { --d: 2.9s; }
+  .play .grid > :nth-child(7) { --d: 3.1s; }
+  .play .grid > :nth-child(11) { --d: 3.8s; }
+  .play .grid > :nth-child(4) { --d: 4.6s; }
+  .play .grid > :nth-child(8) { --d: 4.8s; }
+  .play .grid > :nth-child(12) { --d: 5.5s; }
+  .play .close { --d: 6.5s; }
+  .play .grow { transform: scaleY(0); animation: grow .9s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--d, 0s) + .3s); }
+  .play .grid > :nth-child(7) .grow { --d: 3.1s; }
+  .play .grid > :nth-child(11) .grow { --d: 3.8s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(calc(var(--u) * .8)); } to { opacity: 1; transform: none; } }
+  @keyframes grow { to { transform: scaleY(1); } }
+
+  /* Ambient motion */
+  .grow { transform-origin: 91px 70px; }
+  .flow { stroke-dasharray: 7 5; animation: flow 1.1s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -12; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow { animation: none; }
+    .play .eyebrow, .play h1, .play .grid > *, .play .close, .play .grow { animation: none; opacity: 1; transform: none; }
+  }
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="person" viewBox="0 0 40 60"><g fill="none" stroke="#EEF2F7" stroke-width="2" stroke-linecap="round"><circle cx="20" cy="17" r="9"/><path d="M3 50 C5 31 35 31 37 50"/></g></symbol>
-    <symbol id="gear" viewBox="-22 -22 44 44"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle r="12"/><circle r="4"/><path d="M0 -18V-12 M0 12V18 M-18 0H-12 M12 0H18 M-12.7 -12.7L-8.5 -8.5 M8.5 8.5L12.7 12.7 M-12.7 12.7L-8.5 8.5 M8.5 -8.5L12.7 -12.7"/></g></symbol>
-    <symbol id="spark" viewBox="-22 -22 44 44"><path fill="currentColor" d="M0,-20 C2,-5 5,-2 20,0 C5,2 2,5 0,20 C-2,5 -5,2 -20,0 C-5,-2 -2,-5 0,-20 Z"/></symbol>
+    <symbol id="gear" viewBox="-22 -22 44 44"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="9s" repeatCount="indefinite"/><circle r="12"/><circle r="4"/><path d="M0 -18V-12 M0 12V18 M-18 0H-12 M12 0H18 M-12.7 -12.7L-8.5 -8.5 M8.5 8.5L12.7 12.7 M-12.7 12.7L-8.5 8.5 M8.5 -8.5L12.7 -12.7"/></g></symbol>
+    <symbol id="spark" viewBox="-22 -22 44 44"><path fill="currentColor" d="M0,-20 C2,-5 5,-2 20,0 C5,2 2,5 0,20 C-2,5 -5,2 -20,0 C-5,-2 -2,-5 0,-20 Z"><animateTransform attributeName="transform" type="scale" values="1;.82;1" dur="3.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;.65;1" dur="3.2s" repeatCount="indefinite"/></path></symbol>
     <symbol id="bars" viewBox="0 0 60 60"><g fill="currentColor"><rect x="4" y="38" width="13" height="18" rx="2" opacity=".4"/><rect x="23" y="24" width="13" height="32" rx="2" opacity=".7"/><rect x="42" y="6" width="13" height="50" rx="2"/></g></symbol>
   </defs>
 </svg>
-<nav class="nav"><a href="mcp-agentic-architecture.html">Animation →</a><a href="../index.html">Home</a></nav>
+<nav class="nav"><button id="replay" type="button" aria-label="Replay the animation">↻ Replay</button><a href="mcp-agentic-architecture.html">Animation →</a><a href="../index.html">Home</a></nav>
 <main class="slide">
   <div class="eyebrow">00 INTRODUCTION</div>
   <h1>Two revolutions, one pattern</h1>
@@ -93,11 +128,11 @@
       <div><h2>From muscle to machine</h2><p>The machine takes over the physical effort.</p></div>
     </article>
     <article class="cell">
-      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#person" x="4" y="10" width="40" height="60"/><use href="#gear" x="38" y="44" width="28" height="28"/><use href="#bars" x="62" y="10" width="58" height="60"/></svg>
+      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#person" x="4" y="10" width="40" height="60"/><use href="#gear" x="38" y="44" width="28" height="28"/><g class="grow"><use href="#bars" x="62" y="10" width="58" height="60"/></g></svg>
       <div><h2>Productivity jumps</h2><p>One worker tends what once took many hands.</p></div>
     </article>
     <article class="cell last">
-      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#gear" x="2" y="18" width="32" height="32"/><use href="#gear" x="44" y="18" width="32" height="32"/><use href="#gear" x="86" y="18" width="32" height="32"/><path d="M4 60 H116" stroke="currentColor" stroke-width="2.4"/><path d="M108 54 L116 60 L108 66" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M18 50 V60 M60 50 V60 M102 50 V60" stroke="currentColor" stroke-width="1.6"/></svg>
+      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#gear" x="2" y="18" width="32" height="32"/><use href="#gear" x="44" y="18" width="32" height="32"/><use href="#gear" x="86" y="18" width="32" height="32"/><path class="flow" d="M4 60 H116" stroke="currentColor" stroke-width="2.4"/><path d="M108 54 L116 60 L108 66" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M18 50 V60 M60 50 V60 M102 50 V60" stroke="currentColor" stroke-width="1.6"/></svg>
       <div><h2>The factory</h2><p>Machines linked in one line produce what none could alone.</p></div>
     </article>
 
@@ -107,11 +142,11 @@
       <div><h2>From brain to model</h2><p>AI takes on part of the thinking: reading, drafting, analysing.</p></div>
     </article>
     <article class="cell ai">
-      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#person" x="4" y="10" width="40" height="60"/><use href="#spark" x="38" y="44" width="28" height="28"/><use href="#bars" x="62" y="10" width="58" height="60"/></svg>
+      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#person" x="4" y="10" width="40" height="60"/><use href="#spark" x="38" y="44" width="28" height="28"/><g class="grow"><use href="#bars" x="62" y="10" width="58" height="60"/></g></svg>
       <div><h2>Productivity jumps</h2><p>One person with an assistant covers far more ground.</p></div>
     </article>
     <article class="cell ai last">
-      <svg viewBox="0 0 120 80" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" opacity=".7"><path d="M60 40 L18 16 M60 40 L102 16 M60 40 L18 64 M60 40 L102 64"/></g><circle cx="60" cy="40" r="14" fill="#0B0F16" stroke="currentColor" stroke-width="2"/><use href="#spark" x="50" y="30" width="20" height="20"/><use href="#spark" x="6" y="4" width="24" height="24"/><use href="#spark" x="90" y="4" width="24" height="24"/><use href="#spark" x="6" y="52" width="24" height="24"/><use href="#spark" x="90" y="52" width="24" height="24"/></svg>
+      <svg viewBox="0 0 120 80" aria-hidden="true"><g class="flow" stroke="currentColor" stroke-width="1.6" opacity=".8"><path d="M60 40 L18 16 M60 40 L102 16 M60 40 L18 64 M60 40 L102 64"/></g><circle cx="60" cy="40" r="14" fill="#0B0F16" stroke="currentColor" stroke-width="2"/><use href="#spark" x="50" y="30" width="20" height="20"/><use href="#spark" x="6" y="4" width="24" height="24"/><use href="#spark" x="90" y="4" width="24" height="24"/><use href="#spark" x="6" y="52" width="24" height="24"/><use href="#spark" x="90" y="52" width="24" height="24"/></svg>
       <div><h2>Multi-agent systems</h2><p>Specialised agents, coordinated, could tackle what none can alone.</p></div>
     </article>
   </section>
@@ -121,5 +156,16 @@
     <em>The biggest gains came from reorganising the work, not from the machine alone.</em>
   </div>
 </main>
+<script>
+(function () {
+  const slide = document.querySelector(".slide");
+  const play = () => { slide.classList.remove("play"); void slide.offsetWidth; slide.classList.add("play"); };
+  document.getElementById("replay").onclick = play;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll("svg").forEach((s) => s.pauseAnimations());
+  }
+  play();
+})();
+</script>
 </body>
 </html>
