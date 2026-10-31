@@ -137,6 +137,24 @@ animations:
       fr: "Un copilote qui enquête via MCP aux côtés d’un Sales Trader Cash Equity"
     output: animations/sales-trader-copilot.html
 
+slides:
+  - id: agent-anatomy
+    title:
+      en: "Anatomy of an agent"
+      fr: "Anatomie d’un agent"
+    description:
+      en: "Harness, model, skills, memory, tools and MCP, with the key vocabulary"
+      fr: "Harness, modèle, skills, mémoire, tools et MCP, avec le vocabulaire clé"
+    output: animations/mcp-concepts.html
+  - id: rag-anatomy
+    title:
+      en: "Anatomy of a RAG system"
+      fr: "Anatomie d’un système RAG"
+    description:
+      en: "Embeddings, vector store, reranker and ingestion, with the key vocabulary"
+      fr: "Embeddings, base vectorielle, reranker et ingestion, avec le vocabulaire clé"
+    output: animations/rag-concepts.html
+
 links:
   - id: laude
     icon: "🚢"

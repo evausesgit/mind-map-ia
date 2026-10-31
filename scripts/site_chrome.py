@@ -372,6 +372,7 @@ def build_nav(prefix="", active="", current=""):
     reg = load_registry()
     maps = [m for m in reg.get("maps", []) if m.get("id") != "glossary"]
     animations = reg.get("animations", [])
+    slides = reg.get("slides", [])
     links = reg.get("links", [])
     topics = load_topics()
     dives = [tp for tp in topics if tp.get("category") != "reflexion"]
@@ -392,6 +393,10 @@ def build_nav(prefix="", active="", current=""):
         maps_menu += '<div class="sh-menu-label">' + _bi("Animations", "Animations") + "</div>"
         for a in animations:
             maps_menu += _item(prefix + a["output"], a["title"], a.get("description", ""), active=current == a["output"])
+    if slides:
+        maps_menu += '<div class="sh-menu-label">' + _bi("Slides", "Slides") + "</div>"
+        for s in slides:
+            maps_menu += _item(prefix + s["output"], s["title"], s.get("description", ""), active=current == s["output"])
     maps_menu += "</div></div>"
 
     art_menu = '<div class="sh-menu wide"><div class="sh-menu-col">'
