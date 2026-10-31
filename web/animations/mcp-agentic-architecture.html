@@ -45,8 +45,11 @@
   .voice-hint { position: fixed; top: 18px; right: 104px; z-index: 5; font: 500 12px 'Inter', sans-serif; color: var(--bg);
     background: var(--accent); border: 0; padding: 7px 12px; border-radius: 8px; cursor: pointer; }
   .voice-hint:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+  .next { position: fixed; right: 20px; bottom: 96px; z-index: 5; font: 600 14px 'Inter', sans-serif; color: var(--bg);
+    background: var(--accent); text-decoration: none; padding: 10px 16px; border-radius: 10px; }
+  .next[hidden] { display: none; }
   @media (max-width: 640px) { .chapter { display: none; } }
-  body.bare .hud, body.bare .back, body.bare .voice-hint { display: none; }
+  body.bare .hud, body.bare .back, body.bare .voice-hint, body.bare .next { display: none; }
 </style>
 </head>
 <body>
@@ -66,6 +69,7 @@
   </button>
 </div>
 <button class="voice-hint" id="voice-hint" hidden>Turn on voice</button>
+<a class="next" id="next" href="mcp-concepts.html" hidden>Key concepts →</a>
 <audio id="narration" src="mcp-explainer/narration-en.mp3" preload="auto"></audio>
 
 <script src="mcp-explainer/gsap.min.js"></script>
@@ -110,6 +114,7 @@
       $("time").textContent = `${fmt(tl.time())} / ${fmt(ex.duration)}`;
       $("chapter").textContent = chapterAt(tl.time()).label;
       $("play").innerHTML = tl.isActive() ? ICON_PAUSE : ICON_PLAY;
+      $("next").hidden = tl.time() < ex.duration - 0.05;
     }
     gsap.ticker.add(refresh);
 
