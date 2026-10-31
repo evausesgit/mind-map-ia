@@ -1,4 +1,49 @@
 news:
+  - date: '2026-10-30'
+    type: update
+    title:
+      en: "OpenAI backs a shared robots.txt signal for AI-training preferences"
+      fr: "OpenAI adopte un signal robots.txt commun pour les préférences d’entraînement IA"
+    description:
+      en: "OpenAI says it will honor a common robots.txt signal for foundational generative-AI training, reducing the need for websites to maintain provider-specific crawler rules. Implementation is planned for the coming months; existing OpenAI crawler controls will remain in place."
+      fr: "OpenAI annonce qu’il respectera un signal robots.txt commun concernant l’utilisation des contenus pour l’entraînement des IA génératives fondamentales, afin d’éviter aux sites de maintenir des règles propres à chaque fournisseur. La mise en œuvre est prévue dans les prochains mois et les contrôles existants d’OpenAI resteront applicables."
+    link: https://openai.com/index/helping-websites-express-ai-training-preferences/
+  - date: '2026-10-30'
+    type: update
+    title:
+      en: "Chainalysis confirms breach involving offensive agentic techniques"
+      fr: "Chainalysis confirme une intrusion impliquant des techniques agentiques offensives"
+    description:
+      en: "Chainalysis says an attacker accessed user IDs, names, work emails and organisational role labels using what it calls offensive agentic techniques. The company reports no evidence that investigation content, clear-text passwords, MFA secrets or session tokens were accessed, but the investigation and customer-level impact assessment are continuing."
+      fr: "Chainalysis indique qu’un attaquant a accédé à des identifiants utilisateurs, noms, e-mails professionnels et rôles organisationnels au moyen de techniques agentiques offensives. L’entreprise ne relève à ce stade aucun accès aux contenus d’enquête, mots de passe en clair, secrets MFA ou jetons de session, mais l’investigation et l’évaluation par client se poursuivent."
+    link: https://www.chainalysis.com/blog/security-incident-october-30/
+  - date: '2026-10-29'
+    type: research
+    title:
+      en: "CrowdStrike says AI-assisted campaign targeted over 200 organisations in 11 days"
+      fr: "Selon CrowdStrike, une campagne assistée par IA a visé plus de 200 organisations en 11 jours"
+    description:
+      en: "CrowdStrike reports that a China-linked group used an agentic framework and models including DeepSeek to scale attacks against more than 200 organisations over 11 days. The case suggests AI can compress reconnaissance and exploitation cycles, while attribution and performance claims still depend on the vendor’s evidence."
+      fr: "CrowdStrike rapporte qu’un groupe lié à la Chine a utilisé un framework agentique et des modèles dont DeepSeek pour industrialiser des attaques contre plus de 200 organisations en 11 jours. Le cas suggère que l’IA peut raccourcir les cycles de reconnaissance et d’exploitation, même si l’attribution et les performances avancées reposent sur les éléments du fournisseur."
+    link: https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/
+  - date: '2026-10-28'
+    type: update
+    title:
+      en: "US DOJ examines Nvidia’s $12.93 billion Hugging Face acquisition"
+      fr: "Le DOJ américain examine l’acquisition de Hugging Face par Nvidia pour 12,93 milliards de dollars"
+    description:
+      en: "The US Department of Justice has asked how Nvidia’s proposed $12.93 billion purchase of Hugging Face could affect AI competition, according to Reuters. The inquiry is not a finding of wrongdoing, but it highlights the strategic importance of model distribution, developer tooling and access to open-source infrastructure."
+      fr: "Le département américain de la Justice examine, selon Reuters, les effets possibles sur la concurrence du projet d’acquisition de Hugging Face par Nvidia pour 12,93 milliards de dollars. Cette demande d’informations ne constitue pas un constat d’infraction, mais souligne l’importance stratégique de la distribution des modèles, des outils développeurs et de l’accès à l’infrastructure open source."
+    link: https://www.reuters.com/world/us-doj-is-inquiring-about-nvidias-purchase-hugging-face-sources-say-2026-10-28/
+  - date: '2026-09-30'
+    type: research
+    title:
+      en: "Xiaomi releases a compact 0.8B open-weight model for document OCR"
+      fr: "Xiaomi publie un modèle OCR compact de 0,8 milliard de paramètres en poids ouverts"
+    description:
+      en: "Xiaomi-OCR-0 is a 0.8B vision-language model derived from Qwen3.5-0.8B and trained on roughly 170 million OCR-centric samples. Its maintainers report strong document, table and formula benchmarks, but enterprises should independently test multilingual quality, licence terms, layout robustness and data-handling controls."
+      fr: "Xiaomi-OCR-0 est un modèle vision-langage de 0,8 milliard de paramètres dérivé de Qwen3.5-0.8B et entraîné sur environ 170 millions d’exemples centrés sur l’OCR. Ses auteurs annoncent de solides résultats sur les documents, tableaux et formules, à valider indépendamment en entreprise pour le multilingue, la licence, les mises en page et le traitement des données."
+    link: https://github.com/xiaomi-research/Xiaomi-OCR-0
   - date: '2026-10-29'
     type: update
     title:
