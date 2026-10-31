@@ -185,8 +185,9 @@ body {
 .sh-menu-col { display: grid; gap: 2px; align-content: start; }
 .sh-menu-label {
   padding: 10px 10px 4px;
-  font: 500 11px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  font: 500 11px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink);
 }
+.sh-menu-label:not(:first-child) { margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line); }
 .sh-item {
   display: grid; gap: 2px;
   padding: 8px 10px; border-radius: 8px;

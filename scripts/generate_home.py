@@ -16,7 +16,7 @@ NEWS_FILE = ROOT / "data" / "news.yaml"
 OUTPUT = ROOT / "web" / "index.html"
 NEWS_OUTPUT = ROOT / "web" / "news.html"
 
-HOME_NEWS_COUNT = 8
+HOME_NEWS_COUNT = 30
 
 MONTHS = {
     "en": ["January", "February", "March", "April", "May", "June", "July",
@@ -135,9 +135,29 @@ a { color: inherit; }
 .sec-head .more { font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; }
 .sec-head .more:hover { color: var(--accent); }
 
+/* Home layout: hero and sections on the left, news rail running down the right */
+.home-wrap { max-width: 1440px; }
+.home-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 0 48px;
+  grid-template-areas: "hero rail" "rest rail";
+}
+.home-grid > .hero { grid-area: hero; }
+.home-rest { grid-area: rest; min-width: 0; }
+.rail {
+  grid-area: rail; align-self: start;
+  position: sticky; top: var(--header-h);
+  max-height: calc(100vh - var(--header-h));
+  overflow-y: auto; scrollbar-width: thin;
+  padding: 40px 4px 24px 24px; border-left: 1px solid var(--line);
+}
+.rail .sec-head h2 { font-size: 18px; }
+.rail .nws { grid-template-columns: minmax(0, 1fr); }
+.rail .nws time { grid-row: auto; padding-top: 0; }
+.rail .nws h3 { font-size: 14px; }
+
 /* Hero */
-.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; padding-block: 64px 8px; }
-.hero h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.04; font-weight: 600; letter-spacing: -0.035em; margin-top: 16px; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-block: 48px 8px; }
+.hero h1 { font-size: clamp(36px, 3.6vw, 52px); line-height: 1.04; font-weight: 600; letter-spacing: -0.035em; margin-top: 16px; }
 .hero .lede { font-size: 18px; color: var(--ink-2); margin-top: 18px; max-width: 30em; }
 .hero .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 .hero .stats { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 28px; font: 13px var(--f-mono); color: var(--muted); }
@@ -182,14 +202,14 @@ a { color: inherit; }
 .tile:hover h3 { color: var(--accent); }
 
 /* Articles + news */
-.split { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 56px; }
+.arts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; }
 .art {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 20px;
+  display: grid; gap: 4px; align-content: start;
   padding-block: 16px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink);
 }
 .art h3 { font-family: var(--f-read); font-size: 21px; font-weight: 500; line-height: 1.25; letter-spacing: -0.01em; transition: color .15s; }
-.art p { font-size: 14px; color: var(--muted); grid-column: 1; line-height: 1.5; }
-.art .m { grid-row: 1; grid-column: 2; font: 12px var(--f-mono); color: var(--muted); white-space: nowrap; padding-top: 5px; }
+.art p { font-size: 14px; color: var(--muted); line-height: 1.5; }
+.art .m { font: 12px var(--f-mono); color: var(--muted); white-space: nowrap; }
 .art:hover h3 { color: var(--accent); }
 .nws {
   display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 2px 14px;
@@ -209,18 +229,25 @@ a { color: inherit; }
 .res p { font-size: 13px; color: var(--muted); line-height: 1.45; }
 main { padding-bottom: 88px; }
 
-@media (max-width: 1000px) {
+@media (max-width: 1320px) {
+  .home-grid { grid-template-columns: minmax(0, 1fr) 280px; gap: 0 32px; }
   .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .res { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+@media (max-width: 1080px) {
+  /* The rail no longer fits beside the hero: it follows it, shortened */
+  .home-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "hero" "rail" "rest"; }
+  .rail { position: static; max-height: none; overflow: visible; padding: 40px 0 0; border-left: 0; }
+  .rail .nws:nth-of-type(n+7) { display: none; }
+  .rail .nws { grid-template-columns: 58px minmax(0, 1fr); }
+  .rail .nws time { grid-row: span 2; padding-top: 2px; }
+}
 @media (max-width: 860px) {
   .hero { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 40px 0; }
-  .split { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .arts { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
   .tiles, .res { grid-template-columns: minmax(0, 1fr); }
-  .art { grid-template-columns: minmax(0, 1fr); }
-  .art .m { grid-row: auto; grid-column: 1; padding-top: 0; }
   .sec { padding-block: 40px 0; }
 }
 
@@ -397,7 +424,7 @@ def build_home(maps, animations, links, topics, news):
     macro_href = macro["output"] if macro else "macro.html"
     macro_nodes = macro.get("nodes", 26) if macro else 26
     body = f"""<main>
-  <div class="wrap">
+  <div class="wrap home-wrap home-grid">
     <section class="hero">
       <div>
         {bi({"en": "Understand the LLM ecosystem", "fr": "Comprendre l'écosystème des LLM"}, "div", "eyebrow")}
@@ -422,23 +449,23 @@ def build_home(maps, animations, links, topics, news):
       </a>
     </section>
 
+    <aside class="rail" id="latest" aria-label="Latest news">
+      <div class="sec-head">{bi({"en": "Latest news", "fr": "Actualités"}, "h2")}
+        <a class="more" href="news.html">{bi({"en": f"All {len(news)} →", "fr": f"Voir les {len(news)} →"})}</a></div>
+      {nws}
+    </aside>
+
+    <div class="home-rest">
     <section class="sec" id="maps">
       <div class="sec-head">{bi({"en": "Maps & diagrams", "fr": "Cartes et diagrammes"}, "h2")}
         <a class="more" href="ecosystem.html">{bi({"en": "Full ecosystem map →", "fr": "Carte complète de l'écosystème →"})}</a></div>
       <div class="tiles">{map_tiles}</div>
     </section>
 
-    <section class="sec split">
-      <div id="articles" style="scroll-margin-top:calc(var(--header-h) + 16px)">
-        <div class="sec-head">{bi({"en": "Articles", "fr": "Articles"}, "h2")}
-          <span class="more">{len(topics)} {bi({"en": "pieces", "fr": "textes"})}</span></div>
-        {arts}
-      </div>
-      <div id="latest">
-        <div class="sec-head">{bi({"en": "Latest news", "fr": "Actualités"}, "h2")}
-          <a class="more" href="news.html">{bi({"en": f"All {len(news)} →", "fr": f"Voir les {len(news)} →"})}</a></div>
-        {nws}
-      </div>
+    <section class="sec" id="articles">
+      <div class="sec-head">{bi({"en": "Articles", "fr": "Articles"}, "h2")}
+        <span class="more">{len(topics)} {bi({"en": "pieces", "fr": "textes"})}</span></div>
+      <div class="arts">{arts}</div>
     </section>
 
     <section class="sec" id="animations">
@@ -450,6 +477,7 @@ def build_home(maps, animations, links, topics, news):
       <div class="sec-head">{bi({"en": "Resources elsewhere", "fr": "Ressources ailleurs"}, "h2")}</div>
       <div class="res">{res}</div>
     </section>
+    </div>
   </div>
 </main>"""
 
