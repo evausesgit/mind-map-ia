@@ -1,0 +1,28 @@
+output: web/animations/mcp-concepts.html
+title: "Agent Key Concepts"
+eyebrow: "ANATOMY OF AN AGENT"
+aria: "An agent sits inside a harness, connected to a model, skills, memory and tools. Tools reach enterprise data through MCP."
+back: { href: "mcp-agentic-architecture.html?autoplay=0", label: "← Animation" }
+user: "USER"
+center: "AI AGENT"
+ring: "AGENTIC HARNESS · ORCHESTRATOR"
+# Four corners, in order: top-left, top-right, bottom-left, bottom-right.
+# Glyphs: hex | grid | stack | plug
+blocks:
+  - { id: model,  label: "MODEL",  sub: "LLM · GPU", glyph: hex }
+  - { id: skills, label: "SKILLS", glyph: grid }
+  - { id: memory, label: "MEMORY", glyph: stack }
+  - { id: tools,  label: "TOOLS",  glyph: plug, via_side: true }
+side: { title: "MCP", subtitle: "MODEL CONTEXT PROTOCOL", reaches: "ENTERPRISE TOOLS & DATA" }
+question: "Which of these blocks do you already have, and who owns each one?"
+takeaway: "Most of an agent is not the model."
+# `node` is the diagram element a term lights up: center, side, or a block id.
+glossary:
+  - { term: "LLM", node: model, text: "Large language model: predicts text token by token. It reasons, but acts on nothing by itself." }
+  - { term: "GPU", node: model, text: "The parallel chip that trains and runs LLMs. Its capacity drives speed and cost." }
+  - { term: "Harness", node: center, text: "The software around the model: context, permissions, logs. It turns a model into an agent." }
+  - { term: "Orchestrator", node: center, text: "The loop inside the harness: picks the next step until the task is done." }
+  - { term: "Skills", node: skills, text: "Packaged know-how for a task, loaded only when it is needed." }
+  - { term: "Memory", node: memory, text: "What the agent keeps beyond a single exchange: context, preferences, past work." }
+  - { term: "Tools", node: tools, text: "Functions the agent can call to read data or act on a system." }
+  - { term: "MCP", node: side, text: "Open standard connecting AI applications to tools and data: one protocol, not bespoke integrations." }

@@ -1,0 +1,24 @@
+output: web/animations/rag-concepts.html
+title: "RAG Key Concepts"
+eyebrow: "ANATOMY OF A RAG SYSTEM"
+aria: "A RAG application sits inside a retrieval pipeline, connected to a model, chunking, embeddings and a vector store. The vector store is filled from company documents through ingestion."
+back: { href: "../rag-pattern.html", label: "← RAG map" }
+user: "USER"
+center: "RAG APPLICATION"
+ring: "RETRIEVAL · ORCHESTRATION"
+blocks:
+  - { id: model,     label: "MODEL",    sub: "LLM", glyph: hex }
+  - { id: reranker,  label: "RERANKER", glyph: grid }
+  - { id: embedding, label: "EMBEDDING", glyph: plug }
+  - { id: store,     label: "VECTORS",  sub: "Vector store", glyph: stack, via_side: true }
+side: { title: "ETL", subtitle: "INGESTION PIPELINE", reaches: "COMPANY DOCUMENTS" }
+question: "Which documents would you trust an answer to come from?"
+takeaway: "Retrieval quality sets the ceiling for answer quality."
+glossary:
+  - { term: "RAG", node: center, text: "Retrieval-augmented generation: find the relevant passages, then let the model answer from them." }
+  - { term: "LLM", node: model, text: "Writes the final answer from the question and the retrieved passages." }
+  - { term: "Ingestion", node: side, text: "The pipeline that loads documents, cleans them and keeps the index up to date." }
+  - { term: "Chunking", node: side, text: "Splitting documents into passages small enough to retrieve and quote." }
+  - { term: "Embedding", node: embedding, text: "Turns text into a vector, so that similar meanings sit close together." }
+  - { term: "Vector store", node: store, text: "Database that finds the passages closest to the question." }
+  - { term: "Reranker", node: reranker, text: "Re-scores the candidates and keeps only the most relevant ones." }

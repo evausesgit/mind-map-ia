@@ -60,12 +60,12 @@
 <svg class="diagram" id="diagram" viewBox="0 0 1180 1080" role="img" aria-label="An agent sits inside a harness, connected to a model, skills, memory and tools. Tools reach enterprise data through MCP.">
   <defs>
     <radialGradient id="halo"><stop offset="0" stop-color="#A594FF" stop-opacity=".26"/><stop offset="1" stop-color="#A594FF" stop-opacity="0"/></radialGradient>
-    <linearGradient id="mcpfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3DD6C6" stop-opacity=".05"/><stop offset=".5" stop-color="#3DD6C6" stop-opacity=".3"/><stop offset="1" stop-color="#3DD6C6" stop-opacity=".05"/></linearGradient>
+    <linearGradient id="sidefill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3DD6C6" stop-opacity=".05"/><stop offset=".5" stop-color="#3DD6C6" stop-opacity=".3"/><stop offset="1" stop-color="#3DD6C6" stop-opacity=".05"/></linearGradient>
     <path id="arc" d="M 354 374 A 192 192 0 0 1 686 374"/>
-    <g id="hex" fill="none" stroke-width="1.6"><polygon points="7.8,-4.5 7.8,4.5 0,9 -7.8,4.5 -7.8,-4.5 0,-9"/><circle r="2.4" fill="currentColor" stroke="none"/></g>
+    <g id="hex" fill="none" stroke-width="1.6"><polygon points="7.8,-4.5 7.8,4.5 0,9 -7.8,4.5 -7.8,-4.5 0,-9"/><circle r="2.4" fill="#A594FF" stroke="none"/></g>
     <g id="grid" fill="none" stroke-width="1.6"><rect x="-8" y="-8" width="7" height="7" rx="1.5"/><rect x="1" y="-8" width="7" height="7" rx="1.5"/><rect x="-8" y="1" width="7" height="7" rx="1.5"/><rect x="1" y="1" width="7" height="7" rx="1.5"/></g>
     <g id="stack" fill="none" stroke-width="1.6"><rect x="-9" y="-8" width="18" height="4" rx="2"/><rect x="-9" y="-2" width="18" height="4" rx="2"/><rect x="-9" y="4" width="18" height="4" rx="2"/></g>
-    <g id="plug" fill="none" stroke-width="1.6"><rect x="-7" y="-3" width="14" height="10" rx="3"/><path d="M-3,-3 V-9 M3,-3 V-9 M0,7 V11"/></g>
+    <g id="plug" fill="none" stroke-width="1.6"><rect x="-7" y="-5" width="14" height="10" rx="3"/><path d="M-3,-5 V-11 M3,-5 V-11 M0,5 V9"/></g>
   </defs>
 
   <g font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2">
@@ -74,70 +74,47 @@
     <text x="112" y="77" fill="#8B94A5">ANATOMY OF AN AGENT</text>
   </g>
 
-  <!-- user -->
   <g class="n" data-n="user">
     <circle cx="90" cy="470" r="44" fill="none" stroke="rgba(255,255,255,.2)"/>
     <circle cx="90" cy="458" r="10" fill="none" stroke="#EEF2F7" stroke-width="1.8"/>
     <path d="M71 488 C73 474 107 474 109 488" fill="none" stroke="#EEF2F7" stroke-width="1.8" stroke-linecap="round"/>
     <text x="90" y="548" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">USER</text>
   </g>
-  <path class="wire" d="M138 470 H392" stroke="#7EA6FF" stroke-opacity=".5" stroke-width="1.2"/>
+  <path class="wire" d="M138 470 H384" stroke="#7EA6FF" stroke-opacity=".5" stroke-width="1.2"/>
 
-  <!-- harness -->
-  <g class="n" data-n="harness" style="--tone:var(--orchestrator)">
+  <g class="n" data-n="center" style="--tone:var(--orchestrator)">
     <circle cx="520" cy="470" r="330" fill="url(#halo)"/>
     <circle class="base" cx="520" cy="470" r="220" style="fill:none;stroke:#A594FF;stroke-opacity:.8;stroke-width:1.5"/>
     <circle cx="520" cy="470" r="234" fill="none" stroke="#A594FF" stroke-opacity=".35" stroke-dasharray="2 10"/>
     <text font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="3.6" font-weight="500" fill="#A594FF"><textPath href="#arc" startOffset="50%" text-anchor="middle">AGENTIC HARNESS · ORCHESTRATOR</textPath></text>
   </g>
 
-  <!-- spokes -->
   <g fill="none" stroke="#A594FF" stroke-opacity=".5" stroke-width="1.3">
-    <path class="wire" data-n="model" d="M345 186 L364 314"/>
-    <path class="wire" data-n="skills" d="M695 186 L676 314"/>
-    <path class="wire" data-n="memory" d="M345 754 L364 626"/>
-    <path class="wire" data-n="tools" d="M695 754 L676 626"/>
+  <path class="wire" data-n="model" d="M345 186 L364 314"/>
+  <path class="wire" data-n="skills" d="M695 186 L676 314"/>
+  <path class="wire" data-n="memory" d="M345 754 L364 626"/>
+  <path class="wire" data-n="tools" d="M695 754 L676 626"/>
   </g>
-  <path class="wire" data-n="mcp" d="M740 470 H1006" stroke="#3DD6C6" stroke-opacity=".65" stroke-width="1.3"/>
-  <path class="wire" data-n="tools mcp" d="M885 790 H1006" stroke="#3DD6C6" stroke-opacity=".8" stroke-width="1.3" stroke-dasharray="5 6"/>
+  <path class="wire" data-n="side" d="M740 470 H1006" stroke="#3DD6C6" stroke-opacity=".65" stroke-width="1.3"/>
+  <path class="wire" data-n="tools side" d="M885 790 H1006" stroke="#3DD6C6" stroke-opacity=".8" stroke-width="1.3" stroke-dasharray="5 6"/>
 
-  <!-- agent -->
-  <g class="n" data-n="harness" style="--tone:var(--request)">
+  <g class="n" data-n="center" style="--tone:var(--request)">
     <rect class="base" x="384" y="426" width="272" height="88" rx="24" style="stroke:#7EA6FF;stroke-opacity:.55"/>
     <path transform="translate(428 470)" fill="#7EA6FF" d="M0,-11 C1.2,-3 3,-1.2 11,0 C3,1.2 1.2,3 0,11 C-1.2,3 -3,1.2 -11,0 C-3,-1.2 -1.2,-3 0,-11 Z"/>
     <text x="456" y="476" font-size="18" font-weight="600" letter-spacing="3.2" fill="#EEF2F7">AI AGENT</text>
   </g>
 
-  <!-- capabilities -->
   <g font-size="16" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">
-    <g class="n" data-n="model" style="--tone:var(--orchestrator)">
-      <rect class="base" x="155" y="108" width="190" height="84" rx="14"/>
-      <use href="#hex" x="196" y="140" stroke="#A594FF" color="#A594FF"/>
-      <text x="220" y="146">MODEL</text>
-      <text x="250" y="172" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">LLM · GPU</text>
-    </g>
-    <g class="n" data-n="skills" style="--tone:var(--orchestrator)">
-      <rect class="base" x="695" y="108" width="190" height="84" rx="14"/>
-      <use href="#grid" x="736" y="150" stroke="#A594FF"/>
-      <text x="760" y="156">SKILLS</text>
-    </g>
-    <g class="n" data-n="memory" style="--tone:var(--orchestrator)">
-      <rect class="base" x="155" y="748" width="190" height="84" rx="14"/>
-      <use href="#stack" x="196" y="790" stroke="#A594FF"/>
-      <text x="220" y="796">MEMORY</text>
-    </g>
-    <g class="n" data-n="tools" style="--tone:var(--orchestrator)">
-      <rect class="base" x="695" y="748" width="190" height="84" rx="14"/>
-      <use href="#plug" x="740" y="788" stroke="#A594FF"/>
-      <text x="764" y="796">TOOLS</text>
-    </g>
+    <g class="n" data-n="model" style="--tone:var(--orchestrator)"><rect class="base" x="155" y="108" width="190" height="84" rx="14"/><use href="#hex" x="214" y="140" stroke="#A594FF"/><text x="238" y="146">MODEL</text><text x="250" y="172" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">LLM · GPU</text></g>
+    <g class="n" data-n="skills" style="--tone:var(--orchestrator)"><rect class="base" x="695" y="108" width="190" height="84" rx="14"/><use href="#grid" x="748" y="150" stroke="#A594FF"/><text x="772" y="156">SKILLS</text></g>
+    <g class="n" data-n="memory" style="--tone:var(--orchestrator)"><rect class="base" x="155" y="748" width="190" height="84" rx="14"/><use href="#stack" x="208" y="790" stroke="#A594FF"/><text x="232" y="796">MEMORY</text></g>
+    <g class="n" data-n="tools" style="--tone:var(--orchestrator)"><rect class="base" x="695" y="748" width="190" height="84" rx="14"/><use href="#plug" x="754" y="790" stroke="#A594FF"/><text x="778" y="796">TOOLS</text></g>
   </g>
 
-  <!-- MCP -->
-  <g class="n" data-n="mcp" style="--tone:var(--mcp)">
+  <g class="n" data-n="side" style="--tone:var(--mcp)">
     <text x="1040" y="118" text-anchor="middle" font-size="44" font-weight="700" letter-spacing="7" fill="#EEF2F7">MCP</text>
     <text x="1040" y="148" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="2.8" fill="#3DD6C6">MODEL CONTEXT PROTOCOL</text>
-    <rect x="1008" y="182" width="64" height="660" rx="32" fill="url(#mcpfill)" stroke="#3DD6C6" stroke-width="1.4"/>
+    <rect x="1008" y="182" width="64" height="660" rx="32" fill="url(#sidefill)" stroke="#3DD6C6" stroke-width="1.4"/>
     <path d="M1040 208 V816" stroke="#3DD6C6" stroke-opacity=".5" stroke-dasharray="3 7"/>
     <g fill="#05070B" stroke="#3DD6C6" stroke-width="1.5">
       <rect x="1000" y="462" width="16" height="16" rx="3"/><rect x="1000" y="782" width="16" height="16" rx="3"/>
@@ -147,7 +124,6 @@
     <text transform="translate(1132 510) rotate(90)" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2" fill="#8B94A5">ENTERPRISE TOOLS &amp; DATA</text>
   </g>
 
-  <!-- discussion prompt -->
   <text x="590" y="948" text-anchor="middle" font-size="31" font-weight="500" fill="#EEF2F7">Which of these blocks do you already have, and who owns each one?</text>
   <text x="590" y="992" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="17" fill="#3DD6C6">Most of an agent is not the model.</text>
 </svg>
@@ -157,12 +133,12 @@
   <ul>
     <li><button class="term" data-n="model" style="--tone:var(--orchestrator)"><b>LLM</b><span>Large language model: predicts text token by token. It reasons, but acts on nothing by itself.</span></button></li>
     <li><button class="term" data-n="model" style="--tone:var(--orchestrator)"><b>GPU</b><span>The parallel chip that trains and runs LLMs. Its capacity drives speed and cost.</span></button></li>
-    <li><button class="term" data-n="harness" style="--tone:var(--orchestrator)"><b>Harness</b><span>The software around the model: context, permissions, logs. It turns a model into an agent.</span></button></li>
-    <li><button class="term" data-n="harness" style="--tone:var(--orchestrator)"><b>Orchestrator</b><span>The loop inside the harness: picks the next step until the task is done.</span></button></li>
+    <li><button class="term" data-n="center" style="--tone:var(--orchestrator)"><b>Harness</b><span>The software around the model: context, permissions, logs. It turns a model into an agent.</span></button></li>
+    <li><button class="term" data-n="center" style="--tone:var(--orchestrator)"><b>Orchestrator</b><span>The loop inside the harness: picks the next step until the task is done.</span></button></li>
     <li><button class="term" data-n="skills" style="--tone:var(--orchestrator)"><b>Skills</b><span>Packaged know-how for a task, loaded only when it is needed.</span></button></li>
     <li><button class="term" data-n="memory" style="--tone:var(--orchestrator)"><b>Memory</b><span>What the agent keeps beyond a single exchange: context, preferences, past work.</span></button></li>
     <li><button class="term" data-n="tools" style="--tone:var(--orchestrator)"><b>Tools</b><span>Functions the agent can call to read data or act on a system.</span></button></li>
-    <li><button class="term" data-n="mcp" style="--tone:var(--mcp)"><b>MCP</b><span>Open standard connecting AI applications to tools and data: one protocol, not bespoke integrations.</span></button></li>
+    <li><button class="term" data-n="side" style="--tone:var(--mcp)"><b>MCP</b><span>Open standard connecting AI applications to tools and data: one protocol, not bespoke integrations.</span></button></li>
   </ul>
 </section>
 </main>

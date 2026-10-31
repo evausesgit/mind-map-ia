@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<title>{{title}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05070B; --text: #EEF2F7; --muted: #8B94A5; --faint: #454D5C; --line: rgba(255,255,255,0.13);
+    --card: #0B0F16; --request: #7EA6FF; --orchestrator: #A594FF; --mcp: #3DD6C6;
+    --u: min(1vw, 1.78vh); /* 1% of a 16:9 frame */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  body { background: radial-gradient(ellipse at 30% 45%, #0E1522 0%, var(--bg) 62%); }
+
+  .slide { height: 100vh; display: grid; grid-template-columns: 61fr 39fr; align-items: center;
+    gap: calc(var(--u) * 2); padding: 0 calc(var(--u) * 3) 0 calc(var(--u) * 1); }
+  .diagram { width: 100%; max-height: 100vh; display: block; }
+
+  .glossary h1 { font: 500 calc(var(--u) * .68)/1 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: calc(var(--u) * 1.2); }
+  .glossary ul { list-style: none; border-top: 1px solid var(--line); }
+  .glossary li { border-bottom: 1px solid var(--line); }
+  .term { width: 100%; display: block; text-align: left; background: none; border: 0; color: inherit; font: inherit; cursor: pointer;
+    padding: calc(var(--u) * .68) calc(var(--u) * .7); border-left: 2px solid transparent; transition: background .2s, border-color .2s; }
+  .term:hover, .term.on { background: rgba(255,255,255,0.04); border-left-color: var(--tone); }
+  .term:focus-visible { outline: 2px solid var(--mcp); outline-offset: -2px; }
+  .term b { display: block; font-size: calc(var(--u) * 1.06); font-weight: 600; color: var(--tone); margin-bottom: calc(var(--u) * .18); }
+  .term span { display: block; font-size: calc(var(--u) * .92); line-height: 1.38; color: var(--muted); }
+  .term.on span { color: var(--text); }
+
+  .n, .wire { transition: opacity .25s; }
+  .n .base { fill: var(--card); stroke: var(--line); stroke-width: 1.2; transition: stroke .25s; }
+  svg.focus .n:not(.on), svg.focus .wire:not(.on) { opacity: .22; }
+  .n.on .base { stroke: var(--tone); stroke-width: 2; }
+
+  .nav { position: fixed; top: 18px; right: 20px; display: flex; gap: 8px; z-index: 5; }
+  .nav a { font: 500 12px 'Inter', sans-serif; color: var(--muted); text-decoration: none; padding: 6px 10px;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav a:hover { color: var(--text); }
+
+  @media (max-width: 800px) {
+    :root { --u: 16px; }
+    html, body { height: auto; }
+    .slide { height: auto; display: block; padding: 56px 16px 32px; }
+    .term b { font-size: 16px; } .term span { font-size: 14px; }
+    .glossary h1 { font-size: 11px; margin-top: 24px; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav"><a href="{{back_href}}">{{back_label}}</a><a href="../index.html">Home</a></nav>
+<main class="slide">
+<svg class="diagram" id="diagram" viewBox="0 0 1180 1080" role="img" aria-label="{{aria}}">
+  <defs>
+    <radialGradient id="halo"><stop offset="0" stop-color="#A594FF" stop-opacity=".26"/><stop offset="1" stop-color="#A594FF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="sidefill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3DD6C6" stop-opacity=".05"/><stop offset=".5" stop-color="#3DD6C6" stop-opacity=".3"/><stop offset="1" stop-color="#3DD6C6" stop-opacity=".05"/></linearGradient>
+    <path id="arc" d="M 354 374 A 192 192 0 0 1 686 374"/>
+    <g id="hex" fill="none" stroke-width="1.6"><polygon points="7.8,-4.5 7.8,4.5 0,9 -7.8,4.5 -7.8,-4.5 0,-9"/><circle r="2.4" fill="#A594FF" stroke="none"/></g>
+    <g id="grid" fill="none" stroke-width="1.6"><rect x="-8" y="-8" width="7" height="7" rx="1.5"/><rect x="1" y="-8" width="7" height="7" rx="1.5"/><rect x="-8" y="1" width="7" height="7" rx="1.5"/><rect x="1" y="1" width="7" height="7" rx="1.5"/></g>
+    <g id="stack" fill="none" stroke-width="1.6"><rect x="-9" y="-8" width="18" height="4" rx="2"/><rect x="-9" y="-2" width="18" height="4" rx="2"/><rect x="-9" y="4" width="18" height="4" rx="2"/></g>
+    <g id="plug" fill="none" stroke-width="1.6"><rect x="-7" y="-5" width="14" height="10" rx="3"/><path d="M-3,-5 V-11 M3,-5 V-11 M0,5 V9"/></g>
+  </defs>
+
+  <g font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text x="80" y="77" fill="#EEF2F7" font-size="12">01</text>
+    <text x="112" y="77" fill="#8B94A5">{{eyebrow}}</text>
+  </g>
+
+  <g class="n" data-n="user">
+    <circle cx="90" cy="470" r="44" fill="none" stroke="rgba(255,255,255,.2)"/>
+    <circle cx="90" cy="458" r="10" fill="none" stroke="#EEF2F7" stroke-width="1.8"/>
+    <path d="M71 488 C73 474 107 474 109 488" fill="none" stroke="#EEF2F7" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="90" y="548" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">{{user}}</text>
+  </g>
+  <path class="wire" d="M138 470 H{{center_left}}" stroke="#7EA6FF" stroke-opacity=".5" stroke-width="1.2"/>
+
+  <g class="n" data-n="center" style="--tone:var(--orchestrator)">
+    <circle cx="520" cy="470" r="330" fill="url(#halo)"/>
+    <circle class="base" cx="520" cy="470" r="220" style="fill:none;stroke:#A594FF;stroke-opacity:.8;stroke-width:1.5"/>
+    <circle cx="520" cy="470" r="234" fill="none" stroke="#A594FF" stroke-opacity=".35" stroke-dasharray="2 10"/>
+    <text font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="3.6" font-weight="500" fill="#A594FF"><textPath href="#arc" startOffset="50%" text-anchor="middle">{{ring}}</textPath></text>
+  </g>
+
+  {{wires}}
+
+  <g class="n" data-n="center" style="--tone:var(--request)">
+    <rect class="base" x="{{center_left}}" y="426" width="{{center_width}}" height="88" rx="24" style="stroke:#7EA6FF;stroke-opacity:.55"/>
+    <path transform="translate({{center_icon}} 470)" fill="#7EA6FF" d="M0,-11 C1.2,-3 3,-1.2 11,0 C3,1.2 1.2,3 0,11 C-1.2,3 -3,1.2 -11,0 C-3,-1.2 -1.2,-3 0,-11 Z"/>
+    <text x="{{center_text}}" y="476" font-size="18" font-weight="600" letter-spacing="3.2" fill="#EEF2F7">{{center}}</text>
+  </g>
+
+  <g font-size="16" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">
+    {{blocks}}
+  </g>
+
+  <g class="n" data-n="side" style="--tone:var(--mcp)">
+    <text x="1040" y="118" text-anchor="middle" font-size="44" font-weight="700" letter-spacing="7" fill="#EEF2F7">{{side_title}}</text>
+    <text x="1040" y="148" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="2.8" fill="#3DD6C6">{{side_subtitle}}</text>
+    <rect x="1008" y="182" width="64" height="660" rx="32" fill="url(#sidefill)" stroke="#3DD6C6" stroke-width="1.4"/>
+    <path d="M1040 208 V816" stroke="#3DD6C6" stroke-opacity=".5" stroke-dasharray="3 7"/>
+    <g fill="#05070B" stroke="#3DD6C6" stroke-width="1.5">
+      <rect x="1000" y="462" width="16" height="16" rx="3"/><rect x="1000" y="782" width="16" height="16" rx="3"/>
+      <rect x="1064" y="262" width="16" height="16" rx="3"/><rect x="1064" y="382" width="16" height="16" rx="3"/><rect x="1064" y="502" width="16" height="16" rx="3"/><rect x="1064" y="622" width="16" height="16" rx="3"/><rect x="1064" y="742" width="16" height="16" rx="3"/>
+    </g>
+    <path d="M1080 270 H1104 M1080 390 H1104 M1080 510 H1104 M1080 630 H1104 M1080 750 H1104" stroke="#3DD6C6" stroke-opacity=".7"/>
+    <text transform="translate(1132 510) rotate(90)" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2" fill="#8B94A5">{{side_reaches}}</text>
+  </g>
+
+  <text x="590" y="948" text-anchor="middle" font-size="31" font-weight="500" fill="#EEF2F7">{{question}}</text>
+  <text x="590" y="992" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="17" fill="#3DD6C6">{{takeaway}}</text>
+</svg>
+
+<section class="glossary" aria-label="Glossary">
+  <h1>Key vocabulary</h1>
+  <ul>
+{{glossary}}
+  </ul>
+</section>
+</main>
+<script>
+(function () {
+  const svg = document.getElementById("diagram");
+  const terms = [...document.querySelectorAll(".term")];
+  let pinned = null;
+  function show(term) {
+    const key = term && term.dataset.n;
+    terms.forEach((t) => t.classList.toggle("on", t === term));
+    svg.classList.toggle("focus", !!key);
+    svg.querySelectorAll("[data-n]").forEach((el) => {
+      el.classList.toggle("on", !!key && el.dataset.n.split(" ").includes(key));
+    });
+  }
+  terms.forEach((t) => {
+    t.addEventListener("mouseenter", () => show(t));
+    t.addEventListener("mouseleave", () => show(pinned));
+    t.addEventListener("focus", () => show(t));
+    t.addEventListener("blur", () => show(pinned));
+    t.addEventListener("click", () => { pinned = pinned === t ? null : t; show(pinned); });
+  });
+})();
+</script>
+</body>
+</html>

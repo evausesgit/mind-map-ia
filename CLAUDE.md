@@ -25,6 +25,7 @@ python scripts/generate_topic.py                                             # w
 python scripts/generate.py data/use-cases.yaml web/use-cases.html
 python scripts/generate_quantization_visual.py                               # web/quantization.html
 python scripts/generate_llm_chatbot.py                                       # web/animations/llm-chatbot.html
+python scripts/generate_concept_slide.py                                     # data/slides/*.yaml → concept slides in web/animations/
 ```
 
 Only dependency: `pyyaml` (`pip install pyyaml`).
