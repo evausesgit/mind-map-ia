@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<title>Two Revolutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05070B; --text: #EEF2F7; --muted: #8B94A5; --line: rgba(255,255,255,0.13);
+    --card: #0B0F16; --industry: #F2C46D; --ai: #A594FF; --mcp: #3DD6C6;
+    --u: min(1vw, 1.78vh); /* 1% of a 16:9 frame */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  body { background: radial-gradient(ellipse at 50% 40%, #0E1522 0%, var(--bg) 66%); }
+
+  .slide { height: 100vh; width: calc(var(--u) * 100); margin: 0 auto; padding: calc(var(--u) * 3.4) calc(var(--u) * 4);
+    display: flex; flex-direction: column; justify-content: center; gap: calc(var(--u) * 2); }
+  .eyebrow { display: flex; align-items: center; gap: calc(var(--u) * .7); font: 500 calc(var(--u) * .68)/1 'JetBrains Mono', ui-monospace, monospace;
+    letter-spacing: .24em; color: var(--muted); }
+  .eyebrow::before { content: ""; width: calc(var(--u) * 1.3); height: 1px; background: var(--mcp); }
+  h1 { font-size: calc(var(--u) * 3.4); font-weight: 600; letter-spacing: -.02em; }
+
+  .grid { display: grid; grid-template-columns: calc(var(--u) * 12) repeat(3, 1fr); gap: calc(var(--u) * .8); }
+  .stage { font: 500 calc(var(--u) * .78)/1.35 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .14em; color: var(--muted);
+    padding: 0 calc(var(--u) * .3) calc(var(--u) * .2); text-transform: uppercase; }
+  .stage b { display: block; color: var(--text); font-weight: 500; }
+  .lane { --tone: var(--industry); display: flex; flex-direction: column; justify-content: center; border-left: 2px solid var(--tone);
+    padding-left: calc(var(--u) * .9); }
+  .lane.ai { --tone: var(--ai); }
+  .lane b { font-size: calc(var(--u) * 1.3); font-weight: 600; color: var(--tone); line-height: 1.2; }
+  .lane span { font: 400 calc(var(--u) * .78)/1.3 'JetBrains Mono', ui-monospace, monospace; color: var(--muted); margin-top: calc(var(--u) * .35); }
+
+  .cell { --tone: var(--industry); background: var(--card); border: 1px solid var(--line); border-radius: calc(var(--u) * .8);
+    padding: calc(var(--u) * 2.1) calc(var(--u) * 1.3); display: grid; grid-template-columns: calc(var(--u) * 6.8) 1fr; gap: calc(var(--u) * 1); align-items: center; }
+  .cell.ai { --tone: var(--ai); }
+  .cell.last { border-color: var(--tone); }
+  .cell svg { width: 100%; height: auto; display: block; color: var(--tone); }
+  .cell h2 { font-size: calc(var(--u) * 1.3); font-weight: 600; margin-bottom: calc(var(--u) * .25); }
+  .cell p { font-size: calc(var(--u) * 1.06); line-height: 1.36; color: var(--muted); }
+
+  .close { text-align: center; margin-top: calc(var(--u) * .9); }
+  .close strong { display: block; font-size: calc(var(--u) * 2); font-weight: 500; }
+  .close em { display: block; font: 400 calc(var(--u) * 1)/1.4 'JetBrains Mono', ui-monospace, monospace; color: var(--mcp); margin-top: calc(var(--u) * .5); }
+
+  .nav { position: fixed; top: 18px; right: 20px; display: flex; gap: 8px; z-index: 5; }
+  .nav a { font: 500 12px 'Inter', sans-serif; color: var(--muted); text-decoration: none; padding: 6px 10px;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav a:hover { color: var(--text); }
+
+  @media (max-width: 800px) {
+    :root { --u: 16px; }
+    html, body { height: auto; }
+    .slide { height: auto; width: auto; padding: 56px 16px 32px; }
+    h1 { font-size: 30px; }
+    .grid { grid-template-columns: 1fr; }
+    .stage { display: none; }
+    .lane { margin-top: 16px; }
+    .cell { grid-template-columns: 72px 1fr; padding: 14px; }
+    .cell h2 { font-size: 16px; } .cell p { font-size: 14px; }
+    .close strong { font-size: 21px; } .close em { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="person" viewBox="0 0 40 60"><g fill="none" stroke="#EEF2F7" stroke-width="2" stroke-linecap="round"><circle cx="20" cy="17" r="9"/><path d="M3 50 C5 31 35 31 37 50"/></g></symbol>
+    <symbol id="gear" viewBox="-22 -22 44 44"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle r="12"/><circle r="4"/><path d="M0 -18V-12 M0 12V18 M-18 0H-12 M12 0H18 M-12.7 -12.7L-8.5 -8.5 M8.5 8.5L12.7 12.7 M-12.7 12.7L-8.5 8.5 M8.5 -8.5L12.7 -12.7"/></g></symbol>
+    <symbol id="spark" viewBox="-22 -22 44 44"><path fill="currentColor" d="M0,-20 C2,-5 5,-2 20,0 C5,2 2,5 0,20 C-2,5 -5,2 -20,0 C-5,-2 -2,-5 0,-20 Z"/></symbol>
+    <symbol id="bars" viewBox="0 0 60 60"><g fill="currentColor"><rect x="4" y="38" width="13" height="18" rx="2" opacity=".4"/><rect x="23" y="24" width="13" height="32" rx="2" opacity=".7"/><rect x="42" y="6" width="13" height="50" rx="2"/></g></symbol>
+  </defs>
+</svg>
+<nav class="nav"><a href="mcp-agentic-architecture.html">Animation →</a><a href="../index.html">Home</a></nav>
+<main class="slide">
+  <div class="eyebrow">00 INTRODUCTION</div>
+  <h1>Two revolutions, one pattern</h1>
+
+  <section class="grid" aria-label="Comparison of the industrial revolution and the AI revolution">
+    <div></div>
+    <div class="stage">Step 1<b>The work moves</b></div>
+    <div class="stage">Step 2<b>One person does more</b></div>
+    <div class="stage">Step 3<b>Coordination changes the scale</b></div>
+
+    <div class="lane"><b>Industrial revolution</b><span>The power of muscle</span></div>
+    <article class="cell">
+      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#person" x="4" y="10" width="40" height="60"/><path d="M50 40 H66" stroke="currentColor" stroke-width="2"/><use href="#gear" x="68" y="14" width="50" height="50"/></svg>
+      <div><h2>From muscle to machine</h2><p>The machine takes over the physical effort.</p></div>
+    </article>
+    <article class="cell">
+      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#person" x="4" y="10" width="40" height="60"/><use href="#gear" x="38" y="44" width="28" height="28"/><use href="#bars" x="62" y="10" width="58" height="60"/></svg>
+      <div><h2>Productivity jumps</h2><p>One worker tends what once took many hands.</p></div>
+    </article>
+    <article class="cell last">
+      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#gear" x="2" y="18" width="32" height="32"/><use href="#gear" x="44" y="18" width="32" height="32"/><use href="#gear" x="86" y="18" width="32" height="32"/><path d="M4 60 H116" stroke="currentColor" stroke-width="2.4"/><path d="M108 54 L116 60 L108 66" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M18 50 V60 M60 50 V60 M102 50 V60" stroke="currentColor" stroke-width="1.6"/></svg>
+      <div><h2>The factory</h2><p>Machines linked in one line produce what none could alone.</p></div>
+    </article>
+
+    <div class="lane ai"><b>AI revolution</b><span>The power of thought</span></div>
+    <article class="cell ai">
+      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#person" x="4" y="10" width="40" height="60"/><path d="M50 40 H66" stroke="currentColor" stroke-width="2"/><use href="#spark" x="70" y="16" width="46" height="46"/></svg>
+      <div><h2>From brain to model</h2><p>AI takes on part of the thinking: reading, drafting, analysing.</p></div>
+    </article>
+    <article class="cell ai">
+      <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#person" x="4" y="10" width="40" height="60"/><use href="#spark" x="38" y="44" width="28" height="28"/><use href="#bars" x="62" y="10" width="58" height="60"/></svg>
+      <div><h2>Productivity jumps</h2><p>One person with an assistant covers far more ground.</p></div>
+    </article>
+    <article class="cell ai last">
+      <svg viewBox="0 0 120 80" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" opacity=".7"><path d="M60 40 L18 16 M60 40 L102 16 M60 40 L18 64 M60 40 L102 64"/></g><circle cx="60" cy="40" r="14" fill="#0B0F16" stroke="currentColor" stroke-width="2"/><use href="#spark" x="50" y="30" width="20" height="20"/><use href="#spark" x="6" y="4" width="24" height="24"/><use href="#spark" x="90" y="4" width="24" height="24"/><use href="#spark" x="6" y="52" width="24" height="24"/><use href="#spark" x="90" y="52" width="24" height="24"/></svg>
+      <div><h2>Multi-agent systems</h2><p>Specialised agents, coordinated, could tackle what none can alone.</p></div>
+    </article>
+  </section>
+
+  <div class="close">
+    <strong>What will be the assembly line of your organisation?</strong>
+    <em>The biggest gains came from reorganising the work, not from the machine alone.</em>
+  </div>
+</main>
+</body>
+</html>
