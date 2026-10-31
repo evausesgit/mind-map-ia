@@ -1,0 +1,54 @@
+# English voice-over for web/animations/mcp-agentic-architecture.html.
+# Regenerate with scripts/generate_narration.py.
+#
+# `at` is the second on the animation timeline where the line starts. Lines
+# follow the on-screen captions, condensed where the caption slot is short.
+# Pronunciation overrides use Kokoro's syntax: [word](/phonemes/).
+voice: af_heart
+speed: 1.08
+lang: a   # American English
+output: web/animations/mcp-explainer/narration-en.mp3
+duration: 167.8
+
+cues:
+  # The request
+  - { at: 1.5,   text: "A trader asks: what is happening on NVIDIA, and which of my clients may be interested?" }
+  - { at: 8.6,   text: "An agent doesn't just answer. It reasons about what to do next." }
+  # The agentic stack
+  - { at: 15.0,  text: "The agent reasons. The orchestrator coordinates." }
+  - { at: 19.0,  text: "It picks a model, recalls context, and invokes skills, until it needs external data." }
+  # The problem
+  - { at: 28.0,  text: "It needs market context, recent information, and client relevance." }
+  - { at: 34.0,  text: "So how does an AI application securely connect to enterprise tools and data?" }
+  # Enter MCP
+  - { at: 39.6,  text: "Enter [MCP](/ˌɛmsˌipˈi/), the Model Context Protocol." }
+  - { at: 43.5,  text: "A standard way for AI applications to reach tools and data. A universal interface, not another model." }
+  # Cash Equity MCP ecosystem
+  - { at: 51.0,  text: "The agent decides what it needs. [MCP](/ˌɛmsˌipˈi/) gives it standard access. The data comes back, and the agent combines the results." }
+  # The result
+  - { at: 62.0,  text: "The trader gets the drivers, the relevant clients, and a suggested action." }
+  - { at: 67.6,  text: "One question. Four systems. A single, sourced answer." }
+  # Inside an MCP server
+  - { at: 72.2,  text: "Behind every tool call sits an [MCP](/ˌɛmsˌipˈi/) server, built like any enterprise service." }
+  - { at: 77.7,  text: "It runs inside your architecture: your network, your gateway, your secrets." }
+  - { at: 82.9,  text: "A data access model defines what can be read." }
+  - { at: 86.5,  text: "Context tells the model what the data means." }
+  - { at: 90.2,  text: "Guardrails bound what goes in and comes out." }
+  - { at: 94.0,  text: "Every call is checked against the user's rights." }
+  - { at: 97.8,  text: "An authorised call passes every layer, and leaves an audit trail." }
+  - { at: 104.5, text: "Outside the user's entitlements? The call stops at the gate." }
+  # From build to run
+  - { at: 111.4, text: "An [MCP](/ˌɛmsˌipˈi/) server is software. It ships like software." }
+  - { at: 115.6, text: "Unit test every tool on its own," }
+  - { at: 118.9, text: "then test the whole chain, with real identities." }
+  - { at: 122.5, text: "Ship it through [CI/CD](/sˌiˌaɪsˌidˈi/), like any production service." }
+  - { at: 126.2, text: "Then watch every call in production." }
+  - { at: 131.0, text: "What you observe feeds the next version." }
+  # Why MCP matters
+  - { at: 136.8, text: "Without a standard, every agent rebuilds every integration. Four agents, six systems: twenty-four bespoke integrations." }
+  - { at: 145.2, text: "Build it once, and reuse it across agents. Ten standard connections." }
+  - { at: 150.0, text: "One agent. Many enterprise capabilities." }
+  - { at: 153.9, text: "[MCP](/ˌɛmsˌipˈi/) connects intelligence to the enterprise." }
+  # Summary
+  - { at: 159.6, text: "From AI assistant to enterprise agent." }
+  - { at: 163.0, text: "Governed, tested, monitored." }

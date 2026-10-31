@@ -29,6 +29,12 @@ python scripts/generate_llm_chatbot.py                                       # w
 
 Only dependency: `pyyaml` (`pip install pyyaml`).
 
+Voice-over of the MCP animation (`data/narration/*.yaml` → `web/animations/mcp-explainer/narration-en.mp3`), regenerated locally with Kokoro, not in CI. The cue times follow the animation, so update them if `config.js` timings change:
+
+```bash
+uv run --python 3.12 --with kokoro --with soundfile --with 'misaki[en]' --with pip --with pyyaml python scripts/generate_narration.py
+```
+
 **Note:** The CI pipeline only regenerates `macro.html`, `ecosystem.html`, `dense-vs-moe.html`, `glossary.html`, `index.html` and `news.html`. All other pages (topic maps, slides, topic articles) must be regenerated locally and committed. Any change to `scripts/site_chrome.py` (nav, tokens, header) affects every page, so regenerate them all.
 
 ## Architecture
