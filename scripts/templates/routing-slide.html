@@ -35,7 +35,7 @@
 <body>
 <nav class="nav">
   <button class="en" type="button" data-set-lang="en">EN</button><button class="fr" type="button" data-set-lang="fr">FR</button>
-  <a href="{{back_href}}">{{back}}</a>
+  <a href="{{back_href}}" data-back>{{back}}</a>
   <a href="../index.html" data-lang="en">Home</a><a href="../index.html" data-lang="fr">Accueil</a>
 </nav>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -54,9 +54,14 @@
 {{slides}}
 <script>
 {{js}}
+const backLink = document.querySelector("[data-back]");
+const backBase = backLink.getAttribute("href");
+const syncBack = () => { backLink.href = `${backBase}&lang=${document.documentElement.lang}`; };
+syncBack();
 document.querySelectorAll("[data-set-lang]").forEach((b) => b.addEventListener("click", () => {
   document.documentElement.lang = b.dataset.setLang;
   try { localStorage.setItem("mmia-lang", b.dataset.setLang); } catch (e) {}
+  syncBack();
 }));
 </script>
 </body>

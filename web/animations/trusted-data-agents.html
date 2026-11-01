@@ -49,13 +49,17 @@
   .voice-hint { position: fixed; top: 18px; right: 104px; z-index: 5; font: 500 12px 'Inter', sans-serif; color: var(--bg);
     background: var(--accent); border: 0; padding: 7px 12px; border-radius: 8px; cursor: pointer; }
   .voice-hint:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+  .next { position: fixed; right: 20px; bottom: 96px; z-index: 5; font: 600 14px 'Inter', sans-serif; color: var(--bg);
+    background: var(--accent); text-decoration: none; padding: 10px 16px; border-radius: 10px; }
+  .next[hidden] { display: none; }
   @media (max-width: 640px) { .chapter { display: none; } }
-  body.bare .hud, body.bare .back, body.bare .voice-hint { display: none; }
+  body.bare .hud, body.bare .back, body.bare .voice-hint, body.bare .next { display: none; }
 </style>
 </head>
 <body>
 <div class="player"><div id="stage"></div></div>
 <a class="back" href="../index.html">← Home</a>
+<a class="next" id="next" href="model-routing.html" hidden>Key concepts →</a>
 <div class="hud" id="hud">
   <button id="play" aria-label="Play / pause"></button>
   <button id="restart" aria-label="Restart" title="Restart (R)">
@@ -89,6 +93,9 @@
     : (navigator.language || "en").toLowerCase().startsWith("fr") ? "fr" : "en";
   document.documentElement.lang = lang;
   document.querySelector(".back").textContent = lang === "fr" ? "← Accueil" : "← Home";
+  const next = document.getElementById("next");
+  next.textContent = lang === "fr" ? "Concepts clés →" : "Key concepts →";
+  next.href = `model-routing.html?lang=${lang}`;
 
   const ICON_PLAY = '<svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>';
   const ICON_PAUSE = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="3.5" y="2.5" width="3" height="11" rx="1"/><rect x="9.5" y="2.5" width="3" height="11" rx="1"/></svg>';
@@ -122,6 +129,7 @@
       $("knob").style.left = p * 100 + "%";
       $("time").textContent = `${fmt(tl.time())} / ${fmt(ex.duration)}`;
       $("chapter").textContent = chapterAt(tl.time()).label;
+      $("next").hidden = tl.time() < ex.duration - 0.05;
       $("play").innerHTML = tl.isActive() ? ICON_PAUSE : ICON_PLAY;
     }
     gsap.ticker.add(refresh);
