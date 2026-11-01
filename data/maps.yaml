@@ -162,6 +162,14 @@ slides:
       en: "Embeddings, vector store, reranker and ingestion, with the key vocabulary"
       fr: "Embeddings, base vectorielle, reranker et ingestion, avec le vocabulaire clé"
     output: animations/rag-concepts.html
+  - id: model-routing
+    title:
+      en: "Where does the model run?"
+      fr: "Où tourne le modèle ?"
+    description:
+      en: "On-premise or frontier cloud model: how data stays private, with the key vocabulary"
+      fr: "Modèle on-premise ou frontière dans le cloud : comment les données restent privées, avec le vocabulaire clé"
+    output: animations/model-routing.html
 
 links:
   - id: laude

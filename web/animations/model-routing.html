@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<title>Where does the model run?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function () {
+  var q = new URLSearchParams(location.search).get("lang"), saved = null;
+  try { saved = localStorage.getItem("mmia-lang"); } catch (e) {}
+  var lang = q || saved || ((navigator.language || "en").toLowerCase().indexOf("fr") === 0 ? "fr" : "en");
+  document.documentElement.lang = lang === "fr" ? "fr" : "en";
+})();
+</script>
+<style>
+  :root {
+    --bg: #05070B; --text: #EEF2F7; --muted: #8B94A5; --faint: #454D5C; --line: rgba(255,255,255,0.13);
+    --card: #0B0F16; --request: #7EA6FF; --orchestrator: #A594FF; --mcp: #3DD6C6;
+    --u: min(1vw, 1.78vh); /* 1% of a 16:9 frame */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  body { background: radial-gradient(ellipse at 30% 45%, #0E1522 0%, var(--bg) 62%); }
+
+  .slide { height: 100vh; display: grid; grid-template-columns: 61fr 39fr; align-items: center;
+    gap: calc(var(--u) * 2); padding: 0 calc(var(--u) * 3) 0 calc(var(--u) * 1); }
+  .diagram { width: 100%; max-height: 100vh; display: block; }
+
+  .glossary h1 { font: 500 calc(var(--u) * .68)/1 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: calc(var(--u) * 1.2); }
+  .glossary ul { list-style: none; border-top: 1px solid var(--line); }
+  .glossary li { border-bottom: 1px solid var(--line); }
+  .term { width: 100%; display: block; text-align: left; background: none; border: 0; color: inherit; font: inherit; cursor: pointer;
+    padding: calc(var(--u) * .68) calc(var(--u) * .7); border-left: 2px solid transparent; transition: background .2s, border-color .2s; }
+  .term:hover, .term.on { background: rgba(255,255,255,0.04); border-left-color: var(--tone); }
+  .term:focus-visible { outline: 2px solid var(--mcp); outline-offset: -2px; }
+  .term b { display: block; font-size: calc(var(--u) * 1.06); font-weight: 600; color: var(--tone); margin-bottom: calc(var(--u) * .18); }
+  .term span { display: block; font-size: calc(var(--u) * .92); line-height: 1.38; color: var(--muted); }
+  .term.on span { color: var(--text); }
+
+  .n, .wire { transition: opacity .25s; }
+  .n .base { fill: var(--card); stroke: var(--line); stroke-width: 1.2; transition: stroke .25s; }
+  svg.focus .n:not(.on), svg.focus .wire:not(.on) { opacity: .22; }
+  .n.on .base { stroke: var(--tone); stroke-width: 2; }
+
+  .nav { position: fixed; top: 18px; right: 20px; display: flex; gap: 8px; z-index: 5; }
+  .nav a { font: 500 12px 'Inter', sans-serif; color: var(--muted); text-decoration: none; padding: 6px 10px;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav a:hover { color: var(--text); }
+
+  @media (max-width: 800px) {
+    :root { --u: 16px; }
+    html, body { height: auto; }
+    .slide { height: auto; display: block; padding: 56px 16px 32px; }
+    .term b { font-size: 16px; } .term span { font-size: 14px; }
+    .glossary h1 { font-size: 11px; margin-top: 24px; }
+  }
+
+  :root { --c3: #F27A7A; --c2: #F5A55A; --c1: #34D399; }
+  html[lang="en"] [data-lang="fr"], html[lang="fr"] [data-lang="en"] { display: none; }
+  .nav button { font: 500 12px 'JetBrains Mono', monospace; color: var(--muted); padding: 6px 9px; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav button:hover { color: var(--text); }
+  html[lang="en"] .nav button.en, html[lang="fr"] .nav button.fr { color: var(--bg); background: var(--mcp); border-color: var(--mcp); }
+  .diagram text { font-family: 'Inter', sans-serif; }
+  .diagram text.mono { font-family: 'JetBrains Mono', monospace; }
+  /* ten terms instead of seven: tighter rows */
+  .term { padding-top: calc(var(--u) * .46); padding-bottom: calc(var(--u) * .46); }
+  .term b { font-size: calc(var(--u) * 1); margin-bottom: calc(var(--u) * .1); }
+  .term span { font-size: calc(var(--u) * .84); line-height: 1.32; }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <button class="en" type="button" data-set-lang="en">EN</button><button class="fr" type="button" data-set-lang="fr">FR</button>
+  <a href="trusted-data-agents.html?scene=7">← Animation</a>
+  <a href="../index.html" data-lang="en">Home</a><a href="../index.html" data-lang="fr">Accueil</a>
+</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="halo"><stop offset="0" stop-color="#7EA6FF" stop-opacity=".16"/><stop offset="1" stop-color="#7EA6FF" stop-opacity="0"/></radialGradient>
+    <radialGradient id="halo-cloud"><stop offset="0" stop-color="#A594FF" stop-opacity=".2"/><stop offset="1" stop-color="#A594FF" stop-opacity="0"/></radialGradient>
+    <g id="i-spark"><path stroke="none" fill="currentColor" d="M0,-11 C1.2,-3 3,-1.2 11,0 C3,1.2 1.2,3 0,11 C-1.2,3 -3,1.2 -11,0 C-3,-1.2 -1.2,-3 0,-11 Z"/></g>
+    <g id="i-route" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M-11,0 H-2 M-2,0 C2,0 3,-7 11,-7 M-2,0 C2,0 3,7 11,7"/><path d="M7,-10 L11,-7 L7,-4 M7,4 L11,7 L7,10"/></g>
+    <g id="i-mask" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M-11,-6 C-5,-3 5,-3 11,-6 C12,4 6,8 0,8 C-6,8 -12,4 -11,-6 Z"/><path d="M-6,0 H-2 M2,0 H6" stroke-linecap="round"/></g>
+    <g id="i-chip" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="-8" y="-8" width="16" height="16" rx="2.5"/><rect x="-3.5" y="-3.5" width="7" height="7" rx="1"/><path d="M-4,-8 V-11 M4,-8 V-11 M-4,8 V11 M4,8 V11 M-8,-4 H-11 M-8,4 H-11 M8,-4 H11 M8,4 H11" stroke-linecap="round"/></g>
+    <g id="i-hex" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="7.8,-4.5 7.8,4.5 0,9 -7.8,4.5 -7.8,-4.5 0,-9"/><circle r="2.4" fill="currentColor" stroke="none"/></g>
+    <g id="i-lock" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="-8" y="-3" width="16" height="12" rx="3"/><path d="M-5,-3 V-6 C-5,-13 5,-13 5,-6 V-3"/></g>
+    <g id="i-cloud" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M-7,7 C-13,7 -13,-1 -7,-1 C-6,-8 4,-9 6,-2 C13,-3 13,7 7,7 Z"/></g>
+  </defs>
+</svg>
+<main class="slide" data-lang="en">
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="Inside the bank perimeter, a sales agent sends each request through a routing gateway. Secret data goes to an open-weights model on on-premise GPUs. Confidential data is anonymised, then sent to a frontier model in the cloud. Public data goes straight to the cloud.">
+  <g font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text class="mono" x="80" y="77" fill="#EEF2F7" font-size="12">07</text>
+    <text class="mono" x="112" y="77" fill="#8B94A5">WHERE DOES THE MODEL RUN?</text>
+  </g>
+
+  <circle cx="400" cy="400" r="400" fill="url(#halo)"/>
+  <circle cx="1000" cy="340" r="240" fill="url(#halo-cloud)"/>
+
+  <g class="n" data-n="perimeter onprem" style="--tone:var(--request)">
+    <rect class="base" x="30" y="112" width="760" height="760" rx="26" stroke-dasharray="8 8" style="fill:rgba(126,166,255,.035);stroke:#7EA6FF;stroke-opacity:.6;stroke-width:1.4"/>
+    <use href="#i-lock" x="60" y="148" color="#7EA6FF"/>
+    <text class="mono" x="84" y="153" font-size="13" font-weight="500" letter-spacing="2.6" fill="#7EA6FF">BANK PERIMETER · ON-PREMISE</text>
+  </g>
+  <g class="n" data-n="cloud" style="--tone:var(--orchestrator)">
+    <rect class="base" x="850" y="112" width="300" height="760" rx="26" stroke-dasharray="8 8" style="fill:rgba(165,148,255,.035);stroke:#A594FF;stroke-opacity:.6;stroke-width:1.4"/>
+    <use href="#i-cloud" x="880" y="148" color="#A594FF"/>
+    <text class="mono" x="904" y="153" font-size="13" font-weight="500" letter-spacing="2.2" fill="#A594FF">CLOUD · FRONTIER</text>
+  </g>
+
+  <g fill="none" stroke-width="1.4">
+    <path class="wire" data-n="gateway" d="M202 380 H250" stroke="#7EA6FF" stroke-opacity=".6"/>
+    <path class="wire" data-n="gateway anon" d="M490 362 C530 362 516 262 556 262" stroke="#F5A55A" stroke-opacity=".7"/>
+    <path class="wire" data-n="anon endpoint" d="M756 262 C810 262 816 322 872 322" stroke="#F5A55A" stroke-opacity=".7"/>
+    <path class="wire" data-n="gateway inference onprem" d="M490 398 C530 398 516 518 556 518" stroke="#F27A7A" stroke-opacity=".7"/>
+    <path class="wire" data-n="gateway endpoint" d="M370 332 C420 120 900 120 1000 290" stroke="#34D399" stroke-opacity=".6"/>
+  </g>
+  <g class="n" data-n="levels" font-size="11" font-weight="600">
+    <circle cx="640" cy="176" r="15" fill="#080B11" stroke="#34D399"/><text class="mono" x="640" y="180" text-anchor="middle" fill="#34D399">C1</text>
+    <circle cx="522" cy="312" r="15" fill="#080B11" stroke="#F5A55A"/><text class="mono" x="522" y="316" text-anchor="middle" fill="#F5A55A">C2</text>
+    <circle cx="522" cy="458" r="15" fill="#080B11" stroke="#F27A7A"/><text class="mono" x="522" y="462" text-anchor="middle" fill="#F27A7A">C3</text>
+  </g>
+
+  <g class="n" data-n="agent" style="--tone:#7EA6FF"><rect class="base" x="52" y="332" width="150" height="96" rx="14"/><use href="#i-spark" x="127" y="360" color="#7EA6FF"/><text x="127" y="392" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">SALES AGENT</text></g>
+  <g class="n" data-n="gateway" style="--tone:#3DD6C6"><rect class="base" x="250" y="332" width="240" height="96" rx="14"/><use href="#i-route" x="370" y="360" color="#3DD6C6"/><text x="370" y="392" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">ROUTING GATEWAY</text><text class="mono" x="370" y="412" text-anchor="middle" font-size="12" fill="#8B94A5">classifies every piece of data</text></g>
+  <g class="n" data-n="anon" style="--tone:#F5A55A"><rect class="base" x="556" y="214" width="200" height="96" rx="14"/><use href="#i-mask" x="656" y="242" color="#F5A55A"/><text x="656" y="274" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">ANONYMISER</text></g>
+  <g class="n" data-n="openweights onprem inference" style="--tone:#7EA6FF"><rect class="base" x="556" y="470" width="200" height="96" rx="14"/><use href="#i-chip" x="656" y="498" color="#7EA6FF"/><text x="656" y="530" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">ON-PREM GPUs</text><text class="mono" x="656" y="550" text-anchor="middle" font-size="12" fill="#8B94A5">open-weights model</text></g>
+  <g class="n" data-n="frontier inference endpoint zdr" style="--tone:#A594FF"><rect class="base" x="872" y="290" width="256" height="96" rx="14"/><use href="#i-hex" x="1000" y="318" color="#A594FF"/><text x="1000" y="350" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">FRONTIER MODEL</text><text class="mono" x="1000" y="370" text-anchor="middle" font-size="12" fill="#8B94A5">private endpoint · EU region</text></g>
+
+  <g class="n" data-n="onprem" style="--tone:var(--c3)">
+    <rect x="552" y="582" width="208" height="28" rx="14" fill="#080B11" stroke="#F27A7A"/>
+    <text class="mono" x="656" y="601" text-anchor="middle" font-size="11.5" letter-spacing="1.2" fill="#F27A7A">NOTHING LEAVES THE BANK</text>
+  </g>
+
+  <g class="n" data-n="levels" style="--tone:var(--c2)">
+    <rect class="base" x="52" y="640" width="716" height="208" rx="14" style="fill:#080B11"/>
+    <text class="mono" x="72" y="668" font-size="12" letter-spacing="2.9" fill="#8B94A5">SENSITIVITY</text>
+    <circle cx="78" cy="697" r="6" fill="#F27A7A"/><text class="mono" x="94" y="702" font-size="14" font-weight="500" fill="#F27A7A">C3</text><text x="128" y="702" font-size="15" font-weight="600" fill="#EEF2F7">Secret</text><text x="128" y="722" font-size="13.5" fill="#8B94A5">Client orders · names, volumes</text><text class="mono" x="750" y="702" text-anchor="end" font-size="13" fill="#F27A7A">→ stays on-prem</text>
+    <circle cx="78" cy="751" r="6" fill="#F5A55A"/><text class="mono" x="94" y="756" font-size="14" font-weight="500" fill="#F5A55A">C2</text><text x="128" y="756" font-size="15" font-weight="600" fill="#EEF2F7">Confidential</text><text x="128" y="776" font-size="13.5" fill="#8B94A5">Buying patterns</text><text class="mono" x="750" y="756" text-anchor="end" font-size="13" fill="#F5A55A">→ anonymised, then cloud</text>
+    <circle cx="78" cy="805" r="6" fill="#34D399"/><text class="mono" x="94" y="810" font-size="14" font-weight="500" fill="#34D399">C1</text><text x="128" y="810" font-size="15" font-weight="600" fill="#EEF2F7">Public</text><text x="128" y="830" font-size="13.5" fill="#8B94A5">Market context · news</text><text class="mono" x="750" y="810" text-anchor="end" font-size="13" fill="#34D399">→ straight to the cloud</text>
+  </g>
+
+  <g class="n" data-n="zdr" style="--tone:var(--c1)">
+    <rect class="base" x="868" y="470" width="264" height="378" rx="14" style="fill:#080B11"/>
+    <text class="mono" x="888" y="500" font-size="12" letter-spacing="2" fill="#8B94A5">WHAT THE CLOUD SEES</text>
+    <text class="mono" x="888" y="542" font-size="15" fill="#34D399">✓</text><text x="914" y="542" font-size="15" font-weight="600" fill="#EEF2F7">CLT_4821</text><text x="914" y="562" font-size="13" fill="#8B94A5">a pseudonym</text>
+    <text class="mono" x="888" y="602" font-size="15" fill="#34D399">✓</text><text x="914" y="602" font-size="15" font-weight="600" fill="#EEF2F7">10k – 20k</text><text x="914" y="622" font-size="13" fill="#8B94A5">a range</text>
+    <text class="mono" x="888" y="662" font-size="15" fill="#34D399">✓</text><text x="914" y="662" font-size="15" font-weight="600" fill="#EEF2F7">Market news</text><text x="914" y="682" font-size="13" fill="#8B94A5">already public</text>
+    <text class="mono" x="888" y="722" font-size="15" fill="#F27A7A">✕</text><text x="914" y="722" font-size="15" font-weight="600" fill="#EEF2F7">Client names</text><text x="914" y="742" font-size="13" fill="#8B94A5">stay in the bank</text>
+    <text class="mono" x="888" y="782" font-size="15" fill="#F27A7A">✕</text><text x="914" y="782" font-size="15" font-weight="600" fill="#EEF2F7">Exact orders</text><text x="914" y="802" font-size="13" fill="#8B94A5">stay in the bank</text>
+  </g>
+
+  <g class="n" data-n="link endpoint">
+    <use href="#i-lock" x="820" y="892" color="#8B94A5"/>
+    <text class="mono" x="820" y="922" text-anchor="middle" font-size="12" fill="#8B94A5">encrypted · private link</text>
+  </g>
+
+  <text x="590" y="968" text-anchor="middle" font-size="31" font-weight="500" fill="#EEF2F7">Which of your data must never leave your walls?</text>
+  <text class="mono" x="590" y="1012" text-anchor="middle" font-size="17" fill="#3DD6C6">Sensitivity decides the path, not convenience.</text>
+</svg>
+
+<section class="glossary" aria-label="Key vocabulary">
+  <h1>Key vocabulary</h1>
+  <ul>
+    <li><button class="term" data-n="inference" style="--tone:var(--request)"><b>Inference</b><span>The moment a model computes an answer. The machine has to read the prompt to do it, so where it runs decides who could see the data.</span></button></li>
+    <li><button class="term" data-n="onprem" style="--tone:var(--request)"><b>On-premise</b><span>On the company’s own servers, not a provider’s. Prompts, answers and logs stay in-house.</span></button></li>
+    <li><button class="term" data-n="perimeter" style="--tone:var(--request)"><b>Perimeter</b><span>The boundary the company controls. Inside, its own rules apply; beyond it, it relies on a contract.</span></button></li>
+    <li><button class="term" data-n="openweights" style="--tone:var(--request)"><b>Open-weights model</b><span>A model whose weights can be downloaded and run on your own GPUs, with no calls to its publisher.</span></button></li>
+    <li><button class="term" data-n="frontier" style="--tone:var(--orchestrator)"><b>Frontier model</b><span>One of the most capable models of the moment, usually reached only through its provider’s cloud.</span></button></li>
+    <li><button class="term" data-n="gateway" style="--tone:var(--mcp)"><b>Routing gateway</b><span>The checkpoint that sends each piece of data to the model allowed for its sensitivity.</span></button></li>
+    <li><button class="term" data-n="levels" style="--tone:var(--c2)"><b>Sensitivity level</b><span>A label on each piece of data, here C1 to C3, that sets where it may go.</span></button></li>
+    <li><button class="term" data-n="anon" style="--tone:var(--c2)"><b>Anonymisation</b><span>Masks names and turns exact figures into ranges. With a mapping key kept in-house, it is strictly pseudonymisation.</span></button></li>
+    <li><button class="term" data-n="endpoint" style="--tone:var(--orchestrator)"><b>Private endpoint</b><span>Access to a cloud model over a dedicated encrypted link, in a chosen region, not the public internet.</span></button></li>
+    <li><button class="term" data-n="zdr" style="--tone:var(--c1)"><b>Zero data retention</b><span>A contractual commitment: the provider keeps nothing once the answer is sent, and does not train on it.</span></button></li>
+  </ul>
+</section>
+</main>
+<main class="slide" data-lang="fr">
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="Dans le périmètre de la banque, un agent sales envoie chaque demande à une passerelle de routage. Les données secrètes vont vers un modèle open-weights sur des GPU on-premise. Les données confidentielles sont anonymisées, puis envoyées à un modèle frontière dans le cloud. Les données publiques vont directement dans le cloud.">
+  <g font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text class="mono" x="80" y="77" fill="#EEF2F7" font-size="12">07</text>
+    <text class="mono" x="112" y="77" fill="#8B94A5">OÙ TOURNE LE MODÈLE ?</text>
+  </g>
+
+  <circle cx="400" cy="400" r="400" fill="url(#halo)"/>
+  <circle cx="1000" cy="340" r="240" fill="url(#halo-cloud)"/>
+
+  <g class="n" data-n="perimeter onprem" style="--tone:var(--request)">
+    <rect class="base" x="30" y="112" width="760" height="760" rx="26" stroke-dasharray="8 8" style="fill:rgba(126,166,255,.035);stroke:#7EA6FF;stroke-opacity:.6;stroke-width:1.4"/>
+    <use href="#i-lock" x="60" y="148" color="#7EA6FF"/>
+    <text class="mono" x="84" y="153" font-size="13" font-weight="500" letter-spacing="2.6" fill="#7EA6FF">PÉRIMÈTRE BANQUE · ON-PREMISE</text>
+  </g>
+  <g class="n" data-n="cloud" style="--tone:var(--orchestrator)">
+    <rect class="base" x="850" y="112" width="300" height="760" rx="26" stroke-dasharray="8 8" style="fill:rgba(165,148,255,.035);stroke:#A594FF;stroke-opacity:.6;stroke-width:1.4"/>
+    <use href="#i-cloud" x="880" y="148" color="#A594FF"/>
+    <text class="mono" x="904" y="153" font-size="13" font-weight="500" letter-spacing="2.2" fill="#A594FF">CLOUD · FRONTIÈRE</text>
+  </g>
+
+  <g fill="none" stroke-width="1.4">
+    <path class="wire" data-n="gateway" d="M202 380 H250" stroke="#7EA6FF" stroke-opacity=".6"/>
+    <path class="wire" data-n="gateway anon" d="M490 362 C530 362 516 262 556 262" stroke="#F5A55A" stroke-opacity=".7"/>
+    <path class="wire" data-n="anon endpoint" d="M756 262 C810 262 816 322 872 322" stroke="#F5A55A" stroke-opacity=".7"/>
+    <path class="wire" data-n="gateway inference onprem" d="M490 398 C530 398 516 518 556 518" stroke="#F27A7A" stroke-opacity=".7"/>
+    <path class="wire" data-n="gateway endpoint" d="M370 332 C420 120 900 120 1000 290" stroke="#34D399" stroke-opacity=".6"/>
+  </g>
+  <g class="n" data-n="levels" font-size="11" font-weight="600">
+    <circle cx="640" cy="176" r="15" fill="#080B11" stroke="#34D399"/><text class="mono" x="640" y="180" text-anchor="middle" fill="#34D399">C1</text>
+    <circle cx="522" cy="312" r="15" fill="#080B11" stroke="#F5A55A"/><text class="mono" x="522" y="316" text-anchor="middle" fill="#F5A55A">C2</text>
+    <circle cx="522" cy="458" r="15" fill="#080B11" stroke="#F27A7A"/><text class="mono" x="522" y="462" text-anchor="middle" fill="#F27A7A">C3</text>
+  </g>
+
+  <g class="n" data-n="agent" style="--tone:#7EA6FF"><rect class="base" x="52" y="332" width="150" height="96" rx="14"/><use href="#i-spark" x="127" y="360" color="#7EA6FF"/><text x="127" y="392" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">AGENT SALES</text></g>
+  <g class="n" data-n="gateway" style="--tone:#3DD6C6"><rect class="base" x="250" y="332" width="240" height="96" rx="14"/><use href="#i-route" x="370" y="360" color="#3DD6C6"/><text x="370" y="392" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">PASSERELLE DE ROUTAGE</text><text class="mono" x="370" y="412" text-anchor="middle" font-size="12" fill="#8B94A5">classe chaque donnée</text></g>
+  <g class="n" data-n="anon" style="--tone:#F5A55A"><rect class="base" x="556" y="214" width="200" height="96" rx="14"/><use href="#i-mask" x="656" y="242" color="#F5A55A"/><text x="656" y="274" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">ANONYMISEUR</text></g>
+  <g class="n" data-n="openweights onprem inference" style="--tone:#7EA6FF"><rect class="base" x="556" y="470" width="200" height="96" rx="14"/><use href="#i-chip" x="656" y="498" color="#7EA6FF"/><text x="656" y="530" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">GPU ON-PREMISE</text><text class="mono" x="656" y="550" text-anchor="middle" font-size="12" fill="#8B94A5">modèle open-weights</text></g>
+  <g class="n" data-n="frontier inference endpoint zdr" style="--tone:#A594FF"><rect class="base" x="872" y="290" width="256" height="96" rx="14"/><use href="#i-hex" x="1000" y="318" color="#A594FF"/><text x="1000" y="350" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">MODÈLE FRONTIÈRE</text><text class="mono" x="1000" y="370" text-anchor="middle" font-size="12" fill="#8B94A5">endpoint privé · région UE</text></g>
+
+  <g class="n" data-n="onprem" style="--tone:var(--c3)">
+    <rect x="544" y="582" width="224" height="28" rx="14" fill="#080B11" stroke="#F27A7A"/>
+    <text class="mono" x="656" y="601" text-anchor="middle" font-size="11.5" letter-spacing="1.2" fill="#F27A7A">RIEN NE SORT DE LA BANQUE</text>
+  </g>
+
+  <g class="n" data-n="levels" style="--tone:var(--c2)">
+    <rect class="base" x="52" y="640" width="716" height="208" rx="14" style="fill:#080B11"/>
+    <text class="mono" x="72" y="668" font-size="12" letter-spacing="2.9" fill="#8B94A5">SENSIBILITÉ</text>
+    <circle cx="78" cy="697" r="6" fill="#F27A7A"/><text class="mono" x="94" y="702" font-size="14" font-weight="500" fill="#F27A7A">C3</text><text x="128" y="702" font-size="15" font-weight="600" fill="#EEF2F7">Secret</text><text x="128" y="722" font-size="13.5" fill="#8B94A5">Ordres clients · noms, volumes</text><text class="mono" x="750" y="702" text-anchor="end" font-size="13" fill="#F27A7A">→ reste on-premise</text>
+    <circle cx="78" cy="751" r="6" fill="#F5A55A"/><text class="mono" x="94" y="756" font-size="14" font-weight="500" fill="#F5A55A">C2</text><text x="128" y="756" font-size="15" font-weight="600" fill="#EEF2F7">Confidentiel</text><text x="128" y="776" font-size="13.5" fill="#8B94A5">Profils d’achat</text><text class="mono" x="750" y="756" text-anchor="end" font-size="13" fill="#F5A55A">→ anonymisé, puis cloud</text>
+    <circle cx="78" cy="805" r="6" fill="#34D399"/><text class="mono" x="94" y="810" font-size="14" font-weight="500" fill="#34D399">C1</text><text x="128" y="810" font-size="15" font-weight="600" fill="#EEF2F7">Public</text><text x="128" y="830" font-size="13.5" fill="#8B94A5">Contexte marché · news</text><text class="mono" x="750" y="810" text-anchor="end" font-size="13" fill="#34D399">→ direct vers le cloud</text>
+  </g>
+
+  <g class="n" data-n="zdr" style="--tone:var(--c1)">
+    <rect class="base" x="868" y="470" width="264" height="378" rx="14" style="fill:#080B11"/>
+    <text class="mono" x="888" y="500" font-size="12" letter-spacing="2" fill="#8B94A5">CE QUE VOIT LE CLOUD</text>
+    <text class="mono" x="888" y="542" font-size="15" fill="#34D399">✓</text><text x="914" y="542" font-size="15" font-weight="600" fill="#EEF2F7">CLT_4821</text><text x="914" y="562" font-size="13" fill="#8B94A5">un pseudonyme</text>
+    <text class="mono" x="888" y="602" font-size="15" fill="#34D399">✓</text><text x="914" y="602" font-size="15" font-weight="600" fill="#EEF2F7">10k – 20k</text><text x="914" y="622" font-size="13" fill="#8B94A5">une tranche</text>
+    <text class="mono" x="888" y="662" font-size="15" fill="#34D399">✓</text><text x="914" y="662" font-size="15" font-weight="600" fill="#EEF2F7">News marché</text><text x="914" y="682" font-size="13" fill="#8B94A5">déjà publiques</text>
+    <text class="mono" x="888" y="722" font-size="15" fill="#F27A7A">✕</text><text x="914" y="722" font-size="15" font-weight="600" fill="#EEF2F7">Noms des clients</text><text x="914" y="742" font-size="13" fill="#8B94A5">restent dans la banque</text>
+    <text class="mono" x="888" y="782" font-size="15" fill="#F27A7A">✕</text><text x="914" y="782" font-size="15" font-weight="600" fill="#EEF2F7">Ordres exacts</text><text x="914" y="802" font-size="13" fill="#8B94A5">restent dans la banque</text>
+  </g>
+
+  <g class="n" data-n="link endpoint">
+    <use href="#i-lock" x="820" y="892" color="#8B94A5"/>
+    <text class="mono" x="820" y="922" text-anchor="middle" font-size="12" fill="#8B94A5">chiffré · lien privé</text>
+  </g>
+
+  <text x="590" y="968" text-anchor="middle" font-size="31" font-weight="500" fill="#EEF2F7">Quelles données ne doivent jamais sortir de chez vous ?</text>
+  <text class="mono" x="590" y="1012" text-anchor="middle" font-size="17" fill="#3DD6C6">C’est la sensibilité qui décide du chemin, pas la commodité.</text>
+</svg>
+
+<section class="glossary" aria-label="Vocabulaire clé">
+  <h1>Vocabulaire clé</h1>
+  <ul>
+    <li><button class="term" data-n="inference" style="--tone:var(--request)"><b>Inférence</b><span>Le moment où le modèle calcule sa réponse. La machine doit lire le prompt : l’endroit où elle tourne décide de qui pourrait voir les données.</span></button></li>
+    <li><button class="term" data-n="onprem" style="--tone:var(--request)"><b>On-premise</b><span>Sur les serveurs de l’entreprise, pas chez un fournisseur. Prompts, réponses et logs restent en interne.</span></button></li>
+    <li><button class="term" data-n="perimeter" style="--tone:var(--request)"><b>Périmètre</b><span>La limite de ce que l’entreprise contrôle. Dedans, ses propres règles ; au-delà, elle dépend d’un contrat.</span></button></li>
+    <li><button class="term" data-n="openweights" style="--tone:var(--request)"><b>Modèle open-weights</b><span>Un modèle dont les poids se téléchargent et tournent sur vos propres GPU, sans appel à son éditeur.</span></button></li>
+    <li><button class="term" data-n="frontier" style="--tone:var(--orchestrator)"><b>Modèle frontière</b><span>L’un des modèles les plus performants du moment, en général accessible uniquement via le cloud de son fournisseur.</span></button></li>
+    <li><button class="term" data-n="gateway" style="--tone:var(--mcp)"><b>Passerelle de routage</b><span>Le point de contrôle qui envoie chaque donnée vers le modèle autorisé pour sa sensibilité.</span></button></li>
+    <li><button class="term" data-n="levels" style="--tone:var(--c2)"><b>Niveau de sensibilité</b><span>L’étiquette de chaque donnée, ici de C1 à C3, qui fixe où elle peut aller.</span></button></li>
+    <li><button class="term" data-n="anon" style="--tone:var(--c2)"><b>Anonymisation</b><span>Masque les noms et transforme les chiffres exacts en tranches. Avec une table de correspondance interne, c’est en toute rigueur une pseudonymisation.</span></button></li>
+    <li><button class="term" data-n="endpoint" style="--tone:var(--orchestrator)"><b>Endpoint privé</b><span>L’accès à un modèle cloud par un lien chiffré dédié, dans une région choisie, hors de l’internet public.</span></button></li>
+    <li><button class="term" data-n="zdr" style="--tone:var(--c1)"><b>Zéro rétention</b><span>Un engagement contractuel : le fournisseur ne garde rien une fois la réponse envoyée et n’entraîne aucun modèle dessus.</span></button></li>
+  </ul>
+</section>
+</main>
+<script>
+(function () {
+  document.querySelectorAll(".slide").forEach((slide) => {
+    const svg = slide.querySelector("svg.diagram");
+    const terms = [...slide.querySelectorAll(".term")];
+    let pinned = null;
+    function show(term) {
+      const key = term && term.dataset.n;
+      terms.forEach((t) => t.classList.toggle("on", t === term));
+      svg.classList.toggle("focus", !!key);
+      svg.querySelectorAll("[data-n]").forEach((el) => {
+        el.classList.toggle("on", !!key && el.dataset.n.split(" ").includes(key));
+      });
+    }
+    terms.forEach((t) => {
+      t.addEventListener("mouseenter", () => show(t));
+      t.addEventListener("mouseleave", () => show(pinned));
+      t.addEventListener("focus", () => show(t));
+      t.addEventListener("blur", () => show(pinned));
+      t.addEventListener("click", () => { pinned = pinned === t ? null : t; show(pinned); });
+    });
+  });
+})();
+
+document.querySelectorAll("[data-set-lang]").forEach((b) => b.addEventListener("click", () => {
+  document.documentElement.lang = b.dataset.setLang;
+  try { localStorage.setItem("mmia-lang", b.dataset.setLang); } catch (e) {}
+}));
+</script>
+</body>
+</html>

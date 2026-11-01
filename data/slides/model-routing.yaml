@@ -1,0 +1,91 @@
+# Frozen frame of the Trusted Data animation, scene 7, at about 1:56.
+layout: routing
+output: web/animations/model-routing.html
+back: trusted-data-agents.html?scene=7
+back_label: "← Animation"
+
+en:
+  title: "Where does the model run?"
+  aria: "Inside the bank perimeter, a sales agent sends each request through a routing gateway. Secret data goes to an open-weights model on on-premise GPUs. Confidential data is anonymised, then sent to a frontier model in the cloud. Public data goes straight to the cloud."
+  eyebrow: "WHERE DOES THE MODEL RUN?"
+  perimeter: "BANK PERIMETER · ON-PREMISE"
+  cloud: "CLOUD · FRONTIER"
+  agent: "SALES AGENT"
+  gateway: "ROUTING GATEWAY"
+  gateway_sub: "classifies every piece of data"
+  anon: "ANONYMISER"
+  gpu: "ON-PREM GPUs"
+  gpu_sub: "open-weights model"
+  frontier: "FRONTIER MODEL"
+  frontier_sub: "private endpoint · EU region"
+  stay: "NOTHING LEAVES THE BANK"
+  link: "encrypted · private link"
+  levels_title: "SENSITIVITY"
+  levels:
+    - { level: C3, name: "Secret", data: "Client orders · names, volumes", route: "stays on-prem" }
+    - { level: C2, name: "Confidential", data: "Buying patterns", route: "anonymised, then cloud" }
+    - { level: C1, name: "Public", data: "Market context · news", route: "straight to the cloud" }
+  sees_title: "WHAT THE CLOUD SEES"
+  sees:
+    - { seen: true, label: "CLT_4821", note: "a pseudonym" }
+    - { seen: true, label: "10k – 20k", note: "a range" }
+    - { seen: true, label: "Market news", note: "already public" }
+    - { seen: false, label: "Client names", note: "stay in the bank" }
+    - { seen: false, label: "Exact orders", note: "stay in the bank" }
+  question: "Which of your data must never leave your walls?"
+  takeaway: "Sensitivity decides the path, not convenience."
+  glossary_title: "Key vocabulary"
+  glossary:
+    - { term: "Inference", node: inference, tone: "var(--request)", text: "The moment a model computes an answer. The machine has to read the prompt to do it, so where it runs decides who could see the data." }
+    - { term: "On-premise", node: onprem, tone: "var(--request)", text: "On the company’s own servers, not a provider’s. Prompts, answers and logs stay in-house." }
+    - { term: "Perimeter", node: perimeter, tone: "var(--request)", text: "The boundary the company controls. Inside, its own rules apply; beyond it, it relies on a contract." }
+    - { term: "Open-weights model", node: openweights, tone: "var(--request)", text: "A model whose weights can be downloaded and run on your own GPUs, with no calls to its publisher." }
+    - { term: "Frontier model", node: frontier, tone: "var(--orchestrator)", text: "One of the most capable models of the moment, usually reached only through its provider’s cloud." }
+    - { term: "Routing gateway", node: gateway, tone: "var(--mcp)", text: "The checkpoint that sends each piece of data to the model allowed for its sensitivity." }
+    - { term: "Sensitivity level", node: levels, tone: "var(--c2)", text: "A label on each piece of data, here C1 to C3, that sets where it may go." }
+    - { term: "Anonymisation", node: anon, tone: "var(--c2)", text: "Masks names and turns exact figures into ranges. With a mapping key kept in-house, it is strictly pseudonymisation." }
+    - { term: "Private endpoint", node: endpoint, tone: "var(--orchestrator)", text: "Access to a cloud model over a dedicated encrypted link, in a chosen region, not the public internet." }
+    - { term: "Zero data retention", node: zdr, tone: "var(--c1)", text: "A contractual commitment: the provider keeps nothing once the answer is sent, and does not train on it." }
+
+fr:
+  title: "Où tourne le modèle ?"
+  aria: "Dans le périmètre de la banque, un agent sales envoie chaque demande à une passerelle de routage. Les données secrètes vont vers un modèle open-weights sur des GPU on-premise. Les données confidentielles sont anonymisées, puis envoyées à un modèle frontière dans le cloud. Les données publiques vont directement dans le cloud."
+  eyebrow: "OÙ TOURNE LE MODÈLE ?"
+  perimeter: "PÉRIMÈTRE BANQUE · ON-PREMISE"
+  cloud: "CLOUD · FRONTIÈRE"
+  agent: "AGENT SALES"
+  gateway: "PASSERELLE DE ROUTAGE"
+  gateway_sub: "classe chaque donnée"
+  anon: "ANONYMISEUR"
+  gpu: "GPU ON-PREMISE"
+  gpu_sub: "modèle open-weights"
+  frontier: "MODÈLE FRONTIÈRE"
+  frontier_sub: "endpoint privé · région UE"
+  stay: "RIEN NE SORT DE LA BANQUE"
+  link: "chiffré · lien privé"
+  levels_title: "SENSIBILITÉ"
+  levels:
+    - { level: C3, name: "Secret", data: "Ordres clients · noms, volumes", route: "reste on-premise" }
+    - { level: C2, name: "Confidentiel", data: "Profils d’achat", route: "anonymisé, puis cloud" }
+    - { level: C1, name: "Public", data: "Contexte marché · news", route: "direct vers le cloud" }
+  sees_title: "CE QUE VOIT LE CLOUD"
+  sees:
+    - { seen: true, label: "CLT_4821", note: "un pseudonyme" }
+    - { seen: true, label: "10k – 20k", note: "une tranche" }
+    - { seen: true, label: "News marché", note: "déjà publiques" }
+    - { seen: false, label: "Noms des clients", note: "restent dans la banque" }
+    - { seen: false, label: "Ordres exacts", note: "restent dans la banque" }
+  question: "Quelles données ne doivent jamais sortir de chez vous ?"
+  takeaway: "C’est la sensibilité qui décide du chemin, pas la commodité."
+  glossary_title: "Vocabulaire clé"
+  glossary:
+    - { term: "Inférence", node: inference, tone: "var(--request)", text: "Le moment où le modèle calcule sa réponse. La machine doit lire le prompt : l’endroit où elle tourne décide de qui pourrait voir les données." }
+    - { term: "On-premise", node: onprem, tone: "var(--request)", text: "Sur les serveurs de l’entreprise, pas chez un fournisseur. Prompts, réponses et logs restent en interne." }
+    - { term: "Périmètre", node: perimeter, tone: "var(--request)", text: "La limite de ce que l’entreprise contrôle. Dedans, ses propres règles ; au-delà, elle dépend d’un contrat." }
+    - { term: "Modèle open-weights", node: openweights, tone: "var(--request)", text: "Un modèle dont les poids se téléchargent et tournent sur vos propres GPU, sans appel à son éditeur." }
+    - { term: "Modèle frontière", node: frontier, tone: "var(--orchestrator)", text: "L’un des modèles les plus performants du moment, en général accessible uniquement via le cloud de son fournisseur." }
+    - { term: "Passerelle de routage", node: gateway, tone: "var(--mcp)", text: "Le point de contrôle qui envoie chaque donnée vers le modèle autorisé pour sa sensibilité." }
+    - { term: "Niveau de sensibilité", node: levels, tone: "var(--c2)", text: "L’étiquette de chaque donnée, ici de C1 à C3, qui fixe où elle peut aller." }
+    - { term: "Anonymisation", node: anon, tone: "var(--c2)", text: "Masque les noms et transforme les chiffres exacts en tranches. Avec une table de correspondance interne, c’est en toute rigueur une pseudonymisation." }
+    - { term: "Endpoint privé", node: endpoint, tone: "var(--orchestrator)", text: "L’accès à un modèle cloud par un lien chiffré dédié, dans une région choisie, hors de l’internet public." }
+    - { term: "Zéro rétention", node: zdr, tone: "var(--c1)", text: "Un engagement contractuel : le fournisseur ne garde rien une fois la réponse envoyée et n’entraîne aucun modèle dessus." }
