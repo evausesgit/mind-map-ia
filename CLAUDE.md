@@ -36,6 +36,8 @@ Voice-over of the MCP animation (`data/narration/*.yaml` → `web/animations/mcp
 uv run --python 3.12 --with kokoro --with soundfile --with 'misaki[en]' --with pip --with pyyaml python scripts/generate_narration.py
 ```
 
+The Trusted Data animation has one track per language: pass `data/narration/trusted-data-en.yaml` or `data/narration/trusted-data-fr.yaml` to the same command. Its cue times follow `web/animations/trusted-data/engine.js`. French needs `espeak-ng`, and does not support the `[word](/phonemes/)` override: write the word plainly.
+
 **Note:** The CI pipeline only regenerates `macro.html`, `ecosystem.html`, `dense-vs-moe.html`, `glossary.html`, `index.html` and `news.html`. All other pages (topic maps, slides, topic articles) must be regenerated locally and committed. Any change to `scripts/site_chrome.py` (nav, tokens, header) affects every page, so regenerate them all.
 
 ## Architecture

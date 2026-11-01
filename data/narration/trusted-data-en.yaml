@@ -1,0 +1,47 @@
+# English voice-over for web/animations/trusted-data-agents.html.
+# Regenerate with scripts/generate_narration.py.
+#
+# `at` is the second on the animation timeline where the line starts. Lines
+# follow the on-screen captions (web/animations/trusted-data/config.js).
+# Pronunciation overrides use Kokoro's syntax: [word](/phonemes/).
+voice: af_heart
+speed: 1.08
+lang: a   # American English
+output: web/animations/trusted-data/narration-en.mp3
+duration: 137.9
+
+cues:
+  # The request
+  - { at: 1.5,   text: "A salesperson asks which clients bought chip stocks this month, and what to send them." }
+  - { at: 7.2,   text: "One question. Client data and market data, mixed together." }
+  # Agent, MCP, data
+  - { at: 12.0,  text: "The agent reaches that data through its [MCP](/ˌɛmsˌipˈi/) servers." }
+  - { at: 17.5,  text: "It only sees what they expose. So what lies behind them decides everything." }
+  # Data quality
+  - { at: 22.9,  text: "First, quality. The raw data hides a duplicate, a gap and a stale record." }
+  - { at: 28.3,  text: "Garbage in, confident garbage out. The model doesn't know the data is wrong. It answers anyway." }
+  - { at: 36.9,  text: "So quality is checked before the agent ever reads the data." }
+  # Data context
+  - { at: 44.2,  text: "Second, context. A tool that just says returns data leaves the agent guessing." }
+  - { at: 49.8,  text: "Well described, it gets it right the first time." }
+  - { at: 53.0,  text: "If it isn't described, the AI can't find it. Metadata is part of the product." }
+  # Who sees what
+  - { at: 58.7,  text: "Third, access." }
+  - { at: 61.4,  text: "The agent acts on behalf of the user, with the user's rights." }
+  - { at: 68.6,  text: "Same question, different person: a different answer, or none." }
+  - { at: 73.2,  text: "The agent never has more rights than the person it works for. And every call is logged." }
+  # Client orders stay private
+  - { at: 78.8,  text: "Fourth, privacy." }
+  - { at: 81.1,  text: "What leaves the bank is not what the order says. Names become pseudonyms, amounts become ranges." }
+  - { at: 88.8,  text: "Client orders serve one purpose: answering your question. They never train a model." }
+  # Where does the model run?
+  - { at: 94.6,  text: "So where does the model run?" }
+  - { at: 97.2,  text: "One request, three sensitivity levels." }
+  - { at: 102.3, text: "Sensitivity decides the path, not convenience. Secrets stay inside. Confidential data leaves anonymised. Public data goes straight to the cloud." }
+  - { at: 112.8, text: "Same agent, same gateway: sensitive and everyday questions in one flow." }
+  # The answer
+  - { at: 118.4, text: "The result: the buyers, the market context, and a suggested action." }
+  - { at: 123.0, text: "A useful answer you can trust, and explain. No client name left the bank." }
+  # Summary
+  - { at: 128.6, text: "An agent is only as good as the data behind its [MCP](/ˌɛmsˌipˈi/) servers." }
+  - { at: 133.5, text: "Quality. Context. Access. Sovereignty." }
