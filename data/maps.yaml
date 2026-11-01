@@ -140,11 +140,11 @@ animations:
 slides:
   - id: two-revolutions
     title:
-      en: "Two revolutions, one pattern"
-      fr: "Deux révolutions, un même schéma"
+      en: "Two revolutions, one anatomy"
+      fr: "Deux révolutions, une même anatomie"
     description:
-      en: "From the industrial revolution to AI: machines, productivity, coordination"
-      fr: "De la révolution industrielle à l’IA : machines, productivité, coordination"
+      en: "From the steam engine to the harness: what factories and AI agents have in common"
+      fr: "De la machine à vapeur au harness : ce que les usines et les agents IA ont en commun"
     output: animations/two-revolutions.html
   - id: agent-anatomy
     title:
