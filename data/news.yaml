@@ -50,9 +50,9 @@ news:
       en: "Mistral releases the open weights of one-trillion-parameter Large 4"
       fr: "Mistral publie les poids ouverts de Large 4, un modèle à mille milliards de paramètres"
     description:
-      en: "Mistral released the weights of Large 4, a natively multimodal mixture-of-experts model with one trillion total parameters and 52 billion active parameters. The company targets coding, agentic workflows and sensitive enterprise domains including cybersecurity, finance and law; buyers should still validate the licence, infrastructure needs and independent performance."
-      fr: "Mistral a publié les poids de Large 4, un modèle multimodal natif en mixture-of-experts comptant mille milliards de paramètres au total, dont 52 milliards actifs. L’entreprise vise le code, les workflows agentiques et les domaines sensibles comme la cybersécurité, la finance et le droit ; licence, infrastructure et performances indépendantes restent à valider."
-    link: https://mistral.ai/news/mistral-large-4/
+      en: "Mistral released the weights of Large 4, a natively multimodal mixture-of-experts model with one trillion total parameters and 52 billion active parameters. Mistral reports 48% on the Artificial Analysis Coding Agent Index, 51% on its Cyber Index and 73.3% on the Finch finance benchmark; the modified MIT licence requires model-as-a-service providers to obtain a separate commercial licence."
+      fr: "Mistral a publié les poids de Large 4, un modèle multimodal natif en mixture-of-experts comptant mille milliards de paramètres au total, dont 52 milliards actifs. Mistral annonce 48 % à l’Artificial Analysis Coding Agent Index, 51 % au Cyber Index et 73,3 % au benchmark financier Finch ; la licence MIT modifiée impose une licence commerciale distincte aux fournisseurs de Model-as-a-Service."
+    link: https://mistral.ai/news/mistral-large-4-oss/
   - date: '2026-10-29'
     type: research
     title:
