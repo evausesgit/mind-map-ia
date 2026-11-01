@@ -38,13 +38,12 @@ en:
   glossary:
     - { term: "Inference", node: inference, tone: "var(--request)", text: "The moment a model computes an answer. The machine has to read the prompt to do it, so where it runs decides who could see the data." }
     - { term: "On-premise", node: onprem, tone: "var(--request)", text: "On the company’s own servers, not a provider’s. Prompts, answers and logs stay in-house." }
-    - { term: "Perimeter", node: perimeter, tone: "var(--request)", text: "The boundary the company controls. Inside, its own rules apply; beyond it, it relies on a contract." }
     - { term: "Open-weights model", node: openweights, tone: "var(--request)", text: "A model whose weights can be downloaded and run on your own GPUs, with no calls to its publisher." }
     - { term: "Frontier model", node: frontier, tone: "var(--orchestrator)", text: "One of the most capable models of the moment, usually reached only through its provider’s cloud." }
+    - { term: "Private endpoint", node: endpoint, tone: "var(--orchestrator)", text: "Access to a cloud model over a dedicated encrypted link, in a chosen region, not the public internet." }
     - { term: "Routing gateway", node: gateway, tone: "var(--mcp)", text: "The checkpoint that sends each piece of data to the model allowed for its sensitivity." }
     - { term: "Sensitivity level", node: levels, tone: "var(--c2)", text: "A label on each piece of data, here C1 to C3, that sets where it may go." }
     - { term: "Anonymisation", node: anon, tone: "var(--c2)", text: "Masks names and turns exact figures into ranges. With a mapping key kept in-house, it is strictly pseudonymisation." }
-    - { term: "Private endpoint", node: endpoint, tone: "var(--orchestrator)", text: "Access to a cloud model over a dedicated encrypted link, in a chosen region, not the public internet." }
     - { term: "Zero data retention", node: zdr, tone: "var(--c1)", text: "A contractual commitment: the provider keeps nothing once the answer is sent, and does not train on it." }
 
 fr:
@@ -81,11 +80,10 @@ fr:
   glossary:
     - { term: "Inférence", node: inference, tone: "var(--request)", text: "Le moment où le modèle calcule sa réponse. La machine doit lire le prompt : l’endroit où elle tourne décide de qui pourrait voir les données." }
     - { term: "On-premise", node: onprem, tone: "var(--request)", text: "Sur les serveurs de l’entreprise, pas chez un fournisseur. Prompts, réponses et logs restent en interne." }
-    - { term: "Périmètre", node: perimeter, tone: "var(--request)", text: "La limite de ce que l’entreprise contrôle. Dedans, ses propres règles ; au-delà, elle dépend d’un contrat." }
     - { term: "Modèle open-weights", node: openweights, tone: "var(--request)", text: "Un modèle dont les poids se téléchargent et tournent sur vos propres GPU, sans appel à son éditeur." }
     - { term: "Modèle frontière", node: frontier, tone: "var(--orchestrator)", text: "L’un des modèles les plus performants du moment, en général accessible uniquement via le cloud de son fournisseur." }
+    - { term: "Endpoint privé", node: endpoint, tone: "var(--orchestrator)", text: "L’accès à un modèle cloud par un lien chiffré dédié, dans une région choisie, hors de l’internet public." }
     - { term: "Passerelle de routage", node: gateway, tone: "var(--mcp)", text: "Le point de contrôle qui envoie chaque donnée vers le modèle autorisé pour sa sensibilité." }
     - { term: "Niveau de sensibilité", node: levels, tone: "var(--c2)", text: "L’étiquette de chaque donnée, ici de C1 à C3, qui fixe où elle peut aller." }
     - { term: "Anonymisation", node: anon, tone: "var(--c2)", text: "Masque les noms et transforme les chiffres exacts en tranches. Avec une table de correspondance interne, c’est en toute rigueur une pseudonymisation." }
-    - { term: "Endpoint privé", node: endpoint, tone: "var(--orchestrator)", text: "L’accès à un modèle cloud par un lien chiffré dédié, dans une région choisie, hors de l’internet public." }
     - { term: "Zéro rétention", node: zdr, tone: "var(--c1)", text: "Un engagement contractuel : le fournisseur ne garde rien une fois la réponse envoyée et n’entraîne aucun modèle dessus." }
