@@ -138,6 +138,14 @@ animations:
     output: animations/sales-trader-copilot.html
 
 slides:
+  - id: two-revolutions
+    title:
+      en: "Two revolutions, one pattern"
+      fr: "Deux révolutions, un même schéma"
+    description:
+      en: "From the industrial revolution to AI: machines, productivity, coordination"
+      fr: "De la révolution industrielle à l’IA : machines, productivité, coordination"
+    output: animations/two-revolutions.html
   - id: agent-anatomy
     title:
       en: "Anatomy of an agent"

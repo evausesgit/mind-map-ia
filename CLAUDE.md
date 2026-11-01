@@ -56,7 +56,7 @@ All generated HTML files are committed to the repo and served directly via GitHu
 
 ## Data layer (`data/`)
 
-- **`maps.yaml`** — registry of all maps (id, title EN/FR, description EN/FR, output path, data source path, optional `kind: diagram`), plus `animations:` and external `links:`. Read by `site_chrome.py` to build the nav and by the home page.
+- **`maps.yaml`** — registry of all maps (id, title EN/FR, description EN/FR, output path, data source path, optional `kind: diagram`), plus `animations:`, `slides:` and external `links:`. Read by `site_chrome.py` to build the nav and by the home page. Every page in `web/animations/` must have an entry here under `animations:` or `slides:`, so it appears in the Maps menu; adding one means regenerating all pages.
 - **`ecosystem.yaml`** — full ecosystem map (~53 nodes)
 - **`ecosystem-macro.yaml`** — simplified "big picture" map (~26 nodes)
 - **`rag-pattern.yaml`**, **`cloud-managed.yaml`**, **`ai-agents.yaml`**, **`ai-coding-assistants.yaml`**, **`open-weights-models.yaml`**, **`proprietary-models.yaml`** — thematic Cytoscape maps
