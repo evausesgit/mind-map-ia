@@ -218,6 +218,63 @@ terms:
         et boucle de rétroaction entre action et observation.
         Exemples : Claude Code, OpenAI Operator, AutoGPT, agents LangChain.
 
+  - id: harness
+    label:
+      en: "Harness"
+      fr: "Harness"
+    aliases: ["harness", "agent harness", "agentic harness", "harnais"]
+    description:
+      en: >
+        The software that runs an agent. It drives the loop step by step, assembles the context
+        sent to the model, executes tool calls, enforces permissions and keeps logs.
+        The model reasons; the harness makes that reasoning act on the real world.
+        In a single agent, the harness also plays the role of orchestrator.
+        Example: Claude Code is a harness around a Claude model.
+      fr: >
+        Le logiciel qui fait tourner un agent. Il pilote la boucle étape par étape, assemble le contexte
+        envoyé au modèle, exécute les appels d'outils, applique les permissions et garde les logs.
+        Le modèle raisonne ; le harness transforme ce raisonnement en actions sur le monde réel.
+        Dans un agent seul, le harness joue aussi le rôle d'orchestrateur.
+        Exemple : Claude Code est un harness autour d'un modèle Claude.
+
+  - id: orchestrator
+    label:
+      en: "Orchestrator"
+      fr: "Orchestrateur"
+    aliases: ["orchestrator", "orchestrators", "orchestrateur", "orchestrateurs", "supervisor agent", "lead agent", "agent superviseur"]
+    description:
+      en: >
+        Whatever decides what happens next. The word has two scales.
+        Inside a single agent, it is the loop that runs each step; this is part of the harness.
+        Across several agents, it splits the work, hands each part to an agent and combines the results.
+        That coordinator can be code with a fixed route (more predictable, e.g. a LangGraph graph)
+        or a lead agent whose model chooses the route (more flexible, less predictable).
+      fr: >
+        Ce qui décide de la suite. Le mot s'emploie à deux échelles.
+        Dans un agent seul, c'est la boucle qui exécute chaque étape ; elle fait partie du harness.
+        Entre plusieurs agents, il répartit le travail, confie chaque partie à un agent et assemble les résultats.
+        Ce coordinateur peut être du code au parcours fixé (plus prévisible, par exemple un graphe LangGraph)
+        ou un agent chef dont le modèle choisit le parcours (plus souple, moins prévisible).
+
+  - id: multi-agent
+    label:
+      en: "Multi-Agent System"
+      fr: "Système multi-agents"
+    aliases: ["multi-agent", "multi-agents", "multi agent", "multi-agent system", "système multi-agents", "subagent", "subagents", "sub-agent", "sub-agents", "sous-agent", "sous-agents"]
+    description:
+      en: >
+        Several specialised agents work on parts of one task, each with its own context,
+        under an orchestrator that coordinates them.
+        It helps when a task splits into independent parts or needs different expertise.
+        The cost is more model calls and more places where things can go wrong,
+        so one agent remains the better default for simple tasks.
+      fr: >
+        Plusieurs agents spécialisés traitent chacun une partie d'une même tâche, avec leur propre contexte,
+        sous la coordination d'un orchestrateur.
+        C'est utile quand une tâche se découpe en parties indépendantes ou demande des expertises différentes.
+        Le prix à payer : plus d'appels au modèle et plus de points de défaillance,
+        donc un agent seul reste le meilleur choix par défaut pour les tâches simples.
+
   - id: mcp
     label:
       en: "MCP"
