@@ -96,9 +96,11 @@
   .flow { stroke-dasharray: 7 5; animation: flow 1.1s linear infinite; }
   @keyframes flow { to { stroke-dashoffset: -12; } }
 
+  /* Honoured on load; clicking Replay (.asked) is an explicit request for motion. */
   @media (prefers-reduced-motion: reduce) {
-    .flow { animation: none; }
-    .play .eyebrow, .play h1, .play .grid > *, .play .close, .play .grow { animation: none; opacity: 1; transform: none; }
+    .slide:not(.asked) .flow { animation: none; }
+    .slide:not(.asked).play .eyebrow, .slide:not(.asked).play h1, .slide:not(.asked).play .grid > *,
+    .slide:not(.asked).play .close, .slide:not(.asked).play .grow { animation: none; opacity: 1; transform: none; }
   }
 </style>
 </head>
@@ -160,9 +162,14 @@
 (function () {
   const slide = document.querySelector(".slide");
   const play = () => { slide.classList.remove("play"); void slide.offsetWidth; slide.classList.add("play"); };
-  document.getElementById("replay").onclick = play;
+  const icons = document.querySelectorAll("svg");
+  document.getElementById("replay").onclick = () => {
+    slide.classList.add("asked");
+    icons.forEach((s) => s.unpauseAnimations());
+    play();
+  };
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    document.querySelectorAll("svg").forEach((s) => s.pauseAnimations());
+    icons.forEach((s) => s.pauseAnimations());
   }
   play();
 })();
