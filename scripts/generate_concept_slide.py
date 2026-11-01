@@ -88,7 +88,7 @@ def render(spec: dict) -> str:
     blocks = spec["blocks"]
     if len(blocks) != len(SLOTS):
         raise ValueError(f"{spec['output']}: needs exactly {len(SLOTS)} blocks, got {len(blocks)}")
-    nodes = {"center", "side", *(b["id"] for b in blocks)}
+    nodes = {"center", "ring", "side", *(b["id"] for b in blocks)}
     for term in spec["glossary"]:
         if term["node"] not in nodes:
             raise ValueError(f"{term['term']}: unknown node {term['node']!r}")
