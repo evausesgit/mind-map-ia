@@ -1,4 +1,40 @@
 news:
+  - date: '2026-11-01'
+    type: update
+    title:
+      en: "FBI arrests OpenAI engineer in covert-recording-device case"
+      fr: "Le FBI arrête un ingénieur d’OpenAI dans une affaire de dispositif d’enregistrement dissimulé"
+    description:
+      en: "Reuters reports that the FBI arrested a Saudi OpenAI engineer in a case involving an alleged covert recording device, citing the US Justice Department. The allegation is at an early stage; for AI organisations, it highlights insider-risk controls around sensitive meetings, research and model-access environments."
+      fr: "Reuters rapporte que le FBI a arrêté un ingénieur saoudien d’OpenAI dans une affaire portant sur un dispositif d’enregistrement présumé dissimulé, selon le ministère américain de la Justice. L’accusation en est à un stade précoce ; pour les organisations d’IA, l’affaire souligne l’importance des contrôles contre le risque interne autour des réunions sensibles, de la recherche et des accès aux modèles."
+    link: https://www.reuters.com/world/us/fbi-arrests-saudi-openai-engineer-over-covert-recording-device-doj-says-2026-11-01/
+  - date: '2026-11-01'
+    type: update
+    title:
+      en: "China’s humanoid-robot race shifts from movement to intelligence"
+      fr: "La course chinoise aux robots humanoïdes passe du mouvement à l’intelligence"
+    description:
+      en: "Reuters reports that Chinese robot makers are moving beyond physical demonstrations toward AI control, autonomous navigation and useful factory work. The next competitive bottleneck is increasingly the software and data layer: reliable perception, planning and manipulation in variable real-world settings."
+      fr: "Reuters rapporte que les fabricants chinois de robots dépassent les démonstrations physiques pour se concentrer sur le pilotage par IA, la navigation autonome et des usages industriels utiles. Le prochain verrou concurrentiel se situe de plus en plus dans la couche logicielle et les données : perception, planification et manipulation fiables dans des environnements réels variables."
+    link: https://www.reuters.com/technology/chinas-robot-makers-have-mastered-moves-now-comes-race-brains-2026-11-01/
+  - date: '2026-10-29'
+    type: update
+    title:
+      en: "Mistral gives Orange Cyberdefense early access to a specialised Large 4 variant"
+      fr: "Mistral ouvre à Orange Cyberdefense l’accès anticipé à une variante spécialisée de Large 4"
+    description:
+      en: "Mistral says Orange Cyberdefense is testing a specialised Large 4 variant for authorised penetration testing, vulnerability assessment and red-teaming under vetting and contractual safeguards. The partnership turns an open-weight frontier model into a concrete sovereignty and defensive-cybersecurity deployment case."
+      fr: "Mistral indique qu’Orange Cyberdefense teste une variante spécialisée de Large 4 pour les tests d’intrusion autorisés, l’évaluation de vulnérabilités et le red teaming, avec sélection préalable et garanties contractuelles. Ce partenariat transforme un modèle frontière à poids ouverts en cas concret de souveraineté et de cybersécurité défensive."
+    link: https://mistral.ai/news/mistral-large-4-oss/
+  - date: '2026-10-29'
+    type: update
+    title:
+      en: "Microsoft’s quarterly results underline both Azure AI demand and infrastructure cost"
+      fr: "Les résultats trimestriels de Microsoft soulignent à la fois la demande pour Azure AI et le coût des infrastructures"
+    description:
+      en: "Microsoft’s latest quarterly results showed continued record revenue supported by Azure and AI demand, while the scale of infrastructure investment remained a central investor concern. For enterprise buyers, the signal is two-sided: cloud AI adoption is deepening, but capacity, unit economics and vendor concentration remain strategic constraints."
+      fr: "Les derniers résultats trimestriels de Microsoft montrent des revenus toujours records, soutenus par Azure et la demande IA, tandis que l’ampleur des investissements d’infrastructure reste une préoccupation centrale des investisseurs. Pour les entreprises clientes, le signal est double : l’adoption de l’IA cloud s’approfondit, mais la capacité, l’économie unitaire et la concentration fournisseur restent des contraintes stratégiques."
+    link: https://www.microsoft.com/en-us/Investor/earnings/FY-2027-Q1/press-release-webcast
   - date: '2026-10-30'
     type: update
     title:
