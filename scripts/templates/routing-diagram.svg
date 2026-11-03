@@ -1,0 +1,61 @@
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="{{aria}}">
+  <g font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text class="mono" x="80" y="77" fill="#EEF2F7" font-size="12">07</text>
+    <text class="mono" x="112" y="77" fill="#8B94A5">{{eyebrow}}</text>
+  </g>
+
+  <circle cx="400" cy="400" r="400" fill="url(#halo)"/>
+  <circle cx="1000" cy="340" r="240" fill="url(#halo-cloud)"/>
+
+  <g class="n" data-n="perimeter onprem" style="--tone:var(--request)">
+    <rect class="base" x="30" y="112" width="760" height="760" rx="26" stroke-dasharray="8 8" style="fill:rgba(126,166,255,.035);stroke:#7EA6FF;stroke-opacity:.6;stroke-width:1.4"/>
+    <use href="#i-lock" x="60" y="148" color="#7EA6FF"/>
+    <text class="mono" x="84" y="153" font-size="13" font-weight="500" letter-spacing="2.6" fill="#7EA6FF">{{perimeter}}</text>
+  </g>
+  <g class="n" data-n="cloud" style="--tone:var(--orchestrator)">
+    <rect class="base" x="850" y="112" width="300" height="760" rx="26" stroke-dasharray="8 8" style="fill:rgba(165,148,255,.035);stroke:#A594FF;stroke-opacity:.6;stroke-width:1.4"/>
+    <use href="#i-cloud" x="880" y="148" color="#A594FF"/>
+    <text class="mono" x="904" y="153" font-size="13" font-weight="500" letter-spacing="2.2" fill="#A594FF">{{cloud}}</text>
+  </g>
+
+  <g fill="none" stroke-width="1.4">
+    <path class="wire" data-n="gateway" d="M202 380 H250" stroke="#7EA6FF" stroke-opacity=".6"/>
+    <path class="wire" data-n="gateway anon" d="M490 362 C530 362 516 262 556 262" stroke="#F5A55A" stroke-opacity=".7"/>
+    <path class="wire" data-n="anon endpoint" d="M756 262 C810 262 816 322 872 322" stroke="#F5A55A" stroke-opacity=".7"/>
+    <path class="wire" data-n="gateway inference onprem" d="M490 398 C530 398 516 518 556 518" stroke="#F27A7A" stroke-opacity=".7"/>
+    <path class="wire" data-n="gateway endpoint" d="M370 332 C420 120 900 120 1000 290" stroke="#34D399" stroke-opacity=".6"/>
+  </g>
+  <g class="n" data-n="levels" font-size="11" font-weight="600">
+    <circle cx="640" cy="176" r="15" fill="#080B11" stroke="#34D399"/><text class="mono" x="640" y="180" text-anchor="middle" fill="#34D399">C1</text>
+    <circle cx="522" cy="312" r="15" fill="#080B11" stroke="#F5A55A"/><text class="mono" x="522" y="316" text-anchor="middle" fill="#F5A55A">C2</text>
+    <circle cx="522" cy="458" r="15" fill="#080B11" stroke="#F27A7A"/><text class="mono" x="522" y="462" text-anchor="middle" fill="#F27A7A">C3</text>
+  </g>
+
+  {{cards}}
+
+  <g class="n" data-n="onprem" style="--tone:var(--c3)">
+    <rect x="{{stay_x}}" y="582" width="{{stay_w}}" height="28" rx="14" fill="#080B11" stroke="#F27A7A"/>
+    <text class="mono" x="656" y="601" text-anchor="middle" font-size="11.5" letter-spacing="1.2" fill="#F27A7A">{{stay}}</text>
+  </g>
+
+  <g class="n" data-n="levels" style="--tone:var(--c2)">
+    <rect class="base" x="52" y="640" width="716" height="208" rx="14" style="fill:#080B11"/>
+    <text class="mono" x="72" y="668" font-size="12" letter-spacing="2.9" fill="#8B94A5">{{levels_title}}</text>
+    {{levels}}
+  </g>
+
+  <g class="n" data-n="zdr" style="--tone:var(--c1)">
+    <rect class="base" x="868" y="470" width="264" height="378" rx="14" style="fill:#080B11"/>
+    <text class="mono" x="888" y="500" font-size="12" letter-spacing="2" fill="#8B94A5">{{sees_title}}</text>
+    {{sees}}
+  </g>
+
+  <g class="n" data-n="link endpoint">
+    <use href="#i-lock" x="820" y="892" color="#8B94A5"/>
+    <text class="mono" x="820" y="922" text-anchor="middle" font-size="12" fill="#8B94A5">{{link}}</text>
+  </g>
+
+  <text x="590" y="968" text-anchor="middle" font-size="31" font-weight="500" fill="#EEF2F7">{{question}}</text>
+  <text class="mono" x="590" y="1012" text-anchor="middle" font-size="17" fill="#3DD6C6">{{takeaway}}</text>
+</svg>

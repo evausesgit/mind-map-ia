@@ -1,5 +1,9 @@
 """Generate concept slides (frozen diagram + glossary) from data/slides/*.yaml.
 
+Two layouts share the same CSS and glossary behaviour: the default hub diagram
+(one language), and `layout: routing`, the on-prem / cloud frame of the Trusted
+Data animation (bilingual, with one <main> per language).
+
 Usage (from repo root):
     python scripts/generate_concept_slide.py [data/slides/agent-anatomy.yaml ...]
 
@@ -7,12 +11,16 @@ With no argument, every file in data/slides/ is generated.
 """
 import html
 import pathlib
+import re
 import sys
 
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-TEMPLATE = ROOT / "scripts" / "templates" / "concept-slide.html"
+TEMPLATES = ROOT / "scripts" / "templates"
+TEMPLATE = TEMPLATES / "concept-slide.html"
+CSS = (TEMPLATES / "concept-slide.css").read_text(encoding="utf-8")
+JS = (TEMPLATES / "concept-slide.js").read_text(encoding="utf-8")
 
 # Top-left corner of each block card, then its spoke (card corner -> ring).
 SLOTS = [
@@ -68,9 +76,9 @@ def wires_svg(blocks: list) -> str:
 def glossary_html(terms: list) -> str:
     rows = []
     for t in terms:
-        tone = "mcp" if t["node"] == "side" else "orchestrator"
+        tone = t.get("tone") or ("var(--mcp)" if t["node"] == "side" else "var(--orchestrator)")
         rows.append(
-            f'    <li><button class="term" data-n="{esc(t["node"])}" style="--tone:var(--{tone})">'
+            f'    <li><button class="term" data-n="{esc(t["node"])}" style="--tone:{tone}">'
             f'<b>{esc(t["term"])}</b><span>{esc(t["text"])}</span></button></li>'
         )
     return "\n".join(rows)
@@ -104,10 +112,107 @@ def render(spec: dict) -> str:
         "wires": wires_svg(blocks),
         "blocks": "\n    ".join(block_svg(b, s) for b, s in zip(blocks, SLOTS)),
         "glossary": glossary_html(spec["glossary"]),
+        "css": CSS, "js": JS,
     }
     for key, value in raw.items():
         page = page.replace("{{" + key + "}}", str(value))
     return page
+
+
+def fill(page: str, values: dict, raw: dict) -> str:
+    for key, value in values.items():
+        page = page.replace("{{" + key + "}}", esc(value))
+    for key, value in raw.items():
+        page = page.replace("{{" + key + "}}", str(value))
+    return page
+
+
+def routing_card(card: dict) -> str:
+    x, y, cx = card["x"], card["y"], card["x"] + card["w"] // 2
+    color = card["color"]
+    sub = ""
+    if card.get("sub"):
+        sub = (
+            f'<text class="mono" x="{cx}" y="{y + 80}" text-anchor="middle" font-size="12" '
+            f'fill="#8B94A5">{esc(card["sub"])}</text>'
+        )
+    return (
+        f'<g class="n" data-n="{esc(card["nodes"])}" style="--tone:{color}">'
+        f'<rect class="base" x="{x}" y="{y}" width="{card["w"]}" height="96" rx="14"/>'
+        f'<use href="#{card["glyph"]}" x="{cx}" y="{y + 28}" color="{color}"/>'
+        f'<text x="{cx}" y="{y + 60}" text-anchor="middle" font-size="14.5" font-weight="600" '
+        f'letter-spacing="1.6" fill="#EEF2F7">{esc(card["label"])}</text>{sub}</g>'
+    )
+
+
+def routing_levels(rows: list) -> str:
+    colors = {"C3": "#F27A7A", "C2": "#F5A55A", "C1": "#34D399"}
+    parts = []
+    for i, row in enumerate(rows):
+        y, color = 702 + i * 54, colors[row["level"]]
+        parts.append(
+            f'<circle cx="78" cy="{y - 5}" r="6" fill="{color}"/>'
+            f'<text class="mono" x="94" y="{y}" font-size="14" font-weight="500" fill="{color}">{row["level"]}</text>'
+            f'<text x="128" y="{y}" font-size="15" font-weight="600" fill="#EEF2F7">{esc(row["name"])}</text>'
+            f'<text x="128" y="{y + 20}" font-size="13.5" fill="#8B94A5">{esc(row["data"])}</text>'
+            f'<text class="mono" x="750" y="{y}" text-anchor="end" font-size="13" fill="{color}">→ {esc(row["route"])}</text>'
+        )
+    return "\n    ".join(parts)
+
+
+def routing_sees(rows: list) -> str:
+    parts = []
+    for i, row in enumerate(rows):
+        y = 542 + i * 60
+        color, mark = ("#34D399", "✓") if row["seen"] else ("#F27A7A", "✕")
+        parts.append(
+            f'<text class="mono" x="888" y="{y}" font-size="15" fill="{color}">{mark}</text>'
+            f'<text x="914" y="{y}" font-size="15" font-weight="600" fill="#EEF2F7">{esc(row["label"])}</text>'
+            f'<text x="914" y="{y + 20}" font-size="13" fill="#8B94A5">{esc(row["note"])}</text>'
+        )
+    return "\n    ".join(parts)
+
+
+def routing_main(lang: str, s: dict) -> str:
+    stay_w = len(s["stay"]) * 8 + 24
+    cards = [
+        {"x": 52, "y": 332, "w": 150, "label": s["agent"], "glyph": "i-spark", "color": "#7EA6FF", "nodes": "agent"},
+        {"x": 250, "y": 332, "w": 240, "label": s["gateway"], "sub": s["gateway_sub"], "glyph": "i-route",
+         "color": "#3DD6C6", "nodes": "gateway"},
+        {"x": 556, "y": 214, "w": 200, "label": s["anon"], "glyph": "i-mask", "color": "#F5A55A", "nodes": "anon"},
+        {"x": 556, "y": 470, "w": 200, "label": s["gpu"], "sub": s["gpu_sub"], "glyph": "i-chip",
+         "color": "#7EA6FF", "nodes": "openweights onprem inference"},
+        {"x": 872, "y": 290, "w": 256, "label": s["frontier"], "sub": s["frontier_sub"], "glyph": "i-hex",
+         "color": "#A594FF", "nodes": "frontier inference endpoint zdr"},
+    ]
+    strings = ("aria", "eyebrow", "perimeter", "cloud", "stay", "levels_title", "sees_title", "link", "question", "takeaway")
+    svg = fill(
+        (TEMPLATES / "routing-diagram.svg").read_text(encoding="utf-8"),
+        {key: s[key] for key in strings},
+        {
+            "stay_x": 656 - stay_w // 2, "stay_w": stay_w,
+            "cards": "\n  ".join(routing_card(c) for c in cards),
+            "levels": routing_levels(s["levels"]),
+            "sees": routing_sees(s["sees"]),
+        },
+    )
+    nodes = {n for attr in re.findall(r'data-n="([^"]+)"', svg) for n in attr.split()}
+    for term in s["glossary"]:
+        if term["node"] not in nodes:
+            raise ValueError(f"{term['term']}: unknown node {term['node']!r}")
+    return (
+        f'<main class="slide" data-lang="{lang}">\n{svg}\n'
+        f'<section class="glossary" aria-label="{esc(s["glossary_title"])}">\n'
+        f'  <h1>{esc(s["glossary_title"])}</h1>\n  <ul>\n{glossary_html(s["glossary"])}\n  </ul>\n</section>\n</main>'
+    )
+
+
+def render_routing(spec: dict) -> str:
+    return fill(
+        (TEMPLATES / "routing-slide.html").read_text(encoding="utf-8"),
+        {"title": spec["en"]["title"], "back_href": spec["back"], "back": spec["back_label"]},
+        {"css": CSS, "js": JS, "slides": "\n".join(routing_main(lang, spec[lang]) for lang in ("en", "fr"))},
+    )
 
 
 def main() -> None:
@@ -115,7 +220,8 @@ def main() -> None:
     for path in paths:
         spec = yaml.safe_load(path.read_text(encoding="utf-8"))
         out = ROOT / spec["output"]
-        out.write_text(render(spec), encoding="utf-8")
+        page = render_routing(spec) if spec.get("layout") == "routing" else render(spec)
+        out.write_text(page, encoding="utf-8")
         print(f"Wrote {out.relative_to(ROOT)}")
 
 

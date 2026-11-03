@@ -9,49 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #05070B; --text: #EEF2F7; --muted: #8B94A5; --faint: #454D5C; --line: rgba(255,255,255,0.13);
-    --card: #0B0F16; --request: #7EA6FF; --orchestrator: #A594FF; --mcp: #3DD6C6;
-    --u: min(1vw, 1.78vh); /* 1% of a 16:9 frame */
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; background: var(--bg); color: var(--text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-  body { background: radial-gradient(ellipse at 30% 45%, #0E1522 0%, var(--bg) 62%); }
-
-  .slide { height: 100vh; display: grid; grid-template-columns: 61fr 39fr; align-items: center;
-    gap: calc(var(--u) * 2); padding: 0 calc(var(--u) * 3) 0 calc(var(--u) * 1); }
-  .diagram { width: 100%; max-height: 100vh; display: block; }
-
-  .glossary h1 { font: 500 calc(var(--u) * .68)/1 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .24em;
-    text-transform: uppercase; color: var(--muted); margin-bottom: calc(var(--u) * 1.2); }
-  .glossary ul { list-style: none; border-top: 1px solid var(--line); }
-  .glossary li { border-bottom: 1px solid var(--line); }
-  .term { width: 100%; display: block; text-align: left; background: none; border: 0; color: inherit; font: inherit; cursor: pointer;
-    padding: calc(var(--u) * .68) calc(var(--u) * .7); border-left: 2px solid transparent; transition: background .2s, border-color .2s; }
-  .term:hover, .term.on { background: rgba(255,255,255,0.04); border-left-color: var(--tone); }
-  .term:focus-visible { outline: 2px solid var(--mcp); outline-offset: -2px; }
-  .term b { display: block; font-size: calc(var(--u) * 1.06); font-weight: 600; color: var(--tone); margin-bottom: calc(var(--u) * .18); }
-  .term span { display: block; font-size: calc(var(--u) * .92); line-height: 1.38; color: var(--muted); }
-  .term.on span { color: var(--text); }
-
-  .n, .wire { transition: opacity .25s; }
-  .n .base { fill: var(--card); stroke: var(--line); stroke-width: 1.2; transition: stroke .25s; }
-  svg.focus .n:not(.on), svg.focus .wire:not(.on) { opacity: .22; }
-  .n.on .base { stroke: var(--tone); stroke-width: 2; }
-
-  .nav { position: fixed; top: 18px; right: 20px; display: flex; gap: 8px; z-index: 5; }
-  .nav a { font: 500 12px 'Inter', sans-serif; color: var(--muted); text-decoration: none; padding: 6px 10px;
-    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
-  .nav a:hover { color: var(--text); }
-
-  @media (max-width: 800px) {
-    :root { --u: 16px; }
-    html, body { height: auto; }
-    .slide { height: auto; display: block; padding: 56px 16px 32px; }
-    .term b { font-size: 16px; } .term span { font-size: 14px; }
-    .glossary h1 { font-size: 11px; margin-top: 24px; }
-  }
+{{css}}
 </style>
 </head>
 <body>
@@ -126,26 +84,7 @@
 </section>
 </main>
 <script>
-(function () {
-  const svg = document.getElementById("diagram");
-  const terms = [...document.querySelectorAll(".term")];
-  let pinned = null;
-  function show(term) {
-    const key = term && term.dataset.n;
-    terms.forEach((t) => t.classList.toggle("on", t === term));
-    svg.classList.toggle("focus", !!key);
-    svg.querySelectorAll("[data-n]").forEach((el) => {
-      el.classList.toggle("on", !!key && el.dataset.n.split(" ").includes(key));
-    });
-  }
-  terms.forEach((t) => {
-    t.addEventListener("mouseenter", () => show(t));
-    t.addEventListener("mouseleave", () => show(pinned));
-    t.addEventListener("focus", () => show(t));
-    t.addEventListener("blur", () => show(pinned));
-    t.addEventListener("click", () => { pinned = pinned === t ? null : t; show(pinned); });
-  });
-})();
+{{js}}
 </script>
 </body>
 </html>
