@@ -1,4 +1,49 @@
 news:
+  - date: '2026-11-03'
+    type: update
+    title:
+      en: "UK cyber chief warns of AI-powered critical-infrastructure attacks within two years"
+      fr: "Le cyberchef britannique alerte sur des attaques d’infrastructures critiques assistées par IA sous deux ans"
+    description:
+      en: "The UK National Cyber Security Centre says Britain should prepare for an AI-powered attack on critical national infrastructure within two years. It warns that AI can expose and exploit longstanding weaknesses faster, making basic resilience, asset visibility and remediation more urgent."
+      fr: "Le National Cyber Security Centre britannique estime que le Royaume-Uni doit se préparer à une attaque assistée par IA contre une infrastructure nationale critique dans les deux ans. L’IA peut accélérer la découverte et l’exploitation de faiblesses anciennes, ce qui rend plus urgents la résilience de base, la visibilité des actifs et la remédiation."
+    link: https://www.ncsc.gov.uk/news/cyber-chief-uk-facing-ai-powered-attacks-on-critical-infrastructure-in-two-years
+  - date: '2026-11-03'
+    type: update
+    title:
+      en: "Chinese regulator warns that AI investment is becoming overly concentrated"
+      fr: "Un régulateur chinois juge l’investissement dans l’IA excessivement concentré"
+    description:
+      en: "A senior Chinese financial regulator warned that global AI investment is becoming overly concentrated and may crowd out traditional industries by raising borrowing costs. The statement adds a macro-financial perspective to concerns about capital concentration across chips, data centres and a small set of platforms."
+      fr: "Un haut responsable de la régulation financière chinoise avertit que l’investissement mondial dans l’IA devient excessivement concentré et pourrait évincer les secteurs traditionnels en renchérissant leur financement. Cette alerte ajoute une lecture macrofinancière aux risques de concentration du capital dans les puces, les data centers et quelques plateformes."
+    link: https://www.reuters.com/business/finance/ai-investment-is-becoming-overly-concentrated-chinese-official-says-2026-11-03/
+  - date: '2026-11-02'
+    type: update
+    title:
+      en: "ECB identifies AI valuations, bond stress and shadow-bank losses as key risks"
+      fr: "La BCE identifie les valorisations IA, les tensions obligataires et les pertes des acteurs non bancaires comme risques majeurs"
+    description:
+      en: "The European Central Bank identified high AI-stock valuations, bond-market stress and possible losses at non-bank financial institutions among the main current financial-stability risks. The warning links the AI investment cycle to broader market concentration, leverage and liquidity vulnerabilities."
+      fr: "La Banque centrale européenne classe les valorisations élevées des actions liées à l’IA, les tensions obligataires et les pertes possibles des institutions financières non bancaires parmi les principaux risques actuels pour la stabilité financière. L’alerte relie le cycle d’investissement IA à des vulnérabilités plus larges de concentration, de levier et de liquidité."
+    link: https://www.reuters.com/business/finance/ecb-flags-ai-valuations-bond-stress-fund-losses-main-risks-2026-11-02/
+  - date: '2026-11-02'
+    type: update
+    title:
+      en: "Marvell agrees to buy Lumentum in a $115 billion AI data-centre bet"
+      fr: "Marvell rachète Lumentum pour 115 milliards de dollars dans un pari sur les data centers IA"
+    description:
+      en: "Marvell agreed to acquire optical-components maker Lumentum in an all-stock transaction with an implied enterprise value of $115 billion including debt. The deal is a major bet that optical interconnects will remain a strategic bottleneck as AI clusters scale, although the market reaction highlighted execution and valuation risk."
+      fr: "Marvell a conclu le rachat du fabricant de composants optiques Lumentum dans une opération en actions valorisant l’entreprise 115 milliards de dollars, dette comprise. L’accord parie sur le rôle critique des interconnexions optiques dans l’extension des clusters IA, tandis que la réaction boursière souligne les risques d’exécution et de valorisation."
+    link: https://www.reuters.com/legal/transactional/marvell-buy-lumentum-115-billion-deal-ai-data-center-bet-2026-11-02/
+  - date: '2026-10-31'
+    type: update
+    title:
+      en: "Amazon Bedrock expands access to Chinese open-weight models"
+      fr: "Amazon Bedrock élargit l’accès aux modèles chinois à poids ouverts"
+    description:
+      en: "Amazon is broadening Bedrock access to Chinese open-weight models including Moonshot AI’s Kimi and Z.ai’s GLM family. AWS documentation describes GLM 5.3 as a 753-billion-parameter mixture-of-experts model with about 40 billion active parameters, illustrating how cloud governance layers are making open weights easier to evaluate and deploy."
+      fr: "Amazon élargit l’accès, via Bedrock, à des modèles chinois à poids ouverts, notamment les familles Kimi de Moonshot AI et GLM de Z.ai. La documentation AWS décrit GLM 5.3 comme un mixture-of-experts de 753 milliards de paramètres, dont environ 40 milliards actifs, signe que les couches de gouvernance cloud facilitent l’évaluation et le déploiement des poids ouverts."
+    link: https://aws.amazon.com/about-aws/whats-new/2026/10/amazon-bedrock-glm-5-3/
   - date: '2026-11-01'
     type: update
     title:
