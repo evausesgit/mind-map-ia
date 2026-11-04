@@ -1,4 +1,49 @@
 news:
+  - date: "2026-11-03"
+    type: update
+    title:
+      en: "Sarvam releases Prism, an open-weight decision model for low-latency enterprise workflows"
+      fr: "Sarvam publie Prism, un modèle de décision open-weight pour les workflows d’entreprise à faible latence"
+    description:
+      en: "Sarvam released Prism, a System One decision model built on its 105B-10B mixture-of-experts base. In Sarvam’s own tests, it averaged 71.8 across three decision indices with a 44 ms median response time on one NVIDIA B200; the weights are open for enterprise fine-tuning and self-hosting."
+      fr: "Sarvam publie Prism, un modèle de décision System One fondé sur sa base mixture-of-experts 105B-10B. Selon les tests de Sarvam, il obtient une moyenne de 71,8 sur trois indices avec une latence médiane de 44 ms sur un NVIDIA B200 ; les poids sont ouverts pour l’adaptation et l’auto-hébergement en entreprise."
+    link: https://www.sarvam.ai/blogs/sarvam-prism
+  - date: "2026-11-03"
+    type: new-feature
+    title:
+      en: "Snowflake adds governed business context and a control plane for enterprise AI agents"
+      fr: "Snowflake ajoute un contexte métier gouverné et un plan de contrôle pour les agents IA d’entreprise"
+    description:
+      en: "Snowflake introduced Business Ontology and Cortex AI Gateway to give agents approved definitions and central controls over models, tools and actions. The company says 55% of executives in a sponsored survey cite missing business context as the main cause of poor agent insights, highlighting that agent reliability is increasingly a data-governance problem."
+      fr: "Snowflake lance Business Ontology et Cortex AI Gateway afin de fournir aux agents des définitions approuvées et des contrôles centraux sur les modèles, outils et actions. Selon une enquête sponsorisée par l’entreprise, 55 % des dirigeants citent l’absence de contexte métier comme première cause de mauvaises analyses des agents, signe que leur fiabilité devient un enjeu de gouvernance des données."
+    link: https://www.snowflake.com/en/news/press-releases/expedition-2026-business-ontology-ai-gateway/
+  - date: "2026-11-03"
+    type: update
+    title:
+      en: "OpenAI staff reportedly warned about operational-security gaps for years"
+      fr: "Des salariés d’OpenAI auraient alerté depuis des années sur des failles de sécurité opérationnelle"
+    description:
+      en: "Five people familiar with the matter told Reuters that OpenAI employees had raised concerns about code openness, insufficient security review and insider threats for years. The report follows OpenAI’s October disclosure that a recording device had been found in an executive conference room."
+      fr: "Cinq sources proches du dossier ont indiqué à Reuters que des salariés d’OpenAI avaient alerté depuis plusieurs années sur l’ouverture du code, l’insuffisance des revues de sécurité et les menaces internes. L’enquête suit la révélation par OpenAI, en octobre, de la découverte d’un dispositif d’enregistrement dans une salle de réunion de dirigeants."
+    link: https://www.reuters.com/business/openai-employees-warned-about-operational-security-lapses-years-sources-say-2026-11-03/
+  - date: "2026-11-03"
+    type: update
+    title:
+      en: "EU court adviser says Gemini’s use of press articles may infringe copyright"
+      fr: "Un conseiller de la justice européenne estime que l’usage d’articles de presse par Gemini peut enfreindre le droit d’auteur"
+    description:
+      en: "An adviser to the EU’s top court said Google Gemini’s use of publishers’ articles in answers may breach copyright rules. The opinion is not the final judgment, but it could shape how providers license, retrieve and reproduce protected content in AI-generated responses."
+      fr: "Un conseiller de la plus haute juridiction de l’UE estime que l’utilisation d’articles d’éditeurs dans les réponses de Google Gemini peut enfreindre le droit d’auteur. Cet avis n’est pas le jugement final, mais il pourrait influencer les licences, la recherche documentaire et la reproduction de contenus protégés dans les réponses générées par IA."
+    link: https://www.reuters.com/world/googles-use-press-by-ai-chatbot-may-infringe-copyright-rules-eu-court-adviser-2026-11-03/
+  - date: "2026-11-03"
+    type: update
+    title:
+      en: "Meta raises $15 billion in bonds to finance AI expansion"
+      fr: "Meta lève 15 milliards de dollars d’obligations pour financer son expansion dans l’IA"
+    description:
+      en: "Meta raised $15 billion through a five-part US dollar bond offering as it accelerates AI infrastructure spending. The transaction shows hyperscalers increasingly using debt alongside cash flow and equity to fund compute, making financing costs and capital discipline part of the AI investment cycle."
+      fr: "Meta a levé 15 milliards de dollars via une émission obligataire en cinq tranches pour accélérer ses investissements dans les infrastructures IA. L’opération montre que les hyperscalers recourent davantage à la dette, en plus de leurs flux de trésorerie et des actions, ce qui place le coût du financement et la discipline du capital au cœur du cycle IA."
+    link: https://www.reuters.com/technology/meta-raises-15-billion-in-five-part-us-bond-sale-2026-11-03/
   - date: '2026-11-03'
     type: update
     title:
