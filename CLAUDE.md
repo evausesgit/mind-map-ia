@@ -36,6 +36,14 @@ Voice-over of the MCP animation (`data/narration/*.yaml` → `web/animations/mcp
 uv run --python 3.12 --with kokoro --with soundfile --with 'misaki[en]' --with pip --with pyyaml python scripts/generate_narration.py
 ```
 
+The MCP animation's French track (`data/narration/mcp-agentic-architecture-fr.yaml`, voice Apolline) uses Gradium's hosted TTS instead (`engine: gradium`), for a native French voice. It needs `GRADIUM_API_KEY` in the environment and spends about one credit per character; unchanged lines are reused from `~/.cache/mmia-narration`:
+
+```bash
+uv run --python 3.12 --with numpy --with soundfile --with pyyaml python scripts/generate_narration.py data/narration/mcp-agentic-architecture-fr.yaml
+```
+
+Its on-screen French text is the `MCP_EXPLAINER_CONFIG_FR` overlay at the end of `web/animations/mcp-explainer/config.js`; the page picks it with `?lang=fr` or a French browser.
+
 The Trusted Data animation has one track per language: pass `data/narration/trusted-data-en.yaml` or `data/narration/trusted-data-fr.yaml` to the same command. Its cue times follow `web/animations/trusted-data/engine.js`. French needs `espeak-ng`, and does not support the `[word](/phonemes/)` override: write the word plainly.
 
 **Note:** The CI pipeline only regenerates `macro.html`, `ecosystem.html`, `dense-vs-moe.html`, `glossary.html`, `index.html` and `news.html`. All other pages (topic maps, slides, topic articles) must be regenerated locally and committed. Any change to `scripts/site_chrome.py` (nav, tokens, header) affects every page, so regenerate them all.

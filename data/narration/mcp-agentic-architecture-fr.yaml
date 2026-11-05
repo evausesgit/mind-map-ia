@@ -1,0 +1,55 @@
+# Voix-off française de web/animations/mcp-agentic-architecture.html.
+# Régénérer avec scripts/generate_narration.py (moteur Gradium, voir son en-tête).
+#
+# `at` est la seconde de la timeline où la phrase démarre : mêmes repères que
+# la version anglaise (mcp-agentic-architecture.yaml). Les phrases suivent les
+# légendes françaises de web/animations/mcp-explainer/config.js, condensées
+# quand le créneau est court.
+engine: gradium
+voice: 6oIkS98REoVZ1dEw   # Apolline : vive, souriante, va droit au but
+padding_bonus: 0          # débit : négatif = plus rapide, positif = plus lent
+output: web/animations/mcp-explainer/narration-fr.mp3
+duration: 167.8
+
+cues:
+  # La demande
+  - { at: 1.5,   text: "Un trader demande : que se passe-t-il sur NVIDIA, et quels clients pourraient être intéressés ?" }
+  - { at: 8.6,   text: "Un agent ne se contente pas de répondre. Il réfléchit à la suite." }
+  # La stack agentique
+  - { at: 15.0,  text: "L'agent raisonne. L'orchestrateur coordonne." }
+  - { at: 19.0,  text: "Il choisit un modèle, se souvient du contexte, invoque des skills, jusqu'à avoir besoin de données externes." }
+  # Le problème
+  - { at: 28.0,  text: "Il lui faut le contexte de marché, l'actualité récente et les clients concernés." }
+  - { at: 34.0,  text: "Comment une IA se connecte-t-elle, en sécurité, aux outils de l'entreprise ?" }
+  # Voici MCP
+  - { at: 39.6,  text: "Voici MCP, le Model Context Protocol." }
+  - { at: 43.5,  text: "Un moyen standard d'accéder aux outils et aux données. Une interface universelle, pas un modèle de plus." }
+  # L'écosystème MCP Cash Equity
+  - { at: 51.0,  text: "L'agent décide de ce dont il a besoin. MCP lui donne un accès standard. Les données reviennent, et l'agent combine les résultats." }
+  # Le résultat
+  - { at: 62.0,  text: "Le trader obtient les facteurs clés, les clients concernés et une action suggérée." }
+  - { at: 67.6,  text: "Une question. Quatre systèmes. Une seule réponse sourcée." }
+  # Dans un serveur MCP
+  - { at: 72.2,  text: "Derrière chaque appel d'outil, un serveur MCP, conçu comme tout service d'entreprise." }
+  - { at: 77.7,  text: "Il tourne chez vous : votre réseau, votre passerelle, vos secrets." }
+  - { at: 82.9,  text: "Un modèle d'accès définit ce qui peut être lu." }
+  - { at: 86.5,  text: "Le contexte donne le sens des données." }
+  - { at: 90.2,  text: "Les garde-fous encadrent ce qui entre et ce qui sort." }
+  - { at: 94.0,  text: "Chaque appel respecte les droits de l'utilisateur." }
+  - { at: 97.8,  text: "Un appel autorisé traverse chaque couche, et laisse une piste d'audit." }
+  - { at: 104.5, text: "Hors des droits de l'utilisateur ? L'appel s'arrête à l'entrée." }
+  # Du build au run
+  - { at: 111.4, text: "Un serveur MCP est un logiciel, et se livre comme tel." }
+  - { at: 115.6, text: "On teste chaque outil isolément," }
+  - { at: 118.9, text: "puis toute la chaîne, avec de vraies identités." }
+  - { at: 122.5, text: "Livré en CI-CD, comme tout service." }
+  - { at: 126.2, text: "Puis on surveille chaque appel en production." }
+  - { at: 131.0, text: "Ce que l'on observe nourrit la version suivante." }
+  # Pourquoi MCP compte
+  - { at: 136.8, text: "Sans standard, chaque agent refait chaque intégration. Quatre agents, six systèmes : vingt-quatre intégrations sur mesure." }
+  - { at: 145.2, text: "Construite une fois, réutilisée partout : dix connexions standard." }
+  - { at: 150.0, text: "Un agent. De nombreuses capacités d'entreprise." }
+  - { at: 153.9, text: "MCP connecte l'intelligence à l'entreprise." }
+  # Synthèse
+  - { at: 159.6, text: "De l'assistant IA à l'agent d'entreprise." }
+  - { at: 163.0, text: "Gouverné, testé, supervisé." }

@@ -36,6 +36,10 @@
   .track .knob { position: absolute; top: 8px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: var(--text); box-shadow: 0 0 12px var(--accent); }
   .chapter { font: 500 11px 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase;
     color: var(--muted); flex: none; width: 190px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .langs { display: flex; gap: 4px; flex: none; }
+  .langs button { width: auto; padding: 0 8px; font: 500 11px 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .1em; color: var(--muted); }
+  .langs button.active { color: var(--bg); background: var(--accent); }
+  .langs button.active:hover { background: var(--accent); }
   .tip { position: absolute; bottom: 30px; transform: translateX(-50%); padding: 4px 8px; border-radius: 6px; white-space: nowrap;
     background: #111723; border: 1px solid var(--line); font: 500 11px 'JetBrains Mono', monospace; color: var(--text); pointer-events: none; display: none; }
   .back { position: fixed; top: 18px; right: 20px; z-index: 5; font: 500 12px 'Inter', sans-serif; color: var(--muted);
@@ -63,6 +67,10 @@
   <div class="time" id="time">0:00 / 0:00</div>
   <div class="track" id="track"><div class="rail"></div><div class="fill" id="fill"></div><div class="knob" id="knob"></div><div class="tip" id="tip"></div></div>
   <div class="chapter" id="chapter"></div>
+  <div class="langs" role="group" aria-label="Language">
+    <button data-lang="en" title="English">EN</button>
+    <button data-lang="fr" title="Français">FR</button>
+  </div>
   <button id="voice" aria-label="Voice-over" aria-pressed="false" title="Voice-over (V)"></button>
   <button id="fs" aria-label="Fullscreen" title="Fullscreen (F)">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg>
@@ -70,7 +78,7 @@
 </div>
 <button class="voice-hint" id="voice-hint" hidden>Turn on voice</button>
 <a class="next" id="next" href="mcp-concepts.html" hidden>Key concepts →</a>
-<audio id="narration" src="mcp-explainer/narration-en.mp3" preload="auto"></audio>
+<audio id="narration" preload="auto"></audio>
 
 <script src="mcp-explainer/gsap.min.js"></script>
 <script src="mcp-explainer/config.js"></script>
@@ -82,6 +90,16 @@
   const bare = record || params.get("chrome") === "0";
   if (bare) document.body.classList.add("bare");
 
+  const lang = ["en", "fr"].includes(params.get("lang")) ? params.get("lang")
+    : (navigator.language || "en").toLowerCase().startsWith("fr") ? "fr" : "en";
+  document.documentElement.lang = lang;
+  document.querySelector(".back").textContent = lang === "fr" ? "← Accueil" : "← Home";
+  document.getElementById("next").textContent = lang === "fr" ? "Concepts clés →" : "Key concepts →";
+  const cfg = lang === "fr"
+    ? mergeLocale(window.MCP_EXPLAINER_CONFIG, window.MCP_EXPLAINER_CONFIG_FR)
+    : window.MCP_EXPLAINER_CONFIG;
+  document.title = cfg.title;
+
   const ICON_PLAY = '<svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>';
   const ICON_PAUSE = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="3.5" y="2.5" width="3" height="11" rx="1"/><rect x="9.5" y="2.5" width="3" height="11" rx="1"/></svg>';
 
@@ -91,7 +109,7 @@
   ]);
 
   fontsReady.then(() => {
-    const ex = MCPExplainer.mount(document.getElementById("stage"), window.MCP_EXPLAINER_CONFIG);
+    const ex = MCPExplainer.mount(document.getElementById("stage"), cfg);
     const tl = ex.timeline;
     window.__explainer = ex;
     if (record) { document.body.dataset.ready = "1"; return; }
@@ -121,6 +139,8 @@
     // Voice-over: the timeline is the clock, the audio follows it. Browsers
     // refuse sound before a user gesture, so the page then offers a button.
     const audio = $("narration");
+    audio.src = `mcp-explainer/narration-${lang}.mp3`;
+    $("voice-hint").textContent = lang === "fr" ? "Activer la voix" : "Turn on voice";
     const ICON_VOICE_ON = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6v4h2.6L8.5 13V3L5.1 6z"/><path d="M11 5.5a3.5 3.5 0 0 1 0 5M12.8 3.6a6 6 0 0 1 0 8.8"/></svg>';
     const ICON_VOICE_OFF = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6v4h2.6L8.5 13V3L5.1 6z"/><path d="M11 6l3.5 4M14.5 6L11 10"/></svg>';
     let voiceOn = true, blocked = false, starting = false, lastResync = 0;
@@ -174,6 +194,17 @@
     };
     $("play").onclick = toggle;
     $("restart").onclick = () => { seek(0); tl.play(); };
+    document.querySelectorAll(".langs button").forEach((b) => {
+      b.classList.toggle("active", b.dataset.lang === lang);
+      b.onclick = () => {
+        if (b.dataset.lang === lang) return;
+        const q = new URLSearchParams(location.search);
+        q.set("lang", b.dataset.lang);
+        q.delete("scene");
+        q.set("t", tl.time().toFixed(1));
+        location.search = q.toString();
+      };
+    });
     $("fs").onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
 
     let dragging = false, wasPlaying = false;
