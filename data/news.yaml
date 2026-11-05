@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-04"
+    type: update
+    title:
+      en: "Tencent launches Hy4 and plans to release the model weights"
+      fr: "Tencent lance Hy4 et prévoit de publier les poids du modèle"
+    description:
+      en: "Tencent launched the multimodal Hy4 with computer-use, tool-calling and long-horizon agent capabilities; it says the weights and system cards will follow in the coming days. In Tencent's internal financial evaluation across 579 tasks with 213 professionals, Hy4 scored 3.04 versus 2.97 for DeepSeek-V4.1-Flash-1017, while API pricing starts at $0.90 per million input tokens."
+      fr: "Tencent lance le modèle multimodal Hy4, doté de fonctions d'utilisation d'ordinateur, d'appel d'outils et d'agents de longue durée ; les poids et fiches système doivent suivre dans les prochains jours. Dans l'évaluation financière interne de Tencent sur 579 tâches auprès de 213 professionnels, Hy4 obtient 3,04 contre 2,97 pour DeepSeek-V4.1-Flash-1017, avec un tarif API à partir de 0,90 dollar par million de tokens d'entrée."
+    link: https://www.tencent.com/tencent-launches-hy4-joining-the-ranks-of-the-worlds-leading-open-source-ai-models/
+  - date: "2026-11-04"
+    type: research
+    title:
+      en: "Google publishes an end-to-end evaluation framework for health AI"
+      fr: "Google publie un cadre d'évaluation de bout en bout pour l'IA en santé"
+    description:
+      en: "Google published a health-AI evaluation framework developed with health experts Elizabeth McGlynn and Dana Gelb Safran. It assesses accuracy, safety and usefulness by combining closed-question benchmarks, model-based autoraters and expert human review across common and high-risk scenarios."
+      fr: "Google publie un cadre d'évaluation de l'IA en santé élaboré avec les expertes Elizabeth McGlynn et Dana Gelb Safran. Il évalue la précision, la sécurité et l'utilité en combinant benchmarks à questions fermées, évaluateurs automatisés et revue humaine experte sur des scénarios courants et à haut risque."
+    link: https://blog.google/innovation-and-ai/technology/health/evaluating-health-ai-at-scale/
+  - date: "2026-11-03"
+    type: update
+    title:
+      en: "OpenAI expands its AI-assisted security sprint and bug bounties"
+      fr: "OpenAI élargit son sprint de cybersécurité assisté par IA et ses primes aux bugs"
+    description:
+      en: "OpenAI is preparing a new internal security sprint with Cathedral Systems, using its models to find and fix weaknesses. It says critical bug-bounty rewards will more than quadruple and notes that its previous sprint involved 25% of product engineers, while $1 billion in subsidized access is committed to frontline defenders over six months."
+      fr: "OpenAI prépare un nouveau sprint de sécurité interne avec Cathedral Systems, en utilisant ses modèles pour détecter et corriger des faiblesses. L'entreprise annonce que les primes pour les failles critiques seront plus que quadruplées et rappelle que 25 % de ses ingénieurs produit ont participé au sprint précédent, tandis qu'un milliard de dollars d'accès subventionné est prévu sur six mois pour les défenseurs de première ligne."
+    link: https://openai.com/index/preparing-our-next-security-sprint-to-harden-openai/
+  - date: "2026-11-02"
+    type: research
+    title:
+      en: "Anthropic open-sources FlashProve for cryptographically verifiable model inference"
+      fr: "Anthropic ouvre FlashProve pour vérifier cryptographiquement l'inférence des modèles"
+    description:
+      en: "Anthropic released FlashProve, an Apache-2.0 research prototype that uses zero-knowledge proofs to verify that a response came from a specified model without revealing its weights. For a 4-bit Llama 4 Maverick, Anthropic reports about 110 proof tokens per second on one H100 and a roughly 19 MB proof per 1,024-token request, though GPU overhead remains 70–95 times inference."
+      fr: "Anthropic publie FlashProve, un prototype de recherche sous licence Apache 2.0 utilisant des preuves à divulgation nulle pour vérifier qu'une réponse provient d'un modèle donné sans révéler ses poids. Pour Llama 4 Maverick en 4 bits, Anthropic annonce environ 110 tokens de preuve par seconde sur un H100 et une preuve d'environ 19 Mo par requête de 1 024 tokens, mais avec un surcoût GPU encore 70 à 95 fois supérieur à l'inférence."
+    link: https://www.anthropic.com/research/provable-inference
   - date: "2026-11-03"
     type: update
     title:
