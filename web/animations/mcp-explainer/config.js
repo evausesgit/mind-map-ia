@@ -277,3 +277,211 @@ window.MCP_EXPLAINER_CONFIG = {
     final: { build: 3.6, titleHold: 6.0 },
   },
 };
+
+/*
+ * French text, laid over the English config above when the page runs with
+ * lang=fr (see mergeLocale). Only text lives here: ids, glyphs, tones and
+ * timings come from the English config. Arrays are merged item by item, so
+ * keep the same order and length as above.
+ */
+window.MCP_EXPLAINER_CONFIG_FR = {
+  title: "De l’assistant IA à l’agent d’entreprise",
+
+  scenes: [
+    { label: "La demande" },
+    { label: "La stack agentique" },
+    { label: "Le problème" },
+    { label: "Voici MCP" },
+    { label: "L’écosystème MCP Cash Equity" },
+    { label: "Le résultat" },
+    { label: "Dans un serveur MCP" },
+    { label: "Du build au run" },
+    { label: "Pourquoi MCP compte" },
+    { label: "Synthèse" },
+  ],
+
+  user: { label: "TRADER", sublabel: "Desk Cash Equity" },
+  agent: { label: "AGENT CASH EQUITY" },
+  orchestrator: { label: "HARNESS AGENTIQUE  ·  ORCHESTRATEUR" },
+
+  capabilities: [
+    { label: "MODÈLE" },
+    { label: "SKILLS" },
+    { label: "OUTILS" },
+    { label: "MÉMOIRE" },
+  ],
+
+  orchestration: [
+    { tag: "Choisit un modèle" },
+    { tag: "Récupère le contexte du desk" },
+    { tag: "Invoque un skill" },
+    { tag: "Rappelle la couverture client" },
+    { tag: "Données externes requises" },
+  ],
+
+  mcp: { verbs: ["DÉCOUVRIR", "APPELER", "RENVOYER"] },
+
+  systems: [
+    { label: "DONNÉES DE MARCHÉ",   sub: "Base tick KDB+" },
+    { label: "INTELLIGENCE CLIENT", sub: "CRM" },
+    { label: "RECHERCHE",           sub: "Recherche actions" },
+    { label: "ACTUALITÉS",          sub: "Flux temps réel" },
+    { label: "ORDRES & EXÉCUTION",  sub: "OMS · EMS" },
+    { label: "DOCUMENTS INTERNES",  sub: "Politiques · procédures" },
+  ],
+
+  example: {
+    prompt: "Que se passe-t-il sur NVIDIA, et lesquels de mes clients pourraient être intéressés ?",
+    promptShort: "« Que se passe-t-il sur NVIDIA… ? »",
+    loop: ["Comprendre", "Planifier", "Agir", "Répondre"],
+    needs: ["Il me faut le contexte de marché.", "Il me faut l’actualité récente.", "Il me faut les clients concernés."],
+    plan: ["Contexte de marché requis", "Actualités / recherche requises", "Pertinence client requise"],
+    calls: [
+      { targets: [{ returns: "NVDA ▲4,2 %  ·  Vol 1,8× ADV" }] },
+      { targets: [{ returns: "Relèvement du secteur" }, { returns: "Annonce infra IA" }] },
+      { targets: [{ returns: "2 clients · intérêt semis" }] },
+    ],
+    result: {
+      ticker: "NVDA  ·  en séance",
+      move: "+4,2 %",
+      sections: [
+        { title: "FACTEURS CLÉS", items: ["Rallye des semi-conducteurs", "Nouvelle annonce d’infrastructure IA"] },
+        { title: "CLIENTS CONCERNÉS", items: [
+          { note: "surpondéré semis" },
+          { note: "demande récente sur NVDA" },
+        ] },
+        { title: "ACTION SUGGÉRÉE", items: ["Appeler le client A avec un point marché dédié"] },
+      ],
+      sourcesLabel: "SOURCES VIA MCP",
+      sources: ["KDB", "RECHERCHE", "ACTUALITÉS", "CRM"],
+    },
+  },
+
+  server: {
+    title: "DANS UN SERVEUR MCP",
+    subtitle: "client-intelligence  ·  expose le CRM",
+    envelope: "SERVEUR MCP",
+    agent: { sub: "pour le trader" },
+    system: { sub: "Données clients" },
+    runtimeLabel: "TOURNE DANS VOTRE ARCHITECTURE",
+    runtime: ["CONTENEUR · K8S", "PASSERELLE MCP", "COFFRE DE SECRETS", "LOGS · TRACES"],
+    layers: [
+      { label: "IDENTITÉ & ACCÈS",
+        items: ["OAuth · jeton de l’utilisateur", "Agit au nom de l’utilisateur", "Droits par client"] },
+      { label: "GARDE-FOUS",
+        items: ["Validation du schéma d’entrée", "Lecture seule · débit limité", "Données perso masquées"] },
+      { label: "CONTEXTE DES DONNÉES",
+        items: ["Descriptions d’outils claires", "Schémas typés · champs", "Glossaire métier · unités"] },
+      { label: "MODÈLE D’ACCÈS",
+        items: ["Vues validées, pas de tables", "Requêtes paramétrées", "Filtrage par ligne"] },
+    ],
+    allowed: {
+      checks: { guardrails: "✓ lecture seule · valide", context: "✓ outil compris" },
+      returns: "2 clients · anonymisés",
+    },
+    denied: { reason: "✕ non autorisé" },
+    captions: {
+      intro: "Derrière chaque appel d’outil, un serveur MCP, conçu comme tout service d’entreprise.",
+      runtime: "Il tourne dans votre architecture : votre réseau, votre passerelle, vos secrets.",
+      layers: {
+        access: "Un modèle d’accès aux données définit ce qui peut être lu, et comment.",
+        context: "Le contexte décrit les données, pour que le modèle sache ce qu’elles signifient.",
+        guardrails: "Des garde-fous encadrent ce qui entre et ce qui sort.",
+        identity: "Chaque appel porte l’identité de l’utilisateur et respecte ses droits.",
+      },
+      allowed: "Un appel autorisé traverse chaque couche, et laisse une piste d’audit.",
+      denied: "Hors des droits de l’utilisateur ? L’appel s’arrête à l’entrée.",
+    },
+  },
+
+  lifecycle: {
+    title: "DU BUILD AU RUN",
+    subtitle: "le cycle de vie d’un serveur MCP",
+    stages: [
+      { items: ["Outils, schémas, descriptions", "Règles d’accès & garde-fous en code"],
+        caption: "Un serveur MCP est un logiciel. Il se livre comme un logiciel." },
+      { label: "TESTS UNITAIRES", status: "148 / 148 réussis",
+        items: ["Chaque outil isolément", "Schémas, droits, cas limites", "Sources de données simulées"],
+        caption: "Tester chaque outil isolément…" },
+      { label: "TESTS D’INTÉGRATION", status: "36 scénarios réussis",
+        items: ["Agent ↔ serveur ↔ vrais systèmes", "Droits de bout en bout", "Évals : bon outil, bonne réponse"],
+        caption: "…puis toute la chaîne, avec de vraies identités et de vrais droits." },
+      { label: "DÉPLOIEMENT", status: "v1.3.0 · en prod",
+        items: ["CI/CD · versions publiées", "Recette → production", "Inscrit dans la passerelle MCP"],
+        caption: "Le livrer en CI/CD, comme tout service de production." },
+      { label: "SUPERVISION", status: "SLO 99,9 % tenu",
+        items: ["Latence · erreurs · usage", "Appels refusés · piste d’audit", "Alertes dérive & coûts"],
+        caption: "Puis surveiller chaque appel en production." },
+    ],
+    loopLabel: "BOUCLE DE RETOUR",
+    loopCaption: "Ce que l’on observe nourrit la version suivante.",
+    dashboard: {
+      title: "PRODUCTION  ·  MCP client-intelligence",
+      live: "EN DIRECT",
+      kpis: [
+        { label: "LATENCE P95" },
+        { label: "APPELS DU JOUR", value: "12,4k" },
+        { label: "APPELS REFUSÉS", value: "0,3 %" },
+        { label: "TAUX D’ERREUR",  value: "0,1 %" },
+      ],
+      spark: "APPELS D’OUTILS / MIN",
+    },
+  },
+
+  multiAgent: {
+    apps: [
+      { label: "AGENT VENTE" },
+      { label: "AGENT TRADING" },
+      { label: "AGENT RECHERCHE" },
+      { label: "COPILOTE MANAGEMENT" },
+    ],
+    layerLabel: "COUCHE MCP",
+    systems: ["KDB", "CRM", "RECHERCHE", "ACTUALITÉS", "EXÉCUTION", "DOCUMENTS"],
+  },
+
+  finalStack: [
+    { items: ["UTILISATEUR"] },
+    { items: ["AGENT CASH EQUITY"] },
+    { items: ["HARNESS AGENTIQUE  /  ORCHESTRATEUR"] },
+    { items: ["MODÈLES", "MÉMOIRE", "SKILLS", "MCP"] },
+    { items: ["DONNÉES DE MARCHÉ", "DONNÉES CLIENTS", "RECHERCHE", "EXÉCUTION", "SYSTÈMES INTERNES"] },
+  ],
+  finalTitle: "DE L’ASSISTANT IA À L’AGENT D’ENTREPRISE",
+  finalSubtitle: "MCP relie le raisonnement de l’IA aux outils et aux données de l’entreprise : gouverné, testé, supervisé.",
+
+  captions: {
+    s1: "Un agent ne se contente pas de répondre. Il réfléchit à la suite.",
+    s2: "L’agent raisonne. L’orchestrateur coordonne.",
+    s3Question: ["Comment une application d’IA se connecte-t-elle", "en sécurité aux outils et données de l’entreprise ?"],
+    s4: "MCP offre aux applications d’IA un moyen standard d’accéder aux outils et aux données.",
+    s4Sub: "Une interface universelle, pas un modèle de plus.",
+    s5Steps: ["L’agent décide ce dont il a besoin", "MCP donne un accès standard", "Les données reviennent", "L’agent combine les résultats"],
+    s6: "Une question. Quatre systèmes. Une seule réponse sourcée.",
+    s7Tangle: "Sans standard, chaque agent refait chaque intégration.",
+    s7TangleSub: "4 agents × 6 systèmes = 24 intégrations sur mesure",
+    s7Once: ["Construire l’intégration une fois.", "La réutiliser entre agents."],
+    s7OnceSub: "4 + 6 = 10 connexions standard",
+    s7One: "Un agent. De nombreuses capacités d’entreprise.",
+    s7Final: "MCP connecte l’intelligence à l’entreprise.",
+  },
+};
+
+/*
+ * Lay a locale over the base config: objects merge key by key, arrays item by
+ * item, strings replace. French spaces before ? : ; ! % » become no-break
+ * spaces so the punctuation never wraps onto its own line.
+ */
+window.mergeLocale = function mergeLocale(base, over) {
+  if (typeof over === "string") return over.replace(/ ([?:;!%»])/g, " $1").replace(/« /g, "« ");
+  if (Array.isArray(over)) {
+    const out = Array.isArray(base) ? base.slice() : [];
+    over.forEach((v, i) => { out[i] = mergeLocale(out[i], v); });
+    return out;
+  }
+  if (over && typeof over === "object") {
+    const out = base && typeof base === "object" && !Array.isArray(base) ? { ...base } : {};
+    for (const k of Object.keys(over)) out[k] = mergeLocale(out[k], over[k]);
+    return out;
+  }
+  return over;
+};
