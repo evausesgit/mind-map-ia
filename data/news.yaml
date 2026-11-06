@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-06"
+    type: update
+    title:
+      en: "OpenAI releases GPT-6 Cyber for aligned vulnerability research"
+      fr: "OpenAI lance GPT-6 Cyber pour la recherche de vulnérabilités alignée"
+    description:
+      en: "GPT-6 Cyber scores 48.5% on ExploitGym versus 32.1% for GPT-5.6 Cyber and stayed within authorized scope in 99.93% of tests without the deployment prompt. OpenAI classifies it as Critical for cybersecurity and reports that it helped validate 81 new high-severity Firefox flaws and develop exploits for 948 Linux kernel vulnerabilities."
+      fr: "GPT-6 Cyber obtient 48,5 % sur ExploitGym contre 32,1 % pour GPT-5.6 Cyber et reste dans le périmètre autorisé dans 99,93 % des tests sans prompt de déploiement. OpenAI le classe au niveau critique en cybersécurité et indique qu’il a aidé à valider 81 nouvelles failles Firefox de haute sévérité et à développer des exploits pour 948 vulnérabilités du noyau Linux."
+    link: https://openai.com/index/introducing-gpt-6-cyber/
+  - date: "2026-11-05"
+    type: research
+    title:
+      en: "Only 10% of financial firms orchestrate multi-agent AI enterprise-wide"
+      fr: "Seuls 10 % des acteurs financiers orchestrent l’IA multi-agent à l’échelle"
+    description:
+      en: "Capgemini reports that 59% of surveyed financial institutions are piloting or deploying multi-agent AI, but only 10% have enterprise-wide orchestration and 5% have institutionalized the capabilities needed at scale. The study covered 1,100 financial-services executives across 14 markets; 90% use or plan intelligent model routing to manage performance and token cost."
+      fr: "Capgemini indique que 59 % des institutions financières interrogées expérimentent ou déploient l’IA multi-agent, mais que seules 10 % disposent d’une orchestration à l’échelle de l’entreprise et 5 % des capacités institutionnalisées nécessaires. L’étude porte sur 1 100 dirigeants dans 14 marchés ; 90 % utilisent ou prévoient un routage intelligent des modèles pour piloter performance et coût des tokens."
+    link: https://www.capgemini.com/news/press-releases/financial-institutions-accelerate-transition-to-multi-agent-ai-in-drive-for-bottom-line-value/
+  - date: "2026-11-05"
+    type: update
+    title:
+      en: "OpenAI proposes a compact for responsible AI compute campuses"
+      fr: "OpenAI propose un pacte pour des campus de calcul IA responsables"
+    description:
+      en: "OpenAI published a National Community Compact and policy blueprint for future compute campuses it owns and operates. It commits to cover added energy and infrastructure costs, publish site-level water and electricity use, avoid broad NDAs with public officials, and report annually on jobs and local impact."
+      fr: "OpenAI publie un National Community Compact et un cadre de politique publique pour ses futurs campus de calcul. L’entreprise s’engage à couvrir les coûts énergétiques et d’infrastructure supplémentaires, publier les consommations d’eau et d’électricité par site, éviter les NDA généraux avec les responsables publics et rendre compte chaque année de l’emploi et de l’impact local."
+    link: https://openai.com/index/setting-new-standard-responsible-ai-infrastructure/
+  - date: "2026-11-05"
+    type: update
+    title:
+      en: "Google makes Gemini Omni 1.2 Flash generally available"
+      fr: "Google généralise Gemini Omni 1.2 Flash"
+    description:
+      en: "Gemini Omni 1.2 Flash is generally available through the Gemini API and Gemini for business, adding native 15-second video, multi-turn editing and stronger reference consistency. Google cut the price 30% to $0.07 per second for 720p generation and offers enterprise provisioned throughput and SynthID watermarking."
+      fr: "Gemini Omni 1.2 Flash est disponible de manière générale via l’API Gemini et Gemini for business, avec vidéo native de 15 secondes, édition multi-tour et meilleure cohérence des références. Google baisse le prix de 30 %, à 0,07 dollar par seconde en 720p, et propose un débit provisionné ainsi que le filigrane SynthID."
+    link: https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash/
   - date: "2026-11-04"
     type: update
     title:
