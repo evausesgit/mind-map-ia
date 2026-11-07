@@ -1,46 +1,46 @@
 # Voix-off française de web/animations/trusted-data-agents.html.
-# Régénérer avec scripts/generate_narration.py.
+# Régénérer avec scripts/generate_narration.py (moteur Gradium, voir son en-tête).
 #
 # `at` est la seconde de la timeline où la phrase démarre. Les phrases suivent
 # les légendes à l'écran (web/animations/trusted-data/config.js).
-voice: ff_siwis
-speed: 1.1
-lang: f   # Français
+engine: gradium
+voice: 6oIkS98REoVZ1dEw   # Apolline : vive, souriante, va droit au but
+padding_bonus: 0          # débit : négatif = plus rapide, positif = plus lent
 output: web/animations/trusted-data/narration-fr.mp3
 duration: 137.9
 
 cues:
   # La demande
-  - { at: 1.2,   text: "Un commercial demande quels clients ont acheté des semi-conducteurs ce mois-ci, et quoi leur envoyer." }
-  - { at: 7.2,   text: "Une seule question. Données clients et données de marché, mêlées." }
+  - { at: 1.2,   text: "Un sales demande : quels clients ont acheté des semi-conducteurs ce mois-ci, et que leur envoyer ?" }
+  - { at: 7.2,   text: "Une seule question, qui mêle données clients et données de marché." }
   # Agent, MCP, data
   - { at: 12.0,  text: "L'agent accède à ces données par ses serveurs MCP." }
-  - { at: 17.5,  text: "Il ne voit que ce qu'ils exposent. Ce qu'il y a derrière décide donc de tout." }
+  - { at: 17.5,  text: "Il ne voit que ce qu'ils exposent. Tout dépend donc de ce qu'il y a derrière." }
   # Qualité des données
-  - { at: 22.9,  text: "D'abord, la qualité. Les données brutes cachent un doublon, un trou et une ligne périmée." }
-  - { at: 28.3,  text: "Données fausses en entrée, réponse fausse, et sûre d'elle. Le modèle ne sait pas que la donnée est fausse. Il répond quand même." }
-  - { at: 36.9,  text: "La qualité est donc contrôlée avant même que l'agent ne lise la donnée." }
+  - { at: 22.9,  text: "D'abord, la qualité : un doublon, une valeur manquante, une ligne périmée." }
+  - { at: 28.3,  text: "Une donnée fausse donne une réponse fausse, et affirmée. Le modèle ne sait pas que la donnée est fausse : il répond quand même." }
+  - { at: 36.9,  text: "La qualité se contrôle donc avant même que l'agent ne lise la donnée." }
   # Contexte des données
-  - { at: 44.2,  text: "Ensuite, le contexte. Un outil qui dit juste renvoie des données laisse l'agent deviner." }
+  - { at: 44.2,  text: "Ensuite, le contexte. Un outil mal décrit oblige l'agent à deviner." }
   - { at: 49.8,  text: "Bien décrit, il trouve du premier coup." }
-  - { at: 53.0,  text: "Ce qui n'est pas décrit n'existe pas pour l'IA. Les métadonnées font partie du produit." }
+  - { at: 53.0,  text: "Pour l'IA, ce qui n'est pas décrit n'existe pas. Les métadonnées font partie du produit." }
   # Qui accède à quoi
   - { at: 58.7,  text: "Puis, l'accès." }
   - { at: 61.4,  text: "L'agent agit au nom de l'utilisateur, avec ses droits." }
-  - { at: 68.6,  text: "Même question, autre personne : une autre réponse, ou aucune." }
-  - { at: 73.2,  text: "L'agent n'a jamais plus de droits que la personne pour qui il travaille. Et chaque appel est tracé." }
+  - { at: 68.6,  text: "Même question, autre personne : autre réponse, ou aucune." }
+  - { at: 73.2,  text: "L'agent n'a jamais plus de droits que son utilisateur. Et chaque appel est tracé." }
   # Confidentialité des ordres
   - { at: 78.8,  text: "Enfin, la confidentialité." }
-  - { at: 81.1,  text: "Ce qui sort de la banque n'est pas ce que dit l'ordre. Les noms deviennent des pseudonymes, les montants des fourchettes." }
-  - { at: 88.8,  text: "Les ordres clients ne servent qu'à répondre à votre question. Ils n'entraînent aucun modèle." }
+  - { at: 81.1,  text: "Ce qui sort de la banque n'est pas l'ordre brut : les noms deviennent des pseudonymes, les montants des fourchettes." }
+  - { at: 88.8,  text: "Les ordres clients servent à répondre à la question, jamais à entraîner un modèle." }
   # Où tourne le modèle ?
   - { at: 94.6,  text: "Alors, où tourne le modèle ?" }
   - { at: 97.2,  text: "Une demande, trois niveaux de sensibilité." }
-  - { at: 102.3, text: "C'est la sensibilité qui décide du chemin, pas la commodité. Le secret reste dedans. Le confidentiel sort anonymisé. Le public part directement vers le cloud." }
+  - { at: 102.3, text: "C'est la sensibilité qui décide du chemin, pas la commodité. Le secret reste dans la banque. Le confidentiel sort anonymisé. Le public va droit au cloud." }
   - { at: 112.8, text: "Même agent, même passerelle : cas sensibles et cas courants dans un seul flux." }
   # La réponse
-  - { at: 118.4, text: "Résultat : les acheteurs, le contexte de marché, et une action suggérée." }
-  - { at: 123.0, text: "Une réponse utile, fiable, et explicable. Aucun nom de client n'est sorti de la banque." }
+  - { at: 118.4, text: "Résultat : les acheteurs, le contexte, une action suggérée." }
+  - { at: 123.0, text: "Une réponse utile, fiable, explicable. Et aucun nom de client n'a quitté la banque." }
   # Synthèse
   - { at: 128.6, text: "Un agent ne vaut que par les données derrière ses serveurs MCP." }
   - { at: 133.5, text: "Qualité. Contexte. Accès. Souveraineté." }

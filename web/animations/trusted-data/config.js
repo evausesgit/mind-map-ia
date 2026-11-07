@@ -265,10 +265,10 @@ window.TRUSTED_DATA_CONFIG = {
       ],
 
       cap: {
-        s1: "Une seule question. Données clients et données de marché, mêlées.",
+        s1: "Une seule question, qui mêle données clients et données de marché.",
         s2: "L’agent ne voit que les données exposées par ses serveurs MCP.",
         s2Sub: "Ce qu’il y a derrière, et la façon dont c’est exposé, décide de tout.",
-        s3Bad: "Données fausses en entrée, réponse fausse… et sûre d’elle.",
+        s3Bad: "Une donnée fausse donne une réponse fausse… et affirmée.",
         s3BadSub: "Le modèle ne sait pas que la donnée est fausse. Il répond quand même.",
         s3Good: "La qualité est contrôlée avant même que l’agent ne lise la donnée.",
         s4: "Ce qui n’est pas décrit n’existe pas pour l’IA.",
@@ -277,8 +277,8 @@ window.TRUSTED_DATA_CONFIG = {
         s5b: "Même question, autre personne : une autre réponse, ou aucune.",
         s5c: "L’agent n’a jamais plus de droits que la personne pour qui il travaille.",
         s5Sub: "Identité propagée · habilitations par client · filtrage lignes & colonnes · audit complet",
-        s6a: "Ce qui sort de la banque n’est pas ce que dit l’ordre.",
-        s6b: "Les ordres clients ne servent qu’à une chose : répondre à votre question.",
+        s6a: "Ce qui sort de la banque n’est pas l’ordre brut.",
+        s6b: "Les ordres clients servent à répondre à la question, jamais à entraîner un modèle.",
         s7a: "Une demande, trois niveaux de sensibilité.",
         s7b: "C’est la sensibilité qui décide du chemin, pas la commodité.",
         s7c: "Même agent, même passerelle : cas sensibles et cas courants dans un seul flux.",
