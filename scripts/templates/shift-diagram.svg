@@ -1,0 +1,96 @@
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="{{aria}}">
+  <defs>
+    <linearGradient id="ladder-grad" gradientUnits="userSpaceOnUse" x1="56" y1="0" x2="1124" y2="0">
+      <stop offset="0" stop-color="#7EA6FF"/><stop offset=".6" stop-color="#A594FF"/><stop offset="1" stop-color="#3DD6C6"/>
+    </linearGradient>
+  </defs>
+  <g font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text class="mono" x="80" y="77" fill="#EEF2F7" font-size="12">01</text>
+    <text class="mono" x="112" y="77" fill="#8B94A5">{{eyebrow}}</text>
+  </g>
+
+  <circle cx="300" cy="420" r="330" fill="url(#halo)"/>
+  <circle cx="880" cy="420" r="330" fill="url(#halo-cloud)"/>
+
+  <!-- the same request, sent to both worlds -->
+  <g class="n" data-n="prompt" style="--tone:var(--request)">
+    <rect class="base" x="{{req_x}}" y="104" width="{{req_w}}" height="50" rx="25"/>
+    <text x="590" y="136" text-anchor="middle" font-size="19" font-style="italic" fill="#EEF2F7">{{request}}</text>
+  </g>
+  <path d="M590 154 V174 M590 174 H302 V196 M590 174 H877 V196" fill="none" stroke="#454D5C" stroke-width="1.3"/>
+
+  <!-- left: the chatbot -->
+  <g class="n" data-n="chatbot" style="--tone:var(--request)">
+    <rect class="base" x="30" y="196" width="545" height="476" rx="22" style="fill:rgba(126,166,255,.035);stroke:#7EA6FF;stroke-opacity:.55;stroke-width:1.3"/>
+    <text class="mono" x="54" y="230" font-size="13" font-weight="500" letter-spacing="2.4" fill="#7EA6FF">{{chatbot_head}}</text>
+  </g>
+  <g class="n" data-n="chatbot" style="--tone:var(--request)">
+    <rect class="base" x="58" y="262" width="120" height="64" rx="14"/>
+    <text x="118" y="300" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">{{you}}</text>
+  </g>
+  <g class="n" data-n="chatbot prompt" style="--tone:var(--request)">
+    <rect class="base" x="222" y="262" width="120" height="64" rx="14"/>
+    <use href="#i-spark" x="260" y="294" color="#7EA6FF"/>
+    <text x="304" y="300" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">{{llm}}</text>
+  </g>
+  <g class="n" data-n="chatbot" style="--tone:var(--request)">
+    <rect class="base" x="386" y="262" width="160" height="64" rx="14"/>
+    <text x="466" y="300" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">{{answer}}</text>
+  </g>
+  <g fill="none" stroke="#7EA6FF" stroke-opacity=".7" stroke-width="1.4">
+    <path class="wire" data-n="chatbot prompt" d="M178 294 H216 M210 288 L216 294 L210 300"/>
+    <path class="wire" data-n="chatbot" d="M342 294 H380 M374 288 L380 294 L374 300"/>
+  </g>
+  <g class="n" data-n="loop chatbot hitl" style="--tone:var(--request)">
+    <path d="M466 330 C466 382 118 382 118 336" fill="none" stroke="#7EA6FF" stroke-width="1.4" stroke-dasharray="5 6"/>
+    <path d="M112 342 L118 334 L124 342" fill="none" stroke="#7EA6FF" stroke-width="1.4"/>
+    <text x="292" y="404" text-anchor="middle" font-size="14.5" font-style="italic" fill="#7EA6FF">{{human_loop}}</text>
+  </g>
+  <g class="n" data-n="chatbot">
+    {{rows_chatbot}}
+  </g>
+
+  <!-- right: the agent -->
+  <g class="n" data-n="agent harness" style="--tone:var(--orchestrator)">
+    <rect class="base" x="605" y="196" width="545" height="476" rx="22" style="fill:rgba(165,148,255,.04);stroke:#A594FF;stroke-opacity:.6;stroke-width:1.3"/>
+    <text class="mono" x="629" y="230" font-size="13" font-weight="500" letter-spacing="2.4" fill="#A594FF">{{agent_head}}</text>
+  </g>
+  <g class="n" data-n="hitl" style="--tone:var(--request)">
+    <rect class="base" x="627" y="290" width="104" height="66" rx="14"/>
+    <text x="679" y="318" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">{{you}}</text>
+    <text class="mono" x="679" y="340" text-anchor="middle" font-size="12" fill="#7EA6FF">{{signoff}}</text>
+  </g>
+  <path class="wire" data-n="hitl" d="M731 323 H754" stroke="#7EA6FF" stroke-opacity=".7" stroke-width="1.4"/>
+  <g class="n" data-n="loop harness agent" style="--tone:var(--orchestrator)">
+    <circle cx="812" cy="323" r="56" fill="#0B0F16" stroke="#A594FF" stroke-width="1.6"/>
+    {{loop_arrows}}
+    <use href="#i-spark" x="788" y="324" color="#A594FF"/>
+    <text x="824" y="329" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">{{llm}}</text>
+    <text class="mono" x="812" y="256" text-anchor="middle" font-size="12" letter-spacing="1.4" fill="#A594FF">{{plan}}</text>
+    <text class="mono" x="858" y="400" text-anchor="start" font-size="12" letter-spacing="1.4" fill="#A594FF">{{act}}</text>
+    <text class="mono" x="766" y="400" text-anchor="end" font-size="12" letter-spacing="1.4" fill="#A594FF">{{check}}</text>
+  </g>
+  <g fill="none" stroke="#3DD6C6" stroke-opacity=".75" stroke-width="1.4">
+    <path class="wire" data-n="mcp tools" d="M868 323 H930 M930 323 C940 323 940 285 952 285 M930 323 H952 M930 323 C940 323 940 361 952 361"/>
+  </g>
+  <text class="n mono" data-n="mcp" x="898" y="312" text-anchor="middle" font-size="12" font-weight="500" letter-spacing="1.4" fill="#3DD6C6">{{mcp}}</text>
+  {{tools}}
+  <g class="n" data-n="agent">
+    {{rows_agent}}
+  </g>
+
+  <!-- the autonomy ladder -->
+  <g class="n" data-n="autonomy" style="--tone:var(--mcp)">
+    <rect class="base" x="30" y="696" width="1120" height="180" rx="18" style="fill:#080B11"/>
+    <text class="mono" x="590" y="726" text-anchor="middle" font-size="12" letter-spacing="2.9" fill="#8B94A5">{{ladder_title}}</text>
+    <text class="mono" x="56" y="756" font-size="11.5" letter-spacing="1.6" fill="#7EA6FF">← {{ladder_left}}</text>
+    <text class="mono" x="1124" y="756" text-anchor="end" font-size="11.5" letter-spacing="1.6" fill="#3DD6C6">{{ladder_right}} →</text>
+    <path d="M56 778 H1124" stroke="url(#ladder-grad)" stroke-width="2"/>
+    <path d="M1116 772 L1124 778 L1116 784" fill="none" stroke="#3DD6C6" stroke-width="2"/>
+  </g>
+  {{steps}}
+
+  <text x="590" y="962" text-anchor="middle" font-size="{{question_size}}" font-weight="500" fill="#EEF2F7">{{question}}</text>
+  <text class="mono" x="590" y="1008" text-anchor="middle" font-size="18" fill="#3DD6C6">{{takeaway}}</text>
+</svg>

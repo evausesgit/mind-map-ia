@@ -296,7 +296,7 @@
 
 const backLink = document.querySelector("[data-back]");
 const backBase = backLink.getAttribute("href");
-const syncBack = () => { backLink.href = `${backBase}&lang=${document.documentElement.lang}`; };
+const syncBack = () => { backLink.href = `${backBase}${backBase.includes("?") ? "&" : "?"}lang=${document.documentElement.lang}`; };
 syncBack();
 document.querySelectorAll("[data-set-lang]").forEach((b) => b.addEventListener("click", () => {
   document.documentElement.lang = b.dataset.setLang;

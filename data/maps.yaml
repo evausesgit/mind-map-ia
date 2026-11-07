@@ -138,6 +138,14 @@ animations:
     output: animations/sales-trader-copilot.html
 
 slides:
+  - id: chatbot-to-agents
+    title:
+      en: "From chatbot to agent"
+      fr: "Du chatbot à l’agent"
+    description:
+      en: "The same request handled by an LLM chatbot and by an agent, the levels of autonomy, with the key vocabulary"
+      fr: "La même demande traitée par un chatbot LLM puis par un agent, les niveaux d’autonomie, avec le vocabulaire clé"
+    output: animations/chatbot-to-agents.html
   - id: two-revolutions
     title:
       en: "Two revolutions, one anatomy"
