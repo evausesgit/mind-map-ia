@@ -2,6 +2,51 @@ news:
   - date: "2026-11-06"
     type: update
     title:
+      en: "Democrats prepare a broad US push on AI and data-center rules"
+      fr: "Les démocrates préparent une vaste offensive américaine sur l’IA et les data centers"
+    description:
+      en: "Reuters reports that Democrats plan a wave of legislation targeting AI systems and data-center development after taking control of Congress. The shift could bring federal scrutiny of model accountability, energy infrastructure and community impacts, while the final scope will depend on the new Congress and the White House."
+      fr: "Selon Reuters, les démocrates préparent une série de textes visant les systèmes d’IA et le développement des data centers après leur prise de contrôle du Congrès. Ce changement pourrait renforcer le contrôle fédéral sur la responsabilité des modèles, les infrastructures énergétiques et les impacts locaux, mais la portée finale dépendra du nouveau Congrès et de la Maison-Blanche."
+    link: https://www.reuters.com/business/media-telecom/democrats-planning-flood-ai-bills-when-they-take-control-congress-2026-11-06/
+  - date: "2026-11-06"
+    type: update
+    title:
+      en: "Microsoft plans to consolidate its neocloud suppliers"
+      fr: "Microsoft prévoit de consolider ses fournisseurs de neocloud"
+    description:
+      en: "Microsoft is evaluating a smaller roster of neocloud partners while prioritizing key suppliers and its own data centers, CNBC reports. CoreWeave, Nebius and IREN shares remain roughly half below their levels a month earlier, highlighting financing, power and customer-concentration risks across AI infrastructure."
+      fr: "Microsoft évalue une réduction de son nombre de partenaires neocloud tout en privilégiant quelques fournisseurs clés et ses propres data centers, selon CNBC. Les actions CoreWeave, Nebius et IREN restent environ 50 % sous leurs niveaux d’un mois plus tôt, illustrant les risques de financement, d’électricité et de concentration client dans l’infrastructure IA."
+    link: https://www.cnbc.com/2026/11/06/microsoft-moves-to-consolidate-its-relationships-with-neoclouds-in-ai.html
+  - date: "2026-11-05"
+    type: research
+    title:
+      en: "METR estimates a 1.9x acceleration in Anthropic model progress"
+      fr: "METR estime une accélération de 1,9 fois des progrès des modèles Anthropic"
+    description:
+      en: "An independent METR assessment estimates that Anthropic’s benchmark progress since October 2025 has run at 1.9 times its previous rate, with a 95% confidence interval of 1.5–2.8 times. METR tentatively attributes perhaps 80% of the current acceleration to AI-assisted R&D, while stressing substantial uncertainty and benchmark-method limitations."
+      fr: "Une évaluation indépendante de METR estime que la progression des modèles Anthropic depuis octobre 2025 est 1,9 fois plus rapide, avec un intervalle de confiance à 95 % de 1,5 à 2,8. METR attribue prudemment peut-être 80 % de l’accélération actuelle à la R&D assistée par IA, tout en soulignant l’incertitude et les limites méthodologiques des benchmarks."
+    link: https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/
+  - date: "2026-11-06"
+    type: update
+    title:
+      en: "Thinking Machines previews Apache-2.0 weights for Inkling 2 Small"
+      fr: "Thinking Machines annonce les poids Apache 2.0 d’Inkling 2 Small"
+    description:
+      en: "Inkling 2 Small is a multimodal mixture-of-experts model with 594 billion total parameters and 17 billion active, launched first through Tinker with closed weights. Thinking Machines says it intends to release the full weights under Apache 2.0 next week after external safety testing and red-teaming; company-reported results include 70.5% on JobBench and 71.8% on EnterpriseBench-CoreCraft."
+      fr: "Inkling 2 Small est un modèle multimodal mixture-of-experts de 594 milliards de paramètres au total, dont 17 milliards actifs, lancé d’abord sur Tinker avec des poids fermés. Thinking Machines prévoit de publier les poids complets sous Apache 2.0 la semaine prochaine après tests de sécurité externes et red teaming ; l’entreprise annonce 70,5 % sur JobBench et 71,8 % sur EnterpriseBench-CoreCraft."
+    link: https://thinkingmachines.ai/news/inkling-2-small/
+  - date: "2026-11-06"
+    type: update
+    title:
+      en: "AI stocks rebound after a sharp global sell-off"
+      fr: "Les valeurs IA rebondissent après une forte correction mondiale"
+    description:
+      en: "AI-linked stocks recovered part of a two-day sell-off: the Nasdaq rose 1.1%, Nvidia gained 2.8% and CoreWeave 6.3%, while the S&P 500 still posted its worst week since April 2025. The volatility followed concerns over AI spending and the policy implications of the US midterm result, underscoring how sensitive the trade remains to capex, rates and regulation."
+      fr: "Les valeurs liées à l’IA ont repris une partie de leur correction de deux jours : le Nasdaq a gagné 1,1 %, Nvidia 2,8 % et CoreWeave 6,3 %, tandis que le S&P 500 a connu sa pire semaine depuis avril 2025. La volatilité reflète les inquiétudes sur les dépenses IA et les conséquences réglementaires des élections américaines, soulignant la sensibilité du thème aux capex, aux taux et aux règles publiques."
+    link: https://www.barchart.com/story/news/8689415/ai-stocks-halt-their-brutal-worldwide-sell-off-as-wall-street-trims-its-loss-for-the-week
+  - date: "2026-11-06"
+    type: update
+    title:
       en: "OpenAI releases GPT-6 Cyber for aligned vulnerability research"
       fr: "OpenAI lance GPT-6 Cyber pour la recherche de vulnérabilités alignée"
     description:
