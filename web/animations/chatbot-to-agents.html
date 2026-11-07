@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<title>From chatbot to agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function () {
+  var q = new URLSearchParams(location.search).get("lang"), saved = null;
+  try { saved = localStorage.getItem("mmia-lang"); } catch (e) {}
+  var lang = q || saved || ((navigator.language || "en").toLowerCase().indexOf("fr") === 0 ? "fr" : "en");
+  document.documentElement.lang = lang === "fr" ? "fr" : "en";
+})();
+</script>
+<style>
+  :root {
+    --bg: #05070B; --text: #EEF2F7; --muted: #8B94A5; --faint: #454D5C; --line: rgba(255,255,255,0.13);
+    --card: #0B0F16; --request: #7EA6FF; --orchestrator: #A594FF; --mcp: #3DD6C6;
+    --u: min(1vw, 1.78vh); /* 1% of a 16:9 frame */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  body { background: radial-gradient(ellipse at 30% 45%, #0E1522 0%, var(--bg) 62%); }
+
+  .slide { height: 100vh; display: grid; grid-template-columns: 61fr 39fr; align-items: center;
+    gap: calc(var(--u) * 2); padding: 0 calc(var(--u) * 3) 0 calc(var(--u) * 1); }
+  .diagram { width: 100%; max-height: 100vh; display: block; }
+
+  .glossary h1 { font: 500 calc(var(--u) * .68)/1 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: calc(var(--u) * 1.2); }
+  .glossary ul { list-style: none; border-top: 1px solid var(--line); }
+  .glossary li { border-bottom: 1px solid var(--line); }
+  .term { width: 100%; display: block; text-align: left; background: none; border: 0; color: inherit; font: inherit; cursor: pointer;
+    padding: calc(var(--u) * .68) calc(var(--u) * .7); border-left: 2px solid transparent; transition: background .2s, border-color .2s; }
+  .term:hover, .term.on { background: rgba(255,255,255,0.04); border-left-color: var(--tone); }
+  .term:focus-visible { outline: 2px solid var(--mcp); outline-offset: -2px; }
+  .term b { display: block; font-size: calc(var(--u) * 1.06); font-weight: 600; color: var(--tone); margin-bottom: calc(var(--u) * .18); }
+  .term span { display: block; font-size: calc(var(--u) * .92); line-height: 1.38; color: var(--muted); }
+  .term.on span { color: var(--text); }
+
+  .n, .wire { transition: opacity .25s; }
+  .n .base { fill: var(--card); stroke: var(--line); stroke-width: 1.2; transition: stroke .25s; }
+  svg.focus .n:not(.on), svg.focus .wire:not(.on) { opacity: .22; }
+  .n.on .base { stroke: var(--tone); stroke-width: 2; }
+
+  .nav { position: fixed; top: 18px; right: 20px; display: flex; gap: 8px; z-index: 5; }
+  .nav a { font: 500 12px 'Inter', sans-serif; color: var(--muted); text-decoration: none; padding: 6px 10px;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav a:hover { color: var(--text); }
+
+  @media (max-width: 800px) {
+    :root { --u: 16px; }
+    html, body { height: auto; }
+    .slide { height: auto; display: block; padding: 56px 16px 32px; }
+    .term b { font-size: 16px; } .term span { font-size: 14px; }
+    .glossary h1 { font-size: 11px; margin-top: 24px; }
+  }
+
+  :root { --c3: #F27A7A; --c2: #F5A55A; --c1: #34D399; }
+  html[lang="en"] [data-lang="fr"], html[lang="fr"] [data-lang="en"] { display: none; }
+  .nav button { font: 500 12px 'JetBrains Mono', monospace; color: var(--muted); padding: 6px 9px; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav button:hover { color: var(--text); }
+  html[lang="en"] .nav button.en, html[lang="fr"] .nav button.fr { color: var(--bg); background: var(--mcp); border-color: var(--mcp); }
+  .diagram text { font-family: 'Inter', sans-serif; }
+  .diagram text.mono { font-family: 'JetBrains Mono', monospace; }
+  /* ten terms instead of seven: tighter rows */
+  .term { padding-top: calc(var(--u) * .46); padding-bottom: calc(var(--u) * .46); }
+  .term b { font-size: calc(var(--u) * 1); margin-bottom: calc(var(--u) * .1); }
+  .term span { font-size: calc(var(--u) * .84); line-height: 1.32; }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <button class="en" type="button" data-set-lang="en">EN</button><button class="fr" type="button" data-set-lang="fr">FR</button>
+  <a href="mcp-concepts.html" data-back><span data-lang="en">Next: anatomy of an agent →</span><span data-lang="fr">Suite : anatomie d’un agent →</span></a>
+  <a href="../index.html" data-lang="en">Home</a><a href="../index.html" data-lang="fr">Accueil</a>
+</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="halo"><stop offset="0" stop-color="#7EA6FF" stop-opacity=".16"/><stop offset="1" stop-color="#7EA6FF" stop-opacity="0"/></radialGradient>
+    <radialGradient id="halo-cloud"><stop offset="0" stop-color="#A594FF" stop-opacity=".2"/><stop offset="1" stop-color="#A594FF" stop-opacity="0"/></radialGradient>
+    <g id="i-spark"><path stroke="none" fill="currentColor" d="M0,-11 C1.2,-3 3,-1.2 11,0 C3,1.2 1.2,3 0,11 C-1.2,3 -3,1.2 -11,0 C-3,-1.2 -1.2,-3 0,-11 Z"/></g>
+    <g id="i-route" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M-11,0 H-2 M-2,0 C2,0 3,-7 11,-7 M-2,0 C2,0 3,7 11,7"/><path d="M7,-10 L11,-7 L7,-4 M7,4 L11,7 L7,10"/></g>
+    <g id="i-mask" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M-11,-6 C-5,-3 5,-3 11,-6 C12,4 6,8 0,8 C-6,8 -12,4 -11,-6 Z"/><path d="M-6,0 H-2 M2,0 H6" stroke-linecap="round"/></g>
+    <g id="i-chip" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="-8" y="-8" width="16" height="16" rx="2.5"/><rect x="-3.5" y="-3.5" width="7" height="7" rx="1"/><path d="M-4,-8 V-11 M4,-8 V-11 M-4,8 V11 M4,8 V11 M-8,-4 H-11 M-8,4 H-11 M8,-4 H11 M8,4 H11" stroke-linecap="round"/></g>
+    <g id="i-hex" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="7.8,-4.5 7.8,4.5 0,9 -7.8,4.5 -7.8,-4.5 0,-9"/><circle r="2.4" fill="currentColor" stroke="none"/></g>
+    <g id="i-lock" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="-8" y="-3" width="16" height="12" rx="3"/><path d="M-5,-3 V-6 C-5,-13 5,-13 5,-6 V-3"/></g>
+    <g id="i-cloud" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M-7,7 C-13,7 -13,-1 -7,-1 C-6,-8 4,-9 6,-2 C13,-3 13,7 7,7 Z"/></g>
+  </defs>
+</svg>
+<main class="slide" data-lang="en">
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="The same request, prepare tomorrow&#x27;s client meeting, goes to two worlds. On the left, an LLM chatbot answers with text, and the human runs the loop: copy, paste, check, ask again. On the right, an agent plans, acts and checks in a loop, reaches the CRM, e-mail and calendar through MCP, and the human signs off. Below, four levels of autonomy: chatbot, augmented assistant, agent, agent teams.">
+  <defs>
+    <linearGradient id="ladder-grad" gradientUnits="userSpaceOnUse" x1="56" y1="0" x2="1124" y2="0">
+      <stop offset="0" stop-color="#7EA6FF"/><stop offset=".6" stop-color="#A594FF"/><stop offset="1" stop-color="#3DD6C6"/>
+    </linearGradient>
+  </defs>
+  <g font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text class="mono" x="80" y="77" fill="#EEF2F7" font-size="12">01</text>
+    <text class="mono" x="112" y="77" fill="#8B94A5">FROM CHATBOT TO AGENT</text>
+  </g>
+
+  <circle cx="300" cy="420" r="330" fill="url(#halo)"/>
+  <circle cx="880" cy="420" r="330" fill="url(#halo-cloud)"/>
+
+  <!-- the same request, sent to both worlds -->
+  <g class="n" data-n="prompt" style="--tone:var(--request)">
+    <rect class="base" x="394" y="104" width="393" height="50" rx="25"/>
+    <text x="590" y="136" text-anchor="middle" font-size="19" font-style="italic" fill="#EEF2F7">“Prepare tomorrow’s client meeting”</text>
+  </g>
+  <path d="M590 154 V174 M590 174 H302 V196 M590 174 H877 V196" fill="none" stroke="#454D5C" stroke-width="1.3"/>
+
+  <!-- left: the chatbot -->
+  <g class="n" data-n="chatbot" style="--tone:var(--request)">
+    <rect class="base" x="30" y="196" width="545" height="476" rx="22" style="fill:rgba(126,166,255,.035);stroke:#7EA6FF;stroke-opacity:.55;stroke-width:1.3"/>
+    <text class="mono" x="54" y="230" font-size="13" font-weight="500" letter-spacing="2.4" fill="#7EA6FF">LLM CHATBOT · 2022–2023</text>
+  </g>
+  <g class="n" data-n="chatbot" style="--tone:var(--request)">
+    <rect class="base" x="58" y="262" width="120" height="64" rx="14"/>
+    <text x="118" y="300" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">YOU</text>
+  </g>
+  <g class="n" data-n="chatbot prompt" style="--tone:var(--request)">
+    <rect class="base" x="222" y="262" width="120" height="64" rx="14"/>
+    <use href="#i-spark" x="260" y="294" color="#7EA6FF"/>
+    <text x="304" y="300" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">LLM</text>
+  </g>
+  <g class="n" data-n="chatbot" style="--tone:var(--request)">
+    <rect class="base" x="386" y="262" width="160" height="64" rx="14"/>
+    <text x="466" y="300" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">ANSWER</text>
+  </g>
+  <g fill="none" stroke="#7EA6FF" stroke-opacity=".7" stroke-width="1.4">
+    <path class="wire" data-n="chatbot prompt" d="M178 294 H216 M210 288 L216 294 L210 300"/>
+    <path class="wire" data-n="chatbot" d="M342 294 H380 M374 288 L380 294 L374 300"/>
+  </g>
+  <g class="n" data-n="loop chatbot hitl" style="--tone:var(--request)">
+    <path d="M466 330 C466 382 118 382 118 336" fill="none" stroke="#7EA6FF" stroke-width="1.4" stroke-dasharray="5 6"/>
+    <path d="M112 342 L118 334 L124 342" fill="none" stroke="#7EA6FF" stroke-width="1.4"/>
+    <text x="292" y="404" text-anchor="middle" font-size="14.5" font-style="italic" fill="#7EA6FF">you copy, paste, check, ask again</text>
+  </g>
+  <g class="n" data-n="chatbot">
+    <text class="mono" x="54" y="452" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">WHO RUNS THE LOOP</text><text x="54" y="473" font-size="15.5" fill="#EEF2F7">You do, one prompt at a time</text>
+    <path d="M54 484 H551" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="54" y="506" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">WHAT IT CAN REACH</text><text x="54" y="527" font-size="15.5" fill="#EEF2F7">What it learned + what you paste</text>
+    <path d="M54 538 H551" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="54" y="560" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">WHAT YOU GET</text><text x="54" y="581" font-size="15.5" fill="#EEF2F7">Text: a generic meeting template</text>
+    <path d="M54 592 H551" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="54" y="614" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">MAIN RISK</text><text x="54" y="635" font-size="15.5" fill="#EEF2F7">A confident wrong answer</text>
+  </g>
+
+  <!-- right: the agent -->
+  <g class="n" data-n="agent harness" style="--tone:var(--orchestrator)">
+    <rect class="base" x="605" y="196" width="545" height="476" rx="22" style="fill:rgba(165,148,255,.04);stroke:#A594FF;stroke-opacity:.6;stroke-width:1.3"/>
+    <text class="mono" x="629" y="230" font-size="13" font-weight="500" letter-spacing="2.4" fill="#A594FF">AGENTIC SOLUTION · 2025–2026</text>
+  </g>
+  <g class="n" data-n="hitl" style="--tone:var(--request)">
+    <rect class="base" x="627" y="290" width="104" height="66" rx="14"/>
+    <text x="679" y="318" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">YOU</text>
+    <text class="mono" x="679" y="340" text-anchor="middle" font-size="12" fill="#7EA6FF">sign off</text>
+  </g>
+  <path class="wire" data-n="hitl" d="M731 323 H754" stroke="#7EA6FF" stroke-opacity=".7" stroke-width="1.4"/>
+  <g class="n" data-n="loop harness agent" style="--tone:var(--orchestrator)">
+    <circle cx="812" cy="323" r="56" fill="#0B0F16" stroke="#A594FF" stroke-width="1.6"/>
+    <polygon points="864.0,301.1 863.3,289.9 854.7,294.9" fill="#A594FF"/><polygon points="805.0,379.0 815.0,384.0 815.0,374.0" fill="#A594FF"/><polygon points="767.0,288.9 757.7,295.1 766.3,300.1" fill="#A594FF"/>
+    <use href="#i-spark" x="788" y="324" color="#A594FF"/>
+    <text x="824" y="329" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">LLM</text>
+    <text class="mono" x="812" y="256" text-anchor="middle" font-size="12" letter-spacing="1.4" fill="#A594FF">PLAN</text>
+    <text class="mono" x="858" y="400" text-anchor="start" font-size="12" letter-spacing="1.4" fill="#A594FF">ACT</text>
+    <text class="mono" x="766" y="400" text-anchor="end" font-size="12" letter-spacing="1.4" fill="#A594FF">CHECK</text>
+  </g>
+  <g fill="none" stroke="#3DD6C6" stroke-opacity=".75" stroke-width="1.4">
+    <path class="wire" data-n="mcp tools" d="M868 323 H930 M930 323 C940 323 940 285 952 285 M930 323 H952 M930 323 C940 323 940 361 952 361"/>
+  </g>
+  <text class="n mono" data-n="mcp" x="898" y="312" text-anchor="middle" font-size="12" font-weight="500" letter-spacing="1.4" fill="#3DD6C6">MCP</text>
+  <g class="n" data-n="tools mcp" style="--tone:var(--mcp)"><rect class="base" x="952" y="266" width="176" height="31" rx="15.5"/><text class="mono" x="1040" y="286" text-anchor="middle" font-size="12.5" letter-spacing="1.4" fill="#EEF2F7">CRM</text></g>
+  <g class="n" data-n="tools mcp" style="--tone:var(--mcp)"><rect class="base" x="952" y="304" width="176" height="31" rx="15.5"/><text class="mono" x="1040" y="324" text-anchor="middle" font-size="12.5" letter-spacing="1.4" fill="#EEF2F7">E-MAIL</text></g>
+  <g class="n" data-n="tools mcp" style="--tone:var(--mcp)"><rect class="base" x="952" y="342" width="176" height="31" rx="15.5"/><text class="mono" x="1040" y="362" text-anchor="middle" font-size="12.5" letter-spacing="1.4" fill="#EEF2F7">CALENDAR</text></g>
+  <g class="n" data-n="agent">
+    <text class="mono" x="629" y="452" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">WHO RUNS THE LOOP</text><text x="629" y="473" font-size="15.5" fill="#EEF2F7">The agent: plan, act, check, repeat</text>
+    <path d="M629 484 H1126" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="629" y="506" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">WHAT IT CAN REACH</text><text x="629" y="527" font-size="15.5" fill="#EEF2F7">Your tools and data, through MCP</text>
+    <path d="M629 538 H1126" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="629" y="560" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">WHAT YOU GET</text><text x="629" y="581" font-size="15.5" fill="#EEF2F7">A brief built from the CRM, in your calendar</text>
+    <path d="M629 592 H1126" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="629" y="614" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">MAIN RISK</text><text x="629" y="635" font-size="15.5" fill="#EEF2F7">An unwanted action → guardrails, sign-off</text>
+  </g>
+
+  <!-- the autonomy ladder -->
+  <g class="n" data-n="autonomy" style="--tone:var(--mcp)">
+    <rect class="base" x="30" y="696" width="1120" height="180" rx="18" style="fill:#080B11"/>
+    <text class="mono" x="590" y="726" text-anchor="middle" font-size="12" letter-spacing="2.9" fill="#8B94A5">LEVELS OF AUTONOMY</text>
+    <text class="mono" x="56" y="756" font-size="11.5" letter-spacing="1.6" fill="#7EA6FF">← YOU DRIVE</text>
+    <text class="mono" x="1124" y="756" text-anchor="end" font-size="11.5" letter-spacing="1.6" fill="#3DD6C6">THE AGENT DRIVES →</text>
+    <path d="M56 778 H1124" stroke="url(#ladder-grad)" stroke-width="2"/>
+    <path d="M1116 772 L1124 778 L1116 784" fill="none" stroke="#3DD6C6" stroke-width="2"/>
+  </g>
+  <g class="n" data-n="chatbot autonomy" style="--tone:#7EA6FF"><circle cx="170" cy="778" r="9" fill="#080B11" stroke="#7EA6FF" stroke-width="2"/><circle cx="170" cy="778" r="3.5" fill="#7EA6FF"/><text x="170" y="814" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">Chatbot</text><text class="mono" x="170" y="836" text-anchor="middle" font-size="12" fill="#7EA6FF">2022 · ChatGPT</text><text x="170" y="857" text-anchor="middle" font-size="13.5" fill="#8B94A5">answers from memory</text></g>
+  <g class="n" data-n="tools autonomy" style="--tone:#8FA0FF"><circle cx="450" cy="778" r="9" fill="#080B11" stroke="#8FA0FF" stroke-width="2"/><circle cx="450" cy="778" r="3.5" fill="#8FA0FF"/><text x="450" y="814" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">Augmented assistant</text><text class="mono" x="450" y="836" text-anchor="middle" font-size="12" fill="#8FA0FF">2023 · RAG, tool calling</text><text x="450" y="857" text-anchor="middle" font-size="13.5" fill="#8B94A5">looks things up</text></g>
+  <g class="n" data-n="agent loop autonomy" style="--tone:#A594FF"><circle cx="730" cy="778" r="9" fill="#080B11" stroke="#A594FF" stroke-width="2"/><circle cx="730" cy="778" r="3.5" fill="#A594FF"/><text x="730" y="814" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">Agent</text><text class="mono" x="730" y="836" text-anchor="middle" font-size="12" fill="#A594FF">2024–25 · loop + MCP</text><text x="730" y="857" text-anchor="middle" font-size="13.5" fill="#8B94A5">acts on your tools</text></g>
+  <g class="n" data-n="agent autonomy" style="--tone:#3DD6C6"><circle cx="1010" cy="778" r="9" fill="#080B11" stroke="#3DD6C6" stroke-width="2"/><circle cx="1010" cy="778" r="3.5" fill="#3DD6C6"/><text x="1010" y="814" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">Agent teams</text><text class="mono" x="1010" y="836" text-anchor="middle" font-size="12" fill="#3DD6C6">2026 · multi-agent</text><text x="1010" y="857" text-anchor="middle" font-size="13.5" fill="#8B94A5">delegates and coordinates</text></g>
+
+  <text x="590" y="962" text-anchor="middle" font-size="30" font-weight="500" fill="#EEF2F7">Which of your tasks could go from “answer me” to “do it for me”?</text>
+  <text class="mono" x="590" y="1008" text-anchor="middle" font-size="18" fill="#3DD6C6">The chatbot answers. The agent acts.</text>
+</svg>
+
+<section class="glossary" aria-label="Key vocabulary">
+  <h1>Key vocabulary</h1>
+  <ul>
+    <li><button class="term" data-n="chatbot" style="--tone:var(--request)"><b>Chatbot</b><span>A conversation: you ask, the model answers in text. Every next step is yours.</span></button></li>
+    <li><button class="term" data-n="prompt" style="--tone:var(--request)"><b>Prompt</b><span>Everything the model sees when it answers: your request, plus whatever you or the system add to it.</span></button></li>
+    <li><button class="term" data-n="tools" style="--tone:var(--mcp)"><b>Tool calling</b><span>The model asks for a function to run, such as a search, an API or a database query, and reads the result.</span></button></li>
+    <li><button class="term" data-n="agent" style="--tone:var(--orchestrator)"><b>Agent</b><span>A model given a goal, tools and the right to chain steps on its own until the goal is reached.</span></button></li>
+    <li><button class="term" data-n="loop" style="--tone:var(--orchestrator)"><b>Agentic loop</b><span>Plan, act, check, start again. With a chatbot, you are the loop; with an agent, the software is.</span></button></li>
+    <li><button class="term" data-n="harness" style="--tone:var(--orchestrator)"><b>Harness</b><span>The program around the model that runs the loop, calls the tools and keeps the memory.</span></button></li>
+    <li><button class="term" data-n="mcp" style="--tone:var(--mcp)"><b>MCP</b><span>Model Context Protocol: the open standard that plugs agents into company tools and data.</span></button></li>
+    <li><button class="term" data-n="hitl" style="--tone:var(--request)"><b>Human in the loop</b><span>A checkpoint where a person approves before a sensitive action, such as sending an e-mail or paying.</span></button></li>
+    <li><button class="term" data-n="autonomy" style="--tone:var(--mcp)"><b>Autonomy</b><span>How much of the work the machine chains without asking. It grows step by step, along with the guardrails.</span></button></li>
+  </ul>
+</section>
+</main>
+<main class="slide" data-lang="fr">
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="La même demande, préparer le point client de demain, part vers deux mondes. À gauche, un chatbot LLM répond par du texte et l’humain fait la boucle : copier, coller, vérifier, relancer. À droite, un agent planifie, agit et vérifie en boucle, atteint le CRM, les e-mails et l’agenda via MCP, et l’humain valide. En bas, quatre niveaux d’autonomie : chatbot, assistant augmenté, agent, équipes d’agents.">
+  <defs>
+    <linearGradient id="ladder-grad" gradientUnits="userSpaceOnUse" x1="56" y1="0" x2="1124" y2="0">
+      <stop offset="0" stop-color="#7EA6FF"/><stop offset=".6" stop-color="#A594FF"/><stop offset="1" stop-color="#3DD6C6"/>
+    </linearGradient>
+  </defs>
+  <g font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text class="mono" x="80" y="77" fill="#EEF2F7" font-size="12">01</text>
+    <text class="mono" x="112" y="77" fill="#8B94A5">DU CHATBOT À L’AGENT</text>
+  </g>
+
+  <circle cx="300" cy="420" r="330" fill="url(#halo)"/>
+  <circle cx="880" cy="420" r="330" fill="url(#halo-cloud)"/>
+
+  <!-- the same request, sent to both worlds -->
+  <g class="n" data-n="prompt" style="--tone:var(--request)">
+    <rect class="base" x="385" y="104" width="411" height="50" rx="25"/>
+    <text x="590" y="136" text-anchor="middle" font-size="19" font-style="italic" fill="#EEF2F7">« Prépare le point client de demain »</text>
+  </g>
+  <path d="M590 154 V174 M590 174 H302 V196 M590 174 H877 V196" fill="none" stroke="#454D5C" stroke-width="1.3"/>
+
+  <!-- left: the chatbot -->
+  <g class="n" data-n="chatbot" style="--tone:var(--request)">
+    <rect class="base" x="30" y="196" width="545" height="476" rx="22" style="fill:rgba(126,166,255,.035);stroke:#7EA6FF;stroke-opacity:.55;stroke-width:1.3"/>
+    <text class="mono" x="54" y="230" font-size="13" font-weight="500" letter-spacing="2.4" fill="#7EA6FF">CHATBOT LLM · 2022–2023</text>
+  </g>
+  <g class="n" data-n="chatbot" style="--tone:var(--request)">
+    <rect class="base" x="58" y="262" width="120" height="64" rx="14"/>
+    <text x="118" y="300" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">VOUS</text>
+  </g>
+  <g class="n" data-n="chatbot prompt" style="--tone:var(--request)">
+    <rect class="base" x="222" y="262" width="120" height="64" rx="14"/>
+    <use href="#i-spark" x="260" y="294" color="#7EA6FF"/>
+    <text x="304" y="300" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">LLM</text>
+  </g>
+  <g class="n" data-n="chatbot" style="--tone:var(--request)">
+    <rect class="base" x="386" y="262" width="160" height="64" rx="14"/>
+    <text x="466" y="300" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">RÉPONSE</text>
+  </g>
+  <g fill="none" stroke="#7EA6FF" stroke-opacity=".7" stroke-width="1.4">
+    <path class="wire" data-n="chatbot prompt" d="M178 294 H216 M210 288 L216 294 L210 300"/>
+    <path class="wire" data-n="chatbot" d="M342 294 H380 M374 288 L380 294 L374 300"/>
+  </g>
+  <g class="n" data-n="loop chatbot hitl" style="--tone:var(--request)">
+    <path d="M466 330 C466 382 118 382 118 336" fill="none" stroke="#7EA6FF" stroke-width="1.4" stroke-dasharray="5 6"/>
+    <path d="M112 342 L118 334 L124 342" fill="none" stroke="#7EA6FF" stroke-width="1.4"/>
+    <text x="292" y="404" text-anchor="middle" font-size="14.5" font-style="italic" fill="#7EA6FF">vous copiez, collez, vérifiez, relancez</text>
+  </g>
+  <g class="n" data-n="chatbot">
+    <text class="mono" x="54" y="452" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">QUI FAIT LA BOUCLE</text><text x="54" y="473" font-size="15.5" fill="#EEF2F7">Vous, un prompt après l’autre</text>
+    <path d="M54 484 H551" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="54" y="506" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">CE QU’IL ATTEINT</text><text x="54" y="527" font-size="15.5" fill="#EEF2F7">Ce qu’il a appris + ce que vous collez</text>
+    <path d="M54 538 H551" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="54" y="560" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">CE QUE VOUS OBTENEZ</text><text x="54" y="581" font-size="15.5" fill="#EEF2F7">Du texte : un compte-rendu type, générique</text>
+    <path d="M54 592 H551" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="54" y="614" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">RISQUE PRINCIPAL</text><text x="54" y="635" font-size="15.5" fill="#EEF2F7">Une réponse fausse, mais assurée</text>
+  </g>
+
+  <!-- right: the agent -->
+  <g class="n" data-n="agent harness" style="--tone:var(--orchestrator)">
+    <rect class="base" x="605" y="196" width="545" height="476" rx="22" style="fill:rgba(165,148,255,.04);stroke:#A594FF;stroke-opacity:.6;stroke-width:1.3"/>
+    <text class="mono" x="629" y="230" font-size="13" font-weight="500" letter-spacing="2.4" fill="#A594FF">SOLUTION AGENTIQUE · 2025–2026</text>
+  </g>
+  <g class="n" data-n="hitl" style="--tone:var(--request)">
+    <rect class="base" x="627" y="290" width="104" height="66" rx="14"/>
+    <text x="679" y="318" text-anchor="middle" font-size="14.5" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">VOUS</text>
+    <text class="mono" x="679" y="340" text-anchor="middle" font-size="12" fill="#7EA6FF">validez</text>
+  </g>
+  <path class="wire" data-n="hitl" d="M731 323 H754" stroke="#7EA6FF" stroke-opacity=".7" stroke-width="1.4"/>
+  <g class="n" data-n="loop harness agent" style="--tone:var(--orchestrator)">
+    <circle cx="812" cy="323" r="56" fill="#0B0F16" stroke="#A594FF" stroke-width="1.6"/>
+    <polygon points="864.0,301.1 863.3,289.9 854.7,294.9" fill="#A594FF"/><polygon points="805.0,379.0 815.0,384.0 815.0,374.0" fill="#A594FF"/><polygon points="767.0,288.9 757.7,295.1 766.3,300.1" fill="#A594FF"/>
+    <use href="#i-spark" x="788" y="324" color="#A594FF"/>
+    <text x="824" y="329" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="1.6" fill="#EEF2F7">LLM</text>
+    <text class="mono" x="812" y="256" text-anchor="middle" font-size="12" letter-spacing="1.4" fill="#A594FF">PLANIFIE</text>
+    <text class="mono" x="858" y="400" text-anchor="start" font-size="12" letter-spacing="1.4" fill="#A594FF">AGIT</text>
+    <text class="mono" x="766" y="400" text-anchor="end" font-size="12" letter-spacing="1.4" fill="#A594FF">VÉRIFIE</text>
+  </g>
+  <g fill="none" stroke="#3DD6C6" stroke-opacity=".75" stroke-width="1.4">
+    <path class="wire" data-n="mcp tools" d="M868 323 H930 M930 323 C940 323 940 285 952 285 M930 323 H952 M930 323 C940 323 940 361 952 361"/>
+  </g>
+  <text class="n mono" data-n="mcp" x="898" y="312" text-anchor="middle" font-size="12" font-weight="500" letter-spacing="1.4" fill="#3DD6C6">MCP</text>
+  <g class="n" data-n="tools mcp" style="--tone:var(--mcp)"><rect class="base" x="952" y="266" width="176" height="31" rx="15.5"/><text class="mono" x="1040" y="286" text-anchor="middle" font-size="12.5" letter-spacing="1.4" fill="#EEF2F7">CRM</text></g>
+  <g class="n" data-n="tools mcp" style="--tone:var(--mcp)"><rect class="base" x="952" y="304" width="176" height="31" rx="15.5"/><text class="mono" x="1040" y="324" text-anchor="middle" font-size="12.5" letter-spacing="1.4" fill="#EEF2F7">E-MAILS</text></g>
+  <g class="n" data-n="tools mcp" style="--tone:var(--mcp)"><rect class="base" x="952" y="342" width="176" height="31" rx="15.5"/><text class="mono" x="1040" y="362" text-anchor="middle" font-size="12.5" letter-spacing="1.4" fill="#EEF2F7">AGENDA</text></g>
+  <g class="n" data-n="agent">
+    <text class="mono" x="629" y="452" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">QUI FAIT LA BOUCLE</text><text x="629" y="473" font-size="15.5" fill="#EEF2F7">L’agent : planifie, agit, vérifie, recommence</text>
+    <path d="M629 484 H1126" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="629" y="506" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">CE QU’IL ATTEINT</text><text x="629" y="527" font-size="15.5" fill="#EEF2F7">Vos outils et vos données, via MCP</text>
+    <path d="M629 538 H1126" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="629" y="560" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">CE QUE VOUS OBTENEZ</text><text x="629" y="581" font-size="15.5" fill="#EEF2F7">Un point préparé depuis le CRM, dans l’agenda</text>
+    <path d="M629 592 H1126" stroke="rgba(255,255,255,.08)"/>
+    <text class="mono" x="629" y="614" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">RISQUE PRINCIPAL</text><text x="629" y="635" font-size="15.5" fill="#EEF2F7">Une action non voulue → garde-fous, validation</text>
+  </g>
+
+  <!-- the autonomy ladder -->
+  <g class="n" data-n="autonomy" style="--tone:var(--mcp)">
+    <rect class="base" x="30" y="696" width="1120" height="180" rx="18" style="fill:#080B11"/>
+    <text class="mono" x="590" y="726" text-anchor="middle" font-size="12" letter-spacing="2.9" fill="#8B94A5">NIVEAUX D’AUTONOMIE</text>
+    <text class="mono" x="56" y="756" font-size="11.5" letter-spacing="1.6" fill="#7EA6FF">← VOUS PILOTEZ</text>
+    <text class="mono" x="1124" y="756" text-anchor="end" font-size="11.5" letter-spacing="1.6" fill="#3DD6C6">L’AGENT PILOTE →</text>
+    <path d="M56 778 H1124" stroke="url(#ladder-grad)" stroke-width="2"/>
+    <path d="M1116 772 L1124 778 L1116 784" fill="none" stroke="#3DD6C6" stroke-width="2"/>
+  </g>
+  <g class="n" data-n="chatbot autonomy" style="--tone:#7EA6FF"><circle cx="170" cy="778" r="9" fill="#080B11" stroke="#7EA6FF" stroke-width="2"/><circle cx="170" cy="778" r="3.5" fill="#7EA6FF"/><text x="170" y="814" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">Chatbot</text><text class="mono" x="170" y="836" text-anchor="middle" font-size="12" fill="#7EA6FF">2022 · ChatGPT</text><text x="170" y="857" text-anchor="middle" font-size="13.5" fill="#8B94A5">répond de mémoire</text></g>
+  <g class="n" data-n="tools autonomy" style="--tone:#8FA0FF"><circle cx="450" cy="778" r="9" fill="#080B11" stroke="#8FA0FF" stroke-width="2"/><circle cx="450" cy="778" r="3.5" fill="#8FA0FF"/><text x="450" y="814" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">Assistant augmenté</text><text class="mono" x="450" y="836" text-anchor="middle" font-size="12" fill="#8FA0FF">2023 · RAG, appel d’outils</text><text x="450" y="857" text-anchor="middle" font-size="13.5" fill="#8B94A5">va chercher l’info</text></g>
+  <g class="n" data-n="agent loop autonomy" style="--tone:#A594FF"><circle cx="730" cy="778" r="9" fill="#080B11" stroke="#A594FF" stroke-width="2"/><circle cx="730" cy="778" r="3.5" fill="#A594FF"/><text x="730" y="814" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">Agent</text><text class="mono" x="730" y="836" text-anchor="middle" font-size="12" fill="#A594FF">2024–25 · boucle + MCP</text><text x="730" y="857" text-anchor="middle" font-size="13.5" fill="#8B94A5">agit sur vos outils</text></g>
+  <g class="n" data-n="agent autonomy" style="--tone:#3DD6C6"><circle cx="1010" cy="778" r="9" fill="#080B11" stroke="#3DD6C6" stroke-width="2"/><circle cx="1010" cy="778" r="3.5" fill="#3DD6C6"/><text x="1010" y="814" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">Équipes d’agents</text><text class="mono" x="1010" y="836" text-anchor="middle" font-size="12" fill="#3DD6C6">2026 · multi-agents</text><text x="1010" y="857" text-anchor="middle" font-size="13.5" fill="#8B94A5">délègue et coordonne</text></g>
+
+  <text x="590" y="962" text-anchor="middle" font-size="27" font-weight="500" fill="#EEF2F7">Quelle tâche pourrait passer de « réponds-moi » à « fais-le pour moi » ?</text>
+  <text class="mono" x="590" y="1008" text-anchor="middle" font-size="18" fill="#3DD6C6">Le chatbot répond. L’agent agit.</text>
+</svg>
+
+<section class="glossary" aria-label="Vocabulaire clé">
+  <h1>Vocabulaire clé</h1>
+  <ul>
+    <li><button class="term" data-n="chatbot" style="--tone:var(--request)"><b>Chatbot</b><span>Une conversation : vous demandez, le modèle répond par du texte. La suite, c’est vous qui la faites.</span></button></li>
+    <li><button class="term" data-n="prompt" style="--tone:var(--request)"><b>Prompt</b><span>Tout ce que le modèle voit au moment de répondre : votre demande, plus ce que vous ou le système y ajoutez.</span></button></li>
+    <li><button class="term" data-n="tools" style="--tone:var(--mcp)"><b>Appel d’outils</b><span>Le modèle demande l’exécution d’une fonction (recherche, API, requête en base) et lit le résultat.</span></button></li>
+    <li><button class="term" data-n="agent" style="--tone:var(--orchestrator)"><b>Agent</b><span>Un modèle à qui l’on donne un objectif, des outils et le droit d’enchaîner les étapes seul jusqu’au résultat.</span></button></li>
+    <li><button class="term" data-n="loop" style="--tone:var(--orchestrator)"><b>Boucle agentique</b><span>Planifier, agir, vérifier, recommencer. Avec un chatbot, la boucle, c’est vous ; avec un agent, c’est le logiciel.</span></button></li>
+    <li><button class="term" data-n="harness" style="--tone:var(--orchestrator)"><b>Harness</b><span>Le programme autour du modèle qui fait tourner la boucle, appelle les outils et garde la mémoire.</span></button></li>
+    <li><button class="term" data-n="mcp" style="--tone:var(--mcp)"><b>MCP</b><span>Model Context Protocol : le standard ouvert qui branche les agents sur les outils et les données de l’entreprise.</span></button></li>
+    <li><button class="term" data-n="hitl" style="--tone:var(--request)"><b>Humain dans la boucle</b><span>Un point de contrôle où une personne valide avant une action sensible : envoyer un e-mail, payer…</span></button></li>
+    <li><button class="term" data-n="autonomy" style="--tone:var(--mcp)"><b>Autonomie</b><span>La part du travail que la machine enchaîne sans demander. Elle grandit par paliers, avec les garde-fous.</span></button></li>
+  </ul>
+</section>
+</main>
+<script>
+(function () {
+  document.querySelectorAll(".slide").forEach((slide) => {
+    const svg = slide.querySelector("svg.diagram");
+    const terms = [...slide.querySelectorAll(".term")];
+    let pinned = null;
+    function show(term) {
+      const key = term && term.dataset.n;
+      terms.forEach((t) => t.classList.toggle("on", t === term));
+      svg.classList.toggle("focus", !!key);
+      svg.querySelectorAll("[data-n]").forEach((el) => {
+        el.classList.toggle("on", !!key && el.dataset.n.split(" ").includes(key));
+      });
+    }
+    terms.forEach((t) => {
+      t.addEventListener("mouseenter", () => show(t));
+      t.addEventListener("mouseleave", () => show(pinned));
+      t.addEventListener("focus", () => show(t));
+      t.addEventListener("blur", () => show(pinned));
+      t.addEventListener("click", () => { pinned = pinned === t ? null : t; show(pinned); });
+    });
+  });
+})();
+
+const backLink = document.querySelector("[data-back]");
+const backBase = backLink.getAttribute("href");
+const syncBack = () => { backLink.href = `${backBase}${backBase.includes("?") ? "&" : "?"}lang=${document.documentElement.lang}`; };
+syncBack();
+document.querySelectorAll("[data-set-lang]").forEach((b) => b.addEventListener("click", () => {
+  document.documentElement.lang = b.dataset.setLang;
+  try { localStorage.setItem("mmia-lang", b.dataset.setLang); } catch (e) {}
+  syncBack();
+}));
+</script>
+</body>
+</html>

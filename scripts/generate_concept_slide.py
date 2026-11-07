@@ -1,8 +1,9 @@
 """Generate concept slides (frozen diagram + glossary) from data/slides/*.yaml.
 
-Two layouts share the same CSS and glossary behaviour: the default hub diagram
-(one language), and `layout: routing`, the on-prem / cloud frame of the Trusted
-Data animation (bilingual, with one <main> per language).
+Three layouts share the same CSS and glossary behaviour: the default hub diagram
+(one language), `layout: routing`, the on-prem / cloud frame of the Trusted
+Data animation, and `layout: shift`, the chatbot-versus-agent introduction
+(both bilingual, with one <main> per language).
 
 Usage (from repo root):
     python scripts/generate_concept_slide.py [data/slides/agent-anatomy.yaml ...]
@@ -10,6 +11,7 @@ Usage (from repo root):
 With no argument, every file in data/slides/ is generated.
 """
 import html
+import math
 import pathlib
 import re
 import sys
@@ -196,6 +198,11 @@ def routing_main(lang: str, s: dict) -> str:
             "sees": routing_sees(s["sees"]),
         },
     )
+    return slide_main(lang, s, svg)
+
+
+def slide_main(lang: str, s: dict, svg: str) -> str:
+    """One language's <main>: the diagram, then its glossary (every term must point at a node)."""
     nodes = {n for attr in re.findall(r'data-n="([^"]+)"', svg) for n in attr.split()}
     for term in s["glossary"]:
         if term["node"] not in nodes:
@@ -215,12 +222,110 @@ def render_routing(spec: dict) -> str:
     )
 
 
+def shift_rows(rows: list, x: int) -> str:
+    parts = []
+    for i, row in enumerate(rows):
+        y = 452 + i * 54
+        if i:
+            parts.append(f'<path d="M{x} {y - 22} H{x + 497}" stroke="rgba(255,255,255,.08)"/>')
+        parts.append(
+            f'<text class="mono" x="{x}" y="{y}" font-size="11.5" letter-spacing="1.8" fill="#8B94A5">{esc(row["k"])}</text>'
+            f'<text x="{x}" y="{y + 21}" font-size="15.5" fill="#EEF2F7">{esc(row["v"])}</text>'
+        )
+    return "\n    ".join(parts)
+
+
+def shift_loop_arrows(cx: int = 812, cy: int = 323, r: int = 56) -> str:
+    """Three clockwise arrowheads on the agent loop, between its three labels."""
+    parts = []
+    for deg in (-30, 90, 210):
+        a = math.radians(deg)
+        px, py = cx + r * math.cos(a), cy + r * math.sin(a)
+        tx, ty = -math.sin(a), math.cos(a)  # clockwise tangent
+        nx, ny = math.cos(a), math.sin(a)   # outward normal
+        tip = (px + tx * 7, py + ty * 7)
+        b1 = (px - tx * 3 + nx * 5, py - ty * 3 + ny * 5)
+        b2 = (px - tx * 3 - nx * 5, py - ty * 3 - ny * 5)
+        pts = " ".join(f"{u:.1f},{v:.1f}" for u, v in (tip, b1, b2))
+        parts.append(f'<polygon points="{pts}" fill="#A594FF"/>')
+    return "".join(parts)
+
+
+def shift_tools(tools: list) -> str:
+    parts = []
+    for i, label in enumerate(tools):
+        y = 266 + i * 38
+        parts.append(
+            f'<g class="n" data-n="tools mcp" style="--tone:var(--mcp)">'
+            f'<rect class="base" x="952" y="{y}" width="176" height="31" rx="15.5"/>'
+            f'<text class="mono" x="1040" y="{y + 20}" text-anchor="middle" font-size="12.5" letter-spacing="1.4" '
+            f'fill="#EEF2F7">{esc(label)}</text></g>'
+        )
+    return "\n  ".join(parts)
+
+
+SHIFT_STEPS = (  # glossary nodes and colour of each autonomy step
+    ("chatbot autonomy", "#7EA6FF"),
+    ("tools autonomy", "#8FA0FF"),
+    ("agent loop autonomy", "#A594FF"),
+    ("agent autonomy", "#3DD6C6"),
+)
+
+
+def shift_steps(steps: list) -> str:
+    if len(steps) != len(SHIFT_STEPS):
+        raise ValueError(f"layout shift needs {len(SHIFT_STEPS)} ladder steps, got {len(steps)}")
+    parts = []
+    for i, (step, (nodes, color)) in enumerate(zip(steps, SHIFT_STEPS)):
+        x = 170 + i * 280
+        parts.append(
+            f'<g class="n" data-n="{nodes}" style="--tone:{color}">'
+            f'<circle cx="{x}" cy="778" r="9" fill="#080B11" stroke="{color}" stroke-width="2"/>'
+            f'<circle cx="{x}" cy="778" r="3.5" fill="{color}"/>'
+            f'<text x="{x}" y="814" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">{esc(step["label"])}</text>'
+            f'<text class="mono" x="{x}" y="836" text-anchor="middle" font-size="12" fill="{color}">{esc(step["when"])}</text>'
+            f'<text x="{x}" y="857" text-anchor="middle" font-size="13.5" fill="#8B94A5">{esc(step["text"])}</text></g>'
+        )
+    return "\n  ".join(parts)
+
+
+def shift_main(lang: str, s: dict) -> str:
+    req_w = int(len(s["request"]) * 9.4) + 64
+    strings = ("aria", "eyebrow", "request", "chatbot_head", "agent_head", "you", "llm", "answer", "human_loop",
+               "signoff", "plan", "act", "check", "mcp", "ladder_title", "ladder_left", "ladder_right",
+               "question", "takeaway")
+    svg = fill(
+        (TEMPLATES / "shift-diagram.svg").read_text(encoding="utf-8"),
+        {key: s[key] for key in strings},
+        {
+            "req_x": 590 - req_w // 2, "req_w": req_w,
+            "question_size": 30 if len(s["question"]) <= 64 else 27,
+            "rows_chatbot": shift_rows(s["chatbot_rows"], 54),
+            "rows_agent": shift_rows(s["agent_rows"], 629),
+            "loop_arrows": shift_loop_arrows(),
+            "tools": shift_tools(s["tools"]),
+            "steps": shift_steps(s["steps"]),
+        },
+    )
+    return slide_main(lang, s, svg)
+
+
+def render_shift(spec: dict) -> str:
+    back = "".join(f'<span data-lang="{lang}">{esc(spec[lang]["back_label"])}</span>' for lang in ("en", "fr"))
+    return fill(
+        (TEMPLATES / "routing-slide.html").read_text(encoding="utf-8"),
+        {"title": spec["en"]["title"], "back_href": spec["back"]},
+        {"back": back, "css": CSS, "js": JS, "slides": "\n".join(shift_main(lang, spec[lang]) for lang in ("en", "fr"))},
+    )
+
+
 def main() -> None:
     paths = [pathlib.Path(p) for p in sys.argv[1:]] or sorted((ROOT / "data" / "slides").glob("*.yaml"))
     for path in paths:
         spec = yaml.safe_load(path.read_text(encoding="utf-8"))
         out = ROOT / spec["output"]
-        page = render_routing(spec) if spec.get("layout") == "routing" else render(spec)
+        renderers = {"routing": render_routing, "shift": render_shift}
+        page = renderers.get(spec.get("layout"), render)(spec)
         out.write_text(page, encoding="utf-8")
         print(f"Wrote {out.relative_to(ROOT)}")
 

@@ -1,0 +1,105 @@
+# Opening slide of the agents series: the same request, handled by an LLM
+# chatbot and by an agentic solution, then the ladder of autonomy in between.
+layout: shift
+output: web/animations/chatbot-to-agents.html
+back: mcp-concepts.html
+
+en:
+  title: "From chatbot to agent"
+  back_label: "Next: anatomy of an agent →"
+  aria: "The same request, prepare tomorrow's client meeting, goes to two worlds. On the left, an LLM chatbot answers with text, and the human runs the loop: copy, paste, check, ask again. On the right, an agent plans, acts and checks in a loop, reaches the CRM, e-mail and calendar through MCP, and the human signs off. Below, four levels of autonomy: chatbot, augmented assistant, agent, agent teams."
+  eyebrow: "FROM CHATBOT TO AGENT"
+  request: "“Prepare tomorrow’s client meeting”"
+  chatbot_head: "LLM CHATBOT · 2022–2023"
+  agent_head: "AGENTIC SOLUTION · 2025–2026"
+  you: "YOU"
+  llm: "LLM"
+  answer: "ANSWER"
+  human_loop: "you copy, paste, check, ask again"
+  signoff: "sign off"
+  plan: "PLAN"
+  act: "ACT"
+  check: "CHECK"
+  mcp: "MCP"
+  tools: ["CRM", "E-MAIL", "CALENDAR"]
+  chatbot_rows:
+    - { k: "WHO RUNS THE LOOP", v: "You do, one prompt at a time" }
+    - { k: "WHAT IT CAN REACH", v: "What it learned + what you paste" }
+    - { k: "WHAT YOU GET", v: "Text: a generic meeting template" }
+    - { k: "MAIN RISK", v: "A confident wrong answer" }
+  agent_rows:
+    - { k: "WHO RUNS THE LOOP", v: "The agent: plan, act, check, repeat" }
+    - { k: "WHAT IT CAN REACH", v: "Your tools and data, through MCP" }
+    - { k: "WHAT YOU GET", v: "A brief built from the CRM, in your calendar" }
+    - { k: "MAIN RISK", v: "An unwanted action → guardrails, sign-off" }
+  ladder_title: "LEVELS OF AUTONOMY"
+  ladder_left: "YOU DRIVE"
+  ladder_right: "THE AGENT DRIVES"
+  steps:
+    - { label: "Chatbot", when: "2022 · ChatGPT", text: "answers from memory" }
+    - { label: "Augmented assistant", when: "2023 · RAG, tool calling", text: "looks things up" }
+    - { label: "Agent", when: "2024–25 · loop + MCP", text: "acts on your tools" }
+    - { label: "Agent teams", when: "2026 · multi-agent", text: "delegates and coordinates" }
+  question: "Which of your tasks could go from “answer me” to “do it for me”?"
+  takeaway: "The chatbot answers. The agent acts."
+  glossary_title: "Key vocabulary"
+  glossary:
+    - { term: "Chatbot", node: chatbot, tone: "var(--request)", text: "A conversation: you ask, the model answers in text. Every next step is yours." }
+    - { term: "Prompt", node: prompt, tone: "var(--request)", text: "Everything the model sees when it answers: your request, plus whatever you or the system add to it." }
+    - { term: "Tool calling", node: tools, tone: "var(--mcp)", text: "The model asks for a function to run, such as a search, an API or a database query, and reads the result." }
+    - { term: "Agent", node: agent, tone: "var(--orchestrator)", text: "A model given a goal, tools and the right to chain steps on its own until the goal is reached." }
+    - { term: "Agentic loop", node: loop, tone: "var(--orchestrator)", text: "Plan, act, check, start again. With a chatbot, you are the loop; with an agent, the software is." }
+    - { term: "Harness", node: harness, tone: "var(--orchestrator)", text: "The program around the model that runs the loop, calls the tools and keeps the memory." }
+    - { term: "MCP", node: mcp, tone: "var(--mcp)", text: "Model Context Protocol: the open standard that plugs agents into company tools and data." }
+    - { term: "Human in the loop", node: hitl, tone: "var(--request)", text: "A checkpoint where a person approves before a sensitive action, such as sending an e-mail or paying." }
+    - { term: "Autonomy", node: autonomy, tone: "var(--mcp)", text: "How much of the work the machine chains without asking. It grows step by step, along with the guardrails." }
+
+fr:
+  title: "Du chatbot à l’agent"
+  back_label: "Suite : anatomie d’un agent →"
+  aria: "La même demande, préparer le point client de demain, part vers deux mondes. À gauche, un chatbot LLM répond par du texte et l’humain fait la boucle : copier, coller, vérifier, relancer. À droite, un agent planifie, agit et vérifie en boucle, atteint le CRM, les e-mails et l’agenda via MCP, et l’humain valide. En bas, quatre niveaux d’autonomie : chatbot, assistant augmenté, agent, équipes d’agents."
+  eyebrow: "DU CHATBOT À L’AGENT"
+  request: "« Prépare le point client de demain »"
+  chatbot_head: "CHATBOT LLM · 2022–2023"
+  agent_head: "SOLUTION AGENTIQUE · 2025–2026"
+  you: "VOUS"
+  llm: "LLM"
+  answer: "RÉPONSE"
+  human_loop: "vous copiez, collez, vérifiez, relancez"
+  signoff: "validez"
+  plan: "PLANIFIE"
+  act: "AGIT"
+  check: "VÉRIFIE"
+  mcp: "MCP"
+  tools: ["CRM", "E-MAILS", "AGENDA"]
+  chatbot_rows:
+    - { k: "QUI FAIT LA BOUCLE", v: "Vous, un prompt après l’autre" }
+    - { k: "CE QU’IL ATTEINT", v: "Ce qu’il a appris + ce que vous collez" }
+    - { k: "CE QUE VOUS OBTENEZ", v: "Du texte : un compte-rendu type, générique" }
+    - { k: "RISQUE PRINCIPAL", v: "Une réponse fausse, mais assurée" }
+  agent_rows:
+    - { k: "QUI FAIT LA BOUCLE", v: "L’agent : planifie, agit, vérifie, recommence" }
+    - { k: "CE QU’IL ATTEINT", v: "Vos outils et vos données, via MCP" }
+    - { k: "CE QUE VOUS OBTENEZ", v: "Un point préparé depuis le CRM, dans l’agenda" }
+    - { k: "RISQUE PRINCIPAL", v: "Une action non voulue → garde-fous, validation" }
+  ladder_title: "NIVEAUX D’AUTONOMIE"
+  ladder_left: "VOUS PILOTEZ"
+  ladder_right: "L’AGENT PILOTE"
+  steps:
+    - { label: "Chatbot", when: "2022 · ChatGPT", text: "répond de mémoire" }
+    - { label: "Assistant augmenté", when: "2023 · RAG, appel d’outils", text: "va chercher l’info" }
+    - { label: "Agent", when: "2024–25 · boucle + MCP", text: "agit sur vos outils" }
+    - { label: "Équipes d’agents", when: "2026 · multi-agents", text: "délègue et coordonne" }
+  question: "Quelle tâche pourrait passer de « réponds-moi » à « fais-le pour moi » ?"
+  takeaway: "Le chatbot répond. L’agent agit."
+  glossary_title: "Vocabulaire clé"
+  glossary:
+    - { term: "Chatbot", node: chatbot, tone: "var(--request)", text: "Une conversation : vous demandez, le modèle répond par du texte. La suite, c’est vous qui la faites." }
+    - { term: "Prompt", node: prompt, tone: "var(--request)", text: "Tout ce que le modèle voit au moment de répondre : votre demande, plus ce que vous ou le système y ajoutez." }
+    - { term: "Appel d’outils", node: tools, tone: "var(--mcp)", text: "Le modèle demande l’exécution d’une fonction (recherche, API, requête en base) et lit le résultat." }
+    - { term: "Agent", node: agent, tone: "var(--orchestrator)", text: "Un modèle à qui l’on donne un objectif, des outils et le droit d’enchaîner les étapes seul jusqu’au résultat." }
+    - { term: "Boucle agentique", node: loop, tone: "var(--orchestrator)", text: "Planifier, agir, vérifier, recommencer. Avec un chatbot, la boucle, c’est vous ; avec un agent, c’est le logiciel." }
+    - { term: "Harness", node: harness, tone: "var(--orchestrator)", text: "Le programme autour du modèle qui fait tourner la boucle, appelle les outils et garde la mémoire." }
+    - { term: "MCP", node: mcp, tone: "var(--mcp)", text: "Model Context Protocol : le standard ouvert qui branche les agents sur les outils et les données de l’entreprise." }
+    - { term: "Humain dans la boucle", node: hitl, tone: "var(--request)", text: "Un point de contrôle où une personne valide avant une action sensible : envoyer un e-mail, payer…" }
+    - { term: "Autonomie", node: autonomy, tone: "var(--mcp)", text: "La part du travail que la machine enchaîne sans demander. Elle grandit par paliers, avec les garde-fous." }
