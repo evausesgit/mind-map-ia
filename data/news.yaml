@@ -1,4 +1,49 @@
 news:
+  - date: "2026-11-07"
+    type: update
+    title:
+      en: "Environmental groups embrace AI while warning about data-center impacts"
+      fr: "Les ONG environnementales adoptent l’IA tout en alertant sur l’impact des data centers"
+    description:
+      en: "All 15 environmental, conservation and development groups interviewed by Reuters use AI for tasks such as climate-data analysis, wildfire tracking and wildlife counts. The same organisations warn about rising electricity demand, water use and emissions from the data centers supporting AI."
+      fr: "Les 15 organisations environnementales, de conservation et de développement interrogées par Reuters utilisent l’IA, notamment pour analyser le climat, suivre les incendies et compter la faune. Elles alertent en parallèle sur l’électricité, l’eau et les émissions des data centers qui soutiennent ces usages."
+    link: https://www.usnews.com/news/top-news/articles/2026-11-07/environmental-groups-embrace-ai-even-as-they-warn-of-data-center-impacts
+  - date: "2026-11-06"
+    type: update
+    title:
+      en: "Microsoft reportedly winds down an Oracle AI-capacity deal"
+      fr: "Microsoft mettrait fin à un accord de capacité IA avec Oracle"
+    description:
+      en: "Microsoft is winding down an arrangement to rent AI computing capacity from Oracle as part of a broader reassessment of billions of dollars in cloud partnerships, Bloomberg and Reuters report. The move adds to evidence that hyperscalers are becoming more selective about external capacity commitments."
+      fr: "Microsoft met fin à un accord de location de capacité de calcul IA auprès d’Oracle dans le cadre d’un réexamen plus large de plusieurs milliards de dollars de partenariats cloud, selon Bloomberg et Reuters. Cette décision confirme que les hyperscalers deviennent plus sélectifs sur leurs engagements de capacité externe."
+    link: https://www.reuters.com/business/microsoft-is-winding-down-oracle-deal-rent-ai-cloud-capacity-bloomberg-news-2026-11-06/
+  - date: "2026-11-06"
+    type: update
+    title:
+      en: "OpenAI closes $11 billion of funding at a reported $1.25 trillion valuation"
+      fr: "OpenAI boucle 11 milliards de dollars à une valorisation annoncée de 1 250 milliards"
+    description:
+      en: "OpenAI closed an initial $11 billion portion of a new funding round at a reported $1.25 trillion valuation, according to Reuters and Bloomberg. The financing highlights the capital intensity of frontier AI and raises the bar for revenue growth, infrastructure execution and governance."
+      fr: "OpenAI a bouclé une première tranche de 11 milliards de dollars d’un nouveau financement, sur la base d’une valorisation annoncée de 1 250 milliards, selon Reuters et Bloomberg. L’opération illustre l’intensité capitalistique de l’IA de pointe et accroît les exigences de croissance, d’exécution infrastructure et de gouvernance."
+    link: https://www.reuters.com/business/openai-secures-11-billion-funding-125-trillion-valuation-bloomberg-news-reports-2026-11-06/
+  - date: "2026-11-05"
+    type: update
+    title:
+      en: "India links AI-enabled attacks on financial firms to Chinese tools"
+      fr: "L’Inde relie des attaques IA contre la finance à des outils chinois"
+    description:
+      en: "India’s cybersecurity agency identified the group and tools behind a wave of AI-driven attacks on financial firms, with at least two tools linked to China, Reuters reports. The campaign reinforces the need to treat agentic and AI-assisted intrusion as a concrete banking threat rather than a future scenario."
+      fr: "L’agence indienne de cybersécurité a identifié le groupe et les outils derrière une vague d’attaques pilotées par IA contre des entreprises financières, dont au moins deux outils liés à la Chine, selon Reuters. La campagne confirme que l’intrusion agentique ou assistée par IA est déjà un risque bancaire concret."
+    link: https://www.reuters.com/legal/government/india-flags-chinese-linked-ai-tools-hacking-campaign-against-financial-firms-2026-11-05/
+  - date: "2026-11-04"
+    type: update
+    title:
+      en: "Moonshot releases the open weights of Kimi K3.1 Pro"
+      fr: "Moonshot publie les poids ouverts de Kimi K3.1 Pro"
+    description:
+      en: "Moonshot AI released Kimi K3.1 Pro, a natively multimodal agentic model in the 3-trillion-parameter class with a 1-million-token context window. Its weights are available under a model-specific license; the vendor highlights coding, 3D creation and financial-research capabilities, which still require independent enterprise evaluation."
+      fr: "Moonshot AI a publié Kimi K3.1 Pro, un modèle agentique multimodal de classe 3 000 milliards de paramètres doté d’une fenêtre de contexte d’un million de tokens. Ses poids sont disponibles sous une licence propre au modèle ; les capacités annoncées en code, création 3D et recherche financière restent à évaluer indépendamment en entreprise."
+    link: https://www.kimi.ai/blog/kimi-k3-1-pro
   - date: "2026-11-06"
     type: update
     title:
