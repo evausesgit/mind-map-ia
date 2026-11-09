@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-08"
+    type: update
+    title:
+      en: "Anthropic reportedly orders $3.4 billion of generation capacity for AI data centers"
+      fr: "Anthropic commanderait 3,4 milliards de dollars de capacité électrique pour ses data centers IA"
+    description:
+      en: "Anthropic has agreed to a reported $3.4 billion order covering 1.7 GW of on-site generation for AI data centers, according to the Financial Times and Reuters. The deal illustrates how power availability and grid constraints are becoming core execution risks for frontier-model providers."
+      fr: "Anthropic aurait conclu une commande de 3,4 milliards de dollars couvrant 1,7 GW de production électrique sur site pour ses data centers IA, selon le Financial Times et Reuters. L’opération montre que l’accès à l’électricité et les contraintes de réseau deviennent des risques d’exécution centraux pour les fournisseurs de modèles de pointe."
+    link: https://www.reuters.com/technology/artificial-intelligence/anthropic-secures-34-billion-generator-deal-ai-data-centers-ft-reports-2026-11-08/
+  - date: "2026-11-06"
+    type: update
+    title:
+      en: "JPMorgan Chase signs a coding and cybersecurity partnership with OpenAI"
+      fr: "JPMorgan Chase signe un partenariat de code et cybersécurité avec OpenAI"
+    description:
+      en: "JPMorgan Chase will use OpenAI coding and cybersecurity models under a strategic partnership whose financial terms were not disclosed. The agreement brings frontier-model tooling into two highly controlled bank workflows and raises practical questions about access controls, auditability, model risk and vendor concentration."
+      fr: "JPMorgan Chase utilisera les modèles de code et de cybersécurité d’OpenAI dans le cadre d’un partenariat stratégique dont les modalités financières n’ont pas été publiées. L’accord introduit des modèles de pointe dans deux workflows bancaires très contrôlés et pose des questions concrètes de droits d’accès, d’auditabilité, de risque modèle et de concentration fournisseur."
+    link: https://www.finextra.com/newsarticle/48718/jpmorgan-chase-signs-cybersecurity-and-coding-deal-with-openai
+  - date: "2026-11-06"
+    type: update
+    title:
+      en: "OpenAI partners with Hacktron to test vulnerabilities and third-party connections"
+      fr: "OpenAI s’associe à Hacktron pour tester ses vulnérabilités et connexions tierces"
+    description:
+      en: "OpenAI is partnering with Hacktron to search for vulnerabilities in its systems, test third-party service connections and strengthen defenses using frontier AI. The initiative is a reminder that agent security depends not only on the base model but also on connectors, permissions and the surrounding application stack."
+      fr: "OpenAI s’associe à Hacktron pour rechercher des vulnérabilités dans ses systèmes, tester les connexions à des services tiers et renforcer ses défenses avec l’IA de pointe. L’initiative rappelle que la sécurité des agents dépend autant des connecteurs, des permissions et de la couche applicative que du modèle de base."
+    link: https://openai.com/index/partnering-with-hacktron
+  - date: "2026-11-04"
+    type: update
+    title:
+      en: "Databricks makes the enterprise case for governed open-weight model portfolios"
+      fr: "Databricks défend des portefeuilles d’entreprise gouvernés de modèles open-weight"
+    description:
+      en: "Databricks reports that customers’ average model count rose from 4.2 to 7.1 during 2026 and that roughly 40% were open-weight, reflecting demand for cost control, sovereignty and provider flexibility. The company also shows that the same model scored 61.7%, 48.1% or 38.4% under different harnesses, underlining the need to evaluate the full system rather than the model alone."
+      fr: "Databricks indique que le nombre moyen de modèles utilisés par client est passé de 4,2 à 7,1 en 2026 et qu’environ 40 % étaient open-weight, signe d’une recherche de maîtrise des coûts, de souveraineté et de flexibilité fournisseur. L’entreprise montre aussi qu’un même modèle a obtenu 61,7 %, 48,1 % ou 38,4 % selon le harness, ce qui impose d’évaluer le système complet plutôt que le seul modèle."
+    link: https://www.databricks.com/blog/enterprise-case-open-weight-models-databricks
   - date: "2026-11-07"
     type: update
     title:
