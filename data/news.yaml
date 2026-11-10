@@ -1,4 +1,49 @@
 news:
+  - date: "2026-11-10"
+    type: update
+    title:
+      en: "Australia moves toward mandatory AI incident reporting after OpenAI agent breach"
+      fr: "L’Australie prépare un signalement obligatoire des incidents IA après une intrusion d’agent OpenAI"
+    description:
+      en: "Australia accepted 18 review recommendations after an OpenAI agent accessed Services Australia data and three other systems in June; no personal details were reportedly obtained. Proposed duties include rapid incident notification, independent model evaluation, security controls and published safety frameworks."
+      fr: "L’Australie a accepté 18 recommandations après qu’un agent OpenAI a accédé en juin à des données de Services Australia et à trois autres systèmes ; aucune donnée personnelle n’aurait été obtenue. Les obligations envisagées comprennent la notification rapide, l’évaluation indépendante des modèles, des contrôles de sécurité et des cadres de sûreté publiés."
+    link: https://www.theguardian.com/technology/2026/nov/10/australia-manadatory-reporting-openai-medicare-hack
+  - date: "2026-11-09"
+    type: update
+    title:
+      en: "Cisco adds Claude Mythos to adaptive red teaming for AI agents"
+      fr: "Cisco ajoute Claude Mythos au red teaming adaptatif des agents IA"
+    description:
+      en: "Cisco AI Defense will use Anthropic’s Claude Mythos to plan and generate attacks against customer-authorized AI targets. The controlled deployment ties each test to a registered target and named operator, records actions for audit and is planned first for selected enterprises."
+      fr: "Cisco AI Defense utilisera Claude Mythos d’Anthropic pour planifier et générer des attaques contre des cibles IA autorisées par le client. Le déploiement contrôlé associe chaque test à une cible enregistrée et à un opérateur identifié, journalise les actions et sera d’abord proposé à certaines entreprises."
+    link: https://blogs.cisco.com/ai/cisco-ai-defense-to-add-anthropics-claude-mythos-for-ai-red-teaming
+  - date: "2026-11-09"
+    type: update
+    title:
+      en: "Google adds confidential and high-context systems to its TPU 8 portfolio"
+      fr: "Google ajoute des systèmes confidentiels et long contexte à sa gamme TPU 8"
+    description:
+      en: "Google introduced TPU 8tx for confidential inference and TPU 8i Max for memory-intensive, million-token workloads. TPU 8tx protects data and model weights during processing, while 8i Max combines two TPU 8i chips to double compute, SRAM and HBM bandwidth."
+      fr: "Google a présenté TPU 8tx pour l’inférence confidentielle et TPU 8i Max pour les charges à forte mémoire et contexte million de tokens. TPU 8tx protège données et poids pendant le calcul, tandis que 8i Max combine deux puces TPU 8i pour doubler calcul, SRAM et bande passante HBM."
+    link: https://cloud.google.com/blog/topics/ai-infrastructure/tpu-8tx-and-tpu-8i-max
+  - date: "2026-11-09"
+    type: update
+    title:
+      en: "Meta launches Muse Ember for high-volume agent execution"
+      fr: "Meta lance Muse Ember pour l’exécution d’agents à fort volume"
+    description:
+      en: "Muse Ember is Meta’s smallest multimodal reasoning model for repeated tool calls, coding subtasks, routing and document processing. Meta lists a one-million-token context window and API prices starting at $0.10 per million input tokens and $0.50 per million output tokens below 200,000-token context."
+      fr: "Muse Ember est le plus petit modèle de raisonnement multimodal de Meta, conçu pour les appels d’outils répétés, sous-tâches de code, routage et traitement documentaire. Meta annonce un contexte d’un million de tokens et des tarifs API à partir de 0,10 $ par million de tokens entrants et 0,50 $ sortants sous 200 000 tokens de contexte."
+    link: https://dev.meta.ai/models/muse-ember
+  - date: "2026-11-09"
+    type: update
+    title:
+      en: "Meituan releases open-weight LongCat 2.5 for multimodal agentic work"
+      fr: "Meituan publie LongCat 2.5 en open-weight pour les tâches agentiques multimodales"
+    description:
+      en: "LongCat 2.5 is a native multimodal mixture-of-experts model with 1.6 trillion total parameters and about 48 billion active per token. Meituan released the weights on Hugging Face for long-horizon agent tasks spanning codebase work, full-project builds, visual understanding, creative design and 3D tasks."
+      fr: "LongCat 2.5 est un modèle multimodal natif en mixture-of-experts comptant 1 600 milliards de paramètres au total et environ 48 milliards actifs par token. Meituan publie ses poids sur Hugging Face pour des tâches agentiques longues : code, projets complets, compréhension visuelle, design créatif et 3D."
+    link: https://huggingface.co/meituan-longcat/LongCat-2.5
   - date: "2026-11-08"
     type: update
     title:
