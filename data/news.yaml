@@ -2,6 +2,51 @@ news:
   - date: "2026-11-10"
     type: update
     title:
+      en: "New York opens registration for frontier AI developers under the RAISE Act"
+      fr: "New York ouvre l’enregistrement des développeurs d’IA de pointe au titre du RAISE Act"
+    description:
+      en: "Frontier AI companies with more than $500 million in annual revenue must register by January 1, 2027, publish safety frameworks and model transparency reports, and report critical incidents within 72 hours. Penalties can reach $1 million for a first violation and $3 million thereafter."
+      fr: "Les entreprises d’IA de pointe dépassant 500 millions de dollars de chiffre d’affaires annuel devront s’enregistrer avant le 1er janvier 2027, publier leurs cadres de sûreté et rapports de transparence, et signaler les incidents critiques sous 72 heures. Les sanctions peuvent atteindre 1 million de dollars au premier manquement, puis 3 millions."
+    link: https://techcrunch.com/2026/11/10/openai-anthropic-face-new-oversight-as-new-yorks-ai-safety-law-takes-effect/
+  - date: "2026-11-10"
+    type: update
+    title:
+      en: "Google makes Gemini 4 Carbon broadly available for complex agentic work"
+      fr: "Google généralise Gemini 4 Carbon pour les workflows agentiques complexes"
+    description:
+      en: "Google released Gemini 4 Carbon to paying developers and enterprises at an introductory $2 per million input tokens and $10 per million output tokens. The model targets long-horizon coding, financial knowledge work, scientific reasoning and cybersecurity, with a multi-agent /swarm preview in Antigravity."
+      fr: "Google ouvre Gemini 4 Carbon aux développeurs et entreprises payants au tarif de lancement de 2 dollars par million de tokens entrants et 10 dollars sortants. Le modèle vise le code de longue durée, les travaux financiers, le raisonnement scientifique et la cybersécurité, avec un aperçu multi-agent /swarm dans Antigravity."
+    link: https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/
+  - date: "2026-11-10"
+    type: update
+    title:
+      en: "Anthropic launches its IPO roadshow with a $70–$78 price range"
+      fr: "Anthropic lance son roadshow d’introduction en Bourse avec une fourchette de 70 à 78 dollars"
+    description:
+      en: "Anthropic plans to offer 825 million Class A shares, mostly newly issued, and has applied to list on Nasdaq under the symbol ANT. At the top of the range, media calculations put the implied valuation near $1.4 trillion, making the deal a major test of public-market appetite for frontier AI."
+      fr: "Anthropic prévoit d’offrir 825 millions d’actions de classe A, principalement nouvelles, et a demandé une cotation au Nasdaq sous le symbole ANT. En haut de fourchette, les calculs de presse situent la valorisation implicite près de 1 400 milliards de dollars, test majeur de l’appétit boursier pour l’IA de pointe."
+    link: https://www.anthropic.com/news/roadshow-launch
+  - date: "2026-11-10"
+    type: update
+    title:
+      en: "OpenAI quarterly revenue reportedly reaches $10 billion as losses widen"
+      fr: "Le chiffre d’affaires trimestriel d’OpenAI atteindrait 10 milliards de dollars, avec des pertes en hausse"
+    description:
+      en: "OpenAI’s third-quarter revenue reportedly rose nearly 50% to $10 billion while its quarterly loss widened to about $10.9 billion, according to the Wall Street Journal as relayed by Reuters. The figures underline both rapid demand growth and the extraordinary compute and operating costs of frontier AI."
+      fr: "Le chiffre d’affaires d’OpenAI aurait progressé de près de 50 % à 10 milliards de dollars au troisième trimestre, tandis que la perte trimestrielle aurait atteint environ 10,9 milliards, selon le Wall Street Journal cité par Reuters. Ces chiffres illustrent à la fois la forte demande et le coût exceptionnel du calcul et des opérations de l’IA de pointe."
+    link: https://www.reuters.com/technology/openai-posts-steep-losses-even-quarterly-revenue-rises-10-billion-wsj-reports-2026-11-10/
+  - date: "2026-11-06"
+    type: research
+    title:
+      en: "Nous Research releases open-weight Arete-27B to study value alignment"
+      fr: "Nous Research publie Arete-27B en open-weight pour étudier l’alignement des valeurs"
+    description:
+      en: "Arete-27B post-trains Qwen3.8-27B with supervised fine-tuning and is released under Apache 2.0 with its data and an 803-prompt evaluation. Nous Research reports its fact score rose from 2.32 to 2.98/5 and its measured propaganda rate fell from 22% to 0.9%, while noting different decoding settings across some comparison models."
+      fr: "Arete-27B post-entraîne Qwen3.8-27B par fine-tuning supervisé et est publié sous Apache 2.0 avec ses données et une évaluation de 803 prompts. Nous Research indique un score factuel passé de 2,32 à 2,98/5 et un taux de propagande mesuré ramené de 22 % à 0,9 %, tout en signalant des réglages de décodage différents pour certains modèles comparés."
+    link: https://huggingface.co/NousResearch/Arete-27B
+  - date: "2026-11-10"
+    type: update
+    title:
       en: "Australia moves toward mandatory AI incident reporting after OpenAI agent breach"
       fr: "L’Australie prépare un signalement obligatoire des incidents IA après une intrusion d’agent OpenAI"
     description:
