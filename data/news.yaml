@@ -1,4 +1,49 @@
 news:
+  - date: "2026-11-11"
+    type: update
+    title:
+      en: "Nvidia board weighs Jensen Huang’s future amid a leadership crisis"
+      fr: "Le conseil de Nvidia examine l’avenir de Jensen Huang dans une crise de gouvernance"
+    description:
+      en: "Nvidia’s board was meeting late Wednesday to decide whether to remove CEO Jensen Huang, according to a source cited by Reuters; the outcome was not known at publication time. The developing governance crisis creates leadership and continuity risk at the company at the centre of global AI compute supply."
+      fr: "Le conseil d’administration de Nvidia se réunissait mercredi soir pour décider d’un éventuel départ du directeur général Jensen Huang, selon une source citée par Reuters ; l’issue n’était pas connue au moment de la publication. Cette crise de gouvernance en cours crée un risque de direction et de continuité chez l’acteur central de l’offre mondiale de calcul IA."
+    link: https://www.reuters.com/technology/nvidia-is-preparing-oust-ceo-jensen-huang-wsj-reports-2026-11-11/
+  - date: "2026-11-11"
+    type: update
+    title:
+      en: "CoreWeave turns to prepayments and shorter contracts to fund AI growth"
+      fr: "CoreWeave mise sur les prépaiements et contrats courts pour financer sa croissance IA"
+    description:
+      en: "CoreWeave reported $3.66 billion in quarterly revenue, up 168% year over year, alongside a $709 million net loss and $846 million in interest expense. It expects about $9 billion in customer prepayments and deposits over three months and is using contract-backed loans and higher-priced short-term capacity to finance a $132.5 billion backlog."
+      fr: "CoreWeave a publié 3,66 milliards de dollars de chiffre d’affaires trimestriel, en hausse de 168 % sur un an, mais aussi 709 millions de perte nette et 846 millions de charges d’intérêt. L’entreprise attend environ 9 milliards de prépaiements et dépôts clients sur trois mois et finance son carnet de commandes de 132,5 milliards par des prêts adossés aux contrats et des capacités court terme plus chères."
+    link: https://techcrunch.com/2026/11/11/coreweave-turns-to-customer-prepayments-shorter-contracts-to-fund-ai-growth/
+  - date: "2026-11-10"
+    type: new-feature
+    title:
+      en: "OpenAI introduces verified business profiles and commerce agents in ChatGPT"
+      fr: "OpenAI introduit des profils d’entreprise vérifiés et des agents commerciaux dans ChatGPT"
+    description:
+      en: "Businesses in ChatGPT is launching in beta so companies can claim verified profiles, update information and submit product feeds with prices and availability. Eligible US e-commerce companies can also create Business Agents, moving ChatGPT closer to a managed discovery and transaction channel."
+      fr: "Businesses in ChatGPT est lancé en bêta pour permettre aux entreprises de revendiquer un profil vérifié, mettre à jour leurs informations et fournir des flux produits avec prix et disponibilité. Les acteurs américains éligibles du e-commerce pourront aussi créer des Business Agents, rapprochant ChatGPT d’un canal géré de découverte et de transaction."
+    link: https://openai.com/index/introducing-businesses-chatgpt/
+  - date: "2026-11-11"
+    type: update
+    title:
+      en: "Australian companies face scrutiny over ‘AI washing’ in workforce cuts"
+      fr: "Des entreprises australiennes accusées d’« AI washing » dans leurs réductions d’effectifs"
+    description:
+      en: "Australian unions and experts are challenging companies that attribute job cuts to AI while also moving work offshore, with Qantas and Atlassian among the companies cited in reporting. The dispute highlights the need for employers to separate measured automation effects from restructuring, outsourcing and cost reduction."
+      fr: "Des syndicats et experts australiens contestent les entreprises qui attribuent des suppressions d’emplois à l’IA tout en transférant aussi du travail à l’étranger ; Qantas et Atlassian figurent parmi les sociétés citées. La controverse montre la nécessité de distinguer les effets mesurés de l’automatisation de la restructuration, de l’externalisation et de la baisse des coûts."
+    link: https://www.reuters.com/business/world-at-work/australian-companies-face-ai-washing-claims-after-wave-job-cuts-offshoring-2026-11-11/
+  - date: "2026-11-05"
+    type: research
+    title:
+      en: "Nvidia releases four open-weight Cosmos 3 Nano world-simulation models"
+      fr: "Nvidia publie quatre modèles open-weight Cosmos 3 Nano de simulation du monde"
+    description:
+      en: "Nvidia released four 16-billion-parameter open-weight Cosmos 3 Nano checkpoints for interactive world simulation under the OpenMDW 1.1 licence. The models cover driving-scene transfer, real-time rollouts and robotics simulation, expanding open-weight development beyond language models into physical AI."
+      fr: "Nvidia a publié quatre checkpoints open-weight Cosmos 3 Nano de 16 milliards de paramètres pour la simulation interactive du monde, sous licence OpenMDW 1.1. Ils couvrent le transfert de scènes de conduite, les rollouts en temps réel et la simulation robotique, étendant l’open-weight au-delà du langage vers l’IA physique."
+    link: https://huggingface.co/blog/nvidia/cosmos-interactive-world-simulation
   - date: "2026-11-10"
     type: update
     title:
