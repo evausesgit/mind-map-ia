@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-12"
+    type: update
+    title:
+      en: "Google launches Gemini 4 Hydrogen for fast agentic workflows"
+      fr: "Google lance Gemini 4 Hydrogen pour les workflows agentiques rapides"
+    description:
+      en: "Gemini 4 Hydrogen targets coding and agentic execution with a one-million-token context window, priced at $1.50 per million input tokens and $7.50 per million output tokens. Google says its Antigravity Orchestrator used 24% less quota and completed tasks 19% faster than a single-model workflow on Terminal-Bench 4.0."
+      fr: "Gemini 4 Hydrogen vise le code et l’exécution agentique avec une fenêtre de contexte d’un million de tokens, au tarif de 1,50 dollar par million de tokens entrants et 7,50 dollars sortants. Selon Google, son Orchestrator Antigravity a consommé 24 % de quota en moins et terminé les tâches 19 % plus vite qu’un workflow mono-modèle sur Terminal-Bench 4.0."
+    link: https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/
+  - date: "2026-11-12"
+    type: research
+    title:
+      en: "Six in ten large-company executives plan more open-weight AI use"
+      fr: "Six dirigeants de grandes entreprises sur dix prévoient davantage d’IA open-weight"
+    description:
+      en: "A Capgemini study reported by Reuters finds nearly 60% of senior executives at large companies plan to increase their use of cheaper open-weight models over the next year. Respondents said AI spending was exceeding budgets by 24% on average, making model portability, self-hosting and cost control strategic priorities."
+      fr: "Une étude Capgemini relayée par Reuters indique que près de 60 % des dirigeants de grandes entreprises prévoient d’accroître leur usage de modèles open-weight moins coûteux l’an prochain. Les répondants déclarent dépasser leurs budgets IA de 24 % en moyenne, faisant de la portabilité, de l’auto-hébergement et du contrôle des coûts des priorités stratégiques."
+    link: https://www.reuters.com/business/most-large-firms-plan-higher-open-weight-ai-use-cap-bills-study-shows-2026-11-12/
+  - date: "2026-11-12"
+    type: update
+    title:
+      en: "France plans an international centre for defence AI"
+      fr: "La France prévoit un centre international pour l’IA de défense"
+    description:
+      en: "France’s Armed Forces Ministry said it will create an international centre to promote and support the growing use of AI in defence. The initiative adds an institutional layer to Europe’s drive for sovereign military AI, shared standards and operational cooperation."
+      fr: "Le ministère français des Armées annonce la création d’un centre international destiné à promouvoir et soutenir l’usage croissant de l’IA dans la défense. L’initiative ajoute une brique institutionnelle aux efforts européens de souveraineté, de standards communs et de coopération opérationnelle en IA militaire."
+    link: https://www.reuters.com/world/europe/french-army-ministry-set-up-centre-defence-related-ai-2026-11-12/
+  - date: "2026-11-12"
+    type: update
+    title:
+      en: "Fed governor Barr warns of serious short-term AI job disruption"
+      fr: "Le gouverneur de la Fed Barr alerte sur de fortes perturbations de l’emploi liées à l’IA"
+    description:
+      en: "Federal Reserve governor Michael Barr said the United States should prepare for serious short-term labour-market disruption from AI and warned that inequality could widen. The intervention moves workforce transition and distributional risk closer to the macroeconomic and central-bank policy agenda."
+      fr: "Michael Barr, gouverneur de la Réserve fédérale, estime que les États-Unis doivent se préparer à de fortes perturbations de court terme sur l’emploi dues à l’IA et à un possible creusement des inégalités. Cette prise de position rapproche les enjeux de transition du travail et de répartition du débat macroéconomique et monétaire."
+    link: https://www.reuters.com/world/us/feds-barr-us-should-prepare-serious-ai-job-disruption-widening-inequality-2026-11-12/
   - date: "2026-11-11"
     type: update
     title:
