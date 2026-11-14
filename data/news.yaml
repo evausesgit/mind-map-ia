@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-13"
+    type: update
+    title:
+      en: "EU leaders hold their first dedicated AI summit in Dublin"
+      fr: "Les dirigeants de l’UE tiennent leur premier sommet dédié à l’IA à Dublin"
+    description:
+      en: "EU leaders met in Dublin for their first summit devoted exclusively to artificial intelligence, focusing on Europe’s competitiveness, compute and energy capacity, skills, sovereignty and safety. The meeting reflects pressure to turn Europe’s regulatory framework into an industrial and deployment strategy able to compete with the United States and China."
+      fr: "Les dirigeants de l’UE se sont réunis à Dublin pour leur premier sommet entièrement consacré à l’intelligence artificielle, autour de la compétitivité, des capacités de calcul et d’énergie, des compétences, de la souveraineté et de la sécurité. La réunion traduit la pression pour compléter le cadre réglementaire européen par une stratégie industrielle et de déploiement face aux États-Unis et à la Chine."
+    link: https://www.reuters.com/technology/artificial-intelligence/eu-leaders-seek-tackle-challenges-first-ever-ai-summit-2026-11-13/
+  - date: "2026-11-13"
+    type: update
+    title:
+      en: "AI becomes the most-cited financial stability risk in Fed survey"
+      fr: "L’IA devient le risque de stabilité financière le plus cité dans l’enquête de la Fed"
+    description:
+      en: "Artificial intelligence was identified as a salient financial-system risk by 87% of market contacts in the Federal Reserve’s latest survey, moving to the top of the risk list. The result highlights concern about concentrated technology exposure, high valuations, cyber threats and the possibility of abrupt repricing if AI investment expectations weaken."
+      fr: "L’intelligence artificielle est citée comme risque saillant pour le système financier par 87 % des contacts de marché interrogés dans la dernière enquête de la Réserve fédérale, ce qui la place en tête des préoccupations. Ce résultat met en évidence les risques liés à la concentration technologique, aux valorisations élevées, au cyber et à une possible revalorisation brutale si les anticipations d’investissement dans l’IA se dégradent."
+    link: https://www.reuters.com/business/finance/ai-rockets-top-worries-about-financial-system-latest-fed-survey-2026-11-13/
+  - date: "2026-11-13"
+    type: update
+    title:
+      en: "US AI task force examines AI-powered cyberattacks"
+      fr: "La task force américaine sur l’IA examine les cyberattaques assistées par IA"
+    description:
+      en: "The Trump administration’s AI task force met on 12 November to discuss AI-enabled cyberattacks, according to Reuters. The discussion brings offensive AI capabilities, critical-infrastructure resilience and incident preparedness closer to the centre of US technology and national-security policy."
+      fr: "La task force IA de l’administration Trump s’est réunie le 12 novembre pour examiner les cyberattaques assistées par IA, selon Reuters. Le sujet place les capacités offensives de l’IA, la résilience des infrastructures critiques et la préparation aux incidents au cœur de la politique technologique et de sécurité nationale américaine."
+    link: https://www.reuters.com/world/us/trumps-ai-task-force-met-thursday-discussed-ai-powered-cyberattacks-2026-11-13/
+  - date: "2026-11-12"
+    type: update
+    title:
+      en: "Bielik 11B v3.1 expands a European open-weight model to 56 languages"
+      fr: "Bielik 11B v3.1 étend un modèle européen open-weight à 56 langues"
+    description:
+      en: "Polish AI community SpeakLeash has released Bielik-11B-v3.1-Instruct, an 11-billion-parameter multilingual open-weight model covering 56 languages under the Apache 2.0 licence. The model is available on Hugging Face alongside GGUF and AWQ quantisations, supporting local deployment and evaluation."
+      fr: "La communauté polonaise SpeakLeash publie Bielik-11B-v3.1-Instruct, un modèle open-weight multilingue de 11 milliards de paramètres couvrant 56 langues sous licence Apache 2.0. Le modèle est disponible sur Hugging Face avec des quantifications GGUF et AWQ, facilitant le déploiement local et l’évaluation."
+    link: https://huggingface.co/speakleash/Bielik-11B-v3.1-Instruct
   - date: "2026-11-12"
     type: update
     title:
