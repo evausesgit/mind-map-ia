@@ -3,46 +3,52 @@
 # Régénérer avec scripts/generate_narration.py (moteur Gradium, voir son en-tête).
 #
 # `at` est la seconde de la timeline où la phrase démarre. Débuts de scène :
-# demande 0 · briques 14.35 · problème 25.05 · MCP 37.95 · sources 47.75 ·
-# résultat 60.45 · accès 69.85 · pourquoi 108.2 · synthèse 130.14 · fin 140.7.
+# demande 0 · briques 14.35 · problème 35.65 · MCP 48.55 · sources 64.75 ·
+# résultat 81.95 · accès 91.35 · pourquoi 129.7 · synthèse 151.64 · fin 162.2.
+#
+# Prononciation : les termes anglais sont écrits pour qu'Apolline les dise à
+# l'anglaise (« viwap » pour VWAP). Le texte à l'écran garde l'orthographe normale.
 engine: gradium
 voice: 6oIkS98REoVZ1dEw   # Apolline : vive, souriante, va droit au but
 padding_bonus: 0          # débit : négatif = plus rapide, positif = plus lent
 output: web/animations/mcp-explainer/narration-client-fr.mp3
-duration: 140.7
+duration: 162.2
 
 cues:
   # La demande
-  - { at: 1.5,   text: "Vous demandez : pourquoi mon panier a-t-il sous-performé le VWAP ce matin ?" }
-  - { at: 8.6,   text: "Un assistant ne se contente pas de répondre. Il planifie les étapes." }
-  # Les briques de l'assistant
-  - { at: 15.0,  text: "Le modèle interprète. L'orchestrateur coordonne." }
-  - { at: 19.0,  text: "Il rappelle vos préférences, applique une méthode, puis il lui faut vos données." }
+  - { at: 1.5,   text: "Vous êtes trader, et vous demandez à votre assistant : pourquoi mon panier a-t-il sous-performé le viwap ce matin ?" }
+  - { at: 8.6,   text: "Votre assistant est un agent : il ne se contente pas de répondre. Il comprend, planifie, agit, puis répond." }
+  # Les briques de l'agent
+  - { at: 16.3,  text: "Le modèle interprète. L'orchestrateur coordonne." }
+  - { at: 19.8,  text: "Il interprète la demande, rappelle vos préférences, applique la méthode TCA, puis il lui faut vos données." }
+  - { at: 26.4,  text: "C'est cela, une solution agentique : un modèle de langage entouré d'outils, de mémoire et de méthodes, qui planifie, agit et vérifie avant de répondre." }
   # Le problème
-  - { at: 26.75, text: "Vos ordres et exécutions, le contexte de marché, un calcul d'écart." }
-  - { at: 32.75, text: "Comment l'assistant accède-t-il à vos données, sans perdre le contrôle ?" }
+  - { at: 37.35, text: "Il lui faut vos ordres et exécutions, le contexte de marché, et un calcul d'écart." }
+  - { at: 43.35, text: "Comment une IA se connecte-t-elle, en sécurité, aux outils de l'entreprise ?" }
   # Voici MCP
-  - { at: 38.35, text: "Voici MCP, le Model Context Protocol." }
-  - { at: 42.25, text: "Un moyen standard d'accéder aux outils et aux données. Une interface universelle, pas un modèle de plus." }
+  - { at: 48.95, text: "Voici MCP, le Model Context Protocol." }
+  - { at: 52.85, text: "Un standard ouvert, pour connecter les applications d'IA aux outils et aux données." }
+  - { at: 58.0,  text: "Chaque système décrit ses outils une seule fois : l'agent les découvre, les appelle, et reçoit les résultats." }
   # Vos sources via MCP
-  - { at: 49.75, text: "L'assistant décide de ce dont il a besoin. MCP lui donne un accès standard. Les données reviennent, et l'assistant combine les résultats." }
+  - { at: 66.2,  text: "L'agent décide ce dont il a besoin. MCP lui donne un accès standard à vos ordres, au marché, à l'outil TCA. Les données reviennent." }
+  - { at: 75.65, text: "L'écart est calculé par l'outil TCA. Le modèle analyse ces données et rédige l'explication." }
   # Le résultat
-  - { at: 60.75, text: "Vous obtenez l'écart, ses principaux contributeurs, et les points à vérifier." }
-  - { at: 66.35, text: "Quatre systèmes, une réponse sourcée, à vérifier." }
+  - { at: 82.25, text: "Vous obtenez l'écart, ses principaux contributeurs, et les points à vérifier." }
+  - { at: 87.85, text: "Quatre systèmes, une réponse sourcée, à vérifier." }
   # Des accès contrôlés
-  - { at: 70.95, text: "Derrière chaque appel d'outil, un serveur MCP qui contrôle les accès." }
-  - { at: 76.45, text: "Il tourne dans un environnement contrôlé, chaque appel journalisé." }
-  - { at: 81.65, text: "Il n'expose que vos ordres, rien d'autre." }
-  - { at: 85.25, text: "Le contexte donne le sens des données." }
-  - { at: 88.95, text: "Les garde-fous encadrent ce qui entre et ce qui sort." }
-  - { at: 92.75, text: "Chaque appel porte votre identité." }
-  - { at: 96.55, text: "Un appel autorisé passe chaque contrôle, et laisse une piste d'audit." }
-  - { at: 103.25, text: "Les ordres d'un autre client ? L'appel s'arrête à l'entrée." }
+  - { at: 92.45, text: "Derrière chaque appel d'outil, un serveur MCP qui contrôle les accès." }
+  - { at: 97.95, text: "Il tourne dans un environnement contrôlé, chaque appel journalisé." }
+  - { at: 103.15, text: "Il n'expose que vos ordres, rien d'autre." }
+  - { at: 106.75, text: "Le contexte donne le sens des données." }
+  - { at: 110.45, text: "Les garde-fous encadrent ce qui entre et ce qui sort." }
+  - { at: 114.25, text: "Chaque appel porte votre identité." }
+  - { at: 118.05, text: "Un appel autorisé passe chaque contrôle, ne renvoie que vos données, et laisse une piste d'audit." }
+  - { at: 124.75, text: "Et si l'agent demande les ordres d'un autre client ? L'appel est refusé dès l'entrée." }
   # Pourquoi MCP compte
-  - { at: 109.75, text: "Sans standard, chaque assistant refait chaque intégration. Quatre fois six : vingt-quatre intégrations sur mesure." }
-  - { at: 118.15, text: "Construite une fois, réutilisée partout : dix connexions standard." }
-  - { at: 122.95, text: "Une demande. Plusieurs sources coordonnées." }
-  - { at: 126.85, text: "MCP standardise les connexions. Les contrôles restent dans les systèmes." }
+  - { at: 131.25, text: "Sans standard, chaque agent refait chaque intégration. Quatre fois six : vingt-quatre intégrations sur mesure." }
+  - { at: 139.65, text: "Construite une fois, réutilisée partout : dix connexions standard." }
+  - { at: 144.45, text: "Une demande. Plusieurs sources coordonnées." }
+  - { at: 148.35, text: "MCP standardise les connexions. Les contrôles restent dans les systèmes." }
   # Synthèse
-  - { at: 132.55, text: "Une demande métier, des étapes coordonnées." }
-  - { at: 135.95, text: "Et des accès contrôlés." }
+  - { at: 154.05, text: "Une demande métier, des étapes coordonnées." }
+  - { at: 157.45, text: "Et des accès contrôlés." }

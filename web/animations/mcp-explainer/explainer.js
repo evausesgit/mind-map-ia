@@ -1128,6 +1128,11 @@
     });
     // orbiter parks at TOOLS
     t = tm + s2.hold;
+    // optional definition caption while it holds there (captions.s2Def + s2DefSub)
+    if (cfg.captions.s2Def) {
+      const at = tm + S(2.4);
+      caption(cfg.captions.s2Def, at, Math.max(S(1), t - at - S(1.5)), { size: 28, sub: cfg.captions.s2DefSub, subFill: th.orchestrator });
+    }
     orbiter.vis[1] = t;
     eyebrow(1, S2, t + S(0.6));
 
@@ -1224,6 +1229,10 @@
     });
     to(mcp.verbs[0].lit, { opacity: 0 }, tDisc + s4.discover + S(0.4), S(0.4));
     t = tDisc + s4.discover + S(0.6);
+    if (cfg.captions.s4Discover) {
+      const at = tCap4 + S(0.7) + s4.captionHold + s4.connect + S(0.7);
+      caption(cfg.captions.s4Discover, at, Math.max(S(1), t - at - S(1.3)), { size: 28, sub: cfg.captions.s4DiscoverSub, subFill: th.mcp });
+    }
     eyebrow(3, S4, t);
 
     // ── Scene 5 — the Cash Equity MCP ecosystem in action ───────────────────
@@ -1336,6 +1345,23 @@
     [0, 0.45, 0.9].forEach((d) => pulse(A.fx, C.x, C.y, { r: 70 }, th.request, tComb + S(d), 1.2));
     to(agentHalo, { scale: 1.25, transformOrigin: "50% 50%" }, tComb, S(0.8), "power2.out");
     to(agentHalo, { scale: 1 }, tComb + S(1.2), S(0.9));
+    const cb = ex.combine && caps[ex.combine.cap];
+    if (cb) {
+      const tOn = tComb + S(0.6), tOff = tComb + s5.combine - S(0.6);
+      to(cb.g, { opacity: 1 }, tOn - S(0.3), S(0.4));
+      to(cb.spoke, { opacity: 1 }, tOn - S(0.3), S(0.4));
+      comet(cb.spokeD, th.orchestrator, tOn - S(0.2), S(0.4), { tail: 60, scale: 0.8, ease: "power1.out" });
+      to(cb.glow, { opacity: 1 }, tOn + S(0.2), S(0.3));
+      pulseNode(cb, th.orchestrator, tOn + S(0.2));
+      comet(cb.spokeD, th.orchestrator, tOn + S(1.0), S(0.4), { tail: 60, scale: 0.7, reverse: true });
+      const tag = mk("g", { opacity: 0 }, A.top);
+      const tx = cb.side < 0 ? cb.x - cb.w / 2 - 18 : cb.x + cb.w / 2 + 18;
+      txt(tag, ex.combine.tag, tx, cb.y, { size: 16, weight: 600, fill: th.text, anchor: cb.side < 0 ? "end" : "start" });
+      win(tOn + S(0.3), S(0.4), Math.max(S(0.5), tOff - tOn - S(0.3)), S(0.4), (a) => tag.setAttribute("opacity", a));
+      to(cb.glow, { opacity: 0 }, tOff, S(0.5));
+      to(cb.g, { opacity: 0.25 }, tOff + S(0.2), S(0.5));
+      to(cb.spoke, { opacity: 0.25 }, tOff + S(0.2), S(0.5));
+    }
     t = tComb + s5.combine;
     eyebrow(4, S5, t);
 

@@ -22,7 +22,7 @@
 
     scenes: [
       { id: "request",   label: "The request" },
-      { id: "stack",     label: "The assistant’s building blocks" },
+      { id: "stack",     label: "The agent’s building blocks" },
       { id: "problem",   label: "The problem" },
       { id: "mcp",       label: "Enter MCP" },
       { id: "ecosystem", label: "Your sources via MCP" },
@@ -33,7 +33,7 @@
     ],
 
     user: { label: "YOU", sublabel: "Cash Equity platform" },
-    agent: { label: "AI ASSISTANT" },
+    agent: { label: "AI AGENT" },
     orchestrator: { label: "ORCHESTRATOR" },
 
     capabilities: [
@@ -95,6 +95,8 @@
         sourcesLabel: "SOURCES VIA MCP",
         sources: ["ORDERS", "MARKET", "NEWS", "TCA"],
       },
+      // Scene 5: the model lights up while the data is analysed
+      combine: { cap: "model", tag: "Analyses the data" },
     },
 
     server: {
@@ -102,7 +104,7 @@
       subtitle: "orders server  ·  exposes your order history",
       focusSystem: "orders",
       envelope: "MCP SERVER",
-      agent: { label: "ASSISTANT", sub: "on your behalf" },
+      agent: { label: "AI AGENT", sub: "on your behalf" },
       system: { label: "ORDERS", sub: "Your order history" },
       runtimeLabel: "RUNS IN A CONTROLLED ENVIRONMENT",
       runtime: ["SECURE HOSTING", "MCP GATEWAY", "SECRETS VAULT", "AUDIT LOGS"],
@@ -140,10 +142,10 @@
 
     multiAgent: {
       apps: [
-        { id: "exec",    label: "EXECUTION ASSISTANT" },
-        { id: "pre",     label: "PRE-TRADE ASSISTANT" },
-        { id: "post",    label: "POST-TRADE REPORTING" },
-        { id: "support", label: "SUPPORT ASSISTANT" },
+        { id: "exec",    label: "EXECUTION AGENT" },
+        { id: "pre",     label: "PRE-TRADE AGENT" },
+        { id: "post",    label: "REPORTING AGENT" },
+        { id: "support", label: "SUPPORT AGENT" },
       ],
       layerLabel: "MCP LAYER",
       systems: ["ORDERS", "MARKET DATA", "TCA", "NEWS", "REFERENCE", "DOCS"],
@@ -152,7 +154,7 @@
 
     finalStack: [
       { items: ["YOU"] },
-      { items: ["AI ASSISTANT"], tone: "request" },
+      { items: ["AI AGENT"], tone: "request" },
       { items: ["ORCHESTRATOR"], tone: "orchestrator", wide: true },
       { items: ["MODEL", "MEMORY", "SKILLS", "MCP"], highlight: "MCP" },
       { items: ["YOUR ORDERS", "MARKET DATA", "TCA", "NEWS", "DOCUMENTATION"], viaMcp: true },
@@ -161,22 +163,32 @@
     finalSubtitle: "Controlled access: MCP standardises the connections, the systems enforce the rights.",
 
     captions: {
-      s1: "An assistant doesn’t just answer. It plans the steps.",
+      s1: "An agent doesn’t just answer. It plans the steps.",
       s2: "The model interprets. The orchestrator coordinates.",
-      s3Question: ["How can an assistant reach your data", "without losing control?"],
+      s2Def: "An agentic solution: a model surrounded by tools, memory and methods.",
+      s2DefSub: "It plans, acts, checks, then answers.",
+      s3Question: ["How does an AI application securely connect", "to enterprise tools and data?"],
       s4: "MCP provides a standard way for AI applications to connect to tools and data.",
       s4Sub: "A universal interface, not another model.",
-      s5Steps: ["The assistant decides what it needs", "MCP gives standard access", "Data returns", "The assistant combines the results"],
+      s4Discover: "Each system describes its tools once. Any agent can use them.",
+      s5Steps: ["The agent decides what it needs", "MCP gives standard access", "Data returns", "The model analyses it"],
       s6: "One question. Four systems. A sourced answer, still to be checked.",
-      s7Tangle: "Without a standard, every assistant rebuilds every integration.",
-      s7TangleSub: "4 assistants × 6 systems = 24 bespoke integrations",
-      s7Once: ["Build each connection once.", "Reuse it across assistants."],
+      s7Tangle: "Without a standard, every agent rebuilds every integration.",
+      s7TangleSub: "4 agents × 6 systems = 24 bespoke integrations",
+      s7Once: ["Build each connection once.", "Reuse it across agents."],
       s7OnceSub: "4 + 6 = 10 standard connections",
       s7One: "One request. Several coordinated sources.",
       s7Final: "MCP standardises the connections. Controls stay with the systems.",
     },
 
-    timing: base.timing,
+    // Longer holds than the bank version, so the voice-over can explain what
+    // an agentic solution is (scene 2), what MCP does (scene 4) and the
+    // model's analysis of the data (scene 5).
+    timing: Object.assign({}, base.timing, {
+      s2: Object.assign({}, base.timing.s2, { hold: 12.2 }),
+      s4: Object.assign({}, base.timing.s4, { discover: 8.2 }),
+      s5: Object.assign({}, base.timing.s5, { combine: 6.9 }),
+    }),
   };
 
   // French text, laid over the English config above (same order and length).
@@ -186,7 +198,7 @@
 
     scenes: [
       { label: "La demande" },
-      { label: "Les briques de l’assistant" },
+      { label: "Les briques de l’agent" },
       { label: "Le problème" },
       { label: "Voici MCP" },
       { label: "Vos sources via MCP" },
@@ -197,7 +209,7 @@
     ],
 
     user: { label: "VOUS", sublabel: "Plateforme Cash Equity" },
-    agent: { label: "ASSISTANT IA" },
+    agent: { label: "AGENT IA" },
     orchestrator: { label: "ORCHESTRATEUR" },
 
     capabilities: [
@@ -243,7 +255,7 @@
         move: "−6,2 bps",
         sections: [
           { title: "PRINCIPAUX CONTRIBUTEURS", items: [
-            { text: "3 petites capitalisations", note: "spread ×2 après 10h" },
+            { text: "3 small caps", note: "spread ×2 après 10h" },
             { text: "Publication macro 10h00", note: "pic de volume" },
           ] },
           { title: "POINTS À VÉRIFIER", items: ["Taux de participation sur les 3 titres", "2 exécutions pas encore remontées"] },
@@ -251,13 +263,14 @@
         sourcesLabel: "SOURCES VIA MCP",
         sources: ["ORDRES", "MARCHÉ", "ACTUALITÉS", "TCA"],
       },
+      combine: { tag: "Analyse les données" },
     },
 
     server: {
       title: "DES ACCÈS CONTRÔLÉS",
       subtitle: "serveur ordres  ·  expose votre historique d’ordres",
       envelope: "SERVEUR MCP",
-      agent: { label: "ASSISTANT", sub: "en votre nom" },
+      agent: { label: "AGENT IA", sub: "en votre nom" },
       system: { label: "ORDRES", sub: "Votre historique" },
       runtimeLabel: "TOURNE DANS UN ENVIRONNEMENT CONTRÔLÉ",
       runtime: ["HÉBERGEMENT SÉCURISÉ", "PASSERELLE MCP", "COFFRE DE SECRETS", "JOURNAUX D’AUDIT"],
@@ -292,10 +305,10 @@
 
     multiAgent: {
       apps: [
-        { label: "ASSISTANT D’EXÉCUTION" },
-        { label: "ASSISTANT PRÉ-TRADE" },
-        { label: "REPORTING POST-TRADE" },
-        { label: "ASSISTANT SUPPORT" },
+        { label: "AGENT D’EXÉCUTION" },
+        { label: "AGENT PRÉ-TRADE" },
+        { label: "AGENT DE REPORTING" },
+        { label: "AGENT SUPPORT" },
       ],
       layerLabel: "COUCHE MCP",
       systems: ["ORDRES", "MARCHÉ", "TCA", "ACTUALITÉS", "RÉFÉRENTIEL", "DOCS"],
@@ -303,7 +316,7 @@
 
     finalStack: [
       { items: ["VOUS"] },
-      { items: ["ASSISTANT IA"] },
+      { items: ["AGENT IA"] },
       { items: ["ORCHESTRATEUR"] },
       { items: ["MODÈLE", "MÉMOIRE", "SKILLS", "MCP"] },
       { items: ["VOS ORDRES", "DONNÉES DE MARCHÉ", "TCA", "ACTUALITÉS", "DOCUMENTATION"] },
@@ -312,16 +325,19 @@
     finalSubtitle: "Des accès contrôlés : MCP standardise les connexions, les systèmes appliquent les droits.",
 
     captions: {
-      s1: "Un assistant ne se contente pas de répondre. Il planifie les étapes.",
+      s1: "Un agent ne se contente pas de répondre. Il planifie les étapes.",
       s2: "Le modèle interprète. L’orchestrateur coordonne.",
-      s3Question: ["Comment l’assistant accède-t-il à vos données", "sans perdre le contrôle ?"],
+      s2Def: "Une solution agentique : un modèle entouré d’outils, de mémoire et de méthodes.",
+      s2DefSub: "Il planifie, agit, vérifie, puis répond.",
+      s3Question: ["Comment une application d’IA se connecte-t-elle", "en sécurité aux outils et données de l’entreprise ?"],
       s4: "MCP offre aux applications d’IA un moyen standard d’accéder aux outils et aux données.",
       s4Sub: "Une interface universelle, pas un modèle de plus.",
-      s5Steps: ["L’assistant décide ce dont il a besoin", "MCP donne un accès standard", "Les données reviennent", "L’assistant combine les résultats"],
+      s4Discover: "Chaque système décrit ses outils une fois. Tout agent peut les utiliser.",
+      s5Steps: ["L’agent décide ce dont il a besoin", "MCP donne un accès standard", "Les données reviennent", "Le modèle les analyse"],
       s6: "Une question. Quatre systèmes. Une réponse sourcée, à vérifier.",
-      s7Tangle: "Sans standard, chaque assistant refait chaque intégration.",
-      s7TangleSub: "4 assistants × 6 systèmes = 24 intégrations sur mesure",
-      s7Once: ["Construire chaque connexion une fois.", "La réutiliser entre assistants."],
+      s7Tangle: "Sans standard, chaque agent refait chaque intégration.",
+      s7TangleSub: "4 agents × 6 systèmes = 24 intégrations sur mesure",
+      s7Once: ["Construire chaque connexion une fois.", "La réutiliser entre agents."],
       s7OnceSub: "4 + 6 = 10 connexions standard",
       s7One: "Une demande. Plusieurs sources coordonnées.",
       s7Final: "MCP standardise les connexions. Les contrôles restent dans les systèmes.",

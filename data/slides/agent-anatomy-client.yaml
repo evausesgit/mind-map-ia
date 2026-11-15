@@ -9,10 +9,10 @@ glossary_label: "Glossaire"
 glossary_title: "Les notions clés"
 title: "Notions clés · assistant agentique"
 eyebrow: "LES BRIQUES D’UN ASSISTANT AGENTIQUE"
-aria: "Un assistant IA tourne dans un orchestrateur, relié à un modèle, des skills, une mémoire et des outils. Les outils atteignent vos données et les calculs via MCP."
+aria: "Un agent IA tourne dans un orchestrateur, relié à un modèle, des skills, une mémoire et des outils. Les outils atteignent vos données et les calculs via MCP."
 back: { href: "mcp-agentic-architecture-client.html?autoplay=0&lang=fr", label: "← Animation" }
 user: "VOUS"
-center: "ASSISTANT IA"
+center: "AGENT IA"
 ring: "ORCHESTRATEUR"
 # Four corners, in order: top-left, top-right, bottom-left, bottom-right.
 blocks:
