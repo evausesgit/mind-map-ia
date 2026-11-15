@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-14"
+    type: update
+    title:
+      en: "Nvidia leadership shock raises execution and concentration risk"
+      fr: "Le choc de gouvernance chez Nvidia accroît les risques d’exécution et de concentration"
+    description:
+      en: "Elon Musk said Nvidia could lose critical deals following the ousting of CEO Jensen Huang, underscoring how much customer and supply-chain confidence was tied to one leader. The episode turns Nvidia’s succession into an infrastructure-risk issue for AI buyers already dependent on a concentrated accelerator market."
+      fr: "Elon Musk estime que Nvidia pourrait perdre des contrats critiques après l’éviction de son directeur général Jensen Huang, soulignant le poids d’un dirigeant dans la confiance des clients et de la chaîne d’approvisionnement. La succession devient un enjeu de risque d’infrastructure pour les acheteurs d’IA déjà dépendants d’un marché très concentré des accélérateurs."
+    link: https://www.reuters.com/business/musk-says-nvidia-will-lose-critical-deals-without-jensen-huang-2026-11-14/
+  - date: "2026-11-14"
+    type: update
+    title:
+      en: "Italy fines Meta €805 million over Android media access"
+      fr: "L’Italie inflige à Meta une amende de 805 millions d’euros pour l’accès aux médias Android"
+    description:
+      en: "Italy’s data-protection authority fined Meta €805 million ($887 million), saying the company accessed Android users’ photographs and videos without adequate legal grounds. The decision reinforces the need for strict data provenance, permissioning and purpose limitation when consumer data feeds AI-enabled services."
+      fr: "L’autorité italienne de protection des données a infligé à Meta une amende de 805 millions d’euros (887 millions de dollars), estimant que l’entreprise avait accédé aux photos et vidéos d’utilisateurs Android sans base juridique suffisante. La décision renforce l’exigence de traçabilité, de permissions et de limitation des finalités pour les données utilisées par des services intégrant l’IA."
+    link: https://www.reuters.com/world/italy-fines-meta-887-million-over-android-users-data-access-2026-11-14/
+  - date: "2026-11-13"
+    type: update
+    title:
+      en: "Anthropic IPO attracts strong demand but investors question durability"
+      fr: "L’IPO d’Anthropic attire une forte demande, mais sa durabilité interroge"
+    description:
+      en: "Institutional-investor interest in Anthropic’s planned IPO is reportedly outpacing the early stage of SpaceX’s roadshow, according to Reuters sources. Investors are nevertheless testing whether Anthropic’s model lead, enterprise growth and capital-intensive economics can remain defensible in a fast-moving market."
+      fr: "L’intérêt des investisseurs institutionnels pour le projet d’introduction en Bourse d’Anthropic dépasserait celui observé au début de la tournée de SpaceX, selon des sources de Reuters. Les investisseurs évaluent toutefois la durabilité de son avance technologique, de sa croissance entreprise et d’un modèle économique très gourmand en capitaux."
+    link: https://www.reuters.com/business/finance/investors-flock-anthropic-ipo-question-durability-ai-lead-2026-11-13/
+  - date: "2026-11-08"
+    type: research
+    title:
+      en: "Nous Research releases Arete-27B, a post-trained Qwen open-weight model"
+      fr: "Nous Research publie Arete-27B, un modèle open-weight Qwen post-entraîné"
+    description:
+      en: "Nous Research post-trained Qwen3.8-27B with supervised fine-tuning on about 52.8 million tokens to change political framing while preserving general and agentic capabilities. On Nous Research’s own 803-prompt evaluation, the reported propaganda rate fell from 22% to 0.9%; the result still needs independent replication."
+      fr: "Nous Research a post-entraîné Qwen3.8-27B par fine-tuning supervisé sur environ 52,8 millions de tokens afin de modifier certains cadrages politiques tout en préservant les capacités générales et agentiques. Sur sa propre évaluation de 803 prompts, le taux de propagande déclaré passe de 22 % à 0,9 %, un résultat qui doit encore être reproduit indépendamment."
+    link: https://huggingface.co/NousResearch/Arete-27B
   - date: "2026-11-13"
     type: update
     title:
