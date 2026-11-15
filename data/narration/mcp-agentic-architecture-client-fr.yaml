@@ -26,29 +26,29 @@ cues:
   - { at: 37.35, text: "Il lui faut vos ordres et exécutions, le contexte de marché, et un calcul d'écart." }
   - { at: 43.35, text: "Comment une IA se connecte-t-elle, en sécurité, aux outils de l'entreprise ?" }
   # Voici MCP
-  - { at: 48.95, text: "Voici MCP, le Model Context Protocol." }
+  - { at: 48.95, text: "Voici le èm-cé-pé, le Model Context Protocol." }
   - { at: 52.85, text: "Un standard ouvert, pour connecter les applications d'IA aux outils et aux données." }
   - { at: 58.0,  text: "Chaque système décrit ses outils une seule fois : l'agent les découvre, les appelle, et reçoit les résultats." }
   # Vos sources via MCP
-  - { at: 66.2,  text: "L'agent décide ce dont il a besoin. MCP lui donne un accès standard à vos ordres, au marché, à l'outil TCA. Les données reviennent." }
+  - { at: 65.9,  text: "L'agent décide ce dont il a besoin. Le èm-cé-pé lui donne un accès standard à vos ordres, au marché, à l'outil TCA. Les données reviennent." }
   - { at: 75.65, text: "L'écart est calculé par l'outil TCA. Le modèle analyse ces données et rédige l'explication." }
   # Le résultat
   - { at: 82.25, text: "Vous obtenez l'écart, ses principaux contributeurs, et les points à vérifier." }
   - { at: 87.85, text: "Quatre systèmes, une réponse sourcée, à vérifier." }
   # Des accès contrôlés
-  - { at: 92.45, text: "Derrière chaque appel d'outil, un serveur MCP qui contrôle les accès." }
-  - { at: 97.95, text: "Il tourne dans un environnement contrôlé, chaque appel journalisé." }
-  - { at: 103.15, text: "Il n'expose que vos ordres, rien d'autre." }
+  - { at: 92.45, text: "Vous êtes authentifié, et l'agent agit en votre nom, avec vos droits." }
+  - { at: 97.95, text: "Chaque appel passe par un serveur èm-cé-pé, contrôlé et journalisé." }
+  - { at: 103.15, text: "Il n'ouvre que les données auxquelles vous avez droit." }
   - { at: 106.75, text: "Le contexte donne le sens des données." }
   - { at: 110.45, text: "Les garde-fous encadrent ce qui entre et ce qui sort." }
-  - { at: 114.25, text: "Chaque appel porte votre identité." }
-  - { at: 118.05, text: "Un appel autorisé passe chaque contrôle, ne renvoie que vos données, et laisse une piste d'audit." }
-  - { at: 124.75, text: "Et si l'agent demande les ordres d'un autre client ? L'appel est refusé dès l'entrée." }
+  - { at: 114.25, text: "Chaque appel porte votre identité, et vos autorisations." }
+  - { at: 118.05, text: "Vos droits sont vérifiés à chaque appel : vous ne recevez que les données auxquelles vous êtes autorisé." }
+  - { at: 124.75, text: "Les ordres d'un autre client ? Vous n'y avez pas droit : l'appel est refusé dès l'entrée." }
   # Pourquoi MCP compte
   - { at: 131.25, text: "Sans standard, chaque agent refait chaque intégration. Quatre fois six : vingt-quatre intégrations sur mesure." }
   - { at: 139.65, text: "Construite une fois, réutilisée partout : dix connexions standard." }
   - { at: 144.45, text: "Une demande. Plusieurs sources coordonnées." }
-  - { at: 148.35, text: "MCP standardise les connexions. Les contrôles restent dans les systèmes." }
+  - { at: 148.35, text: "Le èm-cé-pé standardise les connexions. Les contrôles restent dans les systèmes." }
   # Synthèse
   - { at: 154.05, text: "Une demande métier, des étapes coordonnées." }
   - { at: 157.45, text: "Et des accès contrôlés." }

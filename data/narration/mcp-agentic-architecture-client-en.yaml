@@ -34,14 +34,14 @@ cues:
   - { at: 82.25, text: "You get the slippage, its main contributors, and the points to check." }
   - { at: 87.85, text: "Four systems. A sourced answer, still to be checked." }
   # Controlled access
-  - { at: 92.45, text: "Behind each tool call sits an [MCP](/ˌɛmsˌipˈi/) server that controls access." }
-  - { at: 97.95, text: "It runs in a controlled environment, and every call is logged." }
-  - { at: 103.15, text: "It only exposes your orders, nothing else." }
+  - { at: 92.45, text: "You are authenticated, and the agent acts on your behalf, with your rights." }
+  - { at: 97.95, text: "Every call goes through an [MCP](/ˌɛmsˌipˈi/) server, controlled and logged." }
+  - { at: 103.15, text: "It only opens the data you are entitled to." }
   - { at: 106.75, text: "Context tells the model what the data means." }
   - { at: 110.45, text: "Guardrails bound what goes in and comes out." }
-  - { at: 114.25, text: "Every call carries your identity." }
-  - { at: 118.05, text: "An authorised call passes every check, returns only your data, and leaves an audit trail." }
-  - { at: 124.75, text: "And if the agent asks for another client's orders? The call is refused at the gate." }
+  - { at: 114.25, text: "Every call carries your identity, and your rights." }
+  - { at: 118.05, text: "Your rights are checked on every call: you only receive the data you are authorised to see." }
+  - { at: 124.75, text: "Another client's orders? You are not entitled to them: the call is refused at the gate." }
   # Why MCP matters
   - { at: 131.25, text: "Without a standard, each agent rebuilds each integration. Four by six: twenty-four bespoke integrations." }
   - { at: 139.65, text: "Build each connection once, and reuse it. Ten standard connections." }
