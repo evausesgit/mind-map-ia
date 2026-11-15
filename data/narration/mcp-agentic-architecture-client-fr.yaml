@@ -38,11 +38,11 @@ cues:
   # Des accès contrôlés
   - { at: 92.45, text: "Vous êtes authentifié, et l'agent agit en votre nom, avec vos droits." }
   - { at: 97.95, text: "Chaque appel passe par un serveur èm-cé-pé, contrôlé et journalisé." }
-  - { at: 103.15, text: "Il n'ouvre que les données auxquelles vous avez droit." }
-  - { at: 106.75, text: "Le contexte donne le sens des données." }
-  - { at: 110.45, text: "Les garde-fous encadrent ce qui entre et ce qui sort." }
-  - { at: 114.25, text: "Chaque appel porte votre identité, et vos autorisations." }
-  - { at: 118.05, text: "Vos droits sont vérifiés à chaque appel : vous ne recevez que les données auxquelles vous êtes autorisé." }
+  - { at: 102.6, text: "Son modèle d'accès décrit les bases, les schémas, et comment les lire." }
+  - { at: 107.25, text: "Le contexte décrit chaque donnée, pour que l'agent sache quoi demander, et où." }
+  - { at: 112.15, text: "Les garde-fous protègent : pas trop de requêtes, pas trop vite." }
+  - { at: 115.85, text: "Chaque appel porte votre identité, et vos autorisations." }
+  - { at: 119.55, text: "Vos droits sont vérifiés à chaque appel : vous ne recevez que les données auxquelles vous êtes autorisé." }
   - { at: 124.75, text: "Les ordres d'un autre client ? Vous n'y avez pas droit : l'appel est refusé dès l'entrée." }
   # Pourquoi MCP compte
   - { at: 131.25, text: "Sans standard, chaque agent refait chaque intégration. Quatre fois six : vingt-quatre intégrations sur mesure." }

@@ -36,11 +36,11 @@ cues:
   # Controlled access
   - { at: 92.45, text: "You are authenticated, and the agent acts on your behalf, with your rights." }
   - { at: 97.95, text: "Every call goes through an [MCP](/ˌɛmsˌipˈi/) server, controlled and logged." }
-  - { at: 103.15, text: "It only opens the data you are entitled to." }
-  - { at: 106.75, text: "Context tells the model what the data means." }
-  - { at: 110.45, text: "Guardrails bound what goes in and comes out." }
-  - { at: 114.25, text: "Every call carries your identity, and your rights." }
-  - { at: 118.05, text: "Your rights are checked on every call: you only receive the data you are authorised to see." }
+  - { at: 102.6, text: "Its access model maps each database, each schema, and how to read them." }
+  - { at: 107.35, text: "Context describes each dataset, so the agent knows what to ask, and where." }
+  - { at: 112.3, text: "Guardrails protect: not too many requests, not too fast." }
+  - { at: 116.15, text: "Every call carries your identity, and your rights." }
+  - { at: 119.55, text: "Your rights are checked on every call: you only get the data you may see." }
   - { at: 124.75, text: "Another client's orders? You are not entitled to them: the call is refused at the gate." }
   # Why MCP matters
   - { at: 131.25, text: "Without a standard, each agent rebuilds each integration. Four by six: twenty-four bespoke integrations." }
