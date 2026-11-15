@@ -7,7 +7,7 @@
 # résultat 81.95 · accès 91.35 · pourquoi 129.7 · synthèse 151.64 · fin 162.2.
 #
 # Prononciation : les termes anglais sont écrits pour qu'Apolline les dise à
-# l'anglaise (« viwap » pour VWAP). Le texte à l'écran garde l'orthographe normale.
+# l'anglaise (« viwap » pour VWAP, « skile » pour skill, « le èm-cé-pé » pour MCP). Le texte à l'écran garde l'orthographe normale.
 engine: gradium
 voice: 6oIkS98REoVZ1dEw   # Apolline : vive, souriante, va droit au but
 padding_bonus: 0          # débit : négatif = plus rapide, positif = plus lent
@@ -19,9 +19,9 @@ cues:
   - { at: 1.5,   text: "Vous êtes trader, et vous demandez à votre assistant : pourquoi mon panier a-t-il sous-performé le viwap ce matin ?" }
   - { at: 8.6,   text: "Votre assistant est un agent : il ne se contente pas de répondre. Il comprend, planifie, agit, puis répond." }
   # Les briques de l'agent
-  - { at: 16.3,  text: "Le modèle interprète. L'orchestrateur coordonne." }
-  - { at: 19.8,  text: "Il interprète la demande, rappelle vos préférences, applique la méthode TCA, puis il lui faut vos données." }
-  - { at: 26.4,  text: "C'est cela, une solution agentique : un modèle de langage entouré d'outils, de mémoire et de méthodes, qui planifie, agit et vérifie avant de répondre." }
+  - { at: 16.1,  text: "L'orchestrateur coordonne. Le modèle interprète votre demande." }
+  - { at: 20.3,  text: "La mémoire rappelle vos préférences, un skile applique la méthode TCA, et les outils vont chercher vos données." }
+  - { at: 26.95, text: "C'est cela, une solution agentique : un modèle de langage entouré d'outils, de mémoire et de skiles, qui planifie, agit et vérifie avant de répondre." }
   # Le problème
   - { at: 37.35, text: "Il lui faut vos ordres et exécutions, le contexte de marché, et un calcul d'écart." }
   - { at: 43.35, text: "Comment une IA se connecte-t-elle, en sécurité, aux outils de l'entreprise ?" }

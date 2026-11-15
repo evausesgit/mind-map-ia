@@ -165,7 +165,7 @@
     captions: {
       s1: "An agent doesn’t just answer. It plans the steps.",
       s2: "The model interprets. The orchestrator coordinates.",
-      s2Def: "An agentic solution: a model surrounded by tools, memory and methods.",
+      s2Def: "An agentic solution: a model surrounded by tools, memory and skills.",
       s2DefSub: "It plans, acts, checks, then answers.",
       s3Question: ["How does an AI application securely connect", "to enterprise tools and data?"],
       s4: "MCP provides a standard way for AI applications to connect to tools and data.",
@@ -327,7 +327,7 @@
     captions: {
       s1: "Un agent ne se contente pas de répondre. Il planifie les étapes.",
       s2: "Le modèle interprète. L’orchestrateur coordonne.",
-      s2Def: "Une solution agentique : un modèle entouré d’outils, de mémoire et de méthodes.",
+      s2Def: "Une solution agentique : un modèle entouré d’outils, de mémoire et de skills.",
       s2DefSub: "Il planifie, agit, vérifie, puis répond.",
       s3Question: ["Comment une application d’IA se connecte-t-elle", "en sécurité aux outils et données de l’entreprise ?"],
       s4: "MCP offre aux applications d’IA un moyen standard d’accéder aux outils et aux données.",

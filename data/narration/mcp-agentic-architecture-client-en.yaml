@@ -17,9 +17,9 @@ cues:
   - { at: 1.5,   text: "You are a trader, and you ask your assistant: why did my basket underperform [VWAP](/vˈiwˌɑp/) this morning?" }
   - { at: 8.6,   text: "Your assistant is an agent: it doesn't just answer. It understands, plans, acts, then answers." }
   # The agent's building blocks
-  - { at: 16.3,  text: "The model interprets. The orchestrator coordinates." }
-  - { at: 20.0,  text: "It interprets the request, recalls your preferences, applies the TCA method, then it needs your data." }
-  - { at: 26.4,  text: "That is an agentic solution: a language model, surrounded by tools, memory and methods, that plans, acts and checks before it answers." }
+  - { at: 16.1,  text: "The orchestrator coordinates. The model interprets your request." }
+  - { at: 20.3,  text: "Memory recalls your preferences, a skill applies the TCA method, and the tools fetch your data." }
+  - { at: 26.95, text: "That is an agentic solution: a language model, surrounded by tools, memory and skills, that plans, acts and checks before it answers." }
   # The problem
   - { at: 37.35, text: "It needs your orders and fills, the market context, and a slippage calculation." }
   - { at: 43.35, text: "So how does an AI application securely connect to enterprise tools and data?" }
