@@ -3,50 +3,50 @@
 # Regenerate with scripts/generate_narration.py (Kokoro).
 #
 # `at` is the second on the animation timeline where the line starts. Scene
-# starts: request 0 · stack 14.35 · problem 35.65 · mcp 48.55 · ecosystem
-# 64.75 · result 81.95 · server 91.35 · why 129.7 · final 151.64 · end 162.2.
+# starts: request 0 · stack 14.35 · problem 40.55 · mcp 53.45 · ecosystem
+# 69.65 · result 86.85 · server 96.25 · why 134.6 · final 156.54 · end 167.1.
 # Pronunciation overrides use Kokoro's syntax: [word](/phonemes/).
 voice: af_heart
 speed: 1.08
 lang: a   # American English
 output: web/animations/mcp-explainer/narration-client-en.mp3
-duration: 162.2
+duration: 167.1
 
 cues:
   # The request
   - { at: 1.5,   text: "You are a trader, and you ask your assistant: why did my basket underperform [VWAP](/vˈiwˌɑp/) this morning?" }
-  - { at: 8.6,   text: "Your assistant is an agent: it doesn't just answer. It understands, plans, acts, then answers." }
+  - { at: 7.8,   text: "Your assistant is an agent: it carries out a task in several steps. It uses tools, examines the results, and adapts what comes next." }
   # The agent's building blocks
-  - { at: 16.1,  text: "The orchestrator coordinates. The model interprets your request." }
-  - { at: 20.3,  text: "Memory recalls your preferences, a skill applies the TCA method, and the tools fetch your data." }
-  - { at: 26.95, text: "That is an agentic solution: a language model, surrounded by tools, memory and skills, that plans, acts and checks before it answers." }
+  - { at: 16.6,  text: "The orchestrator coordinates. The model interprets your request." }
+  - { at: 20.7,  text: "Memory recalls your preferences. A skill is a working method: the steps to follow, the tools to use, the checks to make. Here, the TCA analysis." }
+  - { at: 31.85, text: "That is an agentic solution: a language model, surrounded by tools, memory and skills, that plans, acts and checks before it answers." }
   # The problem
-  - { at: 37.35, text: "It needs your orders and fills, the market context, and a slippage calculation." }
-  - { at: 43.35, text: "So how does an AI application securely connect to enterprise tools and data?" }
+  - { at: 42.25, text: "It needs your orders and fills, the market context, and a slippage calculation." }
+  - { at: 48.25, text: "So how does an AI application securely connect to enterprise tools and data?" }
   # Enter MCP
-  - { at: 48.95, text: "Enter [MCP](/ˌɛmsˌipˈi/), the Model Context Protocol." }
-  - { at: 52.85, text: "An open standard that connects AI applications to tools and data." }
-  - { at: 58.0,  text: "Each system describes its tools once: the agent discovers them, calls them, and gets the results back." }
+  - { at: 53.85, text: "Enter [MCP](/ˌɛmsˌipˈi/), the Model Context Protocol." }
+  - { at: 57.75, text: "An open standard that connects AI applications to tools and data." }
+  - { at: 62.90,  text: "Each system describes its tools once: the agent discovers them, calls them, and gets the results back." }
   # Your sources via MCP
-  - { at: 66.2,  text: "The agent decides what it needs. [MCP](/ˌɛmsˌipˈi/) gives it standard access to your orders, the market, and the TCA tool. The data comes back." }
-  - { at: 75.65, text: "The model then analyses the data, links the slippage to market conditions, and writes the explanation." }
+  - { at: 71.10,  text: "The agent decides what it needs. [MCP](/ˌɛmsˌipˈi/) gives it standard access to your orders, the market, and the TCA tool. The data comes back." }
+  - { at: 80.55, text: "The model then analyses the data, links the slippage to market conditions, and writes the explanation." }
   # The result
-  - { at: 82.25, text: "You get the slippage, its main contributors, and the points to check." }
-  - { at: 87.85, text: "Four systems. A sourced answer, still to be checked." }
+  - { at: 87.15, text: "You get a provisional slippage, possible explanations, and the points to check." }
+  - { at: 92.75, text: "Four systems. A sourced answer, still to be checked." }
   # Controlled access
-  - { at: 92.45, text: "You are authenticated, and the agent acts on your behalf, with your rights." }
-  - { at: 97.95, text: "Every call goes through an [MCP](/ˌɛmsˌipˈi/) server, controlled and logged." }
-  - { at: 102.6, text: "Its access model maps each database, each schema, and how to read them." }
-  - { at: 107.35, text: "Context describes each dataset, so the agent knows what to ask, and where." }
-  - { at: 112.3, text: "Guardrails protect: not too many requests, not too fast." }
-  - { at: 116.15, text: "Every call carries your identity, and your rights." }
-  - { at: 119.55, text: "Your rights are checked on every call: you only get the data you may see." }
-  - { at: 124.75, text: "Another client's orders? You are not entitled to them: the call is refused at the gate." }
+  - { at: 97.35, text: "You are authenticated, and the agent acts on your behalf, with your rights." }
+  - { at: 102.85, text: "Every call goes through an [MCP](/ˌɛmsˌipˈi/) server, controlled and logged." }
+  - { at: 107.50, text: "Its access model maps each database, each schema, and how to read them." }
+  - { at: 112.25, text: "Context describes each dataset, so the agent knows what to ask, and where." }
+  - { at: 117.20, text: "Guardrails protect: not too many requests, not too fast." }
+  - { at: 121.05, text: "Every call carries your identity, and your rights." }
+  - { at: 124.45, text: "Your rights are checked on every call: you only get the data you may see." }
+  - { at: 129.65, text: "Another client's orders? You are not entitled to them: the call is refused at the gate." }
   # Why MCP matters
-  - { at: 131.25, text: "Without a standard, each agent rebuilds each integration. Four by six: twenty-four bespoke integrations." }
-  - { at: 139.65, text: "Build each connection once, and reuse it. Ten standard connections." }
-  - { at: 144.45, text: "One request. Several coordinated sources." }
-  - { at: 148.35, text: "[MCP](/ˌɛmsˌipˈi/) standardises the connections. Controls stay with the systems." }
+  - { at: 136.15, text: "Without a standard, each agent rebuilds each integration. Four by six: twenty-four bespoke integrations." }
+  - { at: 144.55, text: "Build each connection once, and reuse it. Ten standard connections." }
+  - { at: 149.35, text: "One request. Several coordinated sources." }
+  - { at: 153.25, text: "[MCP](/ˌɛmsˌipˈi/) standardises the connections. Controls stay with the systems." }
   # Summary
-  - { at: 154.05, text: "One business request, coordinated steps." }
-  - { at: 157.45, text: "And controlled access." }
+  - { at: 158.95, text: "One business request, coordinated steps." }
+  - { at: 162.35, text: "And controlled access." }

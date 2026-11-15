@@ -1063,7 +1063,8 @@
       to(it.bar, { opacity: 1 }, ti, S(0.3));
       if (i > 0) to(loopRow.items[i - 1].bar, { opacity: 0 }, ti, S(0.3));
     });
-    caption(cfg.captions.s1, loopStart + S(0.2), ex.loop.length * s1.loopStep + s1.hold - S(1.2));
+    caption(cfg.captions.s1, loopStart + S(0.2), ex.loop.length * s1.loopStep + s1.hold - S(1.2),
+      cfg.captions.s1Sub ? { size: 28, sub: cfg.captions.s1Sub, subFill: th.request } : {});
     t = loopStart + ex.loop.length * s1.loopStep + s1.hold;
     eyebrow(0, S1, t);
 

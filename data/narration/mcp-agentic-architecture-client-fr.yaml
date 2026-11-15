@@ -3,8 +3,8 @@
 # Régénérer avec scripts/generate_narration.py (moteur Gradium, voir son en-tête).
 #
 # `at` est la seconde de la timeline où la phrase démarre. Débuts de scène :
-# demande 0 · briques 14.35 · problème 35.65 · MCP 48.55 · sources 64.75 ·
-# résultat 81.95 · accès 91.35 · pourquoi 129.7 · synthèse 151.64 · fin 162.2.
+# demande 0 · briques 14.35 · problème 40.55 · MCP 53.45 · sources 69.65 ·
+# résultat 86.85 · accès 96.25 · pourquoi 134.6 · synthèse 156.54 · fin 167.1.
 #
 # Prononciation : les termes anglais sont écrits pour qu'Apolline les dise à
 # l'anglaise (« viwap » pour VWAP, « skile » pour skill, « le èm-cé-pé » pour MCP). Le texte à l'écran garde l'orthographe normale.
@@ -12,43 +12,43 @@ engine: gradium
 voice: 6oIkS98REoVZ1dEw   # Apolline : vive, souriante, va droit au but
 padding_bonus: 0          # débit : négatif = plus rapide, positif = plus lent
 output: web/animations/mcp-explainer/narration-client-fr.mp3
-duration: 162.2
+duration: 167.1
 
 cues:
   # La demande
   - { at: 1.5,   text: "Vous êtes trader, et vous demandez à votre assistant : pourquoi mon panier a-t-il sous-performé le viwap ce matin ?" }
-  - { at: 8.6,   text: "Votre assistant est un agent : il ne se contente pas de répondre. Il comprend, planifie, agit, puis répond." }
+  - { at: 7.8,   text: "Votre assistant est un agent : il réalise une tâche en plusieurs étapes. Il utilise des outils, examine les résultats, et adapte la suite." }
   # Les briques de l'agent
-  - { at: 16.1,  text: "L'orchestrateur coordonne. Le modèle interprète votre demande." }
-  - { at: 20.3,  text: "La mémoire rappelle vos préférences, un skile applique la méthode TCA, et les outils vont chercher vos données." }
-  - { at: 26.95, text: "C'est cela, une solution agentique : un modèle de langage entouré d'outils, de mémoire et de skiles, qui planifie, agit et vérifie avant de répondre." }
+  - { at: 16.2,  text: "L'orchestrateur coordonne. Le modèle interprète votre demande." }
+  - { at: 20.4,  text: "La mémoire rappelle vos préférences. Un skile, c'est une méthode de travail : les étapes à suivre, les outils à utiliser, les vérifications à faire. Ici, l'analyse TCA." }
+  - { at: 31.85, text: "C'est cela, une solution agentique : un modèle de langage entouré d'outils, de mémoire et de skiles, qui planifie, agit et vérifie avant de répondre." }
   # Le problème
-  - { at: 37.35, text: "Il lui faut vos ordres et exécutions, le contexte de marché, et un calcul d'écart." }
-  - { at: 43.35, text: "Comment une IA se connecte-t-elle, en sécurité, aux outils de l'entreprise ?" }
+  - { at: 42.25, text: "Il lui faut vos ordres et exécutions, le contexte de marché, et un calcul d'écart." }
+  - { at: 48.25, text: "Comment une IA se connecte-t-elle, en sécurité, aux outils de l'entreprise ?" }
   # Voici MCP
-  - { at: 48.95, text: "Voici le èm-cé-pé, le Model Context Protocol." }
-  - { at: 52.85, text: "Un standard ouvert, pour connecter les applications d'IA aux outils et aux données." }
-  - { at: 58.0,  text: "Chaque système décrit ses outils une seule fois : l'agent les découvre, les appelle, et reçoit les résultats." }
+  - { at: 53.85, text: "Voici le èm-cé-pé, le Model Context Protocol." }
+  - { at: 57.75, text: "Un standard ouvert, pour connecter les applications d'IA aux outils et aux données." }
+  - { at: 62.90,  text: "Chaque système décrit ses outils une seule fois : l'agent les découvre, les appelle, et reçoit les résultats." }
   # Vos sources via MCP
-  - { at: 65.9,  text: "L'agent décide ce dont il a besoin. Le èm-cé-pé lui donne un accès standard à vos ordres, au marché, à l'outil TCA. Les données reviennent." }
-  - { at: 75.65, text: "Le modèle analyse alors ces données, relie l'écart aux conditions de marché, et rédige l'explication." }
+  - { at: 70.80,  text: "L'agent décide ce dont il a besoin. Le èm-cé-pé lui donne un accès standard à vos ordres, au marché, à l'outil TCA. Les données reviennent." }
+  - { at: 80.55, text: "Le modèle analyse alors ces données, relie l'écart aux conditions de marché, et rédige l'explication." }
   # Le résultat
-  - { at: 82.25, text: "Vous obtenez l'écart, ses principaux contributeurs, et les points à vérifier." }
-  - { at: 87.85, text: "Quatre systèmes, une réponse sourcée, à vérifier." }
+  - { at: 87.15, text: "Vous obtenez un écart provisoire, des pistes d'explication, et les points à vérifier." }
+  - { at: 92.75, text: "Quatre systèmes, une réponse sourcée, à vérifier." }
   # Des accès contrôlés
-  - { at: 92.45, text: "Vous êtes authentifié, et l'agent agit en votre nom, avec vos droits." }
-  - { at: 97.95, text: "Chaque appel passe par un serveur èm-cé-pé, contrôlé et journalisé." }
-  - { at: 102.6, text: "Son modèle d'accès décrit les bases, les schémas, et comment les lire." }
-  - { at: 107.25, text: "Le contexte décrit chaque donnée, pour que l'agent sache quoi demander, et où." }
-  - { at: 112.15, text: "Les garde-fous protègent : pas trop de requêtes, pas trop vite." }
-  - { at: 115.85, text: "Chaque appel porte votre identité, et vos autorisations." }
-  - { at: 119.55, text: "Vos droits sont vérifiés à chaque appel : vous ne recevez que les données auxquelles vous êtes autorisé." }
-  - { at: 124.75, text: "Les ordres d'un autre client ? Vous n'y avez pas droit : l'appel est refusé dès l'entrée." }
+  - { at: 97.35, text: "Vous êtes authentifié, et l'agent agit en votre nom, avec vos droits." }
+  - { at: 102.85, text: "Chaque appel passe par un serveur èm-cé-pé, contrôlé et journalisé." }
+  - { at: 107.50, text: "Son modèle d'accès décrit les bases, les schémas, et comment les lire." }
+  - { at: 112.15, text: "Le contexte décrit chaque donnée, pour que l'agent sache quoi demander, et où." }
+  - { at: 117.05, text: "Les garde-fous protègent : pas trop de requêtes, pas trop vite." }
+  - { at: 120.75, text: "Chaque appel porte votre identité, et vos autorisations." }
+  - { at: 124.45, text: "Vos droits sont vérifiés à chaque appel : vous ne recevez que les données auxquelles vous êtes autorisé." }
+  - { at: 129.65, text: "Les ordres d'un autre client ? Vous n'y avez pas droit : l'appel est refusé dès l'entrée." }
   # Pourquoi MCP compte
-  - { at: 131.25, text: "Sans standard, chaque agent refait chaque intégration. Quatre fois six : vingt-quatre intégrations sur mesure." }
-  - { at: 139.65, text: "Construite une fois, réutilisée partout : dix connexions standard." }
-  - { at: 144.45, text: "Une demande. Plusieurs sources coordonnées." }
-  - { at: 148.35, text: "Le èm-cé-pé standardise les connexions. Les contrôles restent dans les systèmes." }
+  - { at: 136.15, text: "Sans standard, chaque agent refait chaque intégration. Quatre fois six : vingt-quatre intégrations sur mesure." }
+  - { at: 144.55, text: "Construite une fois, réutilisée partout : dix connexions standard." }
+  - { at: 149.35, text: "Une demande. Plusieurs sources coordonnées." }
+  - { at: 153.25, text: "Le èm-cé-pé standardise les connexions. Les contrôles restent dans les systèmes." }
   # Synthèse
-  - { at: 154.05, text: "Une demande métier, des étapes coordonnées." }
-  - { at: 157.45, text: "Et des accès contrôlés." }
+  - { at: 158.95, text: "Une demande métier, des étapes coordonnées." }
+  - { at: 162.35, text: "Et des accès contrôlés." }

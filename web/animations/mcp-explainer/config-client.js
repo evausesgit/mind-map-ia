@@ -46,7 +46,7 @@
     orchestration: [
       { cap: "model",  tag: "Interprets your request" },
       { cap: "memory", tag: "Recalls your report format" },
-      { cap: "skills", tag: "Applies the TCA method" },
+      { cap: "skills", tag: "A method: steps, tools, checks" },
       { cap: "tools",  tag: "Your data required", tone: "alert" },
     ],
 
@@ -82,11 +82,11 @@
       ],
       result: {
         instrument: "YOUR BASKET",
-        ticker: "40 LINES  ·  09:00–11:30  ·  VS VWAP",
+        ticker: "PROVISIONAL RESULT  ·  40 LINES  ·  VS VWAP",
         move: "−6.2 bps",
         moveTone: "warn",
         sections: [
-          { title: "MAIN CONTRIBUTORS", items: [
+          { title: "POSSIBLE EXPLANATIONS", items: [
             { text: "3 small caps", note: "spread ×2 after 10:00" },
             { text: "Macro release 10:00", note: "volume spike" },
           ] },
@@ -163,14 +163,15 @@
     finalSubtitle: "Controlled access: MCP standardises the connections, the systems enforce the rights.",
 
     captions: {
-      s1: "An agent doesn’t just answer. It plans the steps.",
+      s1: "An agent carries out a task in several steps.",
+      s1Sub: "It uses tools, examines the results and adapts what comes next.",
       s2: "The model interprets. The orchestrator coordinates.",
       s2Def: "An agentic solution: a model surrounded by tools, memory and skills.",
       s2DefSub: "It plans, acts, checks, then answers.",
       s3Question: ["How does an AI application securely connect", "to enterprise tools and data?"],
       s4: "MCP provides a standard way for AI applications to connect to tools and data.",
       s4Sub: "A universal interface, not another model.",
-      s4Discover: "Each system describes its tools once. Any agent can use them.",
+      s4Discover: "Each system describes its tools once. Any compatible, authorised agent can use them.",
       s5Steps: ["The agent decides what it needs", "MCP gives standard access", "Data returns", "The model analyses it"],
       s6: "One question. Four systems. A sourced answer, still to be checked.",
       s7Tangle: "Without a standard, every agent rebuilds every integration.",
@@ -185,7 +186,7 @@
     // an agentic solution is (scene 2), what MCP does (scene 4) and the
     // model's analysis of the data (scene 5).
     timing: Object.assign({}, base.timing, {
-      s2: Object.assign({}, base.timing.s2, { hold: 12.2 }),
+      s2: Object.assign({}, base.timing.s2, { hold: 17.1 }),
       s4: Object.assign({}, base.timing.s4, { discover: 8.2 }),
       s5: Object.assign({}, base.timing.s5, { combine: 6.9 }),
     }),
@@ -222,7 +223,7 @@
     orchestration: [
       { tag: "Interprète votre demande" },
       { tag: "Rappelle votre format de rapport" },
-      { tag: "Applique la méthode TCA" },
+      { tag: "Une méthode : étapes, outils, vérifications" },
       { tag: "Vos données sont requises" },
     ],
 
@@ -251,10 +252,10 @@
       ],
       result: {
         instrument: "VOTRE PANIER",
-        ticker: "40 LIGNES  ·  09:00–11:30  ·  VS VWAP",
+        ticker: "RÉSULTAT PROVISOIRE  ·  40 LIGNES  ·  VS VWAP",
         move: "−6,2 bps",
         sections: [
-          { title: "PRINCIPAUX CONTRIBUTEURS", items: [
+          { title: "PISTES D’EXPLICATION", items: [
             { text: "3 small caps", note: "spread ×2 après 10h" },
             { text: "Publication macro 10h00", note: "pic de volume" },
           ] },
@@ -325,14 +326,15 @@
     finalSubtitle: "Des accès contrôlés : MCP standardise les connexions, les systèmes appliquent les droits.",
 
     captions: {
-      s1: "Un agent ne se contente pas de répondre. Il planifie les étapes.",
+      s1: "Un agent réalise une tâche en plusieurs étapes.",
+      s1Sub: "Il utilise des outils, examine les résultats et adapte la suite.",
       s2: "Le modèle interprète. L’orchestrateur coordonne.",
       s2Def: "Une solution agentique : un modèle entouré d’outils, de mémoire et de skills.",
       s2DefSub: "Il planifie, agit, vérifie, puis répond.",
       s3Question: ["Comment une application d’IA se connecte-t-elle", "en sécurité aux outils et données de l’entreprise ?"],
       s4: "MCP offre aux applications d’IA un moyen standard d’accéder aux outils et aux données.",
       s4Sub: "Une interface universelle, pas un modèle de plus.",
-      s4Discover: "Chaque système décrit ses outils une fois. Tout agent peut les utiliser.",
+      s4Discover: "Chaque système décrit ses outils une fois. Tout agent compatible et autorisé peut les utiliser.",
       s5Steps: ["L’agent décide ce dont il a besoin", "MCP donne un accès standard", "Les données reviennent", "Le modèle les analyse"],
       s6: "Une question. Quatre systèmes. Une réponse sourcée, à vérifier.",
       s7Tangle: "Sans standard, chaque agent refait chaque intégration.",

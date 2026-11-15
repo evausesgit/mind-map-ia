@@ -25,9 +25,9 @@ question: "Pourquoi mon panier a-t-il sous-performé le VWAP ce matin ?"
 takeaway: "Une demande métier, plusieurs étapes coordonnées, des accès contrôlés."
 glossary:
   - { term: "Modèle (LLM)", node: model, text: "Interprète votre demande et formule la réponse en langage courant. Seul, il ne connaît pas vos ordres." }
-  - { term: "Agent", node: center, text: "Poursuit un objectif en plusieurs étapes : il précise la demande, consulte, calcule, puis synthétise." }
+  - { term: "Agent", node: center, text: "Un assistant qui réalise une tâche en plusieurs étapes : il utilise des outils, examine les résultats et adapte la suite." }
   - { term: "Orchestrateur", node: ring, text: "Le logiciel qui fait tourner l’ensemble. C’est là, et dans les systèmes, que s’appliquent les contrôles : accès, limites, traçabilité." }
   - { term: "Outils", node: tools, text: "Des fonctions précises : retrouver un ordre, lire des prix, calculer un écart. Les calculs restent confiés à des outils dédiés." }
   - { term: "MCP", node: side, text: "Un standard ouvert pour connecter l’assistant aux outils et aux données. Il ne donne aucun droit : les autorisations restent vérifiées par les systèmes." }
-  - { term: "Skills", node: skills, secondary: true, text: "Des méthodes réutilisables, par exemple pour préparer une analyse d’exécution." }
+  - { term: "Skills", node: skills, text: "Une méthode de travail donnée à l’assistant : les étapes à suivre, les outils à utiliser et les vérifications à effectuer." }
   - { term: "Mémoire", node: memory, secondary: true, text: "Si elle est prévue et autorisée : conserve certains éléments, comme une préférence de présentation." }
