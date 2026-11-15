@@ -31,7 +31,7 @@ cues:
   - { at: 58.0,  text: "Chaque système décrit ses outils une seule fois : l'agent les découvre, les appelle, et reçoit les résultats." }
   # Vos sources via MCP
   - { at: 65.9,  text: "L'agent décide ce dont il a besoin. Le èm-cé-pé lui donne un accès standard à vos ordres, au marché, à l'outil TCA. Les données reviennent." }
-  - { at: 75.65, text: "L'écart est calculé par l'outil TCA. Le modèle analyse ces données et rédige l'explication." }
+  - { at: 75.65, text: "Le modèle analyse alors ces données, relie l'écart aux conditions de marché, et rédige l'explication." }
   # Le résultat
   - { at: 82.25, text: "Vous obtenez l'écart, ses principaux contributeurs, et les points à vérifier." }
   - { at: 87.85, text: "Quatre systèmes, une réponse sourcée, à vérifier." }

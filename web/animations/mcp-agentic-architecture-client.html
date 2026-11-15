@@ -140,7 +140,7 @@
     // Voice-over: the timeline is the clock, the audio follows it. Browsers
     // refuse sound before a user gesture, so the page then offers a button.
     const audio = $("narration");
-    audio.src = `mcp-explainer/narration-client-${lang}.mp3`;
+    audio.src = `mcp-explainer/narration-client-${lang}.mp3?v=5`;
     $("voice-hint").textContent = lang === "fr" ? "Activer la voix" : "Turn on voice";
     const ICON_VOICE_ON = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6v4h2.6L8.5 13V3L5.1 6z"/><path d="M11 5.5a3.5 3.5 0 0 1 0 5M12.8 3.6a6 6 0 0 1 0 8.8"/></svg>';
     const ICON_VOICE_OFF = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6v4h2.6L8.5 13V3L5.1 6z"/><path d="M11 6l3.5 4M14.5 6L11 10"/></svg>';

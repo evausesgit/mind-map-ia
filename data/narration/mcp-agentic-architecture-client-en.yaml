@@ -29,7 +29,7 @@ cues:
   - { at: 58.0,  text: "Each system describes its tools once: the agent discovers them, calls them, and gets the results back." }
   # Your sources via MCP
   - { at: 66.2,  text: "The agent decides what it needs. [MCP](/ˌɛmsˌipˈi/) gives it standard access to your orders, the market, and the TCA tool. The data comes back." }
-  - { at: 75.65, text: "The TCA tool computes the slippage. The model analyses the data and writes the explanation." }
+  - { at: 75.65, text: "The model then analyses the data, links the slippage to market conditions, and writes the explanation." }
   # The result
   - { at: 82.25, text: "You get the slippage, its main contributors, and the points to check." }
   - { at: 87.85, text: "Four systems. A sourced answer, still to be checked." }
