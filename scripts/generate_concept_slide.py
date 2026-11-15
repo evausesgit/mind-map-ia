@@ -79,8 +79,9 @@ def glossary_html(terms: list) -> str:
     rows = []
     for t in terms:
         tone = t.get("tone") or ("var(--mcp)" if t["node"] == "side" else "var(--orchestrator)")
+        cls = "term minor" if t.get("secondary") else "term"
         rows.append(
-            f'    <li><button class="term" data-n="{esc(t["node"])}" style="--tone:{tone}">'
+            f'    <li><button class="{cls}" data-n="{esc(t["node"])}" style="--tone:{tone}">'
             f'<b>{esc(t["term"])}</b><span>{esc(t["text"])}</span></button></li>'
         )
     return "\n".join(rows)
@@ -104,6 +105,10 @@ def render(spec: dict) -> str:
         "side_title": spec["side"]["title"], "side_subtitle": spec["side"]["subtitle"],
         "side_reaches": spec["side"]["reaches"],
         "question": spec["question"], "takeaway": spec["takeaway"],
+        # Optional, for a slide in another language than English.
+        "lang": spec.get("lang", "en"), "home_label": spec.get("home_label", "Home"),
+        "glossary_label": spec.get("glossary_label", "Glossary"),
+        "glossary_title": spec.get("glossary_title", "Key vocabulary"),
     }
     page = TEMPLATE.read_text(encoding="utf-8")
     for key, value in values.items():

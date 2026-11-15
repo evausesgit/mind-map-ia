@@ -385,6 +385,14 @@
 
     // Eyebrow (scene label, top-left)
     const eyebrowG = mk("g", {}, screenG);
+
+    // Optional disclaimer badge, under the eyebrow, on screen throughout
+    if (cfg.disclaimer) {
+      const dg = mk("g", {}, screenG);
+      const dw = measure(cfg.disclaimer, { size: 11, mono: true, ls: "0.16em" }) + 28;
+      mk("rect", { x: 72, y: 98, width: dw, height: 28, rx: 14, fill: th.surfaceSolid, stroke: th.data, "stroke-opacity": 0.5 }, dg);
+      txt(dg, cfg.disclaimer, 72 + dw / 2, 112, { size: 11, mono: true, fill: th.data, ls: "0.16em" });
+    }
     const sceneMarks = [];
     const sceneIdx = (id) => cfg.scenes.findIndex((sc) => sc.id === id);
     function eyebrow(index, at, until) {
@@ -648,7 +656,7 @@
       const lx = -w / 2 + 32;
       addRow((rg, yy) => {
         txt(rg, R.instrument, lx, yy + 22, { size: 30, weight: 700, anchor: "start", ls: "0.02em" });
-        txt(rg, R.move, w / 2 - 32, yy + 22, { size: 30, weight: 700, anchor: "end", fill: th.positive });
+        txt(rg, R.move, w / 2 - 32, yy + 22, { size: 30, weight: 700, anchor: "end", fill: th[R.moveTone] || th.positive });
         txt(rg, R.ticker, lx, yy + 56, { size: 12, mono: true, fill: th.muted, anchor: "start", ls: "0.12em" });
         mk("line", { x1: lx, y1: yy + 80, x2: w / 2 - 32, y2: yy + 80, stroke: th.line }, rg);
       }, 100);
@@ -910,8 +918,9 @@
     // ═════════════════════════════════════════════════════════════════════════
     //  WORLD E — the MCP server lifecycle (scene 8) — screen space
     // ═════════════════════════════════════════════════════════════════════════
+    // Optional: a config without `lifecycle` skips scene 8.
     const lc = cfg.lifecycle;
-    const E = (() => {
+    const E = !lc ? null : (() => {
       const root = mk("g", {});
       screenG.insertBefore(root, capLayer);
       const rails = mk("g", {}, root), nodes = mk("g", {}, root), fxl = mk("g", {}, root);
@@ -1462,10 +1471,10 @@
     }
     eyebrow(sceneIdx("server"), SD, t);
 
-    // ── Scene 8 — from build to run ─────────────────────────────────────────
+    // ── Scene 8 — from build to run (optional) ──────────────────────────────
     const se = TM.lifecycle;
     const SE = t;
-    {
+    if (E) {
       to(D.root, { opacity: 0, scale: 0.97 }, SE, S(0.8), "power2.in");
       to(E.root, { opacity: 1 }, SE + S(0.6), S(0.6));
       to(E.head, { opacity: 1, y: 0 }, SE + S(0.7), S(0.8), "power3.out");
@@ -1509,12 +1518,13 @@
         caption(c.text, c.at, Math.max(S(0.6), next - c.at - S(1.4)), { size: 28 });
       });
     }
-    eyebrow(sceneIdx("lifecycle"), SE, t);
+    if (E) eyebrow(sceneIdx("lifecycle"), SE, t);
 
     // ── Scene 9 — why MCP matters ───────────────────────────────────────────
     const s7 = TM.s7;
     const S7 = t;
-    to(E.root, { opacity: 0 }, S7, S(0.8));
+    if (E) to(E.root, { opacity: 0 }, S7, S(0.8));
+    else to(D.root, { opacity: 0, scale: 0.97 }, S7, S(0.8), "power2.in");
     camera(960, 540, 0.42, S7, s7.zoom, "power2.inOut");
     to(worldA, { opacity: 0 }, S7 + s7.zoom * 0.35, s7.zoom * 0.6);
     to(B.root, { opacity: 1, scale: 1 }, S7 + s7.zoom * 0.55, S(1.4), "power2.out");
@@ -1614,7 +1624,7 @@
       agentHaloC.setAttribute("opacity", 0.8 + 0.2 * Math.sin(tt * 1.7));
       mcp.bus.setAttribute("stroke-dashoffset", -tt * 30);
       B.busB.setAttribute("stroke-dashoffset", -tt * 30);
-      E.dash.liveDot.setAttribute("opacity", 0.55 + 0.45 * Math.sin(tt * 4));
+      if (E) E.dash.liveDot.setAttribute("opacity", 0.55 + 0.45 * Math.sin(tt * 4));
       // orbiter
       const [v0, v1] = orbiter.vis;
       if (tt <= v0 || tt >= v1) { orbiter.g.setAttribute("opacity", 0); }

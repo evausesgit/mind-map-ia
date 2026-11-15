@@ -42,6 +42,9 @@
   .term b { display: block; font-size: calc(var(--u) * 1.06); font-weight: 600; color: var(--tone); margin-bottom: calc(var(--u) * .18); }
   .term span { display: block; font-size: calc(var(--u) * .92); line-height: 1.38; color: var(--muted); }
   .term.on span { color: var(--text); }
+  /* Secondary terms: complementary notions, set back from the main ones */
+  .term.minor b { font-size: calc(var(--u) * .9); opacity: .8; }
+  .term.minor span { font-size: calc(var(--u) * .82); }
 
   .n, .wire { transition: opacity .25s; }
   .n .base { fill: var(--card); stroke: var(--line); stroke-width: 1.2; transition: stroke .25s; }
@@ -58,6 +61,7 @@
     html, body { height: auto; }
     .slide { height: auto; display: block; padding: 56px 16px 32px; }
     .term b { font-size: 16px; } .term span { font-size: 14px; }
+    .term.minor b { font-size: 15px; } .term.minor span { font-size: 13px; }
     .glossary h1 { font-size: 11px; margin-top: 24px; }
   }
 

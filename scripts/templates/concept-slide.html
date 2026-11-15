@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{lang}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-<nav class="nav"><a href="{{back_href}}">{{back_label}}</a><a href="../index.html">Home</a></nav>
+<nav class="nav"><a href="{{back_href}}">{{back_label}}</a><a href="../index.html">{{home_label}}</a></nav>
 <main class="slide">
 <svg class="diagram" id="diagram" viewBox="0 0 1180 1080" role="img" aria-label="{{aria}}">
   <defs>
@@ -76,8 +76,8 @@
   <text x="590" y="992" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="17" fill="#3DD6C6">{{takeaway}}</text>
 </svg>
 
-<section class="glossary" aria-label="Glossary">
-  <h1>Key vocabulary</h1>
+<section class="glossary" aria-label="{{glossary_label}}">
+  <h1>{{glossary_title}}</h1>
   <ul>
 {{glossary}}
   </ul>

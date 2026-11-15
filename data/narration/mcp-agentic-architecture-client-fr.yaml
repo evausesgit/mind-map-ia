@@ -1,0 +1,48 @@
+# Voix-off française de web/animations/mcp-agentic-architecture-client.html
+# (version client de l'animation MCP, config-client.js).
+# Régénérer avec scripts/generate_narration.py (moteur Gradium, voir son en-tête).
+#
+# `at` est la seconde de la timeline où la phrase démarre. Débuts de scène :
+# demande 0 · briques 14.35 · problème 25.05 · MCP 37.95 · sources 47.75 ·
+# résultat 60.45 · accès 69.85 · pourquoi 108.2 · synthèse 130.14 · fin 140.7.
+engine: gradium
+voice: 6oIkS98REoVZ1dEw   # Apolline : vive, souriante, va droit au but
+padding_bonus: 0          # débit : négatif = plus rapide, positif = plus lent
+output: web/animations/mcp-explainer/narration-client-fr.mp3
+duration: 140.7
+
+cues:
+  # La demande
+  - { at: 1.5,   text: "Vous demandez : pourquoi mon panier a-t-il sous-performé le VWAP ce matin ?" }
+  - { at: 8.6,   text: "Un assistant ne se contente pas de répondre. Il planifie les étapes." }
+  # Les briques de l'assistant
+  - { at: 15.0,  text: "Le modèle interprète. L'orchestrateur coordonne." }
+  - { at: 19.0,  text: "Il rappelle vos préférences, applique une méthode, puis il lui faut vos données." }
+  # Le problème
+  - { at: 26.75, text: "Vos ordres et exécutions, le contexte de marché, un calcul d'écart." }
+  - { at: 32.75, text: "Comment l'assistant accède-t-il à vos données, sans perdre le contrôle ?" }
+  # Voici MCP
+  - { at: 38.35, text: "Voici MCP, le Model Context Protocol." }
+  - { at: 42.25, text: "Un moyen standard d'accéder aux outils et aux données. Une interface universelle, pas un modèle de plus." }
+  # Vos sources via MCP
+  - { at: 49.75, text: "L'assistant décide de ce dont il a besoin. MCP lui donne un accès standard. Les données reviennent, et l'assistant combine les résultats." }
+  # Le résultat
+  - { at: 60.75, text: "Vous obtenez l'écart, ses principaux contributeurs, et les points à vérifier." }
+  - { at: 66.35, text: "Une question. Quatre systèmes. Une réponse sourcée, à vérifier." }
+  # Des accès contrôlés
+  - { at: 70.95, text: "Derrière chaque appel d'outil, un serveur MCP qui contrôle les accès." }
+  - { at: 76.45, text: "Il tourne dans un environnement contrôlé, chaque appel journalisé." }
+  - { at: 81.65, text: "Il n'expose que vos ordres, rien d'autre." }
+  - { at: 85.25, text: "Le contexte donne le sens des données." }
+  - { at: 88.95, text: "Les garde-fous encadrent ce qui entre et ce qui sort." }
+  - { at: 92.75, text: "Chaque appel porte votre identité." }
+  - { at: 96.55, text: "Un appel autorisé passe chaque contrôle, et laisse une piste d'audit." }
+  - { at: 103.25, text: "Les ordres d'un autre client ? L'appel s'arrête à l'entrée." }
+  # Pourquoi MCP compte
+  - { at: 109.75, text: "Sans standard, chaque assistant refait chaque intégration. Quatre fois six : vingt-quatre intégrations sur mesure." }
+  - { at: 118.15, text: "Construite une fois, réutilisée partout : dix connexions standard." }
+  - { at: 122.95, text: "Une demande. Plusieurs sources coordonnées." }
+  - { at: 126.85, text: "MCP standardise les connexions. Les contrôles restent dans les systèmes." }
+  # Synthèse
+  - { at: 132.55, text: "Une demande métier, des étapes coordonnées." }
+  - { at: 135.95, text: "Et des accès contrôlés." }

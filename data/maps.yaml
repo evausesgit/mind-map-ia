@@ -120,6 +120,14 @@ animations:
       en: "Agent, orchestrator and MCP connecting AI to enterprise data"
       fr: "Agent, orchestrateur et MCP reliant l’IA aux données de l’entreprise"
     output: animations/mcp-agentic-architecture.html
+  - id: mcp-agentic-architecture-client
+    title:
+      en: "MCP & agentic architecture: client view"
+      fr: "MCP & architecture agentique : vue client"
+    description:
+      en: "The same architecture from a Cash Equity platform client's side: a TCA question, their own data, controlled access"
+      fr: "La même architecture côté client de la plateforme Cash Equity : une question TCA, ses propres données, des accès contrôlés"
+    output: animations/mcp-agentic-architecture-client.html
   - id: trusted-data-agents
     title:
       en: "Trusted data for agents"
@@ -162,6 +170,14 @@ slides:
       en: "Harness, model, skills, memory, tools and MCP, with the key vocabulary"
       fr: "Harness, modèle, skills, mémoire, tools et MCP, avec le vocabulaire clé"
     output: animations/mcp-concepts.html
+  - id: agent-anatomy-client
+    title:
+      en: "Anatomy of an assistant: client view"
+      fr: "Anatomie d’un assistant : vue client"
+    description:
+      en: "Model, agent, orchestrator, tools and MCP explained for platform clients (in French)"
+      fr: "Modèle, agent, orchestrateur, outils et MCP expliqués pour les clients de la plateforme"
+    output: animations/mcp-concepts-client.html
   - id: rag-anatomy
     title:
       en: "Anatomy of a RAG system"

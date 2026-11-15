@@ -1,0 +1,33 @@
+# Client version of agent-anatomy.yaml, in French, shown after the client
+# version of the MCP animation (mcp-agentic-architecture-client.html).
+# Four main notions (model, agent, tools, MCP) plus the orchestrator;
+# skills and memory are marked `secondary`, as complementary capabilities.
+output: web/animations/mcp-concepts-client.html
+lang: fr
+home_label: "Accueil"
+glossary_label: "Glossaire"
+glossary_title: "Les notions clés"
+title: "Notions clés · assistant agentique"
+eyebrow: "LES BRIQUES D’UN ASSISTANT AGENTIQUE"
+aria: "Un assistant IA tourne dans un orchestrateur, relié à un modèle, des skills, une mémoire et des outils. Les outils atteignent vos données et les calculs via MCP."
+back: { href: "mcp-agentic-architecture-client.html?autoplay=0&lang=fr", label: "← Animation" }
+user: "VOUS"
+center: "ASSISTANT IA"
+ring: "ORCHESTRATEUR"
+# Four corners, in order: top-left, top-right, bottom-left, bottom-right.
+blocks:
+  - { id: model,  label: "MODÈLE",  sub: "LLM", glyph: hex }
+  - { id: skills, label: "SKILLS",  sub: "Méthodes", glyph: grid }
+  - { id: memory, label: "MÉMOIRE", sub: "Si autorisée", glyph: stack }
+  - { id: tools,  label: "OUTILS",  sub: "Données · calculs", glyph: plug, via_side: true }
+side: { title: "MCP", subtitle: "MODEL CONTEXT PROTOCOL", reaches: "VOS ORDRES · MARCHÉ · CALCULS" }
+question: "Pourquoi mon panier a-t-il sous-performé le VWAP ce matin ?"
+takeaway: "Une demande métier, plusieurs étapes coordonnées, des accès contrôlés."
+glossary:
+  - { term: "Modèle (LLM)", node: model, text: "Interprète votre demande et formule la réponse en langage courant. Seul, il ne connaît pas vos ordres." }
+  - { term: "Agent", node: center, text: "Poursuit un objectif en plusieurs étapes : il précise la demande, consulte, calcule, puis synthétise." }
+  - { term: "Orchestrateur", node: ring, text: "Le logiciel qui fait tourner l’ensemble. C’est là, et dans les systèmes, que s’appliquent les contrôles : accès, limites, traçabilité." }
+  - { term: "Outils", node: tools, text: "Des fonctions précises : retrouver un ordre, lire des prix, calculer un écart. Les calculs restent confiés à des outils dédiés." }
+  - { term: "MCP", node: side, text: "Un standard ouvert pour connecter l’assistant aux outils et aux données. Il ne donne aucun droit : les autorisations restent vérifiées par les systèmes." }
+  - { term: "Skills", node: skills, secondary: true, text: "Des méthodes réutilisables, par exemple pour préparer une analyse d’exécution." }
+  - { term: "Mémoire", node: memory, secondary: true, text: "Si elle est prévue et autorisée : conserve certains éléments, comme une préférence de présentation." }
