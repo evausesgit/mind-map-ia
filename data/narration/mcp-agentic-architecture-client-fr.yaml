@@ -28,7 +28,7 @@ cues:
   - { at: 49.75, text: "L'assistant décide de ce dont il a besoin. MCP lui donne un accès standard. Les données reviennent, et l'assistant combine les résultats." }
   # Le résultat
   - { at: 60.75, text: "Vous obtenez l'écart, ses principaux contributeurs, et les points à vérifier." }
-  - { at: 66.35, text: "Une question. Quatre systèmes. Une réponse sourcée, à vérifier." }
+  - { at: 66.35, text: "Quatre systèmes, une réponse sourcée, à vérifier." }
   # Des accès contrôlés
   - { at: 70.95, text: "Derrière chaque appel d'outil, un serveur MCP qui contrôle les accès." }
   - { at: 76.45, text: "Il tourne dans un environnement contrôlé, chaque appel journalisé." }
