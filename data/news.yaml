@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-15"
+    type: update
+    title:
+      en: "US and eight partners coordinate AI supply-chain security"
+      fr: "Les États-Unis et huit partenaires coordonnent la sécurité des chaînes d’approvisionnement IA"
+    description:
+      en: "The United States and eight partners agreed to identify and protect AI technologies and supply chains considered vulnerable to China-related risks, according to reports on the Pax Silica initiative. The move places semiconductors, critical minerals, energy and trusted infrastructure inside a more explicit geopolitical security framework."
+      fr: "Les États-Unis et huit partenaires ont convenu d’identifier et de protéger les technologies et chaînes d’approvisionnement de l’IA jugées vulnérables aux risques liés à la Chine, selon les informations publiées sur l’initiative Pax Silica. Cette démarche inscrit les semi-conducteurs, les minerais critiques, l’énergie et les infrastructures de confiance dans un cadre géopolitique plus explicite."
+    link: https://www.bloomberg.com/news/articles/2026-11-15/us-allies-agree-to-guard-ai-supply-chains-from-china-ft-says
+  - date: "2026-11-13"
+    type: research
+    title:
+      en: "InclusionAI releases Duo 1.0 open weights for full-duplex interaction"
+      fr: "InclusionAI publie les poids ouverts de Duo 1.0 pour l’interaction full-duplex"
+    description:
+      en: "InclusionAI released Duo 1.0 model weights and code for real-time audio-visual interaction, including a four-step distilled variant built on the MiniMax H3 base. The system is designed to perceive and generate audio and video concurrently; its community licence and complex runtime still require review before enterprise use."
+      fr: "InclusionAI a publié les poids et le code de Duo 1.0 pour l’interaction audiovisuelle en temps réel, dont une variante distillée en quatre étapes construite sur la base MiniMax H3. Le système vise à percevoir et générer simultanément audio et vidéo ; sa licence communautaire et son exécution complexe doivent néanmoins être examinées avant tout usage en entreprise."
+    link: https://huggingface.co/inclusionAI/Duo-1.0-distill
+  - date: "2026-11-12"
+    type: update
+    title:
+      en: "Cloudflare open-sources Kitesurf, a browser engine for AI agents"
+      fr: "Cloudflare ouvre Kitesurf, un moteur de navigateur pour agents IA"
+    description:
+      en: "Cloudflare released Kitesurf under Apache 2.0, allowing teams to inspect, run locally or deploy its stateless browser engine on Workers. It parses HTML, applies CSS, executes page JavaScript and supports Chrome DevTools Protocol clients such as Puppeteer, but remains experimental."
+      fr: "Cloudflare a publié Kitesurf sous licence Apache 2.0, permettant d’inspecter, d’exécuter localement ou de déployer sur Workers ce moteur de navigateur sans état. Il analyse le HTML, applique le CSS, exécute le JavaScript et accepte des clients Chrome DevTools Protocol comme Puppeteer, mais reste expérimental."
+    link: https://developers.cloudflare.com/changelog/post/2026-11-12-kitesurf-open-source/
+  - date: "2026-11-12"
+    type: update
+    title:
+      en: "Anthropic launches Claude for Manufacturing with 17 workflow skills"
+      fr: "Anthropic lance Claude for Manufacturing avec 17 compétences métier"
+    description:
+      en: "Claude for Manufacturing packages 17 skills across quoting, quality, operations, supply chain, design and setup, with connectors to Autodesk Fusion, Infor, Microsoft 365 and Oracle NetSuite. Anthropic says workflows stop for human review and that Claude does not directly operate equipment."
+      fr: "Claude for Manufacturing regroupe 17 compétences pour les devis, la qualité, les opérations, la supply chain, la conception et la configuration, avec des connecteurs vers Autodesk Fusion, Infor, Microsoft 365 et Oracle NetSuite. Anthropic précise que les workflows s’arrêtent pour validation humaine et que Claude ne pilote pas directement les équipements."
+    link: https://claude.com/resources/articles/claude-for-manufacturing
   - date: "2026-11-14"
     type: update
     title:
