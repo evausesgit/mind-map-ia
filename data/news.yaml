@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-16"
+    type: update
+    title:
+      en: "Alibaba launches Qwen4-Max but keeps flagship weights closed"
+      fr: "Alibaba lance Qwen4-Max mais garde fermés les poids du modèle phare"
+    description:
+      en: "Alibaba released Qwen4-Max, a 2.4-trillion-parameter mixture-of-experts model with 71 billion parameters active per token and a one-million-token context window. The flagship is API-only; Alibaba says smaller Qwen4 models will be released with open weights, without giving a date."
+      fr: "Alibaba a lancé Qwen4-Max, un modèle mixture-of-experts de 2,4 billions de paramètres, dont 71 milliards activés par token, avec une fenêtre de contexte d’un million de tokens. Le modèle phare reste accessible uniquement par API ; Alibaba annonce des modèles Qwen4 plus petits en poids ouverts, sans préciser de date."
+    link: https://www.alibabacloud.com/blog/alibaba-unveils-qwen4-max-new-ai-teammate-for-work-creativity-and-discovery_603783
+  - date: "2026-11-16"
+    type: research
+    title:
+      en: "Google documents fully automated AI vulnerability exploitation"
+      fr: "Google documente l’exploitation entièrement automatisée de vulnérabilités par l’IA"
+    description:
+      en: "Google Threat Intelligence Group says it observed LLM frameworks fully automating vulnerability discovery and exploitation without a human in the loop for the first time. Its report also describes machine-speed attack chains, AI-assisted supply-chain compromise and LLM-jacking charges exceeding $100,000 in a day in some cases."
+      fr: "Google Threat Intelligence Group affirme avoir observé pour la première fois des frameworks LLM automatisant entièrement la découverte et l’exploitation de vulnérabilités sans intervention humaine. Son rapport décrit aussi des chaînes d’attaque à vitesse machine, des compromissions de supply chain assistées par IA et, dans certains cas, plus de 100 000 dollars de frais de LLM-jacking en une journée."
+    link: https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold
+  - date: "2026-11-16"
+    type: update
+    title:
+      en: "US closes remote-access loophole for advanced AI chips"
+      fr: "Les États-Unis ferment la faille de l’accès distant aux puces IA avancées"
+    description:
+      en: "The US Commerce Department’s Bureau of Industry and Security issued a rule restricting remote access to advanced American AI chips and servers through overseas data centers. The measure extends export-control logic from physical shipments to cloud computing arrangements that could serve restricted countries."
+      fr: "Le Bureau of Industry and Security du département américain du Commerce a publié une règle limitant l’accès distant aux puces et serveurs IA américains avancés via des centres de données étrangers. La mesure étend la logique des contrôles à l’exportation, des livraisons physiques aux dispositifs de calcul cloud susceptibles de servir des pays restreints."
+    link: https://www.npr.org/2026/11/16/nx-s1-6042883/nvidia-jensen-huang-commerce-department
+  - date: "2026-11-16"
+    type: update
+    title:
+      en: "Apple adds granular Mac permissions for AI agents"
+      fr: "Apple ajoute des permissions Mac granulaires pour les agents IA"
+    description:
+      en: "Apple announced macOS 27.3 controls that let users require permission each time an AI agent accesses protected data and add an indicator when one app controls another. The changes clarify full-disk and security-override access while asking developers to function with narrower permissions."
+      fr: "Apple a annoncé dans macOS 27.3 des contrôles permettant d’exiger une autorisation à chaque accès d’un agent IA aux données protégées, ainsi qu’un indicateur lorsqu’une application en contrôle une autre. Ces changements clarifient l’accès complet au disque et le contournement des protections, tout en demandant aux développeurs de fonctionner avec des permissions plus limitées."
+    link: https://techcrunch.com/2026/11/16/apple-reveals-new-mac-security-controls-as-ai-agents-raise-privacy-risks/
   - date: "2026-11-15"
     type: update
     title:
