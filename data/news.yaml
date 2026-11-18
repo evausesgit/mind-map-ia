@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-17"
+    type: update
+    title:
+      en: "Microsoft releases seven in-house AI models focused on price-performance"
+      fr: "Microsoft lance sept modèles IA internes axés sur le rapport performance-prix"
+    description:
+      en: "Microsoft introduced seven models spanning cyber defence, coding, image editing, realtime voice, transcription and decision tasks. The company claims MAI Cyber 2 Flash beats GPT-6 Astra on CyberGymE2E at under 2% of the cost per task and MAI Code 2 reaches 98% of GPT-6.1 Sol coding quality at about 40% of the price; these vendor benchmarks still require independent validation."
+      fr: "Microsoft a présenté sept modèles couvrant cyberdéfense, code, édition d’images, voix temps réel, transcription et tâches de décision. L’entreprise affirme que MAI Cyber 2 Flash dépasse GPT-6 Astra sur CyberGymE2E pour moins de 2 % du coût par tâche et que MAI Code 2 atteint 98 % de la qualité de code de GPT-6.1 Sol à environ 40 % du prix ; ces benchmarks éditeur restent à valider indépendamment."
+    link: https://microsoft.ai/news/microsoft-ignite-2026/
+  - date: "2026-11-17"
+    type: update
+    title:
+      en: "NATO scales OpenAI cyber-defence models to 300 billion monthly tokens"
+      fr: "L’OTAN porte l’usage des modèles cyber d’OpenAI à 300 milliards de tokens mensuels"
+    description:
+      en: "OpenAI says NATO’s Communications and Information Agency has used up to 300 billion raw input and output tokens per month to review software, investigate suspicious activity and validate vulnerabilities. In a separate ENISA and CERT-EU review, maintainers confirmed 95% of 88 AI-flagged potential issues as genuine, while human oversight remained part of deployment and training."
+      fr: "OpenAI indique que l’Agence OTAN d’information et de communication a utilisé jusqu’à 300 milliards de tokens bruts d’entrée et de sortie par mois pour examiner des logiciels, enquêter sur des activités suspectes et valider des vulnérabilités. Dans une évaluation distincte d’ENISA et CERT-EU, les mainteneurs ont confirmé comme réels 95 % des 88 problèmes potentiels signalés par l’IA, avec maintien d’une supervision humaine."
+    link: https://openai.com/index/strengthening-nato-allied-cyber-defences-ai/
+  - date: "2026-11-17"
+    type: research
+    title:
+      en: "Google details open multimodal EmbeddingGemma 2"
+      fr: "Google détaille le modèle multimodal ouvert EmbeddingGemma 2"
+    description:
+      en: "Google published the technical report for EmbeddingGemma 2, an open embedding model that maps text, images, audio, video and mixed inputs into one vector space. The compact model builds on Gemma 4 and Gemini Embedding 2, making it relevant for multimodal retrieval and on-device or controlled-environment RAG; benchmark and licence fit should still be evaluated for each enterprise use case."
+      fr: "Google a publié le rapport technique d’EmbeddingGemma 2, un modèle d’embeddings ouvert qui projette texte, images, audio, vidéo et entrées mixtes dans un même espace vectoriel. Ce modèle compact s’appuie sur Gemma 4 et Gemini Embedding 2, avec un intérêt pour la recherche multimodale et le RAG sur appareil ou en environnement contrôlé ; benchmarks et licence doivent néanmoins être évalués par cas d’usage."
+    link: https://blog.google/innovation-and-ai/technology/developers-tools/embeddinggemma-2-technical-report/
+  - date: "2026-11-17"
+    type: update
+    title:
+      en: "Microsoft convenes 40-plus organizations on AI-agent transparency"
+      fr: "Microsoft réunit plus de 40 organisations autour de la transparence des agents IA"
+    description:
+      en: "Microsoft launched an AI Transparency Initiative with more than 40 organizations, including Accenture, Adobe, KPMG, Mastercard and Volvo Cars. The effort targets common approaches to transparency, security and governance across models and providers; it is a standards-development initiative rather than a completed assurance system."
+      fr: "Microsoft a lancé une AI Transparency Initiative avec plus de 40 organisations, dont Accenture, Adobe, KPMG, Mastercard et Volvo Cars. L’initiative vise des approches communes de transparence, de sécurité et de gouvernance entre modèles et fournisseurs ; il s’agit d’un chantier de normalisation, pas encore d’un système d’assurance opérationnel achevé."
+    link: https://news.microsoft.com/source/2026/11/17/microsoft-and-organizations-across-industries-launch-ai-transparency-initiative-to-strengthen-enterprise-trust-in-ai-models-and-agents/
   - date: "2026-11-16"
     type: update
     title:
