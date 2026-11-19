@@ -1,4 +1,31 @@
 news:
+  - date: "2026-11-18"
+    type: update
+    title:
+      en: "Anthropic prices record-sized IPO at $83 a share"
+      fr: "Anthropic fixe le prix de son IPO à 83 dollars par action"
+    description:
+      en: "Anthropic priced 980 million Class A shares at $83, with Nasdaq trading expected to begin November 19 under ANT. The offering represents about $81.3 billion in gross share sales and will test public-market appetite for frontier AI."
+      fr: "Anthropic a fixé 980 millions d’actions de classe A à 83 dollars, avec un début de cotation prévu le 19 novembre au Nasdaq sous le symbole ANT. L’offre représente environ 81,3 milliards de dollars et testera l’appétit des marchés publics pour l’IA frontière."
+    link: https://www.anthropic.com/news/anthropic-prices-initial-public-offering
+  - date: "2026-11-18"
+    type: research
+    title:
+      en: "OpenAI reports up to 14% chip-design gains on AMD GPU IP"
+      fr: "OpenAI annonce jusqu’à 14 % de gains de conception sur la propriété GPU d’AMD"
+    description:
+      en: "OpenAI says model-proposed SystemVerilog RTL changes delivered up to 14% improvement in power, performance and area against optimized baselines on AMD GPU intellectual property. The use case is promising, but needs independent validation and strict hardware verification."
+      fr: "OpenAI indique que des modifications RTL SystemVerilog proposées par ses modèles ont apporté jusqu’à 14 % d’amélioration de consommation, performance et surface face à des références optimisées sur de la propriété GPU d’AMD. Le cas d’usage est prometteur, mais requiert validation indépendante et vérification matérielle stricte."
+    link: https://www.unite.ai/openai-reports-model-driven-gains-in-amd-flagship-chip-designs/
+  - date: "2026-11-18"
+    type: update
+    title:
+      en: "Palo Alto Networks to acquire Applied Compute for secure open-weight AI"
+      fr: "Palo Alto Networks veut racheter Applied Compute pour sécuriser l’IA à poids ouverts"
+    description:
+      en: "Palo Alto Networks entered a definitive agreement to acquire Applied Compute, which builds tooling for training and deploying open-weight models in enterprise environments. Integration, licensing and assurance details will determine whether the promise translates into governable deployments."
+      fr: "Palo Alto Networks a conclu un accord définitif pour racheter Applied Compute, qui développe des outils d’entraînement et de déploiement de modèles à poids ouverts en entreprise. Les détails d’intégration, de licence et d’assurance détermineront la gouvernabilité réelle du dispositif."
+    link: https://www.prnewswire.com/news-releases/palo-alto-networks-to-acquire-applied-compute-bringing-secure-open-weight-ai-to-the-enterprise-302944421.html
   - date: "2026-11-17"
     type: update
     title:
