@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-19"
+    type: update
+    title:
+      en: "Anthropic opens at $111.50 in record-setting Nasdaq debut"
+      fr: "Anthropic ouvre à 111,50 dollars pour une entrée record au Nasdaq"
+    description:
+      en: "Anthropic shares opened at $111.50 after 980 million Class A shares were priced at $83, raising about $81.3 billion in the largest IPO on record. The debut gives markets a new public proxy for frontier-AI revenue, compute costs and valuation risk."
+      fr: "L’action Anthropic a ouvert à 111,50 dollars après la fixation à 83 dollars de 980 millions d’actions de classe A, soit environ 81,3 milliards de dollars levés lors de la plus grande IPO jamais réalisée. La cotation offre aux marchés un nouveau proxy public des revenus, coûts de calcul et risques de valorisation de l’IA frontière."
+    link: https://www.reuters.com/live/anthropic-ipo-live-claude-maker-goes-public-nasdaq-after-record-share-offering-2026-11-19/
+  - date: "2026-11-19"
+    type: update
+    title:
+      en: "OVHcloud launches 55 Europe-hosted cloud and AI products"
+      fr: "OVHcloud lance 55 produits cloud et IA hébergés en Europe"
+    description:
+      en: "OVHcloud introduced 55 cloud and AI products running on European infrastructure, including access to Nvidia's latest AI chips and a workplace application. The launch expands sovereign-cloud options, but buyers still need to validate data residency, subcontractors, auditability, reversibility, SLAs and total cost."
+      fr: "OVHcloud a présenté 55 produits cloud et IA exécutés sur des infrastructures européennes, dont l’accès aux dernières puces IA de Nvidia et une application de travail. L’offre élargit les options de cloud souverain, mais les clients doivent encore vérifier résidence des données, sous-traitants, auditabilité, réversibilité, SLA et coût total."
+    link: https://www.reuters.com/business/ovhcloud-launches-ai-cloud-products-hosted-europe-2026-11-19/
+  - date: "2026-11-18"
+    type: update
+    title:
+      en: "Microsoft introduces licensed-weight models for enterprise customization"
+      fr: "Microsoft introduit des modèles à poids sous licence pour la personnalisation en entreprise"
+    description:
+      en: "Microsoft's Licensed Weights approach gives businesses access to model weights for customization with proprietary data under contractual restrictions. It sits between closed APIs and fully open-source releases, making licence rights, auditability, data provenance and vendor dependency central evaluation criteria."
+      fr: "L’approche Licensed Weights de Microsoft donne aux entreprises accès aux poids pour personnaliser les modèles avec leurs données, sous restrictions contractuelles. Elle se situe entre API fermée et véritable open source : droits de licence, auditabilité, provenance des données et dépendance fournisseur deviennent des critères centraux."
+    link: https://news.google.com/rss/articles/CBMiigFBVV95cUxNV2RfYmpIbEt0VkxUN3M2U0pxbHpLbWhJV1ZJZllJSm53c0RVc2h3Ty10S1RaVkhpYTc5emVQZzNSSlZUTldaMXFTdy1iTDIxd3JTZHh2S2Rtd2NoY1hObXRvRFZsM0E0cXhZeS1nZlQ5d0tpaFZGckUyM29tcHY5aGgzeDlfdmxLUkE?oc=5
+  - date: "2026-11-19"
+    type: update
+    title:
+      en: "Google secures 50 MW of geothermal power for Oregon data centers"
+      fr: "Google sécurise 50 MW de géothermie pour ses data centers en Oregon"
+    description:
+      en: "Google secured 50 MW of geothermal power for its Oregon data centers as AI infrastructure increases demand for firm, lower-carbon electricity. The agreement highlights how energy availability, grid constraints and long-term supply contracts are becoming core AI-infrastructure variables."
+      fr: "Google a sécurisé 50 MW d’électricité géothermique pour ses data centers de l’Oregon, alors que l’infrastructure IA accroît la demande d’énergie pilotable et bas-carbone. L’accord montre que disponibilité électrique, contraintes réseau et contrats de long terme deviennent des variables centrales de l’infrastructure IA."
+    link: https://news.google.com/rss/articles/CBMiekFVX3lxTFBBZUl2bWRZSnZiY2Jxbm9HazFBQ0NPVEVYN0ZKaFJRRDlkalMtRmxaRHhpeFJ2YlRmaTl2YzBGTnkzblNKTkdUQ1dVanRiRG52VFlscjdYMzA4b18yenNlTDVPd2Z0Z2t5Z2dHQjR5Y0pnSEVldDNTLWVB?oc=5
   - date: "2026-11-18"
     type: update
     title:
