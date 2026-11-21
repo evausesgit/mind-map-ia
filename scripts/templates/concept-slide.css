@@ -31,6 +31,8 @@
   .n .base { fill: var(--card); stroke: var(--line); stroke-width: 1.2; transition: stroke .25s; }
   svg.focus .n:not(.on), svg.focus .wire:not(.on) { opacity: .22; }
   .n.on .base { stroke: var(--tone); stroke-width: 2; }
+  .n.clickable { cursor: pointer; }
+  .n.clickable:focus { outline: none; }
 
   .nav { position: fixed; top: 18px; right: 20px; display: flex; gap: 8px; z-index: 5; }
   .nav a { font: 500 12px 'Inter', sans-serif; color: var(--muted); text-decoration: none; padding: 6px 10px;
