@@ -1,4 +1,49 @@
 news:
+  - date: "2026-11-20"
+    type: update
+    title:
+      en: "Thinking Machines releases open-weight Inkling 2 Mini"
+      fr: "Thinking Machines publie le modèle open-weight Inkling 2 Mini"
+    description:
+      en: "Inkling 2 Mini is a 26B-parameter multimodal mixture-of-experts model with 5.4B active parameters, released under Apache 2.0. Its looped architecture is designed to spend more computation per token while remaining small enough for local deployment."
+      fr: "Inkling 2 Mini est un modèle multimodal MoE de 26 milliards de paramètres, dont 5,4 milliards actifs, publié sous licence Apache 2.0. Son architecture en boucle vise à augmenter le calcul par token tout en restant assez compacte pour un déploiement local."
+    link: https://thinkingmachines.ai/news/inkling-2-mini/
+  - date: "2026-11-20"
+    type: update
+    title:
+      en: "US SEC examines potential Nvidia accounting issues"
+      fr: "La SEC américaine examine de possibles problèmes comptables chez Nvidia"
+    description:
+      en: "US SEC enforcement staff are examining potential accounting issues at Nvidia, Reuters reported, citing two people briefed on the matter. The existence of an investigation does not establish wrongdoing, but it adds disclosure and valuation risk around the AI infrastructure bellwether."
+      fr: "Les services d’enquête de la SEC examinent de possibles problèmes comptables chez Nvidia, selon Reuters citant deux personnes informées du dossier. L’existence d’une enquête ne prouve aucune faute, mais ajoute un risque de transparence et de valorisation autour du principal baromètre de l’infrastructure IA."
+    link: https://www.reuters.com/world/us-secs-nvidia-probe-is-examining-potential-accounting-issues-sources-say-2026-11-20/
+  - date: "2026-11-20"
+    type: update
+    title:
+      en: "US judge orders disclosure of AI prompts used by expert witness"
+      fr: "Un juge américain ordonne la divulgation des prompts IA d’une experte"
+    description:
+      en: "A US federal judge ruled that an expert witness in a climate-related lawsuit involving a Shell subsidiary must disclose details of her AI use, including prompts. The decision highlights the growing importance of reproducibility, provenance and discovery obligations when AI contributes to expert evidence."
+      fr: "Un juge fédéral américain a décidé qu’une experte dans un litige climatique impliquant une filiale de Shell devait divulguer les détails de son usage de l’IA, notamment ses prompts. La décision souligne l’importance croissante de la reproductibilité, de la provenance et des obligations de communication lorsque l’IA contribue à une expertise."
+    link: https://www.reuters.com/legal/litigation/experts-ai-prompts-environmental-lawsuit-must-be-disclosed-us-judge-rules-2026-11-20/
+  - date: "2026-11-20"
+    type: update
+    title:
+      en: "New US AI chip curbs pressure Chinese technology stocks"
+      fr: "De nouvelles restrictions américaines sur les puces IA pèsent sur la tech chinoise"
+    description:
+      en: "A new wave of US measures targeting China’s access to advanced AI chips hit Chinese technology shares and tightened controls on remote access and manufacturing routes. The measures may slow near-term capacity while accelerating investment in domestic Chinese alternatives."
+      fr: "Une nouvelle série de mesures américaines visant l’accès de la Chine aux puces IA avancées a pesé sur les valeurs technologiques chinoises et resserré les contrôles sur l’accès à distance et les voies de fabrication. Ces restrictions peuvent freiner les capacités à court terme tout en accélérant les investissements dans des alternatives chinoises."
+    link: https://www.reuters.com/business/retail-consumer/us-ai-chip-curbs-hit-china-tech-stocks-spur-self-sufficiency-push-2026-11-20/
+  - date: "2026-11-17"
+    type: new-feature
+    title:
+      en: "Perplexity launches Orchestrator API with model routing and failover"
+      fr: "Perplexity lance l’API Orchestrator avec routage et bascule entre modèles"
+    description:
+      en: "Perplexity Orchestrator provides one API for proprietary and open-weight models, unified billing and same-model failover across available deployments. Automatic model routing is available in preview, making observability and routing-policy controls essential for regulated use."
+      fr: "Perplexity Orchestrator réunit dans une API des modèles propriétaires et open-weight, une facturation unifiée et une bascule entre déploiements d’un même modèle. Le routage automatique est proposé en préversion, ce qui rend essentiels l’observabilité et le contrôle des politiques de routage en environnement réglementé."
+    link: https://www.perplexity.ai/hub/blog/introducing-orchestrator
   - date: "2026-11-19"
     type: update
     title:
