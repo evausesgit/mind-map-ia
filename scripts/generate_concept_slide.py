@@ -6,8 +6,8 @@ Data animation, and `layout: shift`, the chatbot-versus-agent introduction
 (both bilingual, with one <main> per language).
 
 `layout: intro` is for talk openings: a full-screen bilingual diagram with no
-glossary, revealed step by step (arrow keys, remote clicker or click), with
-`diagram: loops` (chatbot loop vs agent loop) or `diagram: timeline`.
+glossary, revealed step by step (arrow keys, remote clicker or click), drawn
+from scripts/templates/intro-<diagram>.svg (`diagram: timeline` for now).
 
 Usage (from repo root):
     python scripts/generate_concept_slide.py [data/slides/agent-anatomy.yaml ...]
@@ -422,10 +422,7 @@ def intro_main(lang: str, s: dict, diagram: str) -> str:
     """Intro slides: one diagram, no glossary, revealed step by step while the speaker talks."""
     svg = (TEMPLATES / f"intro-{diagram}.svg").read_text(encoding="utf-8")
     strings = {k: v for k, v in s.items() if isinstance(v, str)}
-    if diagram == "loops":
-        raw = {"loop_arrows": shift_loop_arrows(1090, 390, 96, 1.8), "tools": intro_pills(s["tools"], 1322, 390, 190, 40, 14, 15)}
-    else:
-        raw = {"stations": intro_stations(s), "cursor": ",".join(map(str, INTRO_X))}
+    raw = {"stations": intro_stations(s), "cursor": ",".join(map(str, INTRO_X))}
     svg = fill(svg, strings, raw)
     left = re.findall(r"\{\{(\w+)\}\}", svg)
     if left:

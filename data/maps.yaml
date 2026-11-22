@@ -154,14 +154,6 @@ slides:
       en: "The same request handled by an LLM chatbot and by an agent, the levels of autonomy, with the key vocabulary"
       fr: "La même demande traitée par un chatbot LLM puis par un agent, les niveaux d’autonomie, avec le vocabulaire clé"
     output: animations/chatbot-to-agents.html
-  - id: intro-chatbot-to-agents
-    title:
-      en: "Chatbot to agents: talk intro"
-      fr: "Du chatbot aux agents : intro"
-    description:
-      en: "One full-screen slide for a talk opening: who runs the loop, the chatbot user or the agent, revealed step by step"
-      fr: "Un slide plein écran pour ouvrir une conférence : qui fait la boucle, l’utilisateur du chatbot ou l’agent, révélé pas à pas"
-    output: animations/intro-chatbot-to-agents.html
   - id: intro-autonomy-timeline
     title:
       en: "Chatbot to agents: timeline"
