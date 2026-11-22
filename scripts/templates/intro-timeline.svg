@@ -1,0 +1,30 @@
+<svg class="diagram dim" viewBox="0 0 1600 900" data-steps="5" data-first="1" data-cursor="{{cursor}}" role="img" aria-label="{{aria}}">
+  <defs>
+    <linearGradient id="tl-grad" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="1480" y2="0">
+      <stop offset="0" stop-color="#7EA6FF"/><stop offset=".6" stop-color="#A594FF"/><stop offset="1" stop-color="#3DD6C6"/>
+    </linearGradient>
+  </defs>
+  <g font-size="15" letter-spacing="3.6">
+    <path d="M80 86 H108" stroke="#3DD6C6" stroke-width="1.5"/>
+    <text class="mono" x="124" y="91" fill="#8B94A5">{{eyebrow}}</text>
+  </g>
+  <g class="mono" font-size="16" letter-spacing="2">
+    <text x="120" y="222" fill="#7EA6FF">← {{drive_left}}</text>
+    <text x="1480" y="222" text-anchor="end" fill="#3DD6C6">{{drive_right}} →</text>
+  </g>
+
+  <path d="M120 520 H1480" stroke="#1C2230" stroke-width="3"/>
+  <path class="progress" data-x0="120" data-len="1360" d="M120 520 H1480" stroke="url(#tl-grad)" stroke-width="3"/>
+  <path d="M1470 512 L1482 520 L1470 528" fill="none" stroke="#3DD6C6" stroke-width="3"/>
+
+  {{stations}}
+
+  <g class="cursor">
+    <circle class="pulse" cx="0" cy="520" r="20" fill="none" stroke="#3DD6C6" stroke-width="2"/>
+    <circle cx="0" cy="520" r="7" fill="#3DD6C6"/>
+  </g>
+
+  <g data-step="5" data-hide>
+    <text x="800" y="800" text-anchor="middle" font-size="38" font-weight="600" fill="#3DD6C6">{{takeaway}}</text>
+  </g>
+</svg>

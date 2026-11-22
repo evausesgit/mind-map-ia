@@ -1,0 +1,42 @@
+# Talk opening, version B: the timeline. One step per station, the cursor moves
+# from "you drive" to "the agent drives"; the last step shows the line.
+layout: intro
+diagram: timeline
+output: web/animations/intro-autonomy-timeline.html
+back: chatbot-to-agents.html
+
+en:
+  title: "From chatbot to agents: timeline"
+  back_label: "Detailed version →"
+  aria: "A timeline from you driving to the agent driving. 2022, the chatbot answers. 2023, the augmented assistant looks things up. 2025, the agent acts on your tools. 2026, agent teams delegate and coordinate. The chatbot answers. The agent acts."
+  eyebrow: "FROM CHATBOT TO AGENTS"
+  drive_left: "YOU DRIVE"
+  drive_right: "THE AGENT DRIVES"
+  you: "YOU"
+  llm: "LLM"
+  docs: "DOCS · WEB"
+  tools: ["CRM", "E-MAIL", "CALENDAR"]
+  steps:
+    - { label: "Chatbot", when: "2022", text: "answers" }
+    - { label: "Augmented assistant", when: "2023", text: "looks things up" }
+    - { label: "Agent", when: "2025", text: "acts on your tools" }
+    - { label: "Agent teams", when: "2026", text: "delegate and coordinate" }
+  takeaway: "The chatbot answers. The agent acts."
+
+fr:
+  title: "Du chatbot aux agents : frise"
+  back_label: "Version détaillée →"
+  aria: "Une frise, de « vous pilotez » à « l’agent pilote ». 2022, le chatbot répond. 2023, l’assistant augmenté va chercher l’info. 2025, l’agent agit sur vos outils. 2026, les équipes d’agents délèguent et se coordonnent. Le chatbot répond. L’agent agit."
+  eyebrow: "DU CHATBOT AUX AGENTS"
+  drive_left: "VOUS PILOTEZ"
+  drive_right: "L’AGENT PILOTE"
+  you: "VOUS"
+  llm: "LLM"
+  docs: "DOCS · WEB"
+  tools: ["CRM", "E-MAILS", "AGENDA"]
+  steps:
+    - { label: "Chatbot", when: "2022", text: "répond" }
+    - { label: "Assistant augmenté", when: "2023", text: "va chercher l’info" }
+    - { label: "Agent", when: "2025", text: "agit sur vos outils" }
+    - { label: "Équipes d’agents", when: "2026", text: "délèguent, se coordonnent" }
+  takeaway: "Le chatbot répond. L’agent agit."

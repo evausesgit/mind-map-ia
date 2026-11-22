@@ -5,6 +5,10 @@ Three layouts share the same CSS and glossary behaviour: the default hub diagram
 Data animation, and `layout: shift`, the chatbot-versus-agent introduction
 (both bilingual, with one <main> per language).
 
+`layout: intro` is for talk openings: a full-screen bilingual diagram with no
+glossary, revealed step by step (arrow keys, remote clicker or click), with
+`diagram: loops` (chatbot loop vs agent loop) or `diagram: timeline`.
+
 Usage (from repo root):
     python scripts/generate_concept_slide.py [data/slides/agent-anatomy.yaml ...]
 
@@ -240,7 +244,7 @@ def shift_rows(rows: list, x: int) -> str:
     return "\n    ".join(parts)
 
 
-def shift_loop_arrows(cx: int = 812, cy: int = 323, r: int = 56) -> str:
+def shift_loop_arrows(cx: float = 812, cy: float = 323, r: float = 56, size: float = 1, color: str = "#A594FF") -> str:
     """Three clockwise arrowheads on the agent loop, between its three labels."""
     parts = []
     for deg in (-30, 90, 210):
@@ -248,11 +252,12 @@ def shift_loop_arrows(cx: int = 812, cy: int = 323, r: int = 56) -> str:
         px, py = cx + r * math.cos(a), cy + r * math.sin(a)
         tx, ty = -math.sin(a), math.cos(a)  # clockwise tangent
         nx, ny = math.cos(a), math.sin(a)   # outward normal
-        tip = (px + tx * 7, py + ty * 7)
-        b1 = (px - tx * 3 + nx * 5, py - ty * 3 + ny * 5)
-        b2 = (px - tx * 3 - nx * 5, py - ty * 3 - ny * 5)
+        k = size
+        tip = (px + tx * 7 * k, py + ty * 7 * k)
+        b1 = (px - tx * 3 * k + nx * 5 * k, py - ty * 3 * k + ny * 5 * k)
+        b2 = (px - tx * 3 * k - nx * 5 * k, py - ty * 3 * k - ny * 5 * k)
         pts = " ".join(f"{u:.1f},{v:.1f}" for u, v in (tip, b1, b2))
-        parts.append(f'<polygon points="{pts}" fill="#A594FF"/>')
+        parts.append(f'<polygon points="{pts}" fill="{color}"/>')
     return "".join(parts)
 
 
@@ -324,12 +329,125 @@ def render_shift(spec: dict) -> str:
     )
 
 
+INTRO_X = (260, 620, 980, 1340)  # timeline stations
+INTRO_COLORS = ("#7EA6FF", "#8FA0FF", "#A594FF", "#3DD6C6")
+
+
+def intro_pills(labels: list, x: float, cy: float, w: float, h: float, gap: float, size: float) -> str:
+    parts = []
+    top = cy - (len(labels) * h + (len(labels) - 1) * gap) / 2
+    for i, label in enumerate(labels):
+        y = top + i * (h + gap)
+        parts.append(
+            f'<rect class="card" x="{x}" y="{y:.0f}" width="{w}" height="{h}" rx="{h / 2}" style="stroke:#3DD6C6;stroke-opacity:.55"/>'
+            f'<text class="mono" x="{x + w / 2}" y="{y + h / 2 + size * .36:.0f}" text-anchor="middle" font-size="{size}" '
+            f'letter-spacing="1.2" fill="#EEF2F7">{esc(label)}</text>'
+        )
+    return "\n    ".join(parts)
+
+
+def intro_picto(i: int, cx: int, s: dict, color: str) -> str:
+    """The small diagram on each timeline card (centre y = 370)."""
+    arrow = f'fill="none" stroke="{color}" stroke-width="2"'
+    llm = lambda x, y, w=104: (  # noqa: E731
+        f'<rect class="card" x="{x}" y="{y}" width="{w}" height="60" rx="16"/>'
+        f'<use href="#i-spark" x="{x + 26}" y="{y + 30}" color="{color}"/>'
+        f'<text x="{x + 64}" y="{y + 37}" text-anchor="middle" font-size="19" font-weight="600" fill="#EEF2F7">{esc(s["llm"])}</text>'
+    )
+    if i == 0:  # you <-> LLM
+        return (
+            f'<circle class="card" cx="{cx - 72}" cy="370" r="38"/>'
+            f'<text x="{cx - 72}" y="376" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">{esc(s["you"])}</text>'
+            + llm(cx + 16, 340)
+            + f'<path {arrow} d="M{cx - 28} 356 H{cx + 8} M{cx} 350 L{cx + 8} 356 L{cx} 362"/>'
+            f'<path {arrow} stroke-dasharray="4 5" d="M{cx + 8} 386 H{cx - 28}"/><path {arrow} d="M{cx - 20} 380 L{cx - 28} 386 L{cx - 20} 392"/>'
+        )
+    if i == 1:  # LLM <-> documents
+        return (
+            llm(cx - 124, 340)
+            + f'<path {arrow} d="M{cx - 14} 358 H{cx + 34} M{cx + 26} 352 L{cx + 34} 358 L{cx + 26} 364"/>'
+            f'<path {arrow} stroke-dasharray="4 5" d="M{cx + 34} 384 H{cx - 14}"/><path {arrow} d="M{cx - 6} 378 L{cx - 14} 384 L{cx - 6} 390"/>'
+            f'<use href="#i-db" transform="translate({cx + 78} 366) scale(1.35)" color="{color}"/>'
+            f'<text class="mono" x="{cx + 78}" y="428" text-anchor="middle" font-size="13" letter-spacing="1.2" fill="#8B94A5">{esc(s["docs"])}</text>'
+        )
+    if i == 2:  # agent loop -> tools
+        lx = cx - 48
+        return (
+            f'<circle cx="{lx}" cy="370" r="50" fill="#0B0F16" stroke="{color}" stroke-width="2"/>'
+            + shift_loop_arrows(lx, 370, 50, 1.2, color)
+            + f'<use href="#i-spark" transform="translate({lx} 356) scale(.9)" color="{color}"/>'
+            f'<text x="{lx}" y="390" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">{esc(s["llm"])}</text>'
+            f'<path fill="none" stroke="#3DD6C6" stroke-opacity=".8" stroke-width="1.8" '
+            f'd="M{lx + 50} 370 H{cx + 22} M{cx + 22} 370 C{cx + 30} 370 {cx + 30} 336 {cx + 40} 336 M{cx + 22} 370 H{cx + 40} '
+            f'M{cx + 22} 370 C{cx + 30} 370 {cx + 30} 404 {cx + 40} 404"/>'
+            + intro_pills(s["tools"], cx + 40, 370, 88, 26, 8, 11)
+        )
+    # agent teams: an orchestrator delegating to three agents
+    kids = (cx - 86, cx, cx + 86)
+    lines = " ".join(f"M{cx} 350 L{k} 390" for k in kids)
+    agents = "".join(
+        f'<circle cx="{k}" cy="414" r="26" fill="#0B0F16" stroke="{color}" stroke-width="1.8"/>'
+        + shift_loop_arrows(k, 414, 26, .8, color)
+        + f'<use href="#i-spark" transform="translate({k} 414) scale(.75)" color="{color}"/>'
+        for k in kids
+    )
+    return (
+        f'<path d="{lines}" stroke="{color}" stroke-opacity=".6" stroke-width="1.8"/>'
+        f'<circle cx="{cx}" cy="322" r="30" fill="#0B0F16" stroke="{color}" stroke-width="2.2"/>'
+        + shift_loop_arrows(cx, 322, 30, .9, color)
+        + f'<use href="#i-spark" x="{cx}" y="322" color="{color}"/>' + agents
+    )
+
+
+def intro_stations(s: dict) -> str:
+    if len(s["steps"]) != len(INTRO_X):
+        raise ValueError(f"layout intro timeline needs {len(INTRO_X)} steps, got {len(s['steps'])}")
+    parts = []
+    for i, (step, cx, color) in enumerate(zip(s["steps"], INTRO_X, INTRO_COLORS)):
+        parts.append(
+            f'<g data-step="{i + 1}" style="--tone:{color}">\n'
+            f'    <rect class="card" x="{cx - 150}" y="262" width="300" height="208" rx="24"/>\n'
+            f'    {intro_picto(i, cx, s, color)}\n'
+            f'    <path d="M{cx} 470 V506" stroke="{color}" stroke-opacity=".5" stroke-width="1.6"/>\n'
+            f'    <circle cx="{cx}" cy="520" r="10" fill="#05070B" stroke="{color}" stroke-width="2.4"/>\n'
+            f'    <text class="mono" x="{cx}" y="574" text-anchor="middle" font-size="17" letter-spacing="1.6" fill="{color}">{esc(step["when"])}</text>\n'
+            f'    <text x="{cx}" y="620" text-anchor="middle" font-size="29" font-weight="600" fill="#EEF2F7">{esc(step["label"])}</text>\n'
+            f'    <text x="{cx}" y="658" text-anchor="middle" font-size="20" fill="#8B94A5">{esc(step["text"])}</text>\n'
+            f'  </g>'
+        )
+    return "\n  ".join(parts)
+
+
+def intro_main(lang: str, s: dict, diagram: str) -> str:
+    """Intro slides: one diagram, no glossary, revealed step by step while the speaker talks."""
+    svg = (TEMPLATES / f"intro-{diagram}.svg").read_text(encoding="utf-8")
+    strings = {k: v for k, v in s.items() if isinstance(v, str)}
+    if diagram == "loops":
+        raw = {"loop_arrows": shift_loop_arrows(1090, 390, 96, 1.8), "tools": intro_pills(s["tools"], 1322, 390, 190, 40, 14, 15)}
+    else:
+        raw = {"stations": intro_stations(s), "cursor": ",".join(map(str, INTRO_X))}
+    svg = fill(svg, strings, raw)
+    left = re.findall(r"\{\{(\w+)\}\}", svg)
+    if left:
+        raise ValueError(f"intro-{diagram}: missing strings {sorted(set(left))} for {lang}")
+    return f'<main class="slide" data-lang="{lang}">\n{svg}\n</main>'
+
+
+def render_intro(spec: dict) -> str:
+    back = "".join(f'<span data-lang="{lang}">{esc(spec[lang]["back_label"])}</span>' for lang in ("en", "fr"))
+    return fill(
+        (TEMPLATES / "intro-slide.html").read_text(encoding="utf-8"),
+        {"title": spec["en"]["title"], "back_href": spec["back"]},
+        {"back": back, "slides": "\n".join(intro_main(lang, spec[lang], spec["diagram"]) for lang in ("en", "fr"))},
+    )
+
+
 def main() -> None:
     paths = [pathlib.Path(p) for p in sys.argv[1:]] or sorted((ROOT / "data" / "slides").glob("*.yaml"))
     for path in paths:
         spec = yaml.safe_load(path.read_text(encoding="utf-8"))
         out = ROOT / spec["output"]
-        renderers = {"routing": render_routing, "shift": render_shift}
+        renderers = {"routing": render_routing, "shift": render_shift, "intro": render_intro}
         page = renderers.get(spec.get("layout"), render)(spec)
         out.write_text(page, encoding="utf-8")
         print(f"Wrote {out.relative_to(ROOT)}")

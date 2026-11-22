@@ -1,0 +1,48 @@
+# Talk opening, version A: two loops side by side. Step 1 the chatbot (you run
+# the loop), step 2 the agent (it runs the loop, you sign off), step 3 the line.
+layout: intro
+diagram: loops
+output: web/animations/intro-chatbot-to-agents.html
+back: chatbot-to-agents.html
+
+en:
+  title: "From chatbot to agents: intro"
+  back_label: "Detailed version →"
+  aria: "On the left, a 2022 chatbot: you ask the LLM, it answers with text, and you run the loop. On the right, a 2026 agentic solution: the agent plans, acts and checks in a loop, reaches the CRM, e-mail and calendar through MCP, and you sign off. The chatbot answers. The agent acts."
+  eyebrow: "FROM CHATBOT TO AGENTS"
+  chatbot_head: "CHATBOT · 2022"
+  agent_head: "AGENTIC SOLUTION · 2026"
+  you: "YOU"
+  llm: "LLM"
+  ask: "question"
+  answer: "text"
+  you_loop: "You run the loop"
+  plan: "PLAN"
+  act: "ACT"
+  check: "CHECK"
+  mcp: "MCP"
+  tools: ["CRM", "E-MAIL", "CALENDAR"]
+  signoff: "sign off"
+  agent_loop: "The agent runs the loop"
+  takeaway: "The chatbot answers. The agent acts."
+
+fr:
+  title: "Du chatbot aux agents : intro"
+  back_label: "Version détaillée →"
+  aria: "À gauche, un chatbot de 2022 : vous posez la question au LLM, il répond par du texte, et la boucle, c’est vous. À droite, une solution agentique de 2026 : l’agent planifie, agit et vérifie en boucle, atteint le CRM, les e-mails et l’agenda via MCP, et vous validez. Le chatbot répond. L’agent agit."
+  eyebrow: "DU CHATBOT AUX AGENTS"
+  chatbot_head: "CHATBOT · 2022"
+  agent_head: "SOLUTION AGENTIQUE · 2026"
+  you: "VOUS"
+  llm: "LLM"
+  ask: "question"
+  answer: "du texte"
+  you_loop: "La boucle, c’est vous"
+  plan: "PLANIFIE"
+  act: "AGIT"
+  check: "VÉRIFIE"
+  mcp: "MCP"
+  tools: ["CRM", "E-MAILS", "AGENDA"]
+  signoff: "validez"
+  agent_loop: "La boucle, c’est l’agent"
+  takeaway: "Le chatbot répond. L’agent agit."

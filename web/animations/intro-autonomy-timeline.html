@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<title>From chatbot to agents: timeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function () {
+  var q = new URLSearchParams(location.search).get("lang"), saved = null;
+  try { saved = localStorage.getItem("mmia-lang"); } catch (e) {}
+  var lang = q || saved || ((navigator.language || "en").toLowerCase().indexOf("fr") === 0 ? "fr" : "en");
+  document.documentElement.lang = lang === "fr" ? "fr" : "en";
+})();
+</script>
+<style>
+  :root {
+    --bg: #05070B; --text: #EEF2F7; --muted: #8B94A5; --faint: #454D5C; --line: rgba(255,255,255,0.13);
+    --card: #0B0F16; --request: #7EA6FF; --orchestrator: #A594FF; --mcp: #3DD6C6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  body { background: radial-gradient(ellipse at 50% 45%, #0E1522 0%, var(--bg) 65%); }
+  html[lang="en"] [data-lang="fr"], html[lang="fr"] [data-lang="en"] { display: none; }
+
+  .slide { height: 100vh; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .diagram { width: 100vw; max-height: 100vh; display: block; }
+  .diagram text { font-family: 'Inter', sans-serif; }
+  .diagram text.mono { font-family: 'JetBrains Mono', monospace; }
+  .card { fill: var(--card); stroke: var(--line); stroke-width: 1.4; }
+
+  /* step-by-step reveal: hidden (or dimmed) until its step is reached */
+  [data-step] { transition: opacity .7s ease, transform .7s ease; }
+  .diagram:not(.dim) [data-step]:not(.shown) { opacity: 0; transform: translateY(14px); }
+  .diagram.dim [data-step]:not(.shown) { opacity: .13; }
+  .diagram.dim [data-step][data-hide]:not(.shown) { opacity: 0; }
+  .diagram.dim [data-step].current .card { stroke: var(--tone); stroke-width: 2.2; }
+  .cursor { transition: transform .8s cubic-bezier(.6,0,.25,1); }
+  .progress { transition: stroke-dashoffset .8s cubic-bezier(.6,0,.25,1); }
+  .pulse { animation: pulse 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes pulse { 0%, 100% { opacity: .9; transform: scale(1); } 50% { opacity: .35; transform: scale(1.35); } }
+
+  .nav { position: fixed; top: 18px; right: 20px; display: flex; gap: 8px; z-index: 5; transition: opacity .4s; }
+  .nav a, .nav button { font: 500 12px 'Inter', sans-serif; color: var(--muted); text-decoration: none; padding: 6px 10px;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); cursor: pointer; }
+  .nav button { font-family: 'JetBrains Mono', monospace; padding: 6px 9px; }
+  .nav a:hover, .nav button:hover { color: var(--text); }
+  html[lang="en"] .nav button.en, html[lang="fr"] .nav button.fr { color: var(--bg); background: var(--mcp); border-color: var(--mcp); }
+  .dots { position: fixed; bottom: 18px; right: 22px; display: flex; gap: 8px; z-index: 5; transition: opacity .4s; }
+  .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); transition: background .3s; }
+  .dots i.on { background: var(--mcp); }
+  .hint { position: fixed; bottom: 14px; left: 22px; font: 400 11px 'JetBrains Mono', monospace; color: var(--faint); transition: opacity .4s; }
+  body.idle .nav, body.idle .dots, body.idle .hint { opacity: 0; }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <button class="en" type="button" data-set-lang="en">EN</button><button class="fr" type="button" data-set-lang="fr">FR</button>
+  <a href="chatbot-to-agents.html" data-back><span data-lang="en">Detailed version →</span><span data-lang="fr">Version détaillée →</span></a>
+  <a href="../index.html" data-lang="en">Home</a><a href="../index.html" data-lang="fr">Accueil</a>
+</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="halo"><stop offset="0" stop-color="#7EA6FF" stop-opacity=".14"/><stop offset="1" stop-color="#7EA6FF" stop-opacity="0"/></radialGradient>
+    <radialGradient id="halo-agent"><stop offset="0" stop-color="#A594FF" stop-opacity=".18"/><stop offset="1" stop-color="#A594FF" stop-opacity="0"/></radialGradient>
+    <g id="i-spark"><path stroke="none" fill="currentColor" d="M0,-11 C1.2,-3 3,-1.2 11,0 C3,1.2 1.2,3 0,11 C-1.2,3 -3,1.2 -11,0 C-3,-1.2 -1.2,-3 0,-11 Z"/></g>
+    <g id="i-db" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="0" cy="-12" rx="17" ry="6"/><path d="M-17,-12 V12 C-17,20 17,20 17,12 V-12 M-17,0 C-17,8 17,8 17,0"/></g>
+  </defs>
+</svg>
+<main class="slide" data-lang="en">
+<svg class="diagram dim" viewBox="0 0 1600 900" data-steps="5" data-first="1" data-cursor="260,620,980,1340" role="img" aria-label="A timeline from you driving to the agent driving. 2022, the chatbot answers. 2023, the augmented assistant looks things up. 2025, the agent acts on your tools. 2026, agent teams delegate and coordinate. The chatbot answers. The agent acts.">
+  <defs>
+    <linearGradient id="tl-grad" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="1480" y2="0">
+      <stop offset="0" stop-color="#7EA6FF"/><stop offset=".6" stop-color="#A594FF"/><stop offset="1" stop-color="#3DD6C6"/>
+    </linearGradient>
+  </defs>
+  <g font-size="15" letter-spacing="3.6">
+    <path d="M80 86 H108" stroke="#3DD6C6" stroke-width="1.5"/>
+    <text class="mono" x="124" y="91" fill="#8B94A5">FROM CHATBOT TO AGENTS</text>
+  </g>
+  <g class="mono" font-size="16" letter-spacing="2">
+    <text x="120" y="222" fill="#7EA6FF">← YOU DRIVE</text>
+    <text x="1480" y="222" text-anchor="end" fill="#3DD6C6">THE AGENT DRIVES →</text>
+  </g>
+
+  <path d="M120 520 H1480" stroke="#1C2230" stroke-width="3"/>
+  <path class="progress" data-x0="120" data-len="1360" d="M120 520 H1480" stroke="url(#tl-grad)" stroke-width="3"/>
+  <path d="M1470 512 L1482 520 L1470 528" fill="none" stroke="#3DD6C6" stroke-width="3"/>
+
+  <g data-step="1" style="--tone:#7EA6FF">
+    <rect class="card" x="110" y="262" width="300" height="208" rx="24"/>
+    <circle class="card" cx="188" cy="370" r="38"/><text x="188" y="376" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">YOU</text><rect class="card" x="276" y="340" width="104" height="60" rx="16"/><use href="#i-spark" x="302" y="370" color="#7EA6FF"/><text x="340" y="377" text-anchor="middle" font-size="19" font-weight="600" fill="#EEF2F7">LLM</text><path fill="none" stroke="#7EA6FF" stroke-width="2" d="M232 356 H268 M260 350 L268 356 L260 362"/><path fill="none" stroke="#7EA6FF" stroke-width="2" stroke-dasharray="4 5" d="M268 386 H232"/><path fill="none" stroke="#7EA6FF" stroke-width="2" d="M240 380 L232 386 L240 392"/>
+    <path d="M260 470 V506" stroke="#7EA6FF" stroke-opacity=".5" stroke-width="1.6"/>
+    <circle cx="260" cy="520" r="10" fill="#05070B" stroke="#7EA6FF" stroke-width="2.4"/>
+    <text class="mono" x="260" y="574" text-anchor="middle" font-size="17" letter-spacing="1.6" fill="#7EA6FF">2022</text>
+    <text x="260" y="620" text-anchor="middle" font-size="29" font-weight="600" fill="#EEF2F7">Chatbot</text>
+    <text x="260" y="658" text-anchor="middle" font-size="20" fill="#8B94A5">answers</text>
+  </g>
+  <g data-step="2" style="--tone:#8FA0FF">
+    <rect class="card" x="470" y="262" width="300" height="208" rx="24"/>
+    <rect class="card" x="496" y="340" width="104" height="60" rx="16"/><use href="#i-spark" x="522" y="370" color="#8FA0FF"/><text x="560" y="377" text-anchor="middle" font-size="19" font-weight="600" fill="#EEF2F7">LLM</text><path fill="none" stroke="#8FA0FF" stroke-width="2" d="M606 358 H654 M646 352 L654 358 L646 364"/><path fill="none" stroke="#8FA0FF" stroke-width="2" stroke-dasharray="4 5" d="M654 384 H606"/><path fill="none" stroke="#8FA0FF" stroke-width="2" d="M614 378 L606 384 L614 390"/><use href="#i-db" transform="translate(698 366) scale(1.35)" color="#8FA0FF"/><text class="mono" x="698" y="428" text-anchor="middle" font-size="13" letter-spacing="1.2" fill="#8B94A5">DOCS · WEB</text>
+    <path d="M620 470 V506" stroke="#8FA0FF" stroke-opacity=".5" stroke-width="1.6"/>
+    <circle cx="620" cy="520" r="10" fill="#05070B" stroke="#8FA0FF" stroke-width="2.4"/>
+    <text class="mono" x="620" y="574" text-anchor="middle" font-size="17" letter-spacing="1.6" fill="#8FA0FF">2023</text>
+    <text x="620" y="620" text-anchor="middle" font-size="29" font-weight="600" fill="#EEF2F7">Augmented assistant</text>
+    <text x="620" y="658" text-anchor="middle" font-size="20" fill="#8B94A5">looks things up</text>
+  </g>
+  <g data-step="3" style="--tone:#A594FF">
+    <rect class="card" x="830" y="262" width="300" height="208" rx="24"/>
+    <circle cx="932" cy="370" r="50" fill="#0B0F16" stroke="#A594FF" stroke-width="2"/><polygon points="979.5,352.3 978.7,338.9 968.3,344.9" fill="#A594FF"/><polygon points="923.6,420.0 935.6,426.0 935.6,414.0" fill="#A594FF"/><polygon points="892.9,337.7 881.7,345.1 892.1,351.1" fill="#A594FF"/><use href="#i-spark" transform="translate(932 356) scale(.9)" color="#A594FF"/><text x="932" y="390" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">LLM</text><path fill="none" stroke="#3DD6C6" stroke-opacity=".8" stroke-width="1.8" d="M982 370 H1002 M1002 370 C1010 370 1010 336 1020 336 M1002 370 H1020 M1002 370 C1010 370 1010 404 1020 404"/><rect class="card" x="1020" y="323" width="88" height="26" rx="13.0" style="stroke:#3DD6C6;stroke-opacity:.55"/><text class="mono" x="1064.0" y="340" text-anchor="middle" font-size="11" letter-spacing="1.2" fill="#EEF2F7">CRM</text>
+    <rect class="card" x="1020" y="357" width="88" height="26" rx="13.0" style="stroke:#3DD6C6;stroke-opacity:.55"/><text class="mono" x="1064.0" y="374" text-anchor="middle" font-size="11" letter-spacing="1.2" fill="#EEF2F7">E-MAIL</text>
+    <rect class="card" x="1020" y="391" width="88" height="26" rx="13.0" style="stroke:#3DD6C6;stroke-opacity:.55"/><text class="mono" x="1064.0" y="408" text-anchor="middle" font-size="11" letter-spacing="1.2" fill="#EEF2F7">CALENDAR</text>
+    <path d="M980 470 V506" stroke="#A594FF" stroke-opacity=".5" stroke-width="1.6"/>
+    <circle cx="980" cy="520" r="10" fill="#05070B" stroke="#A594FF" stroke-width="2.4"/>
+    <text class="mono" x="980" y="574" text-anchor="middle" font-size="17" letter-spacing="1.6" fill="#A594FF">2025</text>
+    <text x="980" y="620" text-anchor="middle" font-size="29" font-weight="600" fill="#EEF2F7">Agent</text>
+    <text x="980" y="658" text-anchor="middle" font-size="20" fill="#8B94A5">acts on your tools</text>
+  </g>
+  <g data-step="4" style="--tone:#3DD6C6">
+    <rect class="card" x="1190" y="262" width="300" height="208" rx="24"/>
+    <path d="M1340 350 L1254 390 M1340 350 L1340 390 M1340 350 L1426 390" stroke="#3DD6C6" stroke-opacity=".6" stroke-width="1.8"/><circle cx="1340" cy="322" r="30" fill="#0B0F16" stroke="#3DD6C6" stroke-width="2.2"/><polygon points="1369.1,312.5 1368.5,302.4 1360.7,306.9" fill="#3DD6C6"/><polygon points="1333.7,352.0 1342.7,356.5 1342.7,347.5" fill="#3DD6C6"/><polygon points="1317.2,301.5 1308.8,307.1 1316.6,311.6" fill="#3DD6C6"/><use href="#i-spark" x="1340" y="322" color="#3DD6C6"/><circle cx="1254" cy="414" r="26" fill="#0B0F16" stroke="#3DD6C6" stroke-width="1.8"/><polygon points="1279.3,405.8 1278.8,396.9 1271.9,400.9" fill="#3DD6C6"/><polygon points="1248.4,440.0 1256.4,444.0 1256.4,436.0" fill="#3DD6C6"/><polygon points="1234.3,396.2 1226.8,401.1 1233.7,405.1" fill="#3DD6C6"/><use href="#i-spark" transform="translate(1254 414) scale(.75)" color="#3DD6C6"/><circle cx="1340" cy="414" r="26" fill="#0B0F16" stroke="#3DD6C6" stroke-width="1.8"/><polygon points="1365.3,405.8 1364.8,396.9 1357.9,400.9" fill="#3DD6C6"/><polygon points="1334.4,440.0 1342.4,444.0 1342.4,436.0" fill="#3DD6C6"/><polygon points="1320.3,396.2 1312.8,401.1 1319.7,405.1" fill="#3DD6C6"/><use href="#i-spark" transform="translate(1340 414) scale(.75)" color="#3DD6C6"/><circle cx="1426" cy="414" r="26" fill="#0B0F16" stroke="#3DD6C6" stroke-width="1.8"/><polygon points="1451.3,405.8 1450.8,396.9 1443.9,400.9" fill="#3DD6C6"/><polygon points="1420.4,440.0 1428.4,444.0 1428.4,436.0" fill="#3DD6C6"/><polygon points="1406.3,396.2 1398.8,401.1 1405.7,405.1" fill="#3DD6C6"/><use href="#i-spark" transform="translate(1426 414) scale(.75)" color="#3DD6C6"/>
+    <path d="M1340 470 V506" stroke="#3DD6C6" stroke-opacity=".5" stroke-width="1.6"/>
+    <circle cx="1340" cy="520" r="10" fill="#05070B" stroke="#3DD6C6" stroke-width="2.4"/>
+    <text class="mono" x="1340" y="574" text-anchor="middle" font-size="17" letter-spacing="1.6" fill="#3DD6C6">2026</text>
+    <text x="1340" y="620" text-anchor="middle" font-size="29" font-weight="600" fill="#EEF2F7">Agent teams</text>
+    <text x="1340" y="658" text-anchor="middle" font-size="20" fill="#8B94A5">delegate and coordinate</text>
+  </g>
+
+  <g class="cursor">
+    <circle class="pulse" cx="0" cy="520" r="20" fill="none" stroke="#3DD6C6" stroke-width="2"/>
+    <circle cx="0" cy="520" r="7" fill="#3DD6C6"/>
+  </g>
+
+  <g data-step="5" data-hide>
+    <text x="800" y="800" text-anchor="middle" font-size="38" font-weight="600" fill="#3DD6C6">The chatbot answers. The agent acts.</text>
+  </g>
+</svg>
+
+</main>
+<main class="slide" data-lang="fr">
+<svg class="diagram dim" viewBox="0 0 1600 900" data-steps="5" data-first="1" data-cursor="260,620,980,1340" role="img" aria-label="Une frise, de « vous pilotez » à « l’agent pilote ». 2022, le chatbot répond. 2023, l’assistant augmenté va chercher l’info. 2025, l’agent agit sur vos outils. 2026, les équipes d’agents délèguent et se coordonnent. Le chatbot répond. L’agent agit.">
+  <defs>
+    <linearGradient id="tl-grad" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="1480" y2="0">
+      <stop offset="0" stop-color="#7EA6FF"/><stop offset=".6" stop-color="#A594FF"/><stop offset="1" stop-color="#3DD6C6"/>
+    </linearGradient>
+  </defs>
+  <g font-size="15" letter-spacing="3.6">
+    <path d="M80 86 H108" stroke="#3DD6C6" stroke-width="1.5"/>
+    <text class="mono" x="124" y="91" fill="#8B94A5">DU CHATBOT AUX AGENTS</text>
+  </g>
+  <g class="mono" font-size="16" letter-spacing="2">
+    <text x="120" y="222" fill="#7EA6FF">← VOUS PILOTEZ</text>
+    <text x="1480" y="222" text-anchor="end" fill="#3DD6C6">L’AGENT PILOTE →</text>
+  </g>
+
+  <path d="M120 520 H1480" stroke="#1C2230" stroke-width="3"/>
+  <path class="progress" data-x0="120" data-len="1360" d="M120 520 H1480" stroke="url(#tl-grad)" stroke-width="3"/>
+  <path d="M1470 512 L1482 520 L1470 528" fill="none" stroke="#3DD6C6" stroke-width="3"/>
+
+  <g data-step="1" style="--tone:#7EA6FF">
+    <rect class="card" x="110" y="262" width="300" height="208" rx="24"/>
+    <circle class="card" cx="188" cy="370" r="38"/><text x="188" y="376" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">VOUS</text><rect class="card" x="276" y="340" width="104" height="60" rx="16"/><use href="#i-spark" x="302" y="370" color="#7EA6FF"/><text x="340" y="377" text-anchor="middle" font-size="19" font-weight="600" fill="#EEF2F7">LLM</text><path fill="none" stroke="#7EA6FF" stroke-width="2" d="M232 356 H268 M260 350 L268 356 L260 362"/><path fill="none" stroke="#7EA6FF" stroke-width="2" stroke-dasharray="4 5" d="M268 386 H232"/><path fill="none" stroke="#7EA6FF" stroke-width="2" d="M240 380 L232 386 L240 392"/>
+    <path d="M260 470 V506" stroke="#7EA6FF" stroke-opacity=".5" stroke-width="1.6"/>
+    <circle cx="260" cy="520" r="10" fill="#05070B" stroke="#7EA6FF" stroke-width="2.4"/>
+    <text class="mono" x="260" y="574" text-anchor="middle" font-size="17" letter-spacing="1.6" fill="#7EA6FF">2022</text>
+    <text x="260" y="620" text-anchor="middle" font-size="29" font-weight="600" fill="#EEF2F7">Chatbot</text>
+    <text x="260" y="658" text-anchor="middle" font-size="20" fill="#8B94A5">répond</text>
+  </g>
+  <g data-step="2" style="--tone:#8FA0FF">
+    <rect class="card" x="470" y="262" width="300" height="208" rx="24"/>
+    <rect class="card" x="496" y="340" width="104" height="60" rx="16"/><use href="#i-spark" x="522" y="370" color="#8FA0FF"/><text x="560" y="377" text-anchor="middle" font-size="19" font-weight="600" fill="#EEF2F7">LLM</text><path fill="none" stroke="#8FA0FF" stroke-width="2" d="M606 358 H654 M646 352 L654 358 L646 364"/><path fill="none" stroke="#8FA0FF" stroke-width="2" stroke-dasharray="4 5" d="M654 384 H606"/><path fill="none" stroke="#8FA0FF" stroke-width="2" d="M614 378 L606 384 L614 390"/><use href="#i-db" transform="translate(698 366) scale(1.35)" color="#8FA0FF"/><text class="mono" x="698" y="428" text-anchor="middle" font-size="13" letter-spacing="1.2" fill="#8B94A5">DOCS · WEB</text>
+    <path d="M620 470 V506" stroke="#8FA0FF" stroke-opacity=".5" stroke-width="1.6"/>
+    <circle cx="620" cy="520" r="10" fill="#05070B" stroke="#8FA0FF" stroke-width="2.4"/>
+    <text class="mono" x="620" y="574" text-anchor="middle" font-size="17" letter-spacing="1.6" fill="#8FA0FF">2023</text>
+    <text x="620" y="620" text-anchor="middle" font-size="29" font-weight="600" fill="#EEF2F7">Assistant augmenté</text>
+    <text x="620" y="658" text-anchor="middle" font-size="20" fill="#8B94A5">va chercher l’info</text>
+  </g>
+  <g data-step="3" style="--tone:#A594FF">
+    <rect class="card" x="830" y="262" width="300" height="208" rx="24"/>
+    <circle cx="932" cy="370" r="50" fill="#0B0F16" stroke="#A594FF" stroke-width="2"/><polygon points="979.5,352.3 978.7,338.9 968.3,344.9" fill="#A594FF"/><polygon points="923.6,420.0 935.6,426.0 935.6,414.0" fill="#A594FF"/><polygon points="892.9,337.7 881.7,345.1 892.1,351.1" fill="#A594FF"/><use href="#i-spark" transform="translate(932 356) scale(.9)" color="#A594FF"/><text x="932" y="390" text-anchor="middle" font-size="16" font-weight="600" fill="#EEF2F7">LLM</text><path fill="none" stroke="#3DD6C6" stroke-opacity=".8" stroke-width="1.8" d="M982 370 H1002 M1002 370 C1010 370 1010 336 1020 336 M1002 370 H1020 M1002 370 C1010 370 1010 404 1020 404"/><rect class="card" x="1020" y="323" width="88" height="26" rx="13.0" style="stroke:#3DD6C6;stroke-opacity:.55"/><text class="mono" x="1064.0" y="340" text-anchor="middle" font-size="11" letter-spacing="1.2" fill="#EEF2F7">CRM</text>
+    <rect class="card" x="1020" y="357" width="88" height="26" rx="13.0" style="stroke:#3DD6C6;stroke-opacity:.55"/><text class="mono" x="1064.0" y="374" text-anchor="middle" font-size="11" letter-spacing="1.2" fill="#EEF2F7">E-MAILS</text>
+    <rect class="card" x="1020" y="391" width="88" height="26" rx="13.0" style="stroke:#3DD6C6;stroke-opacity:.55"/><text class="mono" x="1064.0" y="408" text-anchor="middle" font-size="11" letter-spacing="1.2" fill="#EEF2F7">AGENDA</text>
+    <path d="M980 470 V506" stroke="#A594FF" stroke-opacity=".5" stroke-width="1.6"/>
+    <circle cx="980" cy="520" r="10" fill="#05070B" stroke="#A594FF" stroke-width="2.4"/>
+    <text class="mono" x="980" y="574" text-anchor="middle" font-size="17" letter-spacing="1.6" fill="#A594FF">2025</text>
+    <text x="980" y="620" text-anchor="middle" font-size="29" font-weight="600" fill="#EEF2F7">Agent</text>
+    <text x="980" y="658" text-anchor="middle" font-size="20" fill="#8B94A5">agit sur vos outils</text>
+  </g>
+  <g data-step="4" style="--tone:#3DD6C6">
+    <rect class="card" x="1190" y="262" width="300" height="208" rx="24"/>
+    <path d="M1340 350 L1254 390 M1340 350 L1340 390 M1340 350 L1426 390" stroke="#3DD6C6" stroke-opacity=".6" stroke-width="1.8"/><circle cx="1340" cy="322" r="30" fill="#0B0F16" stroke="#3DD6C6" stroke-width="2.2"/><polygon points="1369.1,312.5 1368.5,302.4 1360.7,306.9" fill="#3DD6C6"/><polygon points="1333.7,352.0 1342.7,356.5 1342.7,347.5" fill="#3DD6C6"/><polygon points="1317.2,301.5 1308.8,307.1 1316.6,311.6" fill="#3DD6C6"/><use href="#i-spark" x="1340" y="322" color="#3DD6C6"/><circle cx="1254" cy="414" r="26" fill="#0B0F16" stroke="#3DD6C6" stroke-width="1.8"/><polygon points="1279.3,405.8 1278.8,396.9 1271.9,400.9" fill="#3DD6C6"/><polygon points="1248.4,440.0 1256.4,444.0 1256.4,436.0" fill="#3DD6C6"/><polygon points="1234.3,396.2 1226.8,401.1 1233.7,405.1" fill="#3DD6C6"/><use href="#i-spark" transform="translate(1254 414) scale(.75)" color="#3DD6C6"/><circle cx="1340" cy="414" r="26" fill="#0B0F16" stroke="#3DD6C6" stroke-width="1.8"/><polygon points="1365.3,405.8 1364.8,396.9 1357.9,400.9" fill="#3DD6C6"/><polygon points="1334.4,440.0 1342.4,444.0 1342.4,436.0" fill="#3DD6C6"/><polygon points="1320.3,396.2 1312.8,401.1 1319.7,405.1" fill="#3DD6C6"/><use href="#i-spark" transform="translate(1340 414) scale(.75)" color="#3DD6C6"/><circle cx="1426" cy="414" r="26" fill="#0B0F16" stroke="#3DD6C6" stroke-width="1.8"/><polygon points="1451.3,405.8 1450.8,396.9 1443.9,400.9" fill="#3DD6C6"/><polygon points="1420.4,440.0 1428.4,444.0 1428.4,436.0" fill="#3DD6C6"/><polygon points="1406.3,396.2 1398.8,401.1 1405.7,405.1" fill="#3DD6C6"/><use href="#i-spark" transform="translate(1426 414) scale(.75)" color="#3DD6C6"/>
+    <path d="M1340 470 V506" stroke="#3DD6C6" stroke-opacity=".5" stroke-width="1.6"/>
+    <circle cx="1340" cy="520" r="10" fill="#05070B" stroke="#3DD6C6" stroke-width="2.4"/>
+    <text class="mono" x="1340" y="574" text-anchor="middle" font-size="17" letter-spacing="1.6" fill="#3DD6C6">2026</text>
+    <text x="1340" y="620" text-anchor="middle" font-size="29" font-weight="600" fill="#EEF2F7">Équipes d’agents</text>
+    <text x="1340" y="658" text-anchor="middle" font-size="20" fill="#8B94A5">délèguent, se coordonnent</text>
+  </g>
+
+  <g class="cursor">
+    <circle class="pulse" cx="0" cy="520" r="20" fill="none" stroke="#3DD6C6" stroke-width="2"/>
+    <circle cx="0" cy="520" r="7" fill="#3DD6C6"/>
+  </g>
+
+  <g data-step="5" data-hide>
+    <text x="800" y="800" text-anchor="middle" font-size="38" font-weight="600" fill="#3DD6C6">Le chatbot répond. L’agent agit.</text>
+  </g>
+</svg>
+
+</main>
+<div class="dots" aria-hidden="true"></div>
+<div class="hint" aria-hidden="true">→ / ← · F</div>
+<script>
+(function () {
+  const svgs = [...document.querySelectorAll("svg.diagram")];
+  const last = Math.max(...svgs.map((s) => +s.dataset.steps));
+  const first = +(svgs[0].dataset.first || 1);
+  const q = new URLSearchParams(location.search).get("step");
+  let step = q === "all" ? last : Math.min(last, Math.max(first, +q || +location.hash.slice(1) || first));
+  const dots = document.querySelector(".dots");
+  for (let i = first; i <= last; i++) dots.appendChild(document.createElement("i"));
+  function render() {
+    svgs.forEach((svg) => {
+      svg.querySelectorAll("[data-step]").forEach((el) => {
+        const k = +el.dataset.step;
+        el.classList.toggle("shown", k <= step);
+        el.classList.toggle("current", k === step);
+      });
+      const xs = (svg.dataset.cursor || "").split(",").map(Number);
+      if (xs.length > 1) {
+        const x = xs[Math.min(step, xs.length) - 1];
+        svg.querySelectorAll(".cursor").forEach((c) => { c.style.transform = `translateX(${x}px)`; });
+        const p = svg.querySelector(".progress");
+        if (p) { const len = +p.dataset.len; p.style.strokeDasharray = len; p.style.strokeDashoffset = len - (x - +p.dataset.x0); }
+      }
+    });
+    [...dots.children].forEach((d, i) => d.classList.toggle("on", i + first <= step));
+    history.replaceState(null, "", `#${step}`);
+  }
+  const go = (n) => { step = Math.min(last, Math.max(first, n)); render(); };
+  document.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); go(step + 1); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); go(step - 1); }
+    else if (e.key === "Home") go(first);
+    else if (e.key === "End") go(last);
+    else if (e.key === "f" || e.key === "F") {
+      if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+    }
+  });
+  document.querySelectorAll(".slide").forEach((s) => s.addEventListener("click", () => go(step < last ? step + 1 : first)));
+  // the controls fade out while presenting, and come back when the mouse moves
+  let idle;
+  const wake = () => { document.body.classList.remove("idle"); clearTimeout(idle); idle = setTimeout(() => document.body.classList.add("idle"), 2500); };
+  document.addEventListener("mousemove", wake); wake();
+  render();
+
+  const backLink = document.querySelector("[data-back]");
+  const backBase = backLink.getAttribute("href");
+  const syncBack = () => { backLink.href = `${backBase}${backBase.includes("?") ? "&" : "?"}lang=${document.documentElement.lang}`; };
+  syncBack();
+  document.querySelectorAll("[data-set-lang]").forEach((b) => b.addEventListener("click", () => {
+    document.documentElement.lang = b.dataset.setLang;
+    try { localStorage.setItem("mmia-lang", b.dataset.setLang); } catch (e) {}
+    syncBack();
+  }));
+})();
+</script>
+</body>
+</html>
