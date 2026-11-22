@@ -2,6 +2,42 @@ news:
   - date: "2026-11-20"
     type: update
     title:
+      en: "AI-led selloff pushes S&P 500 and Dow into correction"
+      fr: "La vente massive liée à l’IA place le S&P 500 et le Dow en correction"
+    description:
+      en: "US equities extended their decline on November 20 as doubts over AI valuations and returns on infrastructure spending intensified; Reuters reported that both the S&P 500 and Dow confirmed corrections. The repricing raises the cost-of-capital and concentration questions around the AI investment cycle without implying that enterprise demand has disappeared."
+      fr: "Les actions américaines ont prolongé leur recul le 20 novembre, sur fond de doutes croissants concernant les valorisations IA et le rendement des dépenses d’infrastructure ; selon Reuters, le S&P 500 et le Dow sont entrés en correction. Cette revalorisation pose des questions de coût du capital et de concentration sans signifier la disparition de la demande d’IA en entreprise."
+    link: https://www.reuters.com/legal/transactional/wall-st-futures-slip-anthropic-debut-fails-reassure-ai-investors-2026-11-20/
+  - date: "2026-11-18"
+    type: update
+    title:
+      en: "Google launches Gemini 4 Neon for enterprise and agentic workflows"
+      fr: "Google lance Gemini 4 Neon pour les workflows d’entreprise et agentiques"
+    description:
+      en: "Gemini 4 Neon combines a one-million-token context window with pricing of $3 per million input tokens and $15 per million output tokens. Google positions it for coding, analytical and agentic workflows, with API and enterprise availability, while its benchmark and safety claims still require workload-specific validation."
+      fr: "Gemini 4 Neon associe une fenêtre de contexte d’un million de tokens à un tarif de 3 dollars par million de tokens en entrée et 15 dollars en sortie. Google le destine au code, à l’analyse et aux workflows agentiques, avec accès API et entreprise, mais ses performances et garanties de sécurité doivent être validées sur des cas d’usage réels."
+    link: https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/
+  - date: "2026-11-18"
+    type: update
+    title:
+      en: "Cloudflare open-weights Clairic models for structured extraction"
+      fr: "Cloudflare ouvre les poids des modèles Clairic pour l’extraction structurée"
+    description:
+      en: "Cloudflare released open weights for the 27B Clairic and 9B Clairic-flash extraction models, also hosting them on Workers AI. They target typed extraction from text, images and PDFs with confidence scores; Cloudflare reports sub-second latency in its own tests, which should be independently validated."
+      fr: "Cloudflare a publié les poids ouverts des modèles d’extraction Clairic 27B et Clairic-flash 9B, également hébergés sur Workers AI. Ils ciblent l’extraction typée depuis du texte, des images et des PDF avec scores de confiance ; Cloudflare annonce une latence inférieure à une seconde dans ses propres tests, à valider indépendamment."
+    link: https://blog.cloudflare.com/open-clairic/
+  - date: "2026-11-16"
+    type: research
+    title:
+      en: "Databricks AI Index tracks enterprise model adoption and token economics"
+      fr: "Le Databricks AI Index suit l’adoption des modèles et l’économie des tokens en entreprise"
+    description:
+      en: "Databricks launched an index based on usage across more than 10,000 organizations to track model adoption, spending and coding-agent performance. Its data indicates growing multi-provider portfolios and open-weight usage, reinforcing the need to measure cost, quality and governance at workload level rather than standardizing on one model."
+      fr: "Databricks a lancé un indice fondé sur l’usage de plus de 10 000 organisations afin de suivre l’adoption des modèles, les dépenses et les performances des agents de code. Les données indiquent une progression des portefeuilles multi-fournisseurs et des modèles open-weight, ce qui renforce la nécessité de mesurer coût, qualité et gouvernance par workload."
+    link: https://www.databricks.com/blog/introducing-databricks-ai-index-state-enterprise-ai-tokenomics
+  - date: "2026-11-20"
+    type: update
+    title:
       en: "Thinking Machines releases open-weight Inkling 2 Mini"
       fr: "Thinking Machines publie le modèle open-weight Inkling 2 Mini"
     description:
