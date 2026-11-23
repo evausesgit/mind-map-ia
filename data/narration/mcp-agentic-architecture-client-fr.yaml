@@ -20,15 +20,15 @@ cues:
   - { at: 7.8,   text: "Votre assistant est un agent : il réalise une tâche en plusieurs étapes. Il utilise des outils, examine les résultats, et adapte la suite." }
   # Les briques de l'agent
   - { at: 16.2,  text: "L'orchestrateur coordonne. Le modèle interprète votre demande." }
-  - { at: 20.4,  text: "La mémoire rappelle vos préférences. Un skile, c'est une méthode de travail : les étapes à suivre, les outils à utiliser, les vérifications à faire. Ici, l'analyse TCA." }
+  - { at: 20.4,  text: "La mémoire rappelle vos préférences. Un skile, c'est une méthode de travail : les étapes à suivre, les outils à utiliser, les vérifications à faire." }
   - { at: 31.85, text: "C'est cela, une solution agentique : un modèle de langage entouré d'outils, de mémoire et de skiles, qui planifie, agit et vérifie avant de répondre." }
   # Le problème
-  - { at: 42.25, text: "Il lui faut vos ordres et exécutions, le contexte de marché, et un calcul d'écart." }
-  - { at: 48.25, text: "Comment une IA se connecte-t-elle, en sécurité, aux outils de l'entreprise ?" }
+  - { at: 42.25, text: "Il lui faut vos ordres, le contexte de marché, puis l'analyse té-cé-a des écarts." }
+  - { at: 47.85, text: "Comment une IA se connecte-t-elle, en sécurité, aux outils et aux données de l'entreprise ?" }
   # Voici MCP
-  - { at: 53.85, text: "Voici le èm-cé-pé, le Model Context Protocol." }
-  - { at: 57.75, text: "Un standard ouvert, pour connecter les applications d'IA aux outils et aux données." }
-  - { at: 62.90,  text: "Chaque système décrit ses outils une seule fois : l'agent les découvre, les appelle, et reçoit les résultats." }
+  - { at: 53.85, text: "L'agent va utiliser le èm-cé-pé, le Model Context Protocol." }
+  - { at: 58.10, text: "Un standard ouvert, pour connecter les applications d'IA aux outils et aux données." }
+  - { at: 63.20, text: "Chaque système décrit ses outils une seule fois : l'agent les découvre, les appelle, et reçoit les résultats." }
   # Vos sources via MCP
   - { at: 70.80,  text: "L'agent décide ce dont il a besoin. Le èm-cé-pé lui donne un accès standard à vos ordres, au marché, à l'outil TCA. Les données reviennent." }
   - { at: 80.55, text: "Le modèle analyse alors ces données, relie l'écart aux conditions de marché, et rédige l'explication." }
@@ -42,13 +42,12 @@ cues:
   - { at: 112.15, text: "Le contexte décrit chaque donnée, pour que l'agent sache quoi demander, et où." }
   - { at: 117.05, text: "Les garde-fous protègent : pas trop de requêtes, pas trop vite." }
   - { at: 120.75, text: "Chaque appel porte votre identité, et vos autorisations." }
-  - { at: 124.45, text: "Vos droits sont vérifiés à chaque appel : vous ne recevez que les données auxquelles vous êtes autorisé." }
+  - { at: 124.45, text: "Vos droits sont vérifiés à chaque appel : vous ne recevez que les données auxquelles vous avez accès." }
   - { at: 129.65, text: "Les ordres d'un autre client ? Vous n'y avez pas droit : l'appel est refusé dès l'entrée." }
   # Pourquoi MCP compte
-  - { at: 136.15, text: "Sans standard, chaque agent refait chaque intégration. Quatre fois six : vingt-quatre intégrations sur mesure." }
-  - { at: 144.55, text: "Construite une fois, réutilisée partout : dix connexions standard." }
-  - { at: 149.35, text: "Une demande. Plusieurs sources coordonnées." }
-  - { at: 153.25, text: "Le èm-cé-pé standardise les connexions. Les contrôles restent dans les systèmes." }
+  - { at: 136.15, text: "Sans standard, chaque agent refait chaque intégration : quatre agents, six systèmes, vingt-quatre intégrations sur mesure." }
+  - { at: 144.55, text: "Le èm-cé-pé standardise : chaque connexion sert à tous les agents." }
+  - { at: 149.35, text: "En une demande, l'agent accède à plusieurs sources." }
+  - { at: 153.25, text: "Le èm-cé-pé donne accès aux données, et les contrôles restent dans les systèmes." }
   # Synthèse
-  - { at: 158.95, text: "Une demande métier, des étapes coordonnées." }
-  - { at: 162.35, text: "Et des accès contrôlés." }
+  - { at: 158.95, text: "En résumé, l'écosystème IA coordonne, accède aux données, contrôle, et surtout exécute en toute sécurité." }
