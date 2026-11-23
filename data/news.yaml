@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-22"
+    type: update
+    title:
+      en: "Sarvam releases open-weight 105B agent checkpoint"
+      fr: "Sarvam publie un checkpoint agentique open-weight de 105 milliards de paramètres"
+    description:
+      en: "Sarvam-105B-1711 is a 105B-parameter mixture-of-experts model with 10.3B active parameters, released in BF16 and a 65 GB NVFP4 build that fits on one 96 GB workstation GPU. Sarvam reports stronger tool use and instruction following at a blended $0.15 per million tokens; the vendor-run benchmarks still require independent validation."
+      fr: "Sarvam-105B-1711 est un modèle MoE de 105 milliards de paramètres, dont 10,3 milliards actifs, publié en BF16 et dans une version NVFP4 de 65 Go exécutable sur un GPU de workstation de 96 Go. Sarvam annonce de meilleurs résultats en appel d’outils et suivi d’instructions pour 0,15 dollar par million de tokens en moyenne ; ces benchmarks fournisseur restent à valider indépendamment."
+    link: https://www.sarvam.ai/blogs/sarvam-105b-1711
+  - date: "2026-11-22"
+    type: research
+    title:
+      en: "OpenAI chief scientist proposes a shared AI progress limit"
+      fr: "Le chief scientist d’OpenAI propose une limite commune à la progression de l’IA"
+    description:
+      en: "OpenAI chief scientist Jakub Pachocki proposes using model perplexity as a durable industry-wide measure of general progress and pausing beyond agreed thresholds until monitoring capabilities catch up. The proposal, backed publicly by Sam Altman, is a governance framework rather than a binding standard."
+      fr: "Jakub Pachocki, chief scientist d’OpenAI, propose d’utiliser la perplexité des modèles comme mesure durable et commune de la progression générale, puis de ne pas franchir certains seuils tant que les capacités de surveillance n’ont pas suivi. Soutenue publiquement par Sam Altman, cette proposition reste un cadre de gouvernance et non une norme contraignante."
+    link: https://openai.com/index/perplexity-and-intelligence/
+  - date: "2026-11-22"
+    type: update
+    title:
+      en: "Germany tests AI-assisted loitering munitions in Lithuania"
+      fr: "L’Allemagne teste des munitions rôdeuses assistées par IA en Lituanie"
+    description:
+      en: "Germany’s army began its first tactical tests of loitering munitions and an AI targeting tool during Freedom Shield drills in Lithuania. The tests involve the German armoured brigade due to reach 5,000 permanently stationed troops by the end of 2027, raising operational and human-control questions around military AI."
+      fr: "L’armée allemande a lancé ses premiers tests tactiques de munitions rôdeuses et d’un outil de ciblage par IA pendant l’exercice Freedom Shield en Lituanie. Les essais concernent la brigade blindée allemande qui doit compter 5 000 militaires stationnés en permanence d’ici fin 2027, avec des enjeux de contrôle humain et de gouvernance de l’IA militaire."
+    link: https://www.reuters.com/business/aerospace-defense/german-army-starts-testing-kamikaze-drones-ai-targeting-tool-lithuania-2026-11-22/
+  - date: "2026-11-22"
+    type: update
+    title:
+      en: "US seeks answers on Nvidia chip sales to China"
+      fr: "Washington demande des explications sur les ventes de puces Nvidia à la Chine"
+    description:
+      en: "US Treasury Secretary Scott Bessent said Washington is seeking answers from Nvidia on chip sales to China and wants to identify who held compliance responsibility. The inquiry adds export-control, governance and supply-chain risk around the dominant AI accelerator vendor; it does not by itself establish wrongdoing."
+      fr: "Le secrétaire américain au Trésor Scott Bessent a déclaré que Washington demandait des explications à Nvidia sur ses ventes de puces à la Chine et voulait identifier le responsable de la conformité. Cette démarche renforce les risques de contrôle des exportations, de gouvernance et de chaîne d’approvisionnement autour du principal fournisseur d’accélérateurs IA, sans établir à elle seule une faute."
+    link: https://www.reuters.com/world/us/us-seeks-answers-nvidias-sale-chips-china-bessent-says-2026-11-22/
   - date: "2026-11-20"
     type: update
     title:
