@@ -1,4 +1,49 @@
 news:
+  - date: "2026-11-23"
+    type: new-feature
+    title:
+      en: "Anthropic launches Claude Ship for agent-driven code review and approval"
+      fr: "Anthropic lance Claude Ship pour la revue et l’approbation agentiques du code"
+    description:
+      en: "Claude Ship combines generally available Code Review with beta agents that fix CI failures and merge conflicts, then approve routine changes against repository policies. Anthropic recommends starting the approval agent in observe-only mode, highlighting the control and audit requirements created when AI receives merge authority."
+      fr: "Claude Ship associe Code Review, désormais disponible, à des agents en bêta qui corrigent les échecs CI et conflits de fusion, puis approuvent les changements courants selon des politiques stockées dans le dépôt. Anthropic recommande de commencer en mode observation, ce qui souligne les exigences de contrôle et d’audit lorsque l’IA reçoit un pouvoir de validation."
+    link: https://claude.com/resources/articles/introducing-claude-ship
+  - date: "2026-11-23"
+    type: update
+    title:
+      en: "Amazon acquires Decart optimization technology to strengthen Trainium"
+      fr: "Amazon acquiert la technologie d’optimisation de Decart pour renforcer Trainium"
+    description:
+      en: "Amazon is acquiring Decart’s optimization stack and research team in a transaction reported at $7.5 billion. The software runs AI workloads across Nvidia, Amazon and Google hardware and could lower migration friction as AWS prepares to sell Trainium chips directly to customers."
+      fr: "Amazon acquiert la pile d’optimisation et l’équipe de recherche de Decart dans une opération estimée à 7,5 milliards de dollars. Le logiciel exécute des workloads IA sur du matériel Nvidia, Amazon et Google et pourrait réduire les frictions de migration alors qu’AWS prépare la vente directe de puces Trainium."
+    link: https://www.aboutamazon.com/news/company-news/amazon-decart-ai-optimization
+  - date: "2026-11-23"
+    type: update
+    title:
+      en: "Nvidia reinstates Jensen Huang as US prepares Megaspeed blacklist"
+      fr: "Nvidia réintègre Jensen Huang tandis que Washington prépare la liste noire de Megaspeed"
+    description:
+      en: "Nvidia reinstated Jensen Huang as CEO after US government intervention, while the Commerce Department said it intends to blacklist Singapore-based Megaspeed over suspected export-control violations. Nvidia shares rose 31%, adding nearly $1 trillion in market value, but congressional and regulatory investigations remain open."
+      fr: "Nvidia a réintégré Jensen Huang comme directeur général après une intervention du gouvernement américain, tandis que le département du Commerce prévoit de placer Megaspeed sur liste noire pour de possibles violations des contrôles à l’export. L’action Nvidia a progressé de 31 %, ajoutant près de 1 000 milliards de dollars de capitalisation, mais les enquêtes réglementaires et parlementaires restent ouvertes."
+    link: https://www.bbc.com/news/articles/cq5y1k8ez407o
+  - date: "2026-11-23"
+    type: new-feature
+    title:
+      en: "Google AI Mode can use Drive and Wallet data for personalized answers"
+      fr: "Le mode IA de Google peut utiliser Drive et Wallet pour personnaliser ses réponses"
+    description:
+      en: "Google expanded Personal Intelligence in Search AI Mode to optional connections with Drive, Wallet and Gemini. Wallet access is read-only and users can disable the feature, but the integration illustrates how AI assistants are moving closer to financial and document data."
+      fr: "Google étend Personal Intelligence dans le mode IA de Search avec des connexions facultatives à Drive, Wallet et Gemini. L’accès à Wallet est en lecture seule et désactivable, mais cette intégration rapproche les assistants IA des données financières et documentaires."
+    link: https://blog.google/products-and-platforms/products/search/google-search-personal-intelligence-apps/
+  - date: "2026-11-23"
+    type: research
+    title:
+      en: "Hugging Face publishes an open framework for agentic evaluations"
+      fr: "Hugging Face publie un cadre ouvert pour évaluer les agents IA"
+    description:
+      en: "Hugging Face’s guide argues that agent benchmarks must expose tasks, environments, harnesses, traces and verifiers to support reproducible claims. It cites an audit where changing only the agent harness moved accuracy by up to 29.9 percentage points, while 98.2% of model-benchmark scores are still reported by a single party."
+      fr: "Le guide de Hugging Face recommande d’ouvrir tâches, environnements, harnais, traces et vérificateurs afin de rendre les évaluations agentiques reproductibles. Il cite un audit où le seul changement de harnais modifiait la précision jusqu’à 29,9 points, alors que 98,2 % des scores de benchmarks de modèles restent rapportés par une seule partie."
+    link: https://huggingface.co/blog/agentic-evals
   - date: "2026-11-22"
     type: update
     title:
