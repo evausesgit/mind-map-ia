@@ -26,7 +26,7 @@ cues:
   - { at: 42.25, text: "Il lui faut vos ordres, le contexte de marché, puis l'analyse té-cé-a des écarts." }
   - { at: 47.85, text: "Comment une IA se connecte-t-elle, en sécurité, aux outils et aux données de l'entreprise ?" }
   # Voici MCP
-  - { at: 53.85, text: "L'agent va utiliser le èm-cé-pé, le Model Context Protocol." }
+  - { at: 53.65, text: "L'agent va utiliser le èm-cé-pé, le Model Context Protocol." }
   - { at: 58.10, text: "Un standard ouvert, pour connecter les applications d'IA aux outils et aux données." }
   - { at: 63.20, text: "Chaque système décrit ses outils une seule fois : l'agent les découvre, les appelle, et reçoit les résultats." }
   # Vos sources via MCP
