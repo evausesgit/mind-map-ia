@@ -299,7 +299,7 @@
           guardrails: "Les garde-fous protègent les systèmes : ils limitent le nombre et la fréquence des requêtes.",
           identity: "Vous êtes authentifié : chaque appel porte votre identité et vos droits.",
         },
-        allowed: "Vos droits sont vérifiés à chaque appel : seules les données autorisées reviennent.",
+        allowed: "Vos droits sont vérifiés à chaque appel : vous ne recevez que les données auxquelles vous avez accès.",
         denied: "Les ordres d’un autre client ? Vous n’y avez pas droit : l’appel s’arrête à l’entrée.",
       },
     },
