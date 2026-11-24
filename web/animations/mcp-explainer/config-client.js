@@ -186,7 +186,7 @@
     // an agentic solution is (scene 2), what MCP does (scene 4) and the
     // model's analysis of the data (scene 5).
     timing: Object.assign({}, base.timing, {
-      s2: Object.assign({}, base.timing.s2, { hold: 17.1 }),
+      s2: Object.assign({}, base.timing.s2, { hold: 17.1, keepTags: true }),
       s4: Object.assign({}, base.timing.s4, { discover: 8.2 }),
       s5: Object.assign({}, base.timing.s5, { combine: 6.9 }),
     }),

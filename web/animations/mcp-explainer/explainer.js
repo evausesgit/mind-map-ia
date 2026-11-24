@@ -1095,6 +1095,7 @@
     let curA = -90;
     orbiter.keys.push({ t0: tm, t1: tm + 0.001, a0: -90, a1: -90 });
     const jitter = [0, S(0.15), S(-0.1), S(0.2), 0];
+    const kept = [];
     cfg.orchestration.forEach((mv, j) => {
       const n = caps[mv.cap];
       if (!n) return;
@@ -1122,6 +1123,8 @@
         const w = measure(mv.tag, { size: 15 });
         mk("line", { x1: tx, y1: n.y + 16, x2: tx + w, y2: n.y + 16, stroke: th.data, "stroke-opacity": 0.6 }, tag);
         win(arrive + S(0.3), S(0.4), s2.hold + S(1.2), S(0.4), (a) => tag.setAttribute("opacity", a));
+      } else if (s2.keepTags) {
+        kept.push({ tag, at: arrive + S(0.3) }); // stays up until the scene ends
       } else {
         win(arrive + S(0.3), S(0.35), S(0.9), S(0.4), (a) => tag.setAttribute("opacity", a));
       }
@@ -1129,6 +1132,7 @@
     });
     // orbiter parks at TOOLS
     t = tm + s2.hold;
+    kept.forEach(({ tag, at }) => win(at, S(0.35), Math.max(S(0.5), t - at - S(0.35)), S(0.4), (a) => tag.setAttribute("opacity", a)));
     // optional definition caption while it holds there (captions.s2Def + s2DefSub)
     if (cfg.captions.s2Def) {
       const at = tm + S(2.4);
