@@ -222,8 +222,8 @@
 
     orchestration: [
       { tag: "Interprète votre demande" },
-      { tag: "Rappelle votre format de rapport" },
-      { tag: "Une méthode : étapes, outils, vérifications" },
+      { tag: "Rappelle vos préférences" },
+      { tag: "Décrit une méthodologie métier" },
       { tag: "Vos données sont requises" },
     ],
 
@@ -344,5 +344,10 @@
       s7One: "Une demande. Plusieurs sources coordonnées.",
       s7Final: "MCP standardise les connexions. Les contrôles restent dans les systèmes.",
     },
+
+    // Scene 2 paced on the French voice-over: each building block lights up
+    // as it is named (memory 20.5 s, skills 23.0 s, tools 26.0 s), the
+    // definition caption at 28.6 s; the scene still ends at 40.55 s.
+    timing: { s2: { move0: 1.25, move1: 2.55, move2: 2.88, move3: 1.05, hold: 14.37 } },
   };
 })();

@@ -20,9 +20,10 @@ cues:
   - { at: 7.8,   text: "Votre assistant est un agent : il réalise une tâche en plusieurs étapes. Il utilise des outils, examine les résultats, et adapte la suite." }
   # Les briques de l'agent
   - { at: 16.2,  text: "L'orchestrateur coordonne. Le modèle interprète votre demande." }
-  - { at: 20.4,  text: "La mémoire rappelle vos préférences. Un skile, c'est une méthode de travail : les étapes à suivre, les outils à utiliser, les vérifications à faire." }
-  - { at: 29.70, text: "Les outils accèdent à vos données." }
-  - { at: 32.05, text: "C'est cela, une solution agentique : un modèle de langage entouré d'outils, de mémoire et de skiles, qui planifie, agit et vérifie avant de répondre." }
+  - { at: 20.5,  text: "La mémoire rappelle vos préférences." }
+  - { at: 23.0,  text: "Le skile décrit une méthodologie métier." }
+  - { at: 26.0,  text: "Les outils accèdent à vos données." }
+  - { at: 28.6,  text: "C'est cela, une solution agentique : un modèle de langage entouré d'outils, de mémoire et de skiles, qui planifie, agit et vérifie avant de répondre." }
   # Le problème
   - { at: 42.25, text: "Il lui faut vos ordres, le contexte de marché, puis l'analyse té-cé-a des écarts." }
   - { at: 47.85, text: "Comment une IA se connecte-t-elle, en sécurité, aux outils et aux données de l'entreprise ?" }

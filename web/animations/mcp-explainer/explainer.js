@@ -1128,7 +1128,7 @@
       } else {
         win(arrive + S(0.3), S(0.35), S(0.9), S(0.4), (a) => tag.setAttribute("opacity", a));
       }
-      tm += s2.move;
+      tm += s2["move" + j] ?? s2.move; // optional per-step pacing (move0, move1…) to follow a voice-over
     });
     // orbiter parks at TOOLS
     t = tm + s2.hold;
