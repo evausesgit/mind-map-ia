@@ -1,6 +1,6 @@
 # Business version of agent-anatomy-client.yaml, for traders, in French:
 # the same diagram, but the right-hand panel follows one request end to end
-# in seven functional steps (no voice-over; the presenter clicks through).
+# step by step, up to the decision (no voice-over; the presenter clicks through).
 # The figures in the examples are illustrative.
 output: web/animations/mcp-journey-client.html
 layout: journey
@@ -59,3 +59,7 @@ steps:
     nodes: [user, center, ring, model, skills, memory, tools, side]
     text: "Une seule question, plusieurs étapes coordonnées. Le modèle propose, l’orchestrateur pilote et contrôle, les skills et la mémoire apportent le contexte, les outils apportent les faits via MCP."
     example: "Une demande métier · des étapes coordonnées · des accès contrôlés et tracés"
+  - title: "Ce que ça change : une aide à la décision"
+    nodes: [user, center]
+    text: "Plus qu’un gain de temps : une lecture factuelle, sans biais émotionnel, qui fait ressortir ce qu’on n’aurait pas forcément vu. La décision reste la vôtre, mieux éclairée."
+    example: "Gain de temps · analyse factuelle · angles morts révélés · meilleure décision humaine"

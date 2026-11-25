@@ -191,8 +191,8 @@ slides:
       en: "Your question, step by step: client view"
       fr: "Le parcours de votre question : vue client"
     description:
-      en: "A trader's request followed end to end, from the question to the answer, in seven business steps (in French)"
-      fr: "Une demande de trader suivie de bout en bout, de la question à la réponse, en sept étapes métier"
+      en: "A trader's request followed end to end, from the question to a better-informed decision (in French)"
+      fr: "Une demande de trader suivie de bout en bout, de la question à une décision mieux éclairée"
     output: animations/mcp-journey-client.html
   - id: rag-anatomy
     title:
