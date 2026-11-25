@@ -32,7 +32,7 @@
       { id: "final",     label: "Summary" },
     ],
 
-    user: { label: "YOU", sublabel: "Cash Equity platform" },
+    user: { label: "BUY SIDE / SELL SIDE", sublabel: "Cash Equity platform" },
     agent: { label: "AI AGENT" },
     orchestrator: { label: "ORCHESTRATOR" },
 
@@ -63,7 +63,7 @@
 
     example: {
       prompt: "Why did my basket underperform VWAP this morning?",
-      promptMeta: "YOU  ·  11:45",
+      promptMeta: "BUY SIDE / SELL SIDE  ·  11:45",
       promptShort: "“Why did my basket underperform…?”",
       loop: ["Understand", "Plan", "Act", "Answer"],
       needs: ["I need your orders and fills.", "I need the market context.", "I need a slippage calculation."],
@@ -153,7 +153,7 @@
     },
 
     finalStack: [
-      { items: ["YOU"] },
+      { items: ["BUY SIDE / SELL SIDE"] },
       { items: ["AI AGENT"], tone: "request" },
       { items: ["ORCHESTRATOR"], tone: "orchestrator", wide: true },
       { items: ["MODEL", "MEMORY", "SKILLS", "MCP"], highlight: "MCP" },
@@ -209,7 +209,7 @@
       { label: "Synthèse" },
     ],
 
-    user: { label: "VOUS", sublabel: "Plateforme Cash Equity" },
+    user: { label: "BUY SIDE / SELL SIDE", sublabel: "Plateforme Cash Equity" },
     agent: { label: "AGENT IA" },
     orchestrator: { label: "ORCHESTRATEUR" },
 
@@ -240,7 +240,7 @@
 
     example: {
       prompt: "Pourquoi mon panier a-t-il sous-performé le VWAP ce matin ?",
-      promptMeta: "VOUS  ·  11:45",
+      promptMeta: "BUY SIDE / SELL SIDE  ·  11:45",
       promptShort: "« Pourquoi mon panier… ? »",
       loop: ["Comprendre", "Planifier", "Agir", "Répondre"],
       needs: ["Il me faut vos ordres et exécutions.", "Il me faut le contexte de marché.", "Il me faut un calcul d’écart."],
@@ -316,7 +316,7 @@
     },
 
     finalStack: [
-      { items: ["VOUS"] },
+      { items: ["BUY SIDE / SELL SIDE"] },
       { items: ["AGENT IA"] },
       { items: ["ORCHESTRATEUR"] },
       { items: ["MODÈLE", "MÉMOIRE", "SKILLS", "MCP"] },
