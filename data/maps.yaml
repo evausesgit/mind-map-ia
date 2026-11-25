@@ -186,6 +186,14 @@ slides:
       en: "Model, agent, orchestrator, tools and MCP explained for platform clients (in French)"
       fr: "Modèle, agent, orchestrateur, outils et MCP expliqués pour les clients de la plateforme"
     output: animations/mcp-concepts-client.html
+  - id: agent-journey-client
+    title:
+      en: "Your question, step by step: client view"
+      fr: "Le parcours de votre question : vue client"
+    description:
+      en: "A trader's request followed end to end, from the question to the answer, in six business steps (in French)"
+      fr: "Une demande de trader suivie de bout en bout, de la question à la réponse, en six étapes métier"
+    output: animations/mcp-journey-client.html
   - id: rag-anatomy
     title:
       en: "Anatomy of a RAG system"

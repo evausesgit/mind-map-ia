@@ -1,0 +1,49 @@
+
+  /* Journey layout: the three roles, then the steps (only the current one unfolds) */
+  .journey h1 { font: 500 calc(var(--u) * .68)/1 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--muted); margin: calc(var(--u) * 1.6) 0 calc(var(--u) * .8); }
+  .roles { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(var(--u) * .8); }
+  .roles li { border-top: 2px solid var(--tone); padding-top: calc(var(--u) * .5); }
+  .roles b { display: block; font-size: calc(var(--u) * .98); font-weight: 600; color: var(--tone); margin-bottom: calc(var(--u) * .2); }
+  .roles span { display: block; font-size: calc(var(--u) * .84); line-height: 1.35; color: var(--muted); }
+
+  .steps { list-style: none; border-top: 1px solid var(--line); }
+  .steps li { border-bottom: 1px solid var(--line); }
+  .step { width: 100%; display: grid; grid-template-columns: calc(var(--u) * 2) 1fr; column-gap: calc(var(--u) * .7);
+    align-items: center; text-align: left; background: none; border: 0; border-left: 2px solid transparent; color: inherit;
+    font: inherit; cursor: pointer; padding: calc(var(--u) * .6) calc(var(--u) * .7); transition: background .2s, border-color .2s; }
+  .step:hover { background: rgba(255,255,255,0.03); }
+  .step:focus-visible { outline: 2px solid var(--mcp); outline-offset: -2px; }
+  .step i { font: 500 calc(var(--u) * .8)/1 'JetBrains Mono', monospace; font-style: normal; color: var(--muted);
+    width: calc(var(--u) * 1.7); height: calc(var(--u) * 1.7); border-radius: 50%; border: 1px solid var(--line);
+    display: grid; place-items: center; transition: all .25s; }
+  .step b { font-size: calc(var(--u) * 1.02); font-weight: 600; color: var(--muted); transition: color .25s; }
+  .step.done b { color: var(--text); opacity: .7; }
+  .step.done i { border-color: var(--mcp); color: var(--mcp); }
+  .step.on { background: rgba(255,255,255,0.045); border-left-color: var(--mcp); }
+  .step.on i { background: var(--mcp); border-color: var(--mcp); color: var(--bg); }
+  .step.on b { color: var(--text); }
+  .step .more { grid-column: 2; display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s; }
+  .step .more > * { overflow: hidden; }
+  .step.on .more { grid-template-rows: 1fr; }
+  .step .more > span { font-size: calc(var(--u) * .92); line-height: 1.42; color: var(--text); opacity: .88; }
+  .step.on .more > span { margin-top: calc(var(--u) * .4); }
+  .step .more em { display: none; font: 400 calc(var(--u) * .8)/1.45 'JetBrains Mono', monospace; font-style: normal;
+    color: var(--mcp); border-left: 2px solid rgba(61,214,198,.4); padding-left: calc(var(--u) * .6); }
+  .step.on .more em { display: block; margin-top: calc(var(--u) * .5); }
+
+  .controls { display: flex; align-items: center; gap: calc(var(--u) * .8); margin-top: calc(var(--u) * 1); }
+  .controls button { font: 500 14px 'JetBrains Mono', monospace; color: var(--muted); cursor: pointer; padding: 4px 12px;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .controls button:hover { color: var(--text); }
+  .controls .count { font: 500 calc(var(--u) * .75) 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: .12em; }
+  .diagram { cursor: pointer; }
+
+  @media (max-width: 800px) {
+    .roles { grid-template-columns: 1fr; }
+    .roles b { font-size: 15px; } .roles span { font-size: 13.5px; }
+    .journey h1 { font-size: 11px; margin-top: 24px; }
+    .step i { font-size: 12px; width: 26px; height: 26px; } .step { grid-template-columns: 30px 1fr; }
+    .step b { font-size: 15.5px; } .step .more > span { font-size: 14px; } .step .more em { font-size: 12.5px; }
+    .controls .count { font-size: 12px; }
+  }

@@ -5,6 +5,10 @@ Three layouts share the same CSS and glossary behaviour: the default hub diagram
 Data animation, and `layout: shift`, the chatbot-versus-agent introduction
 (both bilingual, with one <main> per language).
 
+`layout: journey` keeps the hub diagram but swaps the glossary for numbered
+steps (one request followed end to end), each lighting its blocks; the
+presenter advances with a click, the arrow keys or a remote clicker.
+
 `layout: intro` is for talk openings: a full-screen bilingual diagram with no
 glossary, revealed step by step (arrow keys, remote clicker or click), drawn
 from scripts/templates/intro-<diagram>.svg (`diagram: timeline` for now).
@@ -27,6 +31,8 @@ TEMPLATES = ROOT / "scripts" / "templates"
 TEMPLATE = TEMPLATES / "concept-slide.html"
 CSS = (TEMPLATES / "concept-slide.css").read_text(encoding="utf-8")
 JS = (TEMPLATES / "concept-slide.js").read_text(encoding="utf-8")
+JOURNEY_CSS = (TEMPLATES / "journey-slide.css").read_text(encoding="utf-8")
+JOURNEY_JS = (TEMPLATES / "journey-slide.js").read_text(encoding="utf-8")
 
 # Top-left corner of each block card, then its spoke (card corner -> ring).
 SLOTS = [
@@ -91,14 +97,56 @@ def glossary_html(terms: list) -> str:
     return "\n".join(rows)
 
 
+def glossary_panel(spec: dict, nodes: set) -> str:
+    for term in spec["glossary"]:
+        if term["node"] not in nodes:
+            raise ValueError(f"{term['term']}: unknown node {term['node']!r}")
+    return (
+        f'<section class="glossary" aria-label="{esc(spec.get("glossary_label", "Glossary"))}">\n'
+        f'  <h1>{esc(spec.get("glossary_title", "Key vocabulary"))}</h1>\n'
+        f'  <ul>\n{glossary_html(spec["glossary"])}\n  </ul>\n</section>'
+    )
+
+
+def journey_panel(spec: dict, nodes: set) -> str:
+    """Role definitions, then the numbered steps: only the current one is unfolded."""
+    roles = "".join(
+        f'<li style="--tone:{esc(r.get("tone", "var(--orchestrator)"))}"><b>{esc(r["term"])}</b>'
+        f'<span>{esc(r["text"])}</span></li>'
+        for r in spec["roles"]
+    )
+    steps = []
+    for i, step in enumerate(spec["steps"], 1):
+        unknown = set(step["nodes"]) - nodes
+        if unknown:
+            raise ValueError(f"step {i}: unknown nodes {sorted(unknown)}")
+        example = f'<em>{esc(step["example"])}</em>' if step.get("example") else ""
+        steps.append(
+            f'    <li><button class="step" data-nodes="{esc(" ".join(step["nodes"]))}">'
+            f'<i>{i}</i><b>{esc(step["title"])}</b>'
+            f'<span class="more"><span>{esc(step["text"])}</span>{example}</span></button></li>'
+        )
+    return (
+        f'<section class="journey" aria-label="{esc(spec["journey_title"])}">\n'
+        f'  <ul class="roles">{roles}</ul>\n'
+        f'  <h1>{esc(spec["journey_title"])}</h1>\n'
+        f'  <ol class="steps">\n' + "\n".join(steps) + "\n  </ol>\n"
+        f'  <div class="controls"><button class="prev" aria-label="{esc(spec.get("prev_label", "Previous"))}">←</button>'
+        f'<span class="count" aria-live="polite"></span>'
+        f'<button class="next" aria-label="{esc(spec.get("next_label", "Next"))}">→</button></div>\n'
+        f"</section>"
+    )
+
+
 def render(spec: dict) -> str:
     blocks = spec["blocks"]
     if len(blocks) != len(SLOTS):
         raise ValueError(f"{spec['output']}: needs exactly {len(SLOTS)} blocks, got {len(blocks)}")
     nodes = {"center", "ring", "side", *(b["id"] for b in blocks)}
-    for term in spec["glossary"]:
-        if term["node"] not in nodes:
-            raise ValueError(f"{term['term']}: unknown node {term['node']!r}")
+    journey = spec.get("layout") == "journey"
+    panel = journey_panel(spec, nodes | {"user"}) if journey else glossary_panel(spec, nodes)
+    alt = spec.get("alt")
+    alt_link = f'<a href="{esc(alt["href"])}">{esc(alt["label"])}</a>' if alt else ""
 
     center_width = max(272, len(spec["center"]) * CHAR_WIDTH + 110)
     center_left = CENTER_X - center_width // 2
@@ -111,8 +159,6 @@ def render(spec: dict) -> str:
         "question": spec["question"], "takeaway": spec["takeaway"],
         # Optional, for a slide in another language than English.
         "lang": spec.get("lang", "en"), "home_label": spec.get("home_label", "Home"),
-        "glossary_label": spec.get("glossary_label", "Glossary"),
-        "glossary_title": spec.get("glossary_title", "Key vocabulary"),
     }
     page = TEMPLATE.read_text(encoding="utf-8")
     for key, value in values.items():
@@ -122,8 +168,9 @@ def render(spec: dict) -> str:
         "center_icon": center_left + 44, "center_text": center_left + 72,
         "wires": wires_svg(blocks),
         "blocks": "\n    ".join(block_svg(b, s) for b, s in zip(blocks, SLOTS)),
-        "glossary": glossary_html(spec["glossary"]),
-        "css": CSS, "js": JS,
+        "panel": panel, "alt_link": alt_link,
+        # The glossary script would clear the step highlight on hover: one or the other.
+        "css": CSS + (JOURNEY_CSS if journey else ""), "js": JOURNEY_JS if journey else JS,
     }
     for key, value in raw.items():
         page = page.replace("{{" + key + "}}", str(value))

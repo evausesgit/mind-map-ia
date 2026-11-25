@@ -1,0 +1,57 @@
+# Business version of agent-anatomy-client.yaml, for traders, in French:
+# the same diagram, but the right-hand panel follows one request end to end
+# in six functional steps (no voice-over; the presenter clicks through).
+# The figures in the examples are illustrative.
+output: web/animations/mcp-journey-client.html
+layout: journey
+lang: fr
+home_label: "Accueil"
+title: "Le parcours de votre question · assistant agentique"
+eyebrow: "LE PARCOURS D’UNE DEMANDE MÉTIER"
+aria: "Le trader pose une question à son assistant. L’orchestrateur prépare le contexte, le modèle propose un plan, les outils vont chercher ordres, exécutions et données de marché via MCP, puis le modèle analyse et répond."
+back: { href: "mcp-agentic-architecture-client.html?autoplay=0&lang=fr", label: "← Animation" }
+alt: { href: "mcp-concepts-client.html", label: "Vue technique" }
+prev_label: "Étape précédente"
+next_label: "Étape suivante"
+user: "VOUS"
+center: "ASSISTANT IA"
+ring: "ORCHESTRATEUR"
+# Four corners, in order: top-left, top-right, bottom-left, bottom-right.
+blocks:
+  - { id: model,  label: "MODÈLE",  sub: "Interprète · propose", glyph: hex }
+  - { id: skills, label: "SKILLS",  sub: "Méthodes métier", glyph: grid }
+  - { id: memory, label: "MÉMOIRE", sub: "Si autorisée", glyph: stack }
+  - { id: tools,  label: "OUTILS",  sub: "Données · calculs", glyph: plug, via_side: true }
+side: { title: "MCP", subtitle: "MODEL CONTEXT PROTOCOL", reaches: "VOS ORDRES · MARCHÉ · CALCULS" }
+question: "Pourquoi mon panier a-t-il sous-performé le VWAP ce matin ?"
+takeaway: "Le modèle propose, l’orchestrateur pilote et contrôle, les outils apportent les faits."
+roles:
+  - { term: "L’agent", tone: "var(--request)", text: "La solution dans son ensemble : votre assistant." }
+  - { term: "L’orchestrateur", text: "Le moteur qui pilote les échanges avec le modèle et les outils." }
+  - { term: "Le modèle", text: "Interprète, raisonne et propose les prochaines actions." }
+journey_title: "Le parcours de votre question"
+steps:
+  - title: "Vous posez votre question"
+    nodes: [user, center]
+    text: "En langage courant, comme à un collègue. Pas de requête à écrire, pas d’écran à ouvrir."
+    example: "« Pourquoi mon panier a-t-il sous-performé le VWAP ce matin ? »"
+  - title: "L’assistant prépare le dossier"
+    nodes: [ring, memory, skills]
+    text: "L’orchestrateur rassemble le contexte : vos préférences (mémoire, si autorisée), la méthode d’analyse adaptée (skill) et vos droits d’accès."
+    example: "Écarts en bps · méthode : exécution vs VWAP · périmètre : vos books"
+  - title: "Le modèle établit un plan"
+    nodes: [ring, model]
+    text: "Il interprète la demande et renvoie à l’orchestrateur les actions nécessaires. Il propose, il n’exécute rien lui-même."
+    example: "1. ordres du panier · 2. exécutions · 3. VWAP par ligne · 4. écart en bps"
+  - title: "Les outils vont chercher les faits"
+    nodes: [ring, tools, side]
+    text: "Via MCP, l’orchestrateur appelle les outils, dans le respect des règles et des autorisations. Les calculs sont faits par des outils dédiés, pas par le modèle."
+    example: "OMS → 24 ordres · exécutions → 312 fills · marché → VWAP par titre"
+  - title: "Le modèle analyse et creuse si besoin"
+    nodes: [ring, model, tools, side]
+    text: "L’orchestrateur lui transmet les résultats. S’il faut approfondir, le modèle propose une nouvelle action et la boucle reprend."
+    example: "−12 bps vs VWAP, dont 9 sur 3 lignes → nouvelle demande : spread et volumes à l’ouverture"
+  - title: "Vous recevez une réponse argumentée"
+    nodes: [user, center, model]
+    text: "Le modèle rédige la réponse finale, que l’assistant vous restitue : une explication, les chiffres qui la fondent et la trace de chaque accès."
+    example: "« 3 lignes peu liquides traitées à l’ouverture, spread ×3 : 9 bps sur les 12. »"
