@@ -1,6 +1,6 @@
 # Business version of agent-anatomy-client.yaml, for traders, in French:
 # the same diagram, but the right-hand panel follows one request end to end
-# in six functional steps (no voice-over; the presenter clicks through).
+# in seven functional steps (no voice-over; the presenter clicks through).
 # The figures in the examples are illustrative.
 output: web/animations/mcp-journey-client.html
 layout: journey
@@ -55,3 +55,7 @@ steps:
     nodes: [user, center, model]
     text: "Le modèle rédige la réponse finale, que l’assistant vous restitue : une explication, les chiffres qui la fondent et la trace de chaque accès."
     example: "« 3 lignes peu liquides traitées à l’ouverture, spread ×3 : 9 bps sur les 12. »"
+  - title: "Vue d’ensemble : tout fonctionne ensemble"
+    nodes: [user, center, ring, model, skills, memory, tools, side]
+    text: "Une seule question, plusieurs étapes coordonnées. Le modèle propose, l’orchestrateur pilote et contrôle, les skills et la mémoire apportent le contexte, les outils apportent les faits via MCP."
+    example: "Une demande métier · des étapes coordonnées · des accès contrôlés et tracés"
