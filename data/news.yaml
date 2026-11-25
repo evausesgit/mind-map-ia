@@ -1,4 +1,40 @@
 news:
+  - date: "2026-11-24"
+    type: update
+    title:
+      en: "UK FCA sets regulatory expectations for financial AI agents"
+      fr: "La FCA britannique fixe ses attentes réglementaires pour les agents IA financiers"
+    description:
+      en: "The FCA says AI agents that initiate transactions, move money, arrange borrowing or make investment decisions may require authorisation, and it can intervene against unauthorised services. Regulated firms and senior managers remain accountable for third-party agents, including real-time controls, resilience, consent, liability and redress."
+      fr: "La FCA estime que les agents IA qui initient des transactions, déplacent de l’argent, organisent un crédit ou prennent des décisions d’investissement peuvent nécessiter un agrément, et qu’elle peut intervenir contre les services non autorisés. Les établissements régulés et leurs dirigeants restent responsables des agents tiers, notamment des contrôles en temps réel, de la résilience, du consentement, de la responsabilité et des recours."
+    link: https://www.fca.org.uk/firms/innovation/ai-approach/agentic-ai
+  - date: "2026-11-24"
+    type: update
+    title:
+      en: "Microsoft Ignite moves enterprise agents toward governed production"
+      fr: "Microsoft Ignite fait passer les agents d’entreprise vers une production gouvernée"
+    description:
+      en: "Microsoft announced production-oriented agent infrastructure including Agent Grid policy enforcement, VM-isolated Agent Sandbox for AKS, Entra Agent ID and Agent 365 lifecycle governance. Its Ignite 2026 stack also adds customer-managed keys and open-weight model deployment from Foundry to customers’ own AKS clusters."
+      fr: "Microsoft annonce une infrastructure agentique orientée production avec l’application centralisée des politiques par Agent Grid, l’isolation en machine virtuelle d’Agent Sandbox pour AKS, ainsi que la gouvernance du cycle de vie via Entra Agent ID et Agent 365. La pile Ignite 2026 ajoute aussi des clés gérées par le client et le déploiement de modèles open-weight depuis Foundry vers les clusters AKS des clients."
+    link: https://news.microsoft.com/events/ignite/2026/book-of-news/
+  - date: "2026-11-24"
+    type: research
+    title:
+      en: "Domain post-training lifts US open-weight models on legal agent tasks"
+      fr: "Le post-entraînement métier améliore les modèles open-weight américains sur les tâches juridiques"
+    description:
+      en: "Harvey and Baseten post-trained four US open-weight models on legal, consulting, banking and automation tasks. Meta’s Muse Spark Open reached 30.3% all-pass on a Legal Agent Benchmark holdout, up from 19.2%, while three other US models exceeded 20%; the results are self-reported research and not a general model ranking."
+      fr: "Harvey et Baseten ont post-entraîné quatre modèles open-weight américains sur des tâches juridiques, de conseil, bancaires et d’automatisation. Muse Spark Open de Meta atteint 30,3 % en all-pass sur un jeu de contrôle du Legal Agent Benchmark, contre 19,2 % auparavant, et trois autres modèles américains dépassent 20 % ; ces résultats sont auto-déclarés et ne constituent pas un classement général."
+    link: https://www.harvey.ai/blog/applying-the-harvey-tenet-training-recipe-to-us-open-weight-models
+  - date: "2026-11-24"
+    type: update
+    title:
+      en: "Anthropic falls below its $83 IPO price days after listing"
+      fr: "Anthropic passe sous son prix d’introduction de 83 dollars quelques jours après sa cotation"
+    description:
+      en: "Anthropic shares fell below their $83 IPO price on 24 November, putting the Claude developer on course to erase nearly $200 billion in market value after its 19 November debut. The reversal highlights how quickly public markets are repricing AI growth, capital intensity and monetisation risk."
+      fr: "L’action Anthropic est passée sous son prix d’introduction de 83 dollars le 24 novembre, mettant le développeur de Claude en voie d’effacer près de 200 milliards de dollars de capitalisation depuis ses débuts du 19 novembre. Ce retournement illustre la rapidité avec laquelle les marchés réévaluent la croissance, l’intensité capitalistique et le risque de monétisation de l’IA."
+    link: https://www.reuters.com/business/anthropic-breaks-below-83-ipo-price-debut-rally-unravels-2026-11-24/
   - date: "2026-11-23"
     type: new-feature
     title:
