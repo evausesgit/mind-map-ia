@@ -183,7 +183,7 @@ slides:
       en: "Anatomy of an assistant: client view"
       fr: "Anatomie d’un assistant : vue client"
     description:
-      en: "Model, agent, orchestrator, tools and MCP explained for platform clients (in French)"
+      en: "Model, agent, orchestrator, tools and MCP explained for platform clients"
       fr: "Modèle, agent, orchestrateur, outils et MCP expliqués pour les clients de la plateforme"
     output: animations/mcp-concepts-client.html
   - id: agent-journey-client
@@ -191,7 +191,7 @@ slides:
       en: "Your question, step by step: client view"
       fr: "Le parcours de votre question : vue client"
     description:
-      en: "A trader's request followed end to end, from the question to a better-informed decision (in French)"
+      en: "A trader's request followed end to end, from the question to a better-informed decision"
       fr: "Une demande de trader suivie de bout en bout, de la question à une décision mieux éclairée"
     output: animations/mcp-journey-client.html
   - id: rag-anatomy

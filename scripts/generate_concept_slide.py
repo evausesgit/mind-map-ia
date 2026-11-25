@@ -5,6 +5,10 @@ Three layouts share the same CSS and glossary behaviour: the default hub diagram
 Data animation, and `layout: shift`, the chatbot-versus-agent introduction
 (both bilingual, with one <main> per language).
 
+A hub spec with `en:` and `fr:` blocks is bilingual: the shared keys hold the
+structure, each language block its text (lists merge item by item), and the
+page gets an EN/FR toggle that remembers the choice in `mmia-lang`.
+
 `layout: journey` keeps the hub diagram but swaps the glossary for numbered
 steps (one request followed end to end), each lighting its blocks; the
 presenter advances with a click, the arrow keys or a remote clicker.
@@ -19,6 +23,7 @@ Usage (from repo root):
 With no argument, every file in data/slides/ is generated.
 """
 import html
+import json
 import math
 import pathlib
 import re
@@ -138,43 +143,134 @@ def journey_panel(spec: dict, nodes: set) -> str:
     )
 
 
-def render(spec: dict) -> str:
+LANGS = ("en", "fr")
+
+# Bilingual hub slides: both <main> are in the page, the html lang shows one.
+BILINGUAL_HEAD = """<script>
+(function () {
+  var q = new URLSearchParams(location.search).get("lang"), saved = null;
+  try { saved = localStorage.getItem("mmia-lang"); } catch (e) {}
+  var lang = q || saved || ((navigator.language || "en").toLowerCase().indexOf("fr") === 0 ? "fr" : "en");
+  document.documentElement.lang = lang === "fr" ? "fr" : "en";
+})();
+</script>
+"""
+BILINGUAL_CSS = """
+  html[lang="en"] [data-lang="fr"], html[lang="fr"] [data-lang="en"] { display: none; }
+  .nav button { font: 500 12px 'JetBrains Mono', monospace; color: var(--muted); padding: 6px 9px; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav button:hover { color: var(--text); }
+  html[lang="en"] .nav button.en, html[lang="fr"] .nav button.fr { color: var(--bg); background: var(--mcp); border-color: var(--mcp); }
+"""
+BILINGUAL_JS = """
+<script>
+(function () {
+  const titles = %s;
+  const links = [...document.querySelectorAll("[data-sync-lang]")];
+  links.forEach((a) => { a.dataset.base = a.getAttribute("href"); });
+  function sync() {
+    const lang = document.documentElement.lang;
+    document.title = titles[lang] || document.title;
+    links.forEach((a) => { const b = a.dataset.base; a.href = `${b}${b.includes("?") ? "&" : "?"}lang=${lang}`; });
+  }
+  document.querySelectorAll("[data-set-lang]").forEach((b) => b.addEventListener("click", () => {
+    document.documentElement.lang = b.dataset.setLang;
+    try { localStorage.setItem("mmia-lang", b.dataset.setLang); } catch (e) {}
+    sync();
+  }));
+  sync();
+})();
+</script>"""
+
+
+def merge(base, over):
+    """A language block laid over the shared spec: dicts merge, lists of dicts merge item by item."""
+    if isinstance(base, dict) and isinstance(over, dict):
+        out = dict(base)
+        for key, value in over.items():
+            out[key] = merge(base[key], value) if key in base else value
+        return out
+    if isinstance(base, list) and isinstance(over, list) and all(isinstance(x, dict) for x in base + over):
+        if len(base) != len(over):
+            raise ValueError(f"language list has {len(over)} items, shared list has {len(base)}")
+        return [merge(b, o) for b, o in zip(base, over)]
+    return over
+
+
+def hub_main(spec: dict, lang: str | None) -> str:
+    """One <main>: the hub diagram, then the glossary or the journey steps."""
     blocks = spec["blocks"]
     if len(blocks) != len(SLOTS):
         raise ValueError(f"{spec['output']}: needs exactly {len(SLOTS)} blocks, got {len(blocks)}")
     nodes = {"center", "ring", "side", *(b["id"] for b in blocks)}
     journey = spec.get("layout") == "journey"
     panel = journey_panel(spec, nodes | {"user"}) if journey else glossary_panel(spec, nodes)
-    alt = spec.get("alt")
-    alt_link = f'<a href="{esc(alt["href"])}">{esc(alt["label"])}</a>' if alt else ""
-
     center_width = max(272, len(spec["center"]) * CHAR_WIDTH + 110)
     center_left = CENTER_X - center_width // 2
-    values = {
-        "title": spec["title"], "aria": spec["aria"], "eyebrow": spec["eyebrow"],
-        "back_href": spec["back"]["href"], "back_label": spec["back"]["label"],
-        "user": spec["user"], "center": spec["center"], "ring": spec["ring"],
-        "side_title": spec["side"]["title"], "side_subtitle": spec["side"]["subtitle"],
-        "side_reaches": spec["side"]["reaches"],
-        "question": spec["question"], "takeaway": spec["takeaway"],
-        # Optional, for a slide in another language than English.
-        "lang": spec.get("lang", "en"), "home_label": spec.get("home_label", "Home"),
-    }
-    page = TEMPLATE.read_text(encoding="utf-8")
-    for key, value in values.items():
-        page = page.replace("{{" + key + "}}", esc(value))
-    raw = {
-        "center_left": center_left, "center_width": center_width,
-        "center_icon": center_left + 44, "center_text": center_left + 72,
-        "wires": wires_svg(blocks),
-        "blocks": "\n    ".join(block_svg(b, s) for b, s in zip(blocks, SLOTS)),
-        "panel": panel, "alt_link": alt_link,
-        # The glossary script would clear the step highlight on hover: one or the other.
-        "css": CSS + (JOURNEY_CSS if journey else ""), "js": JOURNEY_JS if journey else JS,
-    }
-    for key, value in raw.items():
-        page = page.replace("{{" + key + "}}", str(value))
-    return page
+    svg = fill(
+        (TEMPLATES / "hub-diagram.svg").read_text(encoding="utf-8"),
+        {key: spec[key] for key in ("aria", "eyebrow", "user", "center", "ring", "question", "takeaway")}
+        | {"side_title": spec["side"]["title"], "side_subtitle": spec["side"]["subtitle"],
+           "side_reaches": spec["side"]["reaches"]},
+        {
+            "center_left": center_left, "center_width": center_width,
+            "center_icon": center_left + 44, "center_text": center_left + 72,
+            "wires": wires_svg(blocks),
+            "blocks": "\n    ".join(block_svg(b, s) for b, s in zip(blocks, SLOTS)),
+        },
+    )
+    attr = f' data-lang="{lang}"' if lang else ""
+    return f'<main class="slide"{attr}>\n{svg}\n{panel}\n</main>'
+
+
+def hub_link(spec_by_lang: dict, key: str, href: str, sync: bool) -> str:
+    """A nav link; bilingual pages carry one label per language and keep ?lang= in sync."""
+    if len(spec_by_lang) == 1:
+        (s,) = spec_by_lang.values()
+        return f'<a href="{esc(href)}">{esc(s[key])}</a>'
+    labels = "".join(f'<span data-lang="{lang}">{esc(s[key])}</span>' for lang, s in spec_by_lang.items())
+    return f'<a href="{esc(href)}"{" data-sync-lang" if sync else ""}>{labels}</a>'
+
+
+def render(spec: dict) -> str:
+    bilingual = all(lang in spec for lang in LANGS)
+    if bilingual:
+        shared = {k: v for k, v in spec.items() if k not in LANGS}
+        by_lang = {lang: merge(shared, spec[lang]) for lang in LANGS}
+    else:
+        by_lang = {spec.get("lang", "en"): spec}
+    first = next(iter(by_lang.values()))
+    for s in by_lang.values():
+        s.setdefault("home_label", "Home")
+        s["back_label"] = s["back"]["label"]
+        if s.get("alt"):
+            s["alt_label"] = s["alt"]["label"]
+
+    nav = ['<nav class="nav">']
+    if bilingual:
+        nav.append('<button class="en" type="button" data-set-lang="en">EN</button>'
+                   '<button class="fr" type="button" data-set-lang="fr">FR</button>')
+    if first.get("alt"):
+        nav.append(hub_link(by_lang, "alt_label", first["alt"]["href"], True))
+    nav.append(hub_link(by_lang, "back_label", first["back"]["href"], True))
+    nav.append(hub_link(by_lang, "home_label", "../index.html", False))
+    nav.append("</nav>")
+
+    journey = first.get("layout") == "journey"
+    slides = "\n".join(hub_main(s, lang if bilingual else None) for lang, s in by_lang.items())
+    titles = {lang: s["title"] for lang, s in by_lang.items()}
+    return fill(
+        TEMPLATE.read_text(encoding="utf-8"),
+        {"title": first["title"], "lang": next(iter(by_lang))},
+        {
+            "nav": "".join(nav), "slides": slides,
+            "head_script": BILINGUAL_HEAD if bilingual else "",
+            "lang_script": BILINGUAL_JS % json.dumps(titles, ensure_ascii=False) if bilingual else "",
+            # The glossary script would clear the step highlight on hover: one or the other.
+            "css": CSS + (JOURNEY_CSS if journey else "") + (BILINGUAL_CSS if bilingual else ""),
+            "js": JOURNEY_JS if journey else JS,
+        },
+    )
 
 
 def fill(page: str, values: dict, raw: dict) -> str:

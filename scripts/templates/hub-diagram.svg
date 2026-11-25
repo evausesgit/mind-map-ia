@@ -1,0 +1,51 @@
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="{{aria}}">
+
+  <g font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text x="80" y="77" fill="#EEF2F7" font-size="12">01</text>
+    <text x="112" y="77" fill="#8B94A5">{{eyebrow}}</text>
+  </g>
+
+  <g class="n" data-n="user">
+    <circle cx="90" cy="470" r="44" fill="none" stroke="rgba(255,255,255,.2)"/>
+    <circle cx="90" cy="458" r="10" fill="none" stroke="#EEF2F7" stroke-width="1.8"/>
+    <path d="M71 488 C73 474 107 474 109 488" fill="none" stroke="#EEF2F7" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="90" y="548" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">{{user}}</text>
+  </g>
+  <path class="wire" data-n="user" d="M138 470 H{{center_left}}" stroke="#7EA6FF" stroke-opacity=".5" stroke-width="1.2"/>
+
+  <g class="n" data-n="ring" style="--tone:var(--orchestrator)">
+    <circle cx="520" cy="470" r="330" fill="url(#halo)"/>
+    <circle class="base" cx="520" cy="470" r="220" style="fill:none;stroke:#A594FF;stroke-opacity:.8;stroke-width:1.5"/>
+    <circle cx="520" cy="470" r="234" fill="none" stroke="#A594FF" stroke-opacity=".35" stroke-dasharray="2 10"/>
+    <text font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="3.6" font-weight="500" fill="#A594FF"><textPath href="#arc" startOffset="50%" text-anchor="middle">{{ring}}</textPath></text>
+  </g>
+
+  {{wires}}
+
+  <g class="n" data-n="center" style="--tone:var(--request)">
+    <rect class="base" x="{{center_left}}" y="426" width="{{center_width}}" height="88" rx="24" style="stroke:#7EA6FF;stroke-opacity:.55"/>
+    <path transform="translate({{center_icon}} 470)" fill="#7EA6FF" d="M0,-11 C1.2,-3 3,-1.2 11,0 C3,1.2 1.2,3 0,11 C-1.2,3 -3,1.2 -11,0 C-3,-1.2 -1.2,-3 0,-11 Z"/>
+    <text x="{{center_text}}" y="476" font-size="18" font-weight="600" letter-spacing="3.2" fill="#EEF2F7">{{center}}</text>
+  </g>
+
+  <g font-size="16" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">
+    {{blocks}}
+  </g>
+
+  <g class="n" data-n="side" style="--tone:var(--mcp)">
+    <text x="1040" y="118" text-anchor="middle" font-size="44" font-weight="700" letter-spacing="7" fill="#EEF2F7">{{side_title}}</text>
+    <text x="1040" y="148" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="2.8" fill="#3DD6C6">{{side_subtitle}}</text>
+    <rect x="1008" y="182" width="64" height="660" rx="32" fill="url(#sidefill)" stroke="#3DD6C6" stroke-width="1.4"/>
+    <path d="M1040 208 V816" stroke="#3DD6C6" stroke-opacity=".5" stroke-dasharray="3 7"/>
+    <g fill="#05070B" stroke="#3DD6C6" stroke-width="1.5">
+      <rect x="1000" y="462" width="16" height="16" rx="3"/><rect x="1000" y="782" width="16" height="16" rx="3"/>
+      <rect x="1064" y="262" width="16" height="16" rx="3"/><rect x="1064" y="382" width="16" height="16" rx="3"/><rect x="1064" y="502" width="16" height="16" rx="3"/><rect x="1064" y="622" width="16" height="16" rx="3"/><rect x="1064" y="742" width="16" height="16" rx="3"/>
+    </g>
+    <path d="M1080 270 H1104 M1080 390 H1104 M1080 510 H1104 M1080 630 H1104 M1080 750 H1104" stroke="#3DD6C6" stroke-opacity=".7"/>
+    <text transform="translate(1132 510) rotate(90)" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2" fill="#8B94A5">{{side_reaches}}</text>
+  </g>
+
+  <text x="590" y="948" text-anchor="middle" font-size="31" font-weight="500" fill="#EEF2F7">{{question}}</text>
+  <text x="590" y="992" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="17" fill="#3DD6C6">{{takeaway}}</text>
+</svg>

@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<title>Le parcours de votre question · assistant agentique</title>
+<title>Your question, step by step · agentic assistant</title>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search).get("lang"), saved = null;
+  try { saved = localStorage.getItem("mmia-lang"); } catch (e) {}
+  var lang = q || saved || ((navigator.language || "en").toLowerCase().indexOf("fr") === 0 ? "fr" : "en");
+  document.documentElement.lang = lang === "fr" ? "fr" : "en";
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -108,12 +116,17 @@
     .controls .count { font-size: 12px; }
   }
 
+  html[lang="en"] [data-lang="fr"], html[lang="fr"] [data-lang="en"] { display: none; }
+  .nav button { font: 500 12px 'JetBrains Mono', monospace; color: var(--muted); padding: 6px 9px; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav button:hover { color: var(--text); }
+  html[lang="en"] .nav button.en, html[lang="fr"] .nav button.fr { color: var(--bg); background: var(--mcp); border-color: var(--mcp); }
+
 </style>
 </head>
 <body>
-<nav class="nav"><a href="mcp-concepts-client.html">Vue technique</a><a href="mcp-agentic-architecture-client.html?autoplay=0&amp;lang=fr">← Animation</a><a href="../index.html">Accueil</a></nav>
-<main class="slide">
-<svg class="diagram" id="diagram" viewBox="0 0 1180 1080" role="img" aria-label="Le trader pose une question à son assistant. L’orchestrateur prépare le contexte, le modèle propose un plan, les outils vont chercher ordres, exécutions et données de marché via MCP, puis le modèle analyse et répond.">
+<nav class="nav"><button class="en" type="button" data-set-lang="en">EN</button><button class="fr" type="button" data-set-lang="fr">FR</button><a href="mcp-concepts-client.html" data-sync-lang><span data-lang="en">Technical view</span><span data-lang="fr">Vue technique</span></a><a href="mcp-agentic-architecture-client.html?autoplay=0" data-sync-lang><span data-lang="en">← Animation</span><span data-lang="fr">← Animation</span></a><a href="../index.html"><span data-lang="en">Home</span><span data-lang="fr">Accueil</span></a></nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <radialGradient id="halo"><stop offset="0" stop-color="#A594FF" stop-opacity=".26"/><stop offset="1" stop-color="#A594FF" stop-opacity="0"/></radialGradient>
     <linearGradient id="sidefill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3DD6C6" stop-opacity=".05"/><stop offset=".5" stop-color="#3DD6C6" stop-opacity=".3"/><stop offset="1" stop-color="#3DD6C6" stop-opacity=".05"/></linearGradient>
@@ -123,6 +136,88 @@
     <g id="stack" fill="none" stroke-width="1.6"><rect x="-9" y="-8" width="18" height="4" rx="2"/><rect x="-9" y="-2" width="18" height="4" rx="2"/><rect x="-9" y="4" width="18" height="4" rx="2"/></g>
     <g id="plug" fill="none" stroke-width="1.6"><rect x="-7" y="-5" width="14" height="10" rx="3"/><path d="M-3,-5 V-11 M3,-5 V-11 M0,5 V9"/></g>
   </defs>
+</svg>
+<main class="slide" data-lang="en">
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="The trader asks their assistant a question. The orchestrator prepares the context, the model proposes a plan, the tools fetch orders, executions and market data through MCP, then the model analyses and answers.">
+
+  <g font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text x="80" y="77" fill="#EEF2F7" font-size="12">01</text>
+    <text x="112" y="77" fill="#8B94A5">THE JOURNEY OF A BUSINESS REQUEST</text>
+  </g>
+
+  <g class="n" data-n="user">
+    <circle cx="90" cy="470" r="44" fill="none" stroke="rgba(255,255,255,.2)"/>
+    <circle cx="90" cy="458" r="10" fill="none" stroke="#EEF2F7" stroke-width="1.8"/>
+    <path d="M71 488 C73 474 107 474 109 488" fill="none" stroke="#EEF2F7" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="90" y="548" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">YOU</text>
+  </g>
+  <path class="wire" data-n="user" d="M138 470 H375" stroke="#7EA6FF" stroke-opacity=".5" stroke-width="1.2"/>
+
+  <g class="n" data-n="ring" style="--tone:var(--orchestrator)">
+    <circle cx="520" cy="470" r="330" fill="url(#halo)"/>
+    <circle class="base" cx="520" cy="470" r="220" style="fill:none;stroke:#A594FF;stroke-opacity:.8;stroke-width:1.5"/>
+    <circle cx="520" cy="470" r="234" fill="none" stroke="#A594FF" stroke-opacity=".35" stroke-dasharray="2 10"/>
+    <text font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="3.6" font-weight="500" fill="#A594FF"><textPath href="#arc" startOffset="50%" text-anchor="middle">ORCHESTRATOR</textPath></text>
+  </g>
+
+  <g fill="none" stroke="#A594FF" stroke-opacity=".5" stroke-width="1.3">
+  <path class="wire" data-n="model" d="M345 186 L364 314"/>
+  <path class="wire" data-n="skills" d="M695 186 L676 314"/>
+  <path class="wire" data-n="memory" d="M345 754 L364 626"/>
+  <path class="wire" data-n="tools" d="M695 754 L676 626"/>
+  </g>
+  <path class="wire" data-n="side" d="M740 470 H1006" stroke="#3DD6C6" stroke-opacity=".65" stroke-width="1.3"/>
+  <path class="wire" data-n="tools side" d="M885 790 H1006" stroke="#3DD6C6" stroke-opacity=".8" stroke-width="1.3" stroke-dasharray="5 6"/>
+
+  <g class="n" data-n="center" style="--tone:var(--request)">
+    <rect class="base" x="375" y="426" width="290" height="88" rx="24" style="stroke:#7EA6FF;stroke-opacity:.55"/>
+    <path transform="translate(419 470)" fill="#7EA6FF" d="M0,-11 C1.2,-3 3,-1.2 11,0 C3,1.2 1.2,3 0,11 C-1.2,3 -3,1.2 -11,0 C-3,-1.2 -1.2,-3 0,-11 Z"/>
+    <text x="447" y="476" font-size="18" font-weight="600" letter-spacing="3.2" fill="#EEF2F7">AI ASSISTANT</text>
+  </g>
+
+  <g font-size="16" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">
+    <g class="n" data-n="model" style="--tone:var(--orchestrator)"><rect class="base" x="155" y="108" width="190" height="84" rx="14"/><use href="#hex" x="214" y="140" stroke="#A594FF"/><text x="238" y="146">MODEL</text><text x="250" y="172" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">Interprets · proposes</text></g>
+    <g class="n" data-n="skills" style="--tone:var(--orchestrator)"><rect class="base" x="695" y="108" width="190" height="84" rx="14"/><use href="#grid" x="748" y="140" stroke="#A594FF"/><text x="772" y="146">SKILLS</text><text x="790" y="172" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">Business methods</text></g>
+    <g class="n" data-n="memory" style="--tone:var(--orchestrator)"><rect class="base" x="155" y="748" width="190" height="84" rx="14"/><use href="#stack" x="208" y="780" stroke="#A594FF"/><text x="232" y="786">MEMORY</text><text x="250" y="812" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">If authorised</text></g>
+    <g class="n" data-n="tools" style="--tone:var(--orchestrator)"><rect class="base" x="695" y="748" width="190" height="84" rx="14"/><use href="#plug" x="754" y="780" stroke="#A594FF"/><text x="778" y="786">TOOLS</text><text x="790" y="812" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">Data · calculations</text></g>
+  </g>
+
+  <g class="n" data-n="side" style="--tone:var(--mcp)">
+    <text x="1040" y="118" text-anchor="middle" font-size="44" font-weight="700" letter-spacing="7" fill="#EEF2F7">MCP</text>
+    <text x="1040" y="148" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="2.8" fill="#3DD6C6">MODEL CONTEXT PROTOCOL</text>
+    <rect x="1008" y="182" width="64" height="660" rx="32" fill="url(#sidefill)" stroke="#3DD6C6" stroke-width="1.4"/>
+    <path d="M1040 208 V816" stroke="#3DD6C6" stroke-opacity=".5" stroke-dasharray="3 7"/>
+    <g fill="#05070B" stroke="#3DD6C6" stroke-width="1.5">
+      <rect x="1000" y="462" width="16" height="16" rx="3"/><rect x="1000" y="782" width="16" height="16" rx="3"/>
+      <rect x="1064" y="262" width="16" height="16" rx="3"/><rect x="1064" y="382" width="16" height="16" rx="3"/><rect x="1064" y="502" width="16" height="16" rx="3"/><rect x="1064" y="622" width="16" height="16" rx="3"/><rect x="1064" y="742" width="16" height="16" rx="3"/>
+    </g>
+    <path d="M1080 270 H1104 M1080 390 H1104 M1080 510 H1104 M1080 630 H1104 M1080 750 H1104" stroke="#3DD6C6" stroke-opacity=".7"/>
+    <text transform="translate(1132 510) rotate(90)" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2" fill="#8B94A5">YOUR ORDERS · MARKET · CALCULATIONS</text>
+  </g>
+
+  <text x="590" y="948" text-anchor="middle" font-size="31" font-weight="500" fill="#EEF2F7">Why did my basket underperform VWAP this morning?</text>
+  <text x="590" y="992" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="17" fill="#3DD6C6">The model proposes, the orchestrator drives and controls, the tools bring the facts.</text>
+</svg>
+
+<section class="journey" aria-label="The journey of your question">
+  <ul class="roles"><li style="--tone:var(--request)"><b>The agent</b><span>The solution as a whole: your assistant.</span></li><li style="--tone:var(--orchestrator)"><b>The orchestrator</b><span>The engine that drives the exchanges with the model and the tools.</span></li><li style="--tone:var(--orchestrator)"><b>The model</b><span>Interprets, reasons and proposes the next actions.</span></li></ul>
+  <h1>The journey of your question</h1>
+  <ol class="steps">
+    <li><button class="step" data-nodes="user center"><i>1</i><b>You ask your question</b><span class="more"><span>In plain language, as you would ask a colleague. No query to write, no screen to open.</span><em>“Why did my basket underperform VWAP this morning?”</em></span></button></li>
+    <li><button class="step" data-nodes="ring memory skills"><i>2</i><b>The assistant prepares the file</b><span class="more"><span>The orchestrator gathers the context: your preferences (memory, if authorised), the right analysis method (skill) and your access rights.</span><em>Gaps in bps · method: execution vs VWAP · scope: your books</em></span></button></li>
+    <li><button class="step" data-nodes="ring model"><i>3</i><b>The model draws up a plan</b><span class="more"><span>It interprets the request and sends the orchestrator the actions needed. It proposes; it executes nothing itself.</span><em>1. basket orders · 2. executions · 3. VWAP per line · 4. gap in bps</em></span></button></li>
+    <li><button class="step" data-nodes="ring tools side"><i>4</i><b>The tools fetch the facts</b><span class="more"><span>Through MCP, the orchestrator calls the tools, within the rules and permissions. Calculations are done by dedicated tools, not by the model.</span><em>OMS → 24 orders · executions → 312 fills · market → VWAP per stock</em></span></button></li>
+    <li><button class="step" data-nodes="ring model tools side"><i>5</i><b>The model analyses and digs deeper if needed</b><span class="more"><span>The orchestrator passes it the results. If more is needed, the model proposes a new action and the loop starts again.</span><em>−12 bps vs VWAP, 9 of them on 3 lines → new request: spread and volumes at the open</em></span></button></li>
+    <li><button class="step" data-nodes="user center model"><i>6</i><b>You get a reasoned answer</b><span class="more"><span>The model writes the final answer, which the assistant hands back to you: an explanation, the figures behind it and a record of every access.</span><em>“3 illiquid lines traded at the open, spread ×3: 9 bps of the 12.”</em></span></button></li>
+    <li><button class="step" data-nodes="user center ring model skills memory tools side"><i>7</i><b>The big picture: everything works together</b><span class="more"><span>One question, several coordinated steps. The model proposes, the orchestrator drives and controls, skills and memory bring the context, the tools bring the facts through MCP.</span><em>One business request · coordinated steps · controlled, traced access</em></span></button></li>
+    <li><button class="step" data-nodes="user center ring model skills memory tools side"><i>8</i><b>What it changes: decision support</b><span class="more"><span>More than a time saver: a factual reading, free of emotional bias, that brings out what you might have missed. The decision stays yours, better informed.</span><em>Time saved · factual analysis · blind spots revealed · better human decisions</em></span></button></li>
+  </ol>
+  <div class="controls"><button class="prev" aria-label="Previous step">←</button><span class="count" aria-live="polite"></span><button class="next" aria-label="Next step">→</button></div>
+</section>
+</main>
+<main class="slide" data-lang="fr">
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="Le trader pose une question à son assistant. L’orchestrateur prépare le contexte, le modèle propose un plan, les outils vont chercher ordres, exécutions et données de marché via MCP, puis le modèle analyse et répond.">
 
   <g font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2">
     <path d="M42 72 H66" stroke="#3DD6C6"/>
@@ -203,34 +298,42 @@
 <script>
 // Journey slides: one request followed step by step. Each step lights the
 // diagram blocks it involves. Next: click on the diagram, →, ↓, Space,
-// PageDown (remote clicker); back: ←, ↑, PageUp. The step is kept in the URL hash.
+// PageDown (remote clicker); back: ←, ↑, PageUp. The step is kept in the URL
+// hash and shared by the language versions, so switching language keeps it.
 (function () {
-  const slide = document.querySelector(".slide");
-  const svg = slide.querySelector("svg.diagram");
-  const steps = [...slide.querySelectorAll(".step")];
-  const count = slide.querySelector(".count");
+  const slides = [...document.querySelectorAll(".slide")].map((slide) => ({
+    svg: slide.querySelector("svg.diagram"),
+    steps: [...slide.querySelectorAll(".step")],
+    count: slide.querySelector(".count"),
+    slide,
+  }));
+  const total = slides[0].steps.length;
   let cur = 0;
 
   function go(i) {
-    cur = Math.max(0, Math.min(steps.length - 1, i));
-    const keys = new Set(steps[cur].dataset.nodes.split(" "));
-    steps.forEach((s, j) => {
-      s.classList.toggle("on", j === cur);
-      s.classList.toggle("done", j < cur);
-      if (j === cur) s.setAttribute("aria-current", "step"); else s.removeAttribute("aria-current");
+    cur = Math.max(0, Math.min(total - 1, i));
+    slides.forEach(({ svg, steps, count }) => {
+      const keys = new Set(steps[cur].dataset.nodes.split(" "));
+      steps.forEach((s, j) => {
+        s.classList.toggle("on", j === cur);
+        s.classList.toggle("done", j < cur);
+        if (j === cur) s.setAttribute("aria-current", "step"); else s.removeAttribute("aria-current");
+      });
+      svg.classList.add("focus");
+      svg.querySelectorAll("[data-n]").forEach((el) => {
+        el.classList.toggle("on", el.dataset.n.split(" ").some((k) => keys.has(k)));
+      });
+      count.textContent = `${cur + 1} / ${total}`;
     });
-    svg.classList.add("focus");
-    svg.querySelectorAll("[data-n]").forEach((el) => {
-      el.classList.toggle("on", el.dataset.n.split(" ").some((k) => keys.has(k)));
-    });
-    count.textContent = `${cur + 1} / ${steps.length}`;
-    try { history.replaceState(null, "", "#" + (cur + 1)); } catch (e) {}
+    try { history.replaceState(null, "", location.pathname + location.search + "#" + (cur + 1)); } catch (e) {}
   }
 
-  steps.forEach((s, j) => s.addEventListener("click", () => go(j)));
-  slide.querySelector(".prev").addEventListener("click", () => go(cur - 1));
-  slide.querySelector(".next").addEventListener("click", () => go(cur + 1));
-  svg.addEventListener("click", () => go(cur + 1));
+  slides.forEach(({ svg, steps, slide }) => {
+    steps.forEach((s, j) => s.addEventListener("click", () => go(j)));
+    slide.querySelector(".prev").addEventListener("click", () => go(cur - 1));
+    slide.querySelector(".next").addEventListener("click", () => go(cur + 1));
+    svg.addEventListener("click", () => go(cur + 1));
+  });
   document.addEventListener("keydown", (e) => {
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     const next = ["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key);
@@ -238,7 +341,7 @@
     if (next) go(cur + 1);
     else if (prev) go(cur - 1);
     else if (e.key === "Home") go(0);
-    else if (e.key === "End") go(steps.length - 1);
+    else if (e.key === "End") go(total - 1);
     else return;
     e.preventDefault();
   });
@@ -247,6 +350,24 @@
   go(Number.isFinite(start) ? start - 1 : 0);
 })();
 
+</script>
+<script>
+(function () {
+  const titles = {"en": "Your question, step by step · agentic assistant", "fr": "Le parcours de votre question · assistant agentique"};
+  const links = [...document.querySelectorAll("[data-sync-lang]")];
+  links.forEach((a) => { a.dataset.base = a.getAttribute("href"); });
+  function sync() {
+    const lang = document.documentElement.lang;
+    document.title = titles[lang] || document.title;
+    links.forEach((a) => { const b = a.dataset.base; a.href = `${b}${b.includes("?") ? "&" : "?"}lang=${lang}`; });
+  }
+  document.querySelectorAll("[data-set-lang]").forEach((b) => b.addEventListener("click", () => {
+    document.documentElement.lang = b.dataset.setLang;
+    try { localStorage.setItem("mmia-lang", b.dataset.setLang); } catch (e) {}
+    sync();
+  }));
+  sync();
+})();
 </script>
 </body>
 </html>

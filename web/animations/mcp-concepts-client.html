@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<title>Notions clés · assistant agentique</title>
+<title>Key notions · agentic assistant</title>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search).get("lang"), saved = null;
+  try { saved = localStorage.getItem("mmia-lang"); } catch (e) {}
+  var lang = q || saved || ((navigator.language || "en").toLowerCase().indexOf("fr") === 0 ? "fr" : "en");
+  document.documentElement.lang = lang === "fr" ? "fr" : "en";
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -59,12 +67,17 @@
     .glossary h1 { font-size: 11px; margin-top: 24px; }
   }
 
+  html[lang="en"] [data-lang="fr"], html[lang="fr"] [data-lang="en"] { display: none; }
+  .nav button { font: 500 12px 'JetBrains Mono', monospace; color: var(--muted); padding: 6px 9px; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 8px; background: rgba(10,14,21,0.78); }
+  .nav button:hover { color: var(--text); }
+  html[lang="en"] .nav button.en, html[lang="fr"] .nav button.fr { color: var(--bg); background: var(--mcp); border-color: var(--mcp); }
+
 </style>
 </head>
 <body>
-<nav class="nav"><a href="mcp-journey-client.html">Vue métier</a><a href="mcp-agentic-architecture-client.html?autoplay=0&amp;lang=fr">← Animation</a><a href="../index.html">Accueil</a></nav>
-<main class="slide">
-<svg class="diagram" id="diagram" viewBox="0 0 1180 1080" role="img" aria-label="Un agent IA tourne dans un orchestrateur, relié à un modèle, des skills, une mémoire et des outils. Les outils atteignent vos données et les calculs via MCP.">
+<nav class="nav"><button class="en" type="button" data-set-lang="en">EN</button><button class="fr" type="button" data-set-lang="fr">FR</button><a href="mcp-journey-client.html" data-sync-lang><span data-lang="en">Business view</span><span data-lang="fr">Vue métier</span></a><a href="mcp-agentic-architecture-client.html?autoplay=0" data-sync-lang><span data-lang="en">← Animation</span><span data-lang="fr">← Animation</span></a><a href="../index.html"><span data-lang="en">Home</span><span data-lang="fr">Accueil</span></a></nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <radialGradient id="halo"><stop offset="0" stop-color="#A594FF" stop-opacity=".26"/><stop offset="1" stop-color="#A594FF" stop-opacity="0"/></radialGradient>
     <linearGradient id="sidefill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3DD6C6" stop-opacity=".05"/><stop offset=".5" stop-color="#3DD6C6" stop-opacity=".3"/><stop offset="1" stop-color="#3DD6C6" stop-opacity=".05"/></linearGradient>
@@ -74,6 +87,85 @@
     <g id="stack" fill="none" stroke-width="1.6"><rect x="-9" y="-8" width="18" height="4" rx="2"/><rect x="-9" y="-2" width="18" height="4" rx="2"/><rect x="-9" y="4" width="18" height="4" rx="2"/></g>
     <g id="plug" fill="none" stroke-width="1.6"><rect x="-7" y="-5" width="14" height="10" rx="3"/><path d="M-3,-5 V-11 M3,-5 V-11 M0,5 V9"/></g>
   </defs>
+</svg>
+<main class="slide" data-lang="en">
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="An AI agent runs inside an orchestrator, connected to a model, skills, memory and tools. The tools reach your data and calculations through MCP.">
+
+  <g font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2">
+    <path d="M42 72 H66" stroke="#3DD6C6"/>
+    <text x="80" y="77" fill="#EEF2F7" font-size="12">01</text>
+    <text x="112" y="77" fill="#8B94A5">THE BUILDING BLOCKS OF AN AGENTIC ASSISTANT</text>
+  </g>
+
+  <g class="n" data-n="user">
+    <circle cx="90" cy="470" r="44" fill="none" stroke="rgba(255,255,255,.2)"/>
+    <circle cx="90" cy="458" r="10" fill="none" stroke="#EEF2F7" stroke-width="1.8"/>
+    <path d="M71 488 C73 474 107 474 109 488" fill="none" stroke="#EEF2F7" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="90" y="548" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">YOU</text>
+  </g>
+  <path class="wire" data-n="user" d="M138 470 H384" stroke="#7EA6FF" stroke-opacity=".5" stroke-width="1.2"/>
+
+  <g class="n" data-n="ring" style="--tone:var(--orchestrator)">
+    <circle cx="520" cy="470" r="330" fill="url(#halo)"/>
+    <circle class="base" cx="520" cy="470" r="220" style="fill:none;stroke:#A594FF;stroke-opacity:.8;stroke-width:1.5"/>
+    <circle cx="520" cy="470" r="234" fill="none" stroke="#A594FF" stroke-opacity=".35" stroke-dasharray="2 10"/>
+    <text font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="3.6" font-weight="500" fill="#A594FF"><textPath href="#arc" startOffset="50%" text-anchor="middle">ORCHESTRATOR</textPath></text>
+  </g>
+
+  <g fill="none" stroke="#A594FF" stroke-opacity=".5" stroke-width="1.3">
+  <path class="wire" data-n="model" d="M345 186 L364 314"/>
+  <path class="wire" data-n="skills" d="M695 186 L676 314"/>
+  <path class="wire" data-n="memory" d="M345 754 L364 626"/>
+  <path class="wire" data-n="tools" d="M695 754 L676 626"/>
+  </g>
+  <path class="wire" data-n="side" d="M740 470 H1006" stroke="#3DD6C6" stroke-opacity=".65" stroke-width="1.3"/>
+  <path class="wire" data-n="tools side" d="M885 790 H1006" stroke="#3DD6C6" stroke-opacity=".8" stroke-width="1.3" stroke-dasharray="5 6"/>
+
+  <g class="n" data-n="center" style="--tone:var(--request)">
+    <rect class="base" x="384" y="426" width="272" height="88" rx="24" style="stroke:#7EA6FF;stroke-opacity:.55"/>
+    <path transform="translate(428 470)" fill="#7EA6FF" d="M0,-11 C1.2,-3 3,-1.2 11,0 C3,1.2 1.2,3 0,11 C-1.2,3 -3,1.2 -11,0 C-3,-1.2 -1.2,-3 0,-11 Z"/>
+    <text x="456" y="476" font-size="18" font-weight="600" letter-spacing="3.2" fill="#EEF2F7">AI AGENT</text>
+  </g>
+
+  <g font-size="16" font-weight="600" letter-spacing="2.4" fill="#EEF2F7">
+    <g class="n" data-n="model" style="--tone:var(--orchestrator)"><rect class="base" x="155" y="108" width="190" height="84" rx="14"/><use href="#hex" x="214" y="140" stroke="#A594FF"/><text x="238" y="146">MODEL</text><text x="250" y="172" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">LLM</text></g>
+    <g class="n" data-n="skills" style="--tone:var(--orchestrator)"><rect class="base" x="695" y="108" width="190" height="84" rx="14"/><use href="#grid" x="748" y="140" stroke="#A594FF"/><text x="772" y="146">SKILLS</text><text x="790" y="172" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">Methods</text></g>
+    <g class="n" data-n="memory" style="--tone:var(--orchestrator)"><rect class="base" x="155" y="748" width="190" height="84" rx="14"/><use href="#stack" x="208" y="780" stroke="#A594FF"/><text x="232" y="786">MEMORY</text><text x="250" y="812" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">If authorised</text></g>
+    <g class="n" data-n="tools" style="--tone:var(--orchestrator)"><rect class="base" x="695" y="748" width="190" height="84" rx="14"/><use href="#plug" x="754" y="780" stroke="#A594FF"/><text x="778" y="786">TOOLS</text><text x="790" y="812" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="400" letter-spacing=".6" fill="#8B94A5">Data · calculations</text></g>
+  </g>
+
+  <g class="n" data-n="side" style="--tone:var(--mcp)">
+    <text x="1040" y="118" text-anchor="middle" font-size="44" font-weight="700" letter-spacing="7" fill="#EEF2F7">MCP</text>
+    <text x="1040" y="148" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="2.8" fill="#3DD6C6">MODEL CONTEXT PROTOCOL</text>
+    <rect x="1008" y="182" width="64" height="660" rx="32" fill="url(#sidefill)" stroke="#3DD6C6" stroke-width="1.4"/>
+    <path d="M1040 208 V816" stroke="#3DD6C6" stroke-opacity=".5" stroke-dasharray="3 7"/>
+    <g fill="#05070B" stroke="#3DD6C6" stroke-width="1.5">
+      <rect x="1000" y="462" width="16" height="16" rx="3"/><rect x="1000" y="782" width="16" height="16" rx="3"/>
+      <rect x="1064" y="262" width="16" height="16" rx="3"/><rect x="1064" y="382" width="16" height="16" rx="3"/><rect x="1064" y="502" width="16" height="16" rx="3"/><rect x="1064" y="622" width="16" height="16" rx="3"/><rect x="1064" y="742" width="16" height="16" rx="3"/>
+    </g>
+    <path d="M1080 270 H1104 M1080 390 H1104 M1080 510 H1104 M1080 630 H1104 M1080 750 H1104" stroke="#3DD6C6" stroke-opacity=".7"/>
+    <text transform="translate(1132 510) rotate(90)" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2" fill="#8B94A5">YOUR ORDERS · MARKET · CALCULATIONS</text>
+  </g>
+
+  <text x="590" y="948" text-anchor="middle" font-size="31" font-weight="500" fill="#EEF2F7">Why did my basket underperform VWAP this morning?</text>
+  <text x="590" y="992" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="17" fill="#3DD6C6">One business request, several coordinated steps, controlled access.</text>
+</svg>
+
+<section class="glossary" aria-label="Glossary">
+  <h1>Key notions</h1>
+  <ul>
+    <li><button class="term" data-n="model" style="--tone:var(--orchestrator)"><b>Model (LLM)</b><span>Interprets your request and writes the answer in plain language. On its own, it knows nothing about your orders.</span></button></li>
+    <li><button class="term" data-n="center" style="--tone:var(--orchestrator)"><b>Agent</b><span>An assistant that carries out a task in several steps: it uses tools, examines the results and adapts what comes next.</span></button></li>
+    <li><button class="term" data-n="ring" style="--tone:var(--orchestrator)"><b>Orchestrator</b><span>The software that runs the whole thing. Controls apply there, and in the systems: access, limits, traceability.</span></button></li>
+    <li><button class="term" data-n="tools" style="--tone:var(--orchestrator)"><b>Tools</b><span>Precise functions: find an order, read prices, compute a gap. Calculations stay with dedicated tools.</span></button></li>
+    <li><button class="term" data-n="side" style="--tone:var(--mcp)"><b>MCP</b><span>An open standard that connects the assistant to tools and data. It grants no rights: permissions are still checked by the systems.</span></button></li>
+    <li><button class="term" data-n="skills" style="--tone:var(--orchestrator)"><b>Skills</b><span>A working method given to the assistant: the steps to follow, the tools to use and the checks to run.</span></button></li>
+    <li><button class="term minor" data-n="memory" style="--tone:var(--orchestrator)"><b>Memory</b><span>If planned and authorised: keeps some elements, such as a presentation preference.</span></button></li>
+  </ul>
+</section>
+</main>
+<main class="slide" data-lang="fr">
+<svg class="diagram" viewBox="0 0 1180 1080" role="img" aria-label="Un agent IA tourne dans un orchestrateur, relié à un modèle, des skills, une mémoire et des outils. Les outils atteignent vos données et les calculs via MCP.">
 
   <g font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="3.2">
     <path d="M42 72 H66" stroke="#3DD6C6"/>
@@ -196,6 +288,24 @@
   });
 })();
 
+</script>
+<script>
+(function () {
+  const titles = {"en": "Key notions · agentic assistant", "fr": "Notions clés · assistant agentique"};
+  const links = [...document.querySelectorAll("[data-sync-lang]")];
+  links.forEach((a) => { a.dataset.base = a.getAttribute("href"); });
+  function sync() {
+    const lang = document.documentElement.lang;
+    document.title = titles[lang] || document.title;
+    links.forEach((a) => { const b = a.dataset.base; a.href = `${b}${b.includes("?") ? "&" : "?"}lang=${lang}`; });
+  }
+  document.querySelectorAll("[data-set-lang]").forEach((b) => b.addEventListener("click", () => {
+    document.documentElement.lang = b.dataset.setLang;
+    try { localStorage.setItem("mmia-lang", b.dataset.setLang); } catch (e) {}
+    sync();
+  }));
+  sync();
+})();
 </script>
 </body>
 </html>

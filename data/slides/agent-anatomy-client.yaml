@@ -1,34 +1,81 @@
-# Client version of agent-anatomy.yaml, in French, shown after the client
-# version of the MCP animation (mcp-agentic-architecture-client.html).
+# Client version of agent-anatomy.yaml, bilingual (EN/FR), shown after the
+# client version of the MCP animation (mcp-agentic-architecture-client.html).
 # Four main notions (model, agent, tools, MCP) plus the orchestrator;
 # skills and memory are marked `secondary`, as complementary capabilities.
+# Shared structure here; the `en:` and `fr:` blocks hold the text, and their
+# lists are laid over the shared ones item by item.
 output: web/animations/mcp-concepts-client.html
-lang: fr
-home_label: "Accueil"
-glossary_label: "Glossaire"
-glossary_title: "Les notions clés"
-title: "Notions clés · assistant agentique"
-eyebrow: "LES BRIQUES D’UN ASSISTANT AGENTIQUE"
-aria: "Un agent IA tourne dans un orchestrateur, relié à un modèle, des skills, une mémoire et des outils. Les outils atteignent vos données et les calculs via MCP."
-back: { href: "mcp-agentic-architecture-client.html?autoplay=0&lang=fr", label: "← Animation" }
-alt: { href: "mcp-journey-client.html", label: "Vue métier" }
-user: "VOUS"
-center: "AGENT IA"
-ring: "ORCHESTRATEUR"
+back: { href: "mcp-agentic-architecture-client.html?autoplay=0" }
+alt: { href: "mcp-journey-client.html" }
 # Four corners, in order: top-left, top-right, bottom-left, bottom-right.
 blocks:
-  - { id: model,  label: "MODÈLE",  sub: "LLM", glyph: hex }
-  - { id: skills, label: "SKILLS",  sub: "Méthodes", glyph: grid }
-  - { id: memory, label: "MÉMOIRE", sub: "Si autorisée", glyph: stack }
-  - { id: tools,  label: "OUTILS",  sub: "Données · calculs", glyph: plug, via_side: true }
-side: { title: "MCP", subtitle: "MODEL CONTEXT PROTOCOL", reaches: "VOS ORDRES · MARCHÉ · CALCULS" }
-question: "Pourquoi mon panier a-t-il sous-performé le VWAP ce matin ?"
-takeaway: "Une demande métier, plusieurs étapes coordonnées, des accès contrôlés."
+  - { id: model,  glyph: hex }
+  - { id: skills, glyph: grid }
+  - { id: memory, glyph: stack }
+  - { id: tools,  glyph: plug, via_side: true }
 glossary:
-  - { term: "Modèle (LLM)", node: model, text: "Interprète votre demande et formule la réponse en langage courant. Seul, il ne connaît pas vos ordres." }
-  - { term: "Agent", node: center, text: "Un assistant qui réalise une tâche en plusieurs étapes : il utilise des outils, examine les résultats et adapte la suite." }
-  - { term: "Orchestrateur", node: ring, text: "Le logiciel qui fait tourner l’ensemble. C’est là, et dans les systèmes, que s’appliquent les contrôles : accès, limites, traçabilité." }
-  - { term: "Outils", node: tools, text: "Des fonctions précises : retrouver un ordre, lire des prix, calculer un écart. Les calculs restent confiés à des outils dédiés." }
-  - { term: "MCP", node: side, text: "Un standard ouvert pour connecter l’assistant aux outils et aux données. Il ne donne aucun droit : les autorisations restent vérifiées par les systèmes." }
-  - { term: "Skills", node: skills, text: "Une méthode de travail donnée à l’assistant : les étapes à suivre, les outils à utiliser et les vérifications à effectuer." }
-  - { term: "Mémoire", node: memory, secondary: true, text: "Si elle est prévue et autorisée : conserve certains éléments, comme une préférence de présentation." }
+  - { node: model }
+  - { node: center }
+  - { node: ring }
+  - { node: tools }
+  - { node: side }
+  - { node: skills }
+  - { node: memory, secondary: true }
+
+fr:
+  home_label: "Accueil"
+  glossary_label: "Glossaire"
+  glossary_title: "Les notions clés"
+  title: "Notions clés · assistant agentique"
+  eyebrow: "LES BRIQUES D’UN ASSISTANT AGENTIQUE"
+  aria: "Un agent IA tourne dans un orchestrateur, relié à un modèle, des skills, une mémoire et des outils. Les outils atteignent vos données et les calculs via MCP."
+  back: { label: "← Animation" }
+  alt: { label: "Vue métier" }
+  user: "VOUS"
+  center: "AGENT IA"
+  ring: "ORCHESTRATEUR"
+  blocks:
+    - { label: "MODÈLE",  sub: "LLM" }
+    - { label: "SKILLS",  sub: "Méthodes" }
+    - { label: "MÉMOIRE", sub: "Si autorisée" }
+    - { label: "OUTILS",  sub: "Données · calculs" }
+  side: { title: "MCP", subtitle: "MODEL CONTEXT PROTOCOL", reaches: "VOS ORDRES · MARCHÉ · CALCULS" }
+  question: "Pourquoi mon panier a-t-il sous-performé le VWAP ce matin ?"
+  takeaway: "Une demande métier, plusieurs étapes coordonnées, des accès contrôlés."
+  glossary:
+    - { term: "Modèle (LLM)", text: "Interprète votre demande et formule la réponse en langage courant. Seul, il ne connaît pas vos ordres." }
+    - { term: "Agent", text: "Un assistant qui réalise une tâche en plusieurs étapes : il utilise des outils, examine les résultats et adapte la suite." }
+    - { term: "Orchestrateur", text: "Le logiciel qui fait tourner l’ensemble. C’est là, et dans les systèmes, que s’appliquent les contrôles : accès, limites, traçabilité." }
+    - { term: "Outils", text: "Des fonctions précises : retrouver un ordre, lire des prix, calculer un écart. Les calculs restent confiés à des outils dédiés." }
+    - { term: "MCP", text: "Un standard ouvert pour connecter l’assistant aux outils et aux données. Il ne donne aucun droit : les autorisations restent vérifiées par les systèmes." }
+    - { term: "Skills", text: "Une méthode de travail donnée à l’assistant : les étapes à suivre, les outils à utiliser et les vérifications à effectuer." }
+    - { term: "Mémoire", text: "Si elle est prévue et autorisée : conserve certains éléments, comme une préférence de présentation." }
+
+en:
+  home_label: "Home"
+  glossary_label: "Glossary"
+  glossary_title: "Key notions"
+  title: "Key notions · agentic assistant"
+  eyebrow: "THE BUILDING BLOCKS OF AN AGENTIC ASSISTANT"
+  aria: "An AI agent runs inside an orchestrator, connected to a model, skills, memory and tools. The tools reach your data and calculations through MCP."
+  back: { label: "← Animation" }
+  alt: { label: "Business view" }
+  user: "YOU"
+  center: "AI AGENT"
+  ring: "ORCHESTRATOR"
+  blocks:
+    - { label: "MODEL",  sub: "LLM" }
+    - { label: "SKILLS", sub: "Methods" }
+    - { label: "MEMORY", sub: "If authorised" }
+    - { label: "TOOLS",  sub: "Data · calculations" }
+  side: { title: "MCP", subtitle: "MODEL CONTEXT PROTOCOL", reaches: "YOUR ORDERS · MARKET · CALCULATIONS" }
+  question: "Why did my basket underperform VWAP this morning?"
+  takeaway: "One business request, several coordinated steps, controlled access."
+  glossary:
+    - { term: "Model (LLM)", text: "Interprets your request and writes the answer in plain language. On its own, it knows nothing about your orders." }
+    - { term: "Agent", text: "An assistant that carries out a task in several steps: it uses tools, examines the results and adapts what comes next." }
+    - { term: "Orchestrator", text: "The software that runs the whole thing. Controls apply there, and in the systems: access, limits, traceability." }
+    - { term: "Tools", text: "Precise functions: find an order, read prices, compute a gap. Calculations stay with dedicated tools." }
+    - { term: "MCP", text: "An open standard that connects the assistant to tools and data. It grants no rights: permissions are still checked by the systems." }
+    - { term: "Skills", text: "A working method given to the assistant: the steps to follow, the tools to use and the checks to run." }
+    - { term: "Memory", text: "If planned and authorised: keeps some elements, such as a presentation preference." }
