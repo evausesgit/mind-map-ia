@@ -1,4 +1,49 @@
 news:
+  - date: "2026-11-25"
+    type: update
+    title:
+      en: "Microsoft warns that threat actors are abusing the ARTEX agentic AI framework"
+      fr: "Microsoft alerte sur le détournement du framework d’IA agentique ARTEX"
+    description:
+      en: "Microsoft published defender guidance on ARTEX, an agentic AI framework being abused by threat actors. The alert reinforces that autonomous tooling can compress attack cycles and that organizations need controls over agent identities, tools, permissions and telemetry."
+      fr: "Microsoft publie des recommandations défensives sur ARTEX, un framework d’IA agentique détourné par des acteurs malveillants. L’alerte confirme que les outils autonomes peuvent accélérer les cycles d’attaque et impose de contrôler les identités, outils, permissions et traces des agents."
+    link: https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-about-artex-the-agentic-ai-framework-threat-actors-abuse/
+  - date: "2026-11-25"
+    type: research
+    title:
+      en: "GPT-6 shows intrinsic protein-design capabilities in laboratory tests"
+      fr: "GPT-6 démontre des capacités intrinsèques de conception de protéines en laboratoire"
+    description:
+      en: "OpenAI reports that GPT-6 models can design protein structures and sequences using general reasoning and code rather than specialized biology generators. In tests with Onava, proteins based on GPT-6.2 designs showed evidence of binding across five targets, while specialized models still helped select sequences and candidates for testing."
+      fr: "OpenAI indique que les modèles GPT-6 peuvent concevoir des structures et séquences protéiques par raisonnement général et code, sans générateur biologique spécialisé. Lors de tests avec Onava, des protéines issues de GPT-6.2 ont montré des signes de liaison sur cinq cibles, tandis que des modèles spécialisés ont encore servi à sélectionner les séquences et candidats à tester."
+    link: https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities/
+  - date: "2026-11-25"
+    type: update
+    title:
+      en: "Retailers face rising AI-enabled cyber risk ahead of Black Friday"
+      fr: "Les distributeurs font face à un risque cyber accru par l’IA avant le Black Friday"
+    description:
+      en: "Reuters reports that retailers are confronting a growing AI-enabled cyberattack threat ahead of Black Friday, while many remain uninsured against the resulting losses. The gap between faster attacks and limited risk transfer makes incident response, access controls and supplier resilience immediate business priorities."
+      fr: "Reuters rapporte que les distributeurs affrontent une menace croissante de cyberattaques facilitées par l’IA avant le Black Friday, alors que beaucoup restent non assurés contre les pertes associées. L’écart entre l’accélération des attaques et la faible couverture du risque rend prioritaires la réponse à incident, les contrôles d’accès et la résilience des fournisseurs."
+    link: https://www.reuters.com/business/retail-consumer/retailers-face-rising-ai-cyberattack-threat-ahead-black-friday-many-uninsured-2026-11-25/
+  - date: "2026-11-25"
+    type: update
+    title:
+      en: "Anthropic’s post-IPO slide tests public-market assumptions on AI profits"
+      fr: "La baisse d’Anthropic après son IPO teste les hypothèses de rentabilité de l’IA"
+    description:
+      en: "Reuters says Anthropic’s post-listing decline is testing Wall Street’s assumptions about future AI profits as the broader AI-stock selloff continues. The repricing puts capital intensity, revenue quality and the path to sustainable margins under sharper scrutiny."
+      fr: "Selon Reuters, le recul d’Anthropic après sa cotation met à l’épreuve les hypothèses de Wall Street sur les profits futurs de l’IA, dans un mouvement de baisse plus large du secteur. Cette revalorisation accroît l’attention portée à l’intensité capitalistique, à la qualité des revenus et au chemin vers des marges durables."
+    link: https://www.reuters.com/business/anthropics-slide-tests-wall-streets-lofty-bets-future-ai-profits-2026-11-25/
+  - date: "2026-11-24"
+    type: update
+    title:
+      en: "Open-weight AI debate moves to the foreground in Washington"
+      fr: "Le débat sur l’IA open-weight passe au premier plan à Washington"
+    description:
+      en: "Reuters reports that the policy debate over open-weight AI has moved to the foreground in Washington following Jensen Huang’s return to Nvidia. The issue pits innovation and competitive access against concerns about model misuse, export controls and national security, without yet producing a settled policy outcome."
+      fr: "Reuters rapporte que le débat politique sur les modèles open-weight passe au premier plan à Washington après le retour de Jensen Huang chez Nvidia. Le dossier oppose innovation et accès concurrentiel aux risques de détournement, de contrôle des exportations et de sécurité nationale, sans qu’une ligne politique définitive soit encore arrêtée."
+    link: https://www.reuters.com/world/us/huangs-return-nvidia-brings-open-weight-ai-debate-forefront-washington-2026-11-24/
   - date: "2026-11-24"
     type: update
     title:
