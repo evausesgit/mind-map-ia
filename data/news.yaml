@@ -1,4 +1,44 @@
 news:
+  - date: 2026-11-27
+    type: update
+    title:
+      en: "Bank of England flags growing systemic risk from AI financing"
+      fr: "La Banque d’Angleterre alerte sur le risque systémique du financement de l’IA"
+    description:
+      en: "The Bank of England says AI financing now spans equities, public bonds, private credit and complex structures, increasing the risk that stress spreads across markets. Hyperscaler bond issuance is set to exceed $305 billion in 2026, about 8% of global investment-grade issuance."
+      fr: "La Banque d’Angleterre estime que le financement de l’IA relie désormais actions, obligations, dette privée et montages complexes, ce qui accroît le risque de contagion. Les émissions obligataires des hyperscalers devraient dépasser 305 milliards de dollars en 2026, soit environ 8 % des émissions mondiales investment grade."
+    link: https://www.bankofengland.co.uk/financial-stability-report/2026/november-2026
+
+  - date: 2026-11-27
+    type: update
+    title:
+      en: "Bank of Japan calls for safeguards against AI and digital-money risks"
+      fr: "La Banque du Japon appelle à renforcer les garde-fous face aux risques IA et monnaie numérique"
+    description:
+      en: "The Bank of Japan has called for stronger safeguards as AI amplifies cyber and operational threats around digital money. The warning places model governance, resilience and third-party dependencies inside the central-bank risk agenda."
+      fr: "La Banque du Japon appelle à renforcer les garde-fous alors que l’IA amplifie les menaces cyber et opérationnelles autour de la monnaie numérique. Cet avertissement inscrit la gouvernance des modèles, la résilience et les dépendances tierces dans l’agenda de risque des banques centrales."
+    link: https://news.google.com/rss/articles/CBMinwFBVV95cUxPeUkwSF9SZW9Zb0hBVG5IekxCYWhKRTk3al8ydkszblJYQThwVVFqVjNzSlF3b1VZLU9qdmVOa1dEc19PcmtLYl9XdEgwd0p6RURKNk9ILTMxYnhTa2ExcXBlazRNMWYyUlJvN2Q0NzRpSEt0c0YyYzVxemZ4ZjY3bUV3dU1RTDRFTElUZ0VUcVpWdS15allYVmVSR0FNNG8?oc=5
+
+  - date: 2026-11-24
+    type: update
+    title:
+      en: "Open-weight AI becomes a Washington policy fault line"
+      fr: "L’IA open-weight devient une ligne de fracture politique à Washington"
+    description:
+      en: "Reuters reports that Jensen Huang’s return to Nvidia has pushed the open-weight debate back to the centre of US policy, amid concern over Chinese models and access to advanced chips. The issue now combines industrial policy, national security and enterprise model choice."
+      fr: "Reuters rapporte que le retour de Jensen Huang chez Nvidia replace le débat sur les modèles open-weight au centre de la politique américaine, entre inquiétudes sur les modèles chinois et accès aux puces avancées. Le sujet mêle désormais politique industrielle, sécurité nationale et choix de modèles en entreprise."
+    link: https://news.google.com/rss/articles/CBMiugFBVV95cUxQcE80eU84aDZfY24tLUhfMURrVFZHdkt3UHZuNjcxOXA3MUdWU0ZXUV9Od0d2QUJUWVFtZEN4X19BekxhdUFzcUNlVFYtZVdiMHgtTEFPQWtxU2xIS2NwUW1HVzJkUjNRS2tiMkJEa1ltcG42enk0czYyQXNjN0xibUd1SFNGU3pzd1diLWxDcFlmUVVqUmRoNVJ5VzVDNUVmMDJNRmxTY2dJSjJ3MGk4UUNhTk9DaGNLQ1E?oc=5
+
+  - date: 2026-11-23
+    type: new-feature
+    title:
+      en: "OpenAI and Cisco introduce Shirudo for unpatched Linux systems"
+      fr: "OpenAI et Cisco lancent Shirudo pour protéger les systèmes Linux non corrigés"
+    description:
+      en: "OpenAI and Cisco have introduced Shirudo, an open-source infrastructure shield designed to protect Linux systems that cannot be patched immediately. The project targets the vulnerable interval between disclosure, remediation and enterprise deployment."
+      fr: "OpenAI et Cisco ont présenté Shirudo, un bouclier d’infrastructure open source destiné aux systèmes Linux qui ne peuvent pas être corrigés immédiatement. Le projet vise la fenêtre de vulnérabilité entre divulgation, remédiation et déploiement en entreprise."
+    link: https://news.google.com/rss/articles/CBMiWEFVX3lxTE1lbHE3NTF3ZWJRR0tZOFo1MlRjVEVoYjNKaDdWSFVuYnpQQTZ0YTVnMC1nQm04dWZYWkp5TmRVeEg2V2FWZmROOFljV295eWxLMlZUaTh2Z3Y?oc=5
+
   - date: "2026-11-25"
     type: update
     title:
