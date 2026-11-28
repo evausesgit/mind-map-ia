@@ -2,6 +2,46 @@ news:
   - date: 2026-11-27
     type: update
     title:
+      en: "Google puts Workspace AI agents behind MCP and new security controls"
+      fr: "Google encadre les agents IA de Workspace via MCP et de nouveaux contrôles de sécurité"
+    description:
+      en: "Google says AI agents connecting to Workspace must use its MCP servers or CLI from February 1, 2027. The controls add dedicated identities, least-privilege scopes, human confirmation for sensitive actions, DLP checks and prompt-injection screening."
+      fr: "Google imposera aux agents IA connectés à Workspace de passer par ses serveurs MCP ou sa CLI à partir du 1er février 2027. Le dispositif ajoute identités dédiées, moindre privilège, confirmation humaine pour les actions sensibles, contrôles DLP et filtrage des injections de prompt."
+    link: https://www.helpnetsecurity.com/2026/11/26/google-ai-agent-security-requirements/
+
+  - date: 2026-11-27
+    type: update
+    title:
+      en: "A UK regulatory sandbox completes a cardless purchase by an AI agent"
+      fr: "Un bac à sable réglementaire britannique teste un achat sans carte par un agent IA"
+    description:
+      en: "An AI agent bought nine mini pizzas in an FCA sandbox trial involving Lloyds Bank, TrueLayer and Papa John's. The account-to-account payment used explicit permissions and spending limits without sharing bank credentials."
+      fr: "Un agent IA a acheté neuf mini-pizzas dans un test du bac à sable de la FCA réunissant Lloyds Bank, TrueLayer et Papa John's. Le paiement de compte à compte reposait sur des autorisations explicites et des plafonds de dépense, sans partage des identifiants bancaires."
+    link: https://www.theguardian.com/business/2026/nov/27/ai-agent-cardless-transaction-pizza-papa-john-uk-fca-truelayer
+
+  - date: 2026-11-26
+    type: update
+    title:
+      en: "Open-weight AI debate sharpens around control, cost and national policy"
+      fr: "Le débat sur l’IA open-weight se durcit autour du contrôle, des coûts et des politiques nationales"
+    description:
+      en: "Open-weight models offer private deployment, customization and reduced vendor lock-in, while critics stress that released weights cannot be recalled and safeguards can be removed. The debate increasingly links enterprise architecture to industrial policy and security."
+      fr: "Les modèles open-weight permettent le déploiement privé, la personnalisation et une moindre dépendance fournisseur, tandis que leurs critiques rappellent que des poids publiés ne peuvent être rappelés et que les garde-fous peuvent être retirés. Le débat relie de plus en plus architecture d’entreprise, politique industrielle et sécurité."
+    link: https://www.wionews.com/technology/what-is-open-weight-ai-why-chinese-model-releases-worry-us-firms-and-government-deepseek-qwen-anthropic-openai-kimi-k3-1795601344570
+
+  - date: 2026-11-27
+    type: update
+    title:
+      en: "Taiwan lifts 2026 growth forecast to 13.28% on AI demand"
+      fr: "Taïwan relève sa prévision de croissance 2026 à 13,28 % grâce à la demande en IA"
+    description:
+      en: "Taiwan's statistics agency expects GDP to grow 13.28% in 2026, the fastest pace since 1978, supported by demand for AI hardware. US export controls and tariffs remain material risks to the semiconductor-led expansion."
+      fr: "L’institut statistique taïwanais prévoit une croissance du PIB de 13,28 % en 2026, la plus rapide depuis 1978, portée par la demande de matériel IA. Les contrôles américains à l’exportation et les droits de douane restent des risques importants pour cette expansion tirée par les semi-conducteurs."
+    link: https://www.reuters.com/world/asia-pacific/taiwans-economy-expected-grow-its-fastest-rate-nearly-50-years-due-ai-demand-2026-11-27/
+
+  - date: 2026-11-27
+    type: update
+    title:
       en: "Bank of England flags growing systemic risk from AI financing"
       fr: "La Banque d’Angleterre alerte sur le risque systémique du financement de l’IA"
     description:
